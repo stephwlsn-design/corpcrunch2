@@ -5,4 +5,4 @@ export const getAllCompanies = async () => {
     console.log('companyPostsDetails: ', data);
     return data;
   };
-  
+

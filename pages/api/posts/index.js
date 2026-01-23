@@ -87,6 +87,29 @@ export default async function handler(req, res) {
     }
 
   if (req.method === 'GET') {
+    // Apply rate limiting to GET requests (public endpoint)
+    try {
+      const { publicRateLimiter } = await import('@/lib/rateLimiter');
+      const rateLimitResult = await publicRateLimiter(req);
+      if (!rateLimitResult.allowed) {
+        clearTimeout(timeout);
+        if (!responseSent) {
+          res.setHeader('Retry-After', rateLimitResult.retryAfter);
+          sendResponse(429, {
+            success: false,
+            message: `Rate limit exceeded. Please try again after ${rateLimitResult.retryAfter} seconds.`,
+            retryAfter: rateLimitResult.retryAfter,
+            frontPagePosts: [],
+            trendingPosts: [],
+          });
+        }
+        return;
+      }
+    } catch (rateLimitError) {
+      console.warn('[API /posts GET] Rate limiting error:', rateLimitError.message);
+      // Continue if rate limiting fails (fail open)
+    }
+
     try {
       const { lang = 'en', location = 'all' } = req.query;
       

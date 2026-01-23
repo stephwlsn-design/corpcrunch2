@@ -7,6 +7,40 @@ export default function CategoryBlogDetails({ postsDetails }) {
   return <BlogDetails postsDetails={postsDetails} />;
 }
 
+// Recursive function to replace all undefined values with null
+// This ensures Next.js can serialize the props correctly
+function sanitizeForSerialization(obj) {
+  if (obj === null || obj === undefined) {
+    return null;
+  }
+  
+  if (obj instanceof Date) {
+    return obj.toISOString();
+  }
+  
+  if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean') {
+    return obj;
+  }
+  
+  if (Array.isArray(obj)) {
+    return obj.map(item => sanitizeForSerialization(item));
+  }
+  
+  if (typeof obj === 'object') {
+    const sanitized = {};
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+        // Convert undefined to null, recursively sanitize other values
+        sanitized[key] = value === undefined ? null : sanitizeForSerialization(value);
+      }
+    }
+    return sanitized;
+  }
+  
+  return null;
+}
+
 export const getServerSideProps = async ({ params, req }) => {
   try {
     const language = req?.cookies?.language || 'en';
@@ -34,9 +68,13 @@ export const getServerSideProps = async ({ params, req }) => {
       };
     }
 
+    // Sanitize the entire object to replace all undefined values with null
+    // This handles nested objects, arrays, and all fields including prevPost, nextPost, trendingCategories
+    const sanitizedPost = sanitizeForSerialization(postsDetails);
+
     return {
       props: { 
-        postsDetails: JSON.parse(JSON.stringify(postsDetails))
+        postsDetails: sanitizedPost
       }
     };
   } catch (error) {

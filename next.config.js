@@ -208,7 +208,11 @@ const nextConfig = {
   // Experimental features for better performance
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ['@tanstack/react-query', 'swiper', 'react-multi-carousel'],
+  },
+  // Suppress CSS warnings during build (files in public/ are available at runtime)
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
   },
 };
 

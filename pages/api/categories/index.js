@@ -1,8 +1,27 @@
 import connectDB from '@/lib/mongoose';
 import Category from '@/models/Category';
 import mongoose from 'mongoose';
+import { publicRateLimiter } from '@/lib/rateLimiter';
 
 export default async function handler(req, res) {
+  // Apply rate limiting to GET requests (public endpoint)
+  if (req.method === 'GET') {
+    try {
+      const rateLimitResult = await publicRateLimiter(req);
+      if (!rateLimitResult.allowed) {
+        res.setHeader('Retry-After', rateLimitResult.retryAfter);
+        return res.status(429).json({
+          success: false,
+          message: `Rate limit exceeded. Please try again after ${rateLimitResult.retryAfter} seconds.`,
+          retryAfter: rateLimitResult.retryAfter,
+          data: [],
+        });
+      }
+    } catch (rateLimitError) {
+      console.warn('[API /categories] Rate limiting error:', rateLimitError.message);
+      // Continue if rate limiting fails (fail open)
+    }
+  }
   // Prevent multiple responses
   let responseSent = false;
   

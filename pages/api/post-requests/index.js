@@ -1,7 +1,24 @@
 import connectDB from '@/lib/mongoose';
 import Post from '@/models/Post';
+import { publicRateLimiter } from '@/lib/rateLimiter';
 
 export default async function handler(req, res) {
+  // Apply rate limiting to all requests
+  try {
+    const rateLimitResult = await publicRateLimiter(req);
+    if (!rateLimitResult.allowed) {
+      res.setHeader('Retry-After', rateLimitResult.retryAfter);
+      return res.status(429).json({
+        success: false,
+        message: `Rate limit exceeded. Please try again after ${rateLimitResult.retryAfter} seconds.`,
+        retryAfter: rateLimitResult.retryAfter,
+      });
+    }
+  } catch (rateLimitError) {
+    console.warn('[API /post-requests] Rate limiting error:', rateLimitError.message);
+    // Continue if rate limiting fails (fail open)
+  }
+
   await connectDB();
 
   if (req.method === 'POST') {
@@ -28,15 +45,26 @@ export default async function handler(req, res) {
         description: description?.substring(0, 50) + '...',
       });
 
-      // Validate required fields (trim strings to handle whitespace)
+      // Sanitize and validate required fields
+      const sanitizedData = {
+        submitterName: submitterName?.trim() || '',
+        submitterEmail: submitterEmail?.trim().toLowerCase() || '',
+        submitterPhone: submitterPhone?.trim() || '',
+        companyName: companyName?.trim() || '',
+        submitterAddress: submitterAddress?.trim() || '',
+        categoryID: categoryID,
+        description: description?.trim() || '',
+      };
+
+      // Validate required fields
       const missingFields = {};
-      if (!submitterName?.trim()) missingFields.submitterName = true;
-      if (!submitterEmail?.trim()) missingFields.submitterEmail = true;
-      if (!submitterPhone?.trim()) missingFields.submitterPhone = true;
-      if (!companyName?.trim()) missingFields.companyName = true;
-      if (!submitterAddress?.trim()) missingFields.submitterAddress = true;
-      if (!categoryID) missingFields.categoryID = true;
-      if (!description?.trim()) missingFields.description = true;
+      if (!sanitizedData.submitterName) missingFields.submitterName = true;
+      if (!sanitizedData.submitterEmail) missingFields.submitterEmail = true;
+      if (!sanitizedData.submitterPhone) missingFields.submitterPhone = true;
+      if (!sanitizedData.companyName) missingFields.companyName = true;
+      if (!sanitizedData.submitterAddress) missingFields.submitterAddress = true;
+      if (!sanitizedData.categoryID) missingFields.categoryID = true;
+      if (!sanitizedData.description) missingFields.description = true;
 
       if (Object.keys(missingFields).length > 0) {
         console.error('Validation failed - missing fields:', missingFields);
@@ -44,49 +72,86 @@ export default async function handler(req, res) {
           success: false,
           message: 'All fields are required. Please fill in all fields.',
           missingFields,
-          receivedData: {
-            hasName: !!submitterName,
-            hasEmail: !!submitterEmail,
-            hasPhone: !!submitterPhone,
-            hasCompany: !!companyName,
-            hasAddress: !!submitterAddress,
-            hasCategoryID: !!categoryID,
-            hasDescription: !!description,
-          }
         });
       }
 
-      // Create a draft post with the submission details
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(sanitizedData.submitterEmail)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid email format',
+        });
+      }
+
+      // Validate phone number (basic validation - at least 10 digits)
+      const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+      if (!phoneRegex.test(sanitizedData.submitterPhone)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid phone number format',
+        });
+      }
+
+      // Validate description length (max 10000 characters)
+      if (sanitizedData.description.length > 10000) {
+        return res.status(400).json({
+          success: false,
+          message: 'Description is too long (maximum 10000 characters)',
+        });
+      }
+
+      // Validate categoryID is a valid ObjectId or number
+      if (typeof sanitizedData.categoryID !== 'string' && typeof sanitizedData.categoryID !== 'number') {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid category ID',
+        });
+      }
+
+      // Escape HTML in user inputs to prevent XSS
+      const escapeHtml = (text) => {
+        const map = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, m => map[m]);
+      };
+
+      // Create a draft post with the submission details (with sanitized data)
       const postData = {
-        title: title || `[Article Request] ${companyName} - ${Date.now()}`,
+        title: (title?.trim() || `[Article Request] ${sanitizedData.companyName} - ${Date.now()}`).substring(0, 200),
         slug: `article-request-${Date.now()}`,
         content: `
-          <h2>Article Request from ${companyName}</h2>
-          <p><strong>Submitted by:</strong> ${submitterName}</p>
-          <p><strong>Email:</strong> ${submitterEmail}</p>
-          <p><strong>Phone:</strong> ${submitterPhone}</p>
-          <p><strong>Company:</strong> ${companyName}</p>
-          <p><strong>Location:</strong> ${submitterAddress}</p>
+          <h2>Article Request from ${escapeHtml(sanitizedData.companyName)}</h2>
+          <p><strong>Submitted by:</strong> ${escapeHtml(sanitizedData.submitterName)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(sanitizedData.submitterEmail)}</p>
+          <p><strong>Phone:</strong> ${escapeHtml(sanitizedData.submitterPhone)}</p>
+          <p><strong>Company:</strong> ${escapeHtml(sanitizedData.companyName)}</p>
+          <p><strong>Location:</strong> ${escapeHtml(sanitizedData.submitterAddress)}</p>
           <hr/>
           <h3>Content Description</h3>
-          <p>${description}</p>
+          <p>${escapeHtml(sanitizedData.description)}</p>
         `,
         bannerImageUrl: '/assets/img/default-banner.jpg', // Default placeholder
-        categoryId: categoryID,
+        categoryId: sanitizedData.categoryID,
         publishStatus: 'draft',
         visibility: 'private',
-        excerpt: description.substring(0, 160),
+        excerpt: sanitizedData.description.substring(0, 160),
         // Store submitter information in additional fields
-        authorFirstName: submitterName.split(' ')[0] || submitterName,
-        authorLastName: submitterName.split(' ').slice(1).join(' ') || '',
+        authorFirstName: sanitizedData.submitterName.split(' ')[0] || sanitizedData.submitterName,
+        authorLastName: sanitizedData.submitterName.split(' ').slice(1).join(' ') || '',
         // Custom fields for article requests
-        tags: ['article-request', companyName.toLowerCase().replace(/\s+/g, '-')],
-        metaDescription: `Article request from ${companyName}: ${description.substring(0, 100)}...`,
+        tags: ['article-request', sanitizedData.companyName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').substring(0, 50)],
+        metaDescription: `Article request from ${sanitizedData.companyName}: ${sanitizedData.description.substring(0, 100)}...`,
       };
 
       const post = await Post.create(postData);
 
-      // Return the post ID for payment processing
+      // Return the post ID for payment processing (don't expose sensitive data)
       return res.status(201).json({
         success: true,
         message: 'Article request submitted successfully',
@@ -95,11 +160,6 @@ export default async function handler(req, res) {
           id: post._id.toString(),
           title: post.title,
           slug: post.slug,
-          submitterName,
-          submitterEmail,
-          submitterPhone,
-          companyName,
-          submitterAddress,
         }
       });
     } catch (error) {

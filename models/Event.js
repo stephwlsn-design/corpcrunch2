@@ -76,7 +76,7 @@ const EventSchema = new mongoose.Schema(
 );
 
 // Create indexes for optimal query performance
-EventSchema.index({ slug: 1 });
+// Note: slug index is already created by unique: true above, so we don't need to create it again
 EventSchema.index({ eventDate: -1 });
 EventSchema.index({ status: 1 });
 EventSchema.index({ featured: 1 });

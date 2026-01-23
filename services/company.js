@@ -11,3 +11,4 @@ export const getAllCompaniesPost = async (id) => {
   const data = await axiosInstance.get(`/posts`);
   return { posts: data?.trendingPosts };
 };
+

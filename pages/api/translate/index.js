@@ -1,15 +1,50 @@
 // Translation API endpoint using LibreTranslate (free and open-source)
 // Alternative: Can be replaced with Google Translate API or MyMemory API
 
+import { publicRateLimiter } from '@/lib/rateLimiter';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Apply rate limiting
+  try {
+    const rateLimitResult = await publicRateLimiter(req);
+    if (!rateLimitResult.allowed) {
+      res.setHeader('Retry-After', rateLimitResult.retryAfter);
+      return res.status(429).json({
+        error: `Rate limit exceeded. Please try again after ${rateLimitResult.retryAfter} seconds.`,
+        retryAfter: rateLimitResult.retryAfter,
+      });
+    }
+  } catch (rateLimitError) {
+    console.warn('[API /translate] Rate limiting error:', rateLimitError.message);
+    // Continue if rate limiting fails (fail open)
+  }
+
   const { text, targetLang, sourceLang = 'en' } = req.body;
 
-  if (!text || !targetLang) {
-    return res.status(400).json({ error: 'Missing required fields: text and targetLang' });
+  // Validate and sanitize inputs
+  if (!text || typeof text !== 'string') {
+    return res.status(400).json({ error: 'Missing or invalid text field' });
+  }
+
+  if (!targetLang || typeof targetLang !== 'string') {
+    return res.status(400).json({ error: 'Missing or invalid targetLang field' });
+  }
+
+  // Sanitize text (limit length to prevent abuse)
+  const sanitizedText = text.trim().substring(0, 50000); // Max 50k characters
+
+  if (sanitizedText.length === 0) {
+    return res.status(400).json({ error: 'Text cannot be empty' });
+  }
+
+  // Validate language codes (allow only alphanumeric, 2-5 characters)
+  const langCodeRegex = /^[a-z]{2,5}$/i;
+  if (!langCodeRegex.test(targetLang) || !langCodeRegex.test(sourceLang)) {
+    return res.status(400).json({ error: 'Invalid language code format' });
   }
 
   // If source and target are the same, return original text
@@ -44,9 +79,9 @@ export default async function handler(req, res) {
     const maxChunkLength = 5000;
     const chunks = [];
     
-    if (text.length > maxChunkLength) {
+    if (sanitizedText.length > maxChunkLength) {
       // Split by sentences or paragraphs
-      const sentences = text.split(/(?<=[.!?])\s+/);
+      const sentences = sanitizedText.split(/(?<=[.!?])\s+/);
       let currentChunk = '';
       
       for (const sentence of sentences) {
@@ -59,7 +94,7 @@ export default async function handler(req, res) {
       }
       if (currentChunk) chunks.push(currentChunk);
     } else {
-      chunks.push(text);
+      chunks.push(sanitizedText);
     }
 
     // Translate each chunk
@@ -67,7 +102,9 @@ export default async function handler(req, res) {
       chunks.map(async (chunk) => {
         try {
           // Try MyMemory Translation API first (more reliable, free, no API key needed)
-          const myMemoryUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(chunk)}&langpair=${sourceLangCode}|${targetLangCode}`;
+            // URL encode to prevent injection
+            const encodedChunk = encodeURIComponent(chunk.substring(0, 5000));
+            const myMemoryUrl = `https://api.mymemory.translated.net/get?q=${encodedChunk}&langpair=${sourceLangCode}|${targetLangCode}`;
           
           try {
             const response = await fetch(myMemoryUrl, {
@@ -162,7 +199,7 @@ export default async function handler(req, res) {
     
     // Fallback: Return original text if translation fails
     return res.status(200).json({
-      translatedText: text,
+      translatedText: sanitizedText,
       sourceLang,
       targetLang,
       success: false,

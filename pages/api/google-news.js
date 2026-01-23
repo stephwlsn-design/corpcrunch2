@@ -1,6 +1,23 @@
+import { publicRateLimiter } from '@/lib/rateLimiter';
+
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Apply rate limiting
+  try {
+    const rateLimitResult = await publicRateLimiter(req);
+    if (!rateLimitResult.allowed) {
+      res.setHeader('Retry-After', rateLimitResult.retryAfter);
+      return res.status(429).json({
+        error: `Rate limit exceeded. Please try again after ${rateLimitResult.retryAfter} seconds.`,
+        retryAfter: rateLimitResult.retryAfter,
+      });
+    }
+  } catch (rateLimitError) {
+    console.warn('[API /google-news] Rate limiting error:', rateLimitError.message);
+    // Continue if rate limiting fails (fail open)
   }
 
   const apiKey =

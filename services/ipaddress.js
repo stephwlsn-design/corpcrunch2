@@ -8,3 +8,4 @@ export const fetchIP = async () => {
 export const postIpForVisits = async (ipAddress) => {
   return await axiosInstance.post("/visits", { ipAddress });
 };
+

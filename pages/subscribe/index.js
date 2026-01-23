@@ -1,4 +1,4 @@
-import { postPayableAmount } from "@/api/payment";
+import { postPayableAmount } from "@/services/payment";
 import Spinner from "@/components/elements/Spinner";
 import Layout from "@/components/layout/Layout";
 import PaymentStatusModal from "@/components/Modals/PaymentStatusModal";

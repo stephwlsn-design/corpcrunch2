@@ -1,11 +1,11 @@
-import { getCategories } from "@/api/categories";
-import { getAllCompaniesPost, getCompanyDetails } from "@/api/company";
-import { subscribe } from "@/api/subscribe";
-import { fetchIP, postIpForVisits } from "@/api/ipaddress";
+import { getCategories } from "@/services/categories";
+import { getAllCompaniesPost, getCompanyDetails } from "@/services/company";
+import { subscribe } from "@/services/subscribe";
+import { fetchIP, postIpForVisits } from "@/services/ipaddress";
 import { notifyError, notifySuccess } from "@/util/toast";
 import { useState } from "react";
 
-const { getPost, getPostDetails } = require("@/api/blogs");
+const { getPost, getPostDetails } = require("@/services/blogs");
 
 const useGlobalState = () => {
   const [email, setEmail] = useState("");

@@ -2,7 +2,12 @@ import connectDB from '@/lib/mongoose';
 import Admin from '@/models/Admin';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || '314cf40e2d518ba6a89c6070ab4e48943d741780c5b8626e1e2f91374aaa0feec6566da919f293d469b8f11ce130ef9bb6bbb97e134d74e4e9674ed513ecbe3b';
+// JWT_SECRET must be set via environment variable - no fallback for security
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  console.error('[API /admin/login] ❌ JWT_SECRET environment variable is not set');
+}
 
 export default async function handler(req, res) {
   // Prevent multiple responses
@@ -27,6 +32,15 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Validate JWT_SECRET is configured
+    if (!JWT_SECRET) {
+      console.error('[API /admin/login] ❌ JWT_SECRET not configured');
+      return sendResponse(500, {
+        success: false,
+        message: 'Server configuration error. Please contact administrator.',
+      });
+    }
+
     // Connect to database
     await connectDB();
     console.log('[API /admin/login] ✓ Database connected');

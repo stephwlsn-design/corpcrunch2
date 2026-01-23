@@ -6,3 +6,4 @@ export const getPost = async () => {
 export const getPostDetails = async (id) => {
   return await axiosInstance.get(`/posts/${id}`);
 };
+

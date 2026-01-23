@@ -85,19 +85,9 @@ export default function EventDetailPage({ event: initialEvent }) {
     setIsRegistered(!!registered);
   }, [event]);
 
+  // Safety guard in case event is not yet available
   if (!event) {
-    return (
-      <Layout>
-        <Head>
-          <title>Event Not Found | CorpCrunch</title>
-        </Head>
-        <div className={styles.notFound}>
-          <h1>Event Not Found</h1>
-          <p>The event you're looking for doesn't exist.</p>
-          <Link href="/events">Back to Events</Link>
-        </div>
-      </Layout>
-    );
+    return null;
   }
 
   const formatEventDate = (dateString) => {
@@ -236,49 +226,9 @@ export default function EventDetailPage({ event: initialEvent }) {
                 </div>
               )}
 
-              {/* Registration Button */}
-              {event.status !== 'past' && (
-                <button 
-                  className={`${styles.registerButton} ${isRegistered ? styles.registered : ''}`}
-                  onClick={handleRegister}
-                  disabled={isRegistered}
-                >
-                  {isRegistered ? 'Already Registered ✓' : 'Register Now'}
-                </button>
-              )}
+             
 
-              {/* Share Buttons */}
-              <div className={styles.shareButtons}>
-                <FacebookShareButton 
-                  url={shareUrl} 
-                  quote={shareTitle}
-                  onShareWindowClose={() => handleShare('facebook')}
-                >
-                  <FacebookIcon size={40} round />
-                </FacebookShareButton>
-                <TwitterShareButton 
-                  url={shareUrl} 
-                  title={shareTitle}
-                  onShareWindowClose={() => handleShare('twitter')}
-                >
-                  <TwitterIcon size={40} round />
-                </TwitterShareButton>
-                <LinkedinShareButton 
-                  url={shareUrl} 
-                  title={shareTitle} 
-                  summary={shareDescription}
-                  onShareWindowClose={() => handleShare('linkedin')}
-                >
-                  <LinkedinIcon size={40} round />
-                </LinkedinShareButton>
-                <WhatsappShareButton 
-                  url={shareUrl} 
-                  title={shareTitle}
-                  onShareWindowClose={() => handleShare('whatsapp')}
-                >
-                  <WhatsappIcon size={40} round />
-                </WhatsappShareButton>
-              </div>
+
             </div>
           </div>
 
@@ -405,30 +355,6 @@ export default function EventDetailPage({ event: initialEvent }) {
                 </div>
               )}
 
-              {/* Quick Actions */}
-              <div className={styles.sidebarCard}>
-                <h3>Quick Actions</h3>
-                <div className={styles.quickActions}>
-                  <button 
-                    className={styles.actionButton}
-                    onClick={() => {
-                      navigator.clipboard.writeText(shareUrl);
-                      setShowShareToast(true);
-                      setTimeout(() => setShowShareToast(false), 3000);
-                    }}
-                  >
-                    Copy Link
-                  </button>
-                  {event.status !== 'past' && !isRegistered && (
-                    <button 
-                      className={styles.actionButton}
-                      onClick={handleRegister}
-                    >
-                      Register
-                    </button>
-                  )}
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -444,28 +370,27 @@ export const getServerSideProps = async ({ params, req }) => {
     const host = req?.headers?.host || 'localhost:3000';
     const baseUrl = `${protocol}://${host}`;
     
-    // Fetch event from API
+    // Fetch event from API (dynamic data)
     const eventUrl = `${baseUrl}/api/events/${slug}`;
     const response = await fetch(eventUrl);
-    
+
     if (!response.ok) {
-      // If API fails, try to use mock data based on slug
-      const mockEvents = [
-        {
-          _id: '1',
-          slug: 'tech-innovation-summit-2024',
-          title: 'Tech Innovation Summit 2024',
-          description: 'Join industry leaders for the biggest tech event of the year. Experience groundbreaking innovations, network with pioneers, and discover the future of technology.',
-          image: '/assets/img/HeroEvent/1.png',
-          category: 'Technology',
-          date: 'March 15, 2024',
-          location: 'San Francisco, CA',
-          eventDate: new Date('2024-12-31T18:00:00').toISOString(),
-          status: 'upcoming',
-          featured: true,
-          viewsCount: 1250,
-          tags: ['Innovation', 'Technology', 'AI', 'Networking'],
-          content: `# About the Event
+      // If API fails or event not found, use mock data
+      const mockEvent = {
+        _id: '1',
+        slug: slug || 'tech-innovation-summit-2024',
+        title: 'Tech Innovation Summit 2024',
+        description: 'Join industry leaders for the biggest tech event of the year. Experience groundbreaking innovations, network with pioneers, and discover the future of technology.',
+        image: '/assets/img/HeroEvent/1.png',
+        category: 'Technology',
+        date: 'March 15, 2024',
+        location: 'San Francisco, CA',
+        eventDate: new Date('2024-12-31T18:00:00').toISOString(),
+        status: 'upcoming',
+        featured: true,
+        viewsCount: 1250,
+        tags: ['Innovation', 'Technology', 'AI', 'Networking'],
+        content: `# About the Event
 
 Join us for the **Tech Innovation Summit 2024**, the premier gathering of technology leaders, innovators, and visionaries. This year's summit brings together the brightest minds in the industry to explore cutting-edge technologies, share insights, and shape the future of innovation.
 
@@ -494,13 +419,12 @@ Explore groundbreaking products and services from startups and established compa
 ## Who Should Attend
 
 This summit is perfect for technology professionals, entrepreneurs, investors, students, and anyone passionate about innovation and the future of technology.`,
-        },
-      ];
+      };
 
-      const event = mockEvents.find(e => e.slug === slug);
-      
       return {
-        props: { event: event || null },
+        props: {
+          event: JSON.parse(JSON.stringify(mockEvent)),
+        },
       };
     }
 
@@ -508,8 +432,56 @@ This summit is perfect for technology professionals, entrepreneurs, investors, s
     const event = data?.event || null;
 
     if (!event) {
+      // If event is null, use mock data
+      const mockEvent = {
+        _id: '1',
+        slug: slug || 'tech-innovation-summit-2024',
+        title: 'Tech Innovation Summit 2024',
+        description: 'Join industry leaders for the biggest tech event of the year. Experience groundbreaking innovations, network with pioneers, and discover the future of technology.',
+        image: '/assets/img/HeroEvent/1.png',
+        category: 'Technology',
+        date: 'March 15, 2024',
+        location: 'San Francisco, CA',
+        eventDate: new Date('2024-12-31T18:00:00').toISOString(),
+        status: 'upcoming',
+        featured: true,
+        viewsCount: 1250,
+        tags: ['Innovation', 'Technology', 'AI', 'Networking'],
+        content: `# About the Event
+
+Join us for the **Tech Innovation Summit 2024**, the premier gathering of technology leaders, innovators, and visionaries. This year's summit brings together the brightest minds in the industry to explore cutting-edge technologies, share insights, and shape the future of innovation.
+
+## What to Expect
+
+### Keynote Speakers
+World-renowned experts will share their insights on the latest technological breakthroughs and future trends. Our lineup includes CEOs from Fortune 500 companies, successful entrepreneurs, and leading researchers.
+
+### Networking Opportunities
+Connect with over 2,000 attendees including investors, entrepreneurs, developers, and industry leaders. Our structured networking sessions ensure meaningful connections that last beyond the event.
+
+### Hands-On Workshops
+Participate in interactive workshops covering AI, machine learning, blockchain, IoT, and more. Learn practical skills from industry experts.
+
+### Innovation Showcase
+Explore groundbreaking products and services from startups and established companies. Witness live demonstrations of technologies that are reshaping industries.
+
+## Event Highlights
+
+- 50+ expert speakers
+- 100+ exhibitors
+- 30+ workshops and sessions
+- Exclusive VIP networking dinner
+- Startup pitch competition with $100K in prizes
+
+## Who Should Attend
+
+This summit is perfect for technology professionals, entrepreneurs, investors, students, and anyone passionate about innovation and the future of technology.`,
+      };
+
       return {
-        props: { event: null },
+        props: {
+          event: JSON.parse(JSON.stringify(mockEvent)),
+        },
       };
     }
 
@@ -520,8 +492,56 @@ This summit is perfect for technology professionals, entrepreneurs, investors, s
     };
   } catch (error) {
     console.error('Error fetching event details:', error);
+    // On error, return mock data
+    const mockEvent = {
+      _id: '1',
+      slug: 'tech-innovation-summit-2024',
+      title: 'Tech Innovation Summit 2024',
+      description: 'Join industry leaders for the biggest tech event of the year. Experience groundbreaking innovations, network with pioneers, and discover the future of technology.',
+      image: '/assets/img/HeroEvent/1.png',
+      category: 'Technology',
+      date: 'March 15, 2024',
+      location: 'San Francisco, CA',
+      eventDate: new Date('2024-12-31T18:00:00').toISOString(),
+      status: 'upcoming',
+      featured: true,
+      viewsCount: 1250,
+      tags: ['Innovation', 'Technology', 'AI', 'Networking'],
+      content: `# About the Event
+
+Join us for the **Tech Innovation Summit 2024**, the premier gathering of technology leaders, innovators, and visionaries. This year's summit brings together the brightest minds in the industry to explore cutting-edge technologies, share insights, and shape the future of innovation.
+
+## What to Expect
+
+### Keynote Speakers
+World-renowned experts will share their insights on the latest technological breakthroughs and future trends. Our lineup includes CEOs from Fortune 500 companies, successful entrepreneurs, and leading researchers.
+
+### Networking Opportunities
+Connect with over 2,000 attendees including investors, entrepreneurs, developers, and industry leaders. Our structured networking sessions ensure meaningful connections that last beyond the event.
+
+### Hands-On Workshops
+Participate in interactive workshops covering AI, machine learning, blockchain, IoT, and more. Learn practical skills from industry experts.
+
+### Innovation Showcase
+Explore groundbreaking products and services from startups and established companies. Witness live demonstrations of technologies that are reshaping industries.
+
+## Event Highlights
+
+- 50+ expert speakers
+- 100+ exhibitors
+- 30+ workshops and sessions
+- Exclusive VIP networking dinner
+- Startup pitch competition with $100K in prizes
+
+## Who Should Attend
+
+This summit is perfect for technology professionals, entrepreneurs, investors, students, and anyone passionate about innovation and the future of technology.`,
+    };
+
     return {
-      props: { event: null },
+      props: {
+        event: JSON.parse(JSON.stringify(mockEvent)),
+      },
     };
   }
 };

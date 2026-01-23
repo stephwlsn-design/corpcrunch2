@@ -49,10 +49,19 @@ export default async function handler(req, res) {
         });
       }
 
+      // Verify JWT_SECRET is configured
+      if (!process.env.JWT_SECRET) {
+        console.error('[API /users/[id] PATCH] ❌ JWT_SECRET not configured');
+        return res.status(500).json({
+          success: false,
+          message: 'Server configuration error',
+        });
+      }
+
       // Verify token
       let decoded;
       try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
       } catch (error) {
         return res.status(401).json({
           success: false,
@@ -148,10 +157,19 @@ export default async function handler(req, res) {
         });
       }
 
+      // Verify JWT_SECRET is configured
+      if (!process.env.JWT_SECRET) {
+        console.error('[API /users/[id] DELETE] ❌ JWT_SECRET not configured');
+        return res.status(500).json({
+          success: false,
+          message: 'Server configuration error',
+        });
+      }
+
       // Verify token
       let decoded;
       try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
       } catch (error) {
         return res.status(401).json({
           success: false,

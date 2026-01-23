@@ -1,4 +1,4 @@
-import { postPayableAmount } from "@/api/payment";
+import { postPayableAmount } from "@/services/payment";
 import { PAYMENT_STATUS, planIDs,CALENDLY_URL } from "@/config/constants";
 import useCategory from "@/hooks/useCategory";
 import { PAYMENT_TYPE } from "@/hooks/useClientToken";

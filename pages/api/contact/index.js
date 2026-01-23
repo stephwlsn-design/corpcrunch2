@@ -1,7 +1,23 @@
 import connectDB from '@/lib/mongoose';
 import Contact from '@/models/Contact';
+import { publicRateLimiter } from '@/lib/rateLimiter';
 
 export default async function handler(req, res) {
+  // Apply rate limiting to all requests
+  try {
+    const rateLimitResult = await publicRateLimiter(req);
+    if (!rateLimitResult.allowed) {
+      res.setHeader('Retry-After', rateLimitResult.retryAfter);
+      return res.status(429).json({
+        success: false,
+        message: `Rate limit exceeded. Please try again after ${rateLimitResult.retryAfter} seconds.`,
+        retryAfter: rateLimitResult.retryAfter,
+      });
+    }
+  } catch (rateLimitError) {
+    console.warn('[API /contact] Rate limiting error:', rateLimitError.message);
+    // Continue if rate limiting fails (fail open)
+  }
   // Prevent multiple responses
   let responseSent = false;
   
@@ -33,22 +49,47 @@ export default async function handler(req, res) {
         });
       }
 
+      // Sanitize inputs
+      const sanitizedData = {
+        name: name.trim().substring(0, 200),
+        email: email.trim().toLowerCase().substring(0, 255),
+        subject: subject.trim().substring(0, 200),
+        message: message.trim().substring(0, 5000),
+        formType: (formType || 'message').trim().substring(0, 50),
+      };
+
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
+      if (!emailRegex.test(sanitizedData.email)) {
         return sendResponse(400, {
           success: false,
           message: 'Invalid email format',
         });
       }
 
+      // Validate name length
+      if (sanitizedData.name.length < 2) {
+        return sendResponse(400, {
+          success: false,
+          message: 'Name must be at least 2 characters',
+        });
+      }
+
+      // Validate message length
+      if (sanitizedData.message.length < 10) {
+        return sendResponse(400, {
+          success: false,
+          message: 'Message must be at least 10 characters',
+        });
+      }
+
       // Create contact entry
       const contact = new Contact({
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        subject: subject.trim(),
-        message: message.trim(),
-        formType: formType || 'message',
+        name: sanitizedData.name,
+        email: sanitizedData.email,
+        subject: sanitizedData.subject,
+        message: sanitizedData.message,
+        formType: sanitizedData.formType,
         status: 'new',
       });
 
