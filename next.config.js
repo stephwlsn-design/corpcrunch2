@@ -90,6 +90,18 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: '**.corpcrunch.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'corpcrunch.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.corpcrunch.io',
+      },
     ],
     // Legacy domains support (deprecated but still works)
     domains: [
@@ -110,6 +122,9 @@ const nextConfig = {
       'media.istockphoto.com',
       'unsplash.com',
       'images.unsplash.com',
+      'corpcrunch.io',
+      'www.corpcrunch.io',
+      'prowess.corpcrunch.io',
     ],
     // Optimize images for production
     formats: ['image/avif', 'image/webp'],

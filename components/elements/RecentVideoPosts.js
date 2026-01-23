@@ -14,7 +14,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
-  const sectionRef = useRef(null); // parent section (first / sticky area)
+  const sectionRef = useRef(null);
 
   // Helper: validate that an image URL is from an allowed/known-safe host AND is actually an image
   const isSafeImageUrl = (url) => {
@@ -58,6 +58,9 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
           "www.autonews.com",
           "autonews.com",
           "img.youtube.com", // YouTube thumbnails
+          "corpcrunch.io",
+          "www.corpcrunch.io",
+          "prowess.corpcrunch.io",
         ];
         return allowedHosts.includes(parsed.hostname);
       } catch {
@@ -76,6 +79,9 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
         "image.cnbcfm.com",
         "www.autonews.com",
         "autonews.com",
+        "corpcrunch.io",
+        "www.corpcrunch.io",
+        "prowess.corpcrunch.io",
       ];
       // Only allow if hostname is in list AND doesn't look like a video/HTML page
       if (allowedHosts.includes(parsed.hostname)) {
@@ -152,10 +158,18 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
   const sections = videoPosts;
 
   // Extract YouTube video ID from URL
+  // Extract YouTube video ID from URL
   const getYouTubeVideoId = (url) => {
     if (!url) return null;
-    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
-    return match ? match[1] : null;
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+      /youtube\.com\/.*[?&]v=([^&\n?#]+)/,
+    ];
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    return null;
   };
 
   const handleVideoPlay = (videoUrl) => {
@@ -273,6 +287,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
     
     return cleaned;
   };
+
 
   // Render section content (reusable)
   const renderSectionContent = (sectionPost, sectionIndex) => {
@@ -413,12 +428,15 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
     );
   };
 
+  // Dynamic height based on number of videos
+  // Each video gets 100vh, ensuring all videos have space to be visible
   return (
     <section 
       className={styles.videoPostsSection} 
       ref={sectionRef}
       style={{ 
-        height: `${sections.length * 100}vh` 
+        height: `${sections.length * 100}vh`,
+        minHeight: `${Math.max(sections.length, 1) * 100}vh`
       }}
     >
       {sections.map((sectionPost, index) => {
@@ -428,21 +446,31 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
         
         // Calculate individual section progress for smooth transitions
         const sectionProgress = scrollProgress - index;
-        const sectionOpacity = isActive 
-          ? 1 
-          : isPast 
-          ? 0.3 
-          : isNext 
-          ? Math.max(0, 1 - Math.abs(sectionProgress))
-          : 0.7;
         
-        const sectionScale = isActive 
-          ? 1 
-          : isPast 
-          ? 0.85 
-          : isNext 
-          ? Math.max(0.85, 1 - Math.abs(sectionProgress) * 0.15)
-          : 0.9;
+        // Dynamic visibility: Make all videos clearly visible based on distance from active
+        // This works for ANY number of videos (2, 3, 4, 5, 10, etc.)
+        const distanceFromActive = Math.abs(index - activeIndex);
+        
+        let sectionOpacity, sectionScale;
+        
+        if (isActive) {
+          // Active video: 100% visible
+          sectionOpacity = 1;
+          sectionScale = 1;
+        } else if (distanceFromActive === 1) {
+          // Adjacent videos (next or previous): Make them highly visible (95%)
+          sectionOpacity = 0.95;
+          sectionScale = 0.97;
+        } else if (distanceFromActive === 2) {
+          // Videos 2 positions away: Still quite visible (85%)
+          sectionOpacity = 0.85;
+          sectionScale = 0.94;
+        } else {
+          // Videos further away: Visible but progressively more faded
+          // Minimum 70% opacity to ensure all videos remain clearly visible
+          sectionOpacity = Math.max(0.7, 0.85 - (distanceFromActive - 2) * 0.03);
+          sectionScale = Math.max(0.92, 0.94 - (distanceFromActive - 2) * 0.005);
+        }
         
         return (
           <div
@@ -450,16 +478,23 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
             className={styles.stickySection}
             data-index={index}
             style={{
-              zIndex: sections.length - index, // Higher z-index for earlier sections
+              zIndex: sections.length - Math.abs(index - activeIndex), // Higher z-index for videos closer to active
             }}
           >
             <div 
               className={styles.sectionInner}
               style={{
-                transform: `scale(${sectionScale}) translateY(${isPast ? '-5vh' : isNext ? '5vh' : '0'})`,
+                transform: `scale(${sectionScale}) translateY(${
+                  isPast 
+                    ? `-${3 + distanceFromActive * 1.5}vh` 
+                    : isNext 
+                    ? `${3 + distanceFromActive * 1.5}vh` 
+                    : '0'
+                })`,
                 opacity: sectionOpacity,
-                transition: isActive ? 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease' : 'none',
-                pointerEvents: 'auto'
+                transition: 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease',
+                pointerEvents: sectionOpacity > 0.3 ? 'auto' : 'none',
+                zIndex: sections.length - distanceFromActive
               }}
             >
               {renderSectionContent(sectionPost, index)}
