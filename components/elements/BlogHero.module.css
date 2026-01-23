@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&display=swap');
+
+.blogHero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: 'Urbanist', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 80px 20px 40px;
+}
+
+/* Purple → Blue vertical gradient like reference */
+.gradientBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Light mode: softer multi-stop blue gradient used previously */
+  background: linear-gradient(
+    to bottom,
+    #eff6ff 0%,
+    #dbeafe 25%,
+    #bfdbfe 45%,
+    #60a5fa 70%,
+    #1d4ed8 100%
+  );
+  z-index: 0;
+}
+
+.gridOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Soft rounded-square tile grid like in the design */
+  background-image:
+    radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.14) 0, rgba(255, 255, 255, 0.14) 2px, transparent 3px),
+    radial-gradient(circle at 100% 0, rgba(255, 255, 255, 0.12) 0, rgba(255, 255, 255, 0.12) 2px, transparent 3px),
+    radial-gradient(circle at 0 100%, rgba(255, 255, 255, 0.1) 0, rgba(255, 255, 255, 0.1) 2px, transparent 3px),
+    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.12) 0, rgba(255, 255, 255, 0.12) 2px, transparent 3px);
+  background-size: 140px 140px;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+/* Content Wrapper */
+.contentWrapper {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Text Content */
+.title {
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  max-width: 900px;
+  letter-spacing: -0.02em;
+}
+
+.highlightText {
+  color: #2D31FA;
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: #666;
+  max-width: 600px;
+  line-height: 1.5;
+  margin-bottom: 56px;
+  display: inline-block;
+}
+
+/* Read More Link */
+.readMoreLink {
+  font-size: 18px;
+  font-weight: 500;
+  color: #2563eb;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.readMoreLink:hover {
+  color: #1d4ed8;
+  border-bottom-color: #1d4ed8;
+}
+
+/* Media Card */
+.mediaCard {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  background: rgba(22, 10, 94, 0.25);
+  border-radius: 40px;
+  padding: 10px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.mediaInner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #ffffff;
+  border-radius: 30px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mediaImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Video specific styling */
+video.mediaImage {
+  background: #000;
+  border-radius: 30px;
+}
+
+/* YouTube iframe styling */
+iframe.mediaImage {
+  border-radius: 30px;
+  background: #000;
+}
+
+/* Hide default video controls styling in dark mode */
+video.mediaImage::-webkit-media-controls-panel {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Decorative elements inside media card (arcs, text) */
+.mediaOverlay {
+  display: none;
+}
+
+/* Bottom Elements */
+.bottomSection {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  right: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.bottomSection > * {
+  pointer-events: auto;
+}
+
+/* Consultation Box */
+.consultationBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  padding: 8px 16px 8px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.consultationBox:hover {
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.avatarWrapper {
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
+
+.avatar {
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.statusDot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  background: #4ADE80;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.consultationText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.journalistName {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+}
+
+/* Published Date Box - Right side */
+.publishedDateBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  padding: 12px 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.publishedDateBox:hover {
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.publishedDateBox i {
+  font-size: 16px;
+  color: #2563eb;
+}
+
+.publishedDate {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+}
+
+/* Dark mode support */
+:global(.dark-theme) .blogHero .title {
+  color: #f9fafb;
+}
+
+:global(.dark-theme) .blogHero .subtitle {
+  color: #e5e7eb;
+}
+
+:global(.dark-theme) .blogHero .journalistName {
+  color: #f9fafb;
+}
+
+:global(.dark-theme) .blogHero .gradientBg {
+  /* Dark mode: match site blue gradient */
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+:global(.dark-theme) .blogHero .consultationBox {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(96, 165, 250, 0.4);
+  box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);
+}
+
+:global(.dark-theme) .blogHero .consultationBox:hover {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: rgba(96, 165, 250, 0.6);
+  box-shadow: 0 6px 20px rgba(96, 165, 250, 0.3);
+}
+
+:global(.dark-theme) .blogHero .mediaCard {
+  background: rgba(15, 23, 42, 0.7);
+}
+
+:global(.dark-theme) .blogHero .mediaInner {
+  background: #020617;
+}
+
+:global(.dark-theme) .blogHero .publishedDateBox {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(96, 165, 250, 0.4);
+  box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);
+}
+
+:global(.dark-theme) .blogHero .publishedDateBox:hover {
+  background: rgba(15, 23, 42, 0.95);
+  border-color: rgba(96, 165, 250, 0.6);
+  box-shadow: 0 6px 20px rgba(96, 165, 250, 0.3);
+}
+
+:global(.dark-theme) .blogHero .publishedDateBox i {
+  color: #60a5fa;
+}
+
+:global(.dark-theme) .blogHero .publishedDate {
+  color: #f9fafb;
+}
+
+:global(.dark-theme) .blogHero .readMoreLink {
+  color: #60a5fa;
+}
+
+:global(.dark-theme) .blogHero .readMoreLink:hover {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+}
+
+@media (max-width: 768px) {
+  .bottomSection {
+    position: static;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 40px;
+    left: 0;
+    right: 0;
+  }
+
+  .consultationBox,
+  .publishedDateBox {
+    width: auto;
+    min-width: 200px;
+  }
+
+  .publishedDate,
+  .journalistName {
+    font-size: 13px;
+  }
+}

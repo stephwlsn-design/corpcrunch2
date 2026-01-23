@@ -1,0 +1,97 @@
+.separator {
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  background: transparent;
+  border-top: 2px solid rgba(37, 81, 231, 0.2);
+  border-bottom: 2px solid rgba(37, 81, 231, 0.2);
+  height: 160px;
+  display: flex;
+
+  align-items: center;
+}
+
+.textContainer {
+  width: max-content;
+  overflow: visible;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+  /* Smooth, continuous loop at a calmer speed (similar to category nav) */
+  animation: slideRightToLeft 22s linear infinite;
+  animation-play-state: running;
+  will-change: transform;
+}
+
+.animatedText {
+  display: inline-block;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 120px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #2551e7;
+  white-space: nowrap;
+  text-shadow: 0 1px 5px rgba(37, 81, 231, 0.15);
+  flex-shrink: 0;
+  padding-right: 4rem;
+  opacity: 1;
+}
+
+/* Ensure visibility in dark mode - white text */
+:global(.dark-theme) .animatedText,
+:global([data-theme="dark"]) .animatedText,
+:global(body.dark) .animatedText {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 255, 255, 0.15) !important;
+  opacity: 1 !important;
+}
+
+@keyframes slideRightToLeft {
+  0% {
+    /* start with first set fully visible */
+    transform: translateX(0);
+  }
+  100% {
+    /* move left by exactly one set (1/3 of total width), then loop seamlessly */
+    transform: translateX(calc(-33.333%));
+  }
+}
+
+/* Dark theme support - Enhanced visibility */
+:global(.dark-theme) .separator,
+:global([data-theme="dark"]) .separator,
+:global(body.dark) .separator {
+  border-top-color: rgba(107, 142, 255, 0.4) !important;
+  border-bottom-color: rgba(107, 142, 255, 0.4) !important;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+  .separator {
+    height: 140px;
+  }
+  
+  .animatedText {
+    font-size: clamp(1.25rem, 3vw, 2.5rem);
+    padding-right: 4rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .separator {
+    height: 120px;
+  }
+  
+  .animatedText {
+    font-size: clamp(1rem, 2.5vw, 2rem);
+    letter-spacing: 0.05em;
+    padding-right: 3rem;
+  }
+}
+

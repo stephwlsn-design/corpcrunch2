@@ -1,0 +1,106 @@
+{
+  "header": {
+    "home": "الرئيسية",
+    "about": "حول",
+    "services": "الخدمات",
+    "products": "المنتجات",
+    "eMagazine": "المجلة الإلكترونية",
+    "events": "الأحداث",
+    "contact": "اتصل بنا",
+    "categories": "الفئات",
+    "signIn": "تسجيل الدخول",
+    "profile": "الملف الشخصي",
+    "searchPlaceholder": "البحث في المدونات والمقالات..."
+  },
+  "navigation": {
+    "technology": "التكنولوجيا",
+    "politics": "السياسة",
+    "retail": "التجارة",
+    "sportstech": "الرياضة التقنية",
+    "sustainability": "الاستدامة",
+    "telecom": "الاتصالات",
+    "automobile": "السيارات",
+    "fmcg": "سلع استهلاكية سريعة",
+    "finance": "المالية",
+    "science": "العلوم",
+    "magazine": "المجلة",
+    "loadingCategories": "جاري تحميل الفئات..."
+  },
+  "home": {
+    "trendingNews": "الأخبار الرائجة",
+    "popularPosts": "المشاركات الشائعة",
+    "editorChoice": "اختيار المحرر",
+    "featured": "مميز",
+    "recentVideoPost": "آخر منشور فيديو",
+    "moreVideoPost": "المزيد من منشورات الفيديو",
+    "moreFeaturedPost": "المزيد من المشاركات المميزة",
+    "storiesPost": "منشور القصص",
+    "popularStories": "القصص الشائعة",
+    "stories": "القصص",
+    "eMagazineLibrary": "مكتبة المجلات الإلكترونية",
+    "noPostsAvailable": "لا توجد مشاركات متاحة",
+    "checkBackLater": "يرجى العودة لاحقاً للحصول على محتوى جديد.",
+    "by": "بواسطة",
+    "readMore": "اقرأ المزيد",
+    "views": "المشاهدات",
+    "shares": "المشاركات"
+  },
+  "blog": {
+    "shareNow": "شارك الآن",
+    "relatedArticles": "مقالات ذات صلة",
+    "tags": "العلامات",
+    "category": "الفئة",
+    "author": "المؤلف",
+    "publishedOn": "نُشر في"
+  },
+  "sidebar": {
+    "trendingCategory": "الفئة الرائجة",
+    "featuredPost": "المشاركة المميزة",
+    "instagramFeeds": "خلاصات إنستغرام",
+    "followMe": "تابعني",
+    "journalist": "صحفي"
+  },
+  "footer": {
+    "about": "حول",
+    "services": "الخدمات",
+    "products": "المنتجات",
+    "eMagazine": "المجلة الإلكترونية",
+    "events": "الأحداث",
+    "contact": "اتصل بنا",
+    "signIn": "تسجيل الدخول",
+    "profile": "الملف الشخصي",
+    "requestArticle": "طلب مقال",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsCondition": "الشروط والأحكام",
+    "cancellationRefund": "الإلغاء والاسترداد",
+    "allRightsReserved": "جميع الحقوق محفوظة.",
+    "contactUs": "اتصل بنا",
+    "advertise": "الإعلان",
+    "store": "المتجر",
+    "subscribe": "اشترك",
+    "emailPlaceholder": "عنوان البريد الإلكتروني",
+    "viewAllPosts": "عرض جميع المشاركات",
+    "latestNews": "آخر الأخبار",
+    "trending": "رائج",
+    "featured": "مميز"
+  },
+  "newsletter": {
+    "title": "اشترك في نشرتنا الإخبارية",
+    "subTitle": "النشرة الإخبارية",
+    "emailPlaceholder": "عنوان البريد الإلكتروني",
+    "agreeText": "أوافق على جمع وتخزين البيانات المقدمة.",
+    "subscribe": "اشترك",
+    "subscribing": "جاري الاشتراك..."
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ ما",
+    "tryAgain": "حاول مرة أخرى",
+    "backToHome": "العودة إلى الرئيسية",
+    "result": "نتيجة",
+    "results": "",
+    "found": "تم العثور عليها",
+    "noArticlesFound": "لم يتم العثور على مقالات"
+  }
+}
+

@@ -1,0 +1,106 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "products": "Products",
+    "eMagazine": "E-Magazine",
+    "events": "Events",
+    "contact": "Contact",
+    "categories": "Categories",
+    "signIn": "Sign In",
+    "profile": "Profile",
+    "searchPlaceholder": "Search blogs & articles..."
+  },
+  "navigation": {
+    "technology": "Technology",
+    "politics": "Politics",
+    "retail": "Retail",
+    "sportstech": "SportsTech",
+    "sustainability": "Sustainability",
+    "telecom": "Telecom",
+    "automobile": "Automobile",
+    "fmcg": "FMCG",
+    "finance": "Finance",
+    "science": "Science",
+    "magazine": "Magazine",
+    "loadingCategories": "Loading categories..."
+  },
+  "home": {
+    "trendingNews": "Trending News",
+    "popularPosts": "Popular Posts",
+    "editorChoice": "Editor Choice",
+    "featured": "Featured",
+    "recentVideoPost": "Recent Video Post",
+    "moreVideoPost": "More Video Post",
+    "moreFeaturedPost": "More Featured Post",
+    "storiesPost": "Stories Post",
+    "popularStories": "Popular Stories",
+    "stories": "Stories",
+    "eMagazineLibrary": "E-Magazine Library",
+    "noPostsAvailable": "No posts available",
+    "checkBackLater": "Please check back later for new content.",
+    "by": "By",
+    "readMore": "Read More",
+    "views": "Views",
+    "shares": "Shares"
+  },
+  "blog": {
+    "shareNow": "Share Now",
+    "relatedArticles": "Related Articles",
+    "tags": "Tags",
+    "category": "Category",
+    "author": "Author",
+    "publishedOn": "Published on"
+  },
+  "sidebar": {
+    "trendingCategory": "Trending Category",
+    "featuredPost": "Featured Post",
+    "instagramFeeds": "Instagram Feeds",
+    "followMe": "Follow Me",
+    "journalist": "JOURNALIST"
+  },
+  "footer": {
+    "about": "About",
+    "services": "Services",
+    "products": "Products",
+    "eMagazine": "E-Magazine",
+    "events": "Events",
+    "contact": "Contact",
+    "signIn": "Sign In",
+    "profile": "Profile",
+    "requestArticle": "Request Article",
+    "privacyPolicy": "Privacy Policy",
+    "termsCondition": "Terms & Condition",
+    "cancellationRefund": "Cancellation & Refund",
+    "allRightsReserved": "All rights reserved.",
+    "contactUs": "Contact Us",
+    "advertise": "Advertise",
+    "store": "Store",
+    "subscribe": "Subscribe",
+    "emailPlaceholder": "Email address",
+    "viewAllPosts": "View All Posts",
+    "latestNews": "Latest News",
+    "trending": "Trending",
+    "featured": "Featured"
+  },
+  "newsletter": {
+    "title": "Subscribe to our Newsletter",
+    "subTitle": "NEWSLETTER",
+    "emailPlaceholder": "Email address",
+    "agreeText": "I agree that my submitted data is being collected and stored.",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing..."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "tryAgain": "Try again",
+    "backToHome": "Back to Home",
+    "result": "result",
+    "results": "s",
+    "found": "found",
+    "noArticlesFound": "No articles found"
+  }
+}
+

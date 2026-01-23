@@ -1,0 +1,219 @@
+.aboutHero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--tg-common-color-gray, #f5f5f5);
+  padding: 0;
+  overflow: hidden;
+}
+
+.dark-theme .aboutHero {
+  background-color: var(--tg-dark-color-1, #181818);
+}
+
+
+/* Vertical Text - Left */
+.verticalTextLeft {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 2rem 1rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.verticalTextTop {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dark-theme .verticalTextTop {
+  color: #4d6feb;
+}
+
+/* Vertical Text - Right */
+.verticalTextRight {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 2rem 1rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.verticalTextRight .verticalTextTop {
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+  transform: rotate(0deg);
+  color: #111;
+}
+
+
+/* Main Content */
+.heroContent {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 4rem 2rem;
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Gradient Bar */
+.gradientBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(90deg, #ff2092 0%, #7effb2 100%);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  gap: 1rem;
+  grid-column: 1;
+  align-self: flex-start;
+  justify-self: flex-start;
+}
+
+.aboutText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: 0.05em;
+}
+
+.gridIcon {
+  margin-left: auto;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Main Message */
+.mainMessage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  position: relative;
+  grid-column: 2;
+  align-self: center;
+  justify-self: flex-end;
+}
+
+.messageLine {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  justify-content: flex-end;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.messageText {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 800;
+  color: #111;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  display: inline-block;
+}
+
+.messageTextMediumGray {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 800;
+  color: #999999;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  display: inline-block;
+}
+
+.messageTextDarkGray {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 800;
+  color: #666666;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  display: inline-block;
+}
+
+.dark-theme .messageText {
+  color: #fff;
+}
+
+.dark-theme .messageTextMediumGray {
+  color: #aeaeae;
+}
+
+.dark-theme .messageTextDarkGray {
+  color: #888888;
+}
+
+/* Mobile First - Responsive */
+@media (max-width: 767.98px) {
+  .verticalTextLeft,
+  .verticalTextRight {
+    display: none;
+  }
+
+  .heroContent {
+    padding: 2rem 1rem;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .gradientBar {
+    max-width: 100%;
+    padding: 0.75rem 1rem;
+    grid-column: 1;
+  }
+
+  .mainMessage {
+    grid-column: 1;
+    gap: 0.25rem;
+  }
+
+  .aboutText {
+    font-size: 1rem;
+  }
+
+  .messageText,
+  .messageTextMediumGray,
+  .messageTextDarkGray {
+    font-size: clamp(2rem, 12vw, 3.5rem);
+  }
+}
+
+
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .verticalTextLeft,
+  .verticalTextRight {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .verticalTextTop {
+    font-size: 0.75rem;
+  }
+}
+

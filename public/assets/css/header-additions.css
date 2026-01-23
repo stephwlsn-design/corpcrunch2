@@ -1,0 +1,72 @@
+/* Additional Header Styles for Language Selector and Theme Toggle */
+
+/* Language and Theme Toggle in Header */
+.header__language-toggle,
+.header__theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Mobile Navigation Hamburger Toggle (Right Side) */
+.header__mobile-nav-toggle {
+  display: none !important;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+@media (max-width: 767.98px) {
+  .header__mobile-nav-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Ensure it's hidden on desktop */
+@media (min-width: 768px) {
+  .header__mobile-nav-toggle {
+    display: none !important;
+  }
+}
+
+/* Mobile Menu Controls */
+.mobile-menu-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.mobile-control-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dark Mode Support for Mobile Menu Controls */
+.dark-theme .mobile-menu-controls {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  .header__language-toggle,
+  .header__theme-toggle {
+    display: none;
+  }
+  
+  .mobile-menu-controls {
+    display: flex;
+  }
+}
+
+@media (min-width: 992px) {
+  .mobile-menu-controls {
+    display: none;
+  }
+}
+

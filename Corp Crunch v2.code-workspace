@@ -1,0 +1,37 @@
+{
+	"folders": [
+		{
+			"path": "corp-crunch-main/2.Documentation"
+		},
+		{
+			"path": "corp-crunch-main/3.Licensing"
+		},
+		{
+			"path": "corp-crunch-main/api"
+		},
+		{
+			"path": "corp-crunch-main/components"
+		},
+		{
+			"path": "corp-crunch-main/config"
+		},
+		{
+			"path": "corp-crunch-main/hooks"
+		},
+		{
+			"path": "corp-crunch-main/lib"
+		},
+		{
+			"path": "corp-crunch-main/pages"
+		},
+		{
+			"path": "corp-crunch-main/public"
+		},
+		{
+			"path": "corp-crunch-main/sarsa-nextjs-v2.0-unzip-first"
+		},
+		{
+			"path": "corp-crunch-main/util"
+		}
+	]
+}

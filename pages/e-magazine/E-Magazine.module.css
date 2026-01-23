@@ -1,0 +1,509 @@
+/* E-Magazine Page Styles */
+.magazinePage {
+  min-height: 100vh;
+  background: #f0f0f2;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero Section */
+.heroSection {
+  position: relative;
+  padding: 100px 0 80px;
+  background: linear-gradient(180deg, #f0f0f2 0%, #ffffff 100%);
+  border-top: 2px solid #2551e7;
+  border-bottom: 2px solid #2551e7;
+  overflow: hidden;
+}
+
+.heroContent {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ff2092 0%, #2551e7 100%);
+  box-shadow: 0 14px 40px rgba(37, 81, 231, 0.2);
+  margin-bottom: 28px;
+  min-width: 210px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.heroBadge.fadeInUp {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.badgeText {
+  font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  margin-right: 12px;
+}
+
+.badgeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 3px;
+}
+
+.badgeDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.heroTitle {
+  font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+  font-size: clamp(3.2rem, 6vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  margin: 0 0 24px;
+  color: #111111;
+}
+
+.heroTitle span {
+  display: block;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.heroTitle.fadeInUp span {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.heroTitle.fadeInUp span:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.heroTitle.fadeInUp span:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.heroTitle.fadeInUp span:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+.heroDescription {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #333;
+  max-width: 600px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s;
+}
+
+.heroDescription.fadeInUp {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Animated Shapes */
+.heroShapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.shape1,
+.shape2,
+.shape3 {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+  animation: float 20s ease-in-out infinite;
+}
+
+.shape1 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #ff2092 0%, #ff4da6 100%);
+  top: 10%;
+  right: 10%;
+  animation-delay: 0s;
+}
+
+.shape2 {
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, #2551e7 0%, #4d6feb 100%);
+  bottom: 20%;
+  right: 20%;
+  animation-delay: 6s;
+}
+
+.shape3 {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, #ff2092 0%, #a855f7 100%);
+  top: 50%;
+  left: 5%;
+  animation-delay: 12s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(30px, -30px) rotate(120deg);
+  }
+  66% {
+    transform: translate(-20px, 20px) rotate(240deg);
+  }
+}
+
+/* Magazines Section */
+.magazinesSection {
+  padding: 80px 0;
+  background: #f0f0f2;
+}
+
+/* Filter Section */
+.filterSection {
+  margin-bottom: 40px;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filterButton {
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: 2px solid #e5e7eb;
+  background: #ffffff;
+  color: #666;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filterButton:hover {
+  border-color: #2551e7;
+  color: #2551e7;
+  transform: translateY(-2px);
+}
+
+.filterButtonActive {
+  background: linear-gradient(135deg, #ff2092 0%, #2551e7 100%);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(37, 81, 231, 0.3);
+}
+
+/* Magazines Grid */
+.magazinesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 991.98px) {
+  .magazinesGrid {
+    display: none; /* Hide grid on mobile, show carousel instead */
+  }
+}
+
+.magazineCard {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cardWrapper {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cardWrapper:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Custom DownloadCard Styles */
+.cardWrapper :global(.trending__post) {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.cardWrapper :global(.trending__post img) {
+  border-radius: 12px;
+  transition: transform 0.4s ease;
+}
+
+.cardWrapper:hover :global(.trending__post img) {
+  transform: scale(1.05);
+}
+
+.cardWrapper :global(.trending__post-content) {
+  padding: 16px 0 0;
+}
+
+.cardWrapper :global(.trending__post-content h6) {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.cardWrapper :global(.cta-actions) {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.cardWrapper :global(.cta-read),
+.cardWrapper :global(.cta-download) {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.cardWrapper :global(.cta-read:hover) {
+  color: #2551e7;
+  transform: translateX(4px);
+}
+
+.cardWrapper :global(.cta-download:hover) {
+  color: #ff2092;
+  transform: translateY(-2px);
+}
+
+/* Carousel (Mobile/Tablet) */
+.magazinesCarousel {
+  display: none;
+}
+
+@media (max-width: 991.98px) {
+  .magazinesCarousel {
+    display: block;
+    margin-top: 40px;
+  }
+}
+
+.swiperContainer {
+  padding-bottom: 50px;
+}
+
+.carouselCard {
+  height: 100%;
+}
+
+.carouselCard :global(.trending__post) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Empty State */
+.emptyState {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.emptyIcon {
+  font-size: 64px;
+  margin-bottom: 24px;
+  opacity: 0.5;
+}
+
+.emptyTitle {
+  font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 12px;
+}
+
+.emptyDescription {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+/* CTA Section */
+.ctaSection {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #ff2092 0%, #2551e7 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.ctaContent {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.ctaTitle {
+  font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 20px;
+  line-height: 1.2;
+}
+
+.ctaDescription {
+  font-size: 18px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 40px;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  border-radius: 50px;
+  background: #ffffff;
+  color: #ff2092;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.ctaButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+  .heroSection {
+    padding: 80px 0 60px;
+  }
+
+  .heroTitle {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .magazinesSection {
+    padding: 60px 0;
+  }
+
+  .magazinesGrid {
+    gap: 24px;
+  }
+
+  .ctaSection {
+    padding: 60px 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .heroSection {
+    padding: 60px 0 40px;
+  }
+
+  .heroBadge {
+    min-width: 180px;
+    padding: 12px 16px;
+  }
+
+  .badgeText {
+    font-size: 18px;
+  }
+
+  .heroDescription {
+    font-size: 16px;
+  }
+
+  .magazinesSection {
+    padding: 40px 0;
+  }
+
+  .filterButtons {
+    gap: 8px;
+  }
+
+  .filterButton {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .ctaSection {
+    padding: 50px 0;
+  }
+
+  .ctaTitle {
+    font-size: 2rem;
+  }
+
+  .ctaDescription {
+    font-size: 16px;
+  }
+}
+
+/* Fade In Animation */
+.fadeInUp {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+

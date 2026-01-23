@@ -1,0 +1,134 @@
+/* Base hamburger icon - highest priority to override global button styles */
+.hamburgerIcon,
+button.hamburgerIcon,
+button[type="button"].hamburgerIcon {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  border: none !important;
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+  cursor: pointer;
+  padding: 0 !important;
+  gap: 5px !important;
+  flex-shrink: 0;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+  box-shadow: none !important;
+  /* Override any global button color */
+  color: inherit !important;
+}
+
+/* Override any root CSS button styles - including if it has .btn class */
+.hamburgerIcon,
+.hamburgerIcon:hover,
+.hamburgerIcon:focus,
+.hamburgerIcon:active,
+.hamburgerIcon:visited,
+.hamburgerIcon.btn,
+.hamburgerIcon.btn:hover,
+.hamburgerIcon.btn:focus,
+.hamburgerIcon.btn:active,
+.hamburgerIcon.btn:visited,
+button.hamburgerIcon,
+button.hamburgerIcon:hover,
+button.hamburgerIcon:focus,
+button.hamburgerIcon:active,
+button.hamburgerIcon:visited,
+button[type="button"].hamburgerIcon,
+button[type="button"].hamburgerIcon:hover,
+button[type="button"].hamburgerIcon:focus,
+button[type="button"].hamburgerIcon:active,
+/* Override ::before and ::after pseudo-elements */
+.hamburgerIcon::before,
+.hamburgerIcon::after,
+.hamburgerIcon.btn::before,
+.hamburgerIcon.btn::after {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  content: none !important;
+}
+
+.hamburgerIcon:hover {
+  opacity: 0.8;
+}
+
+.hamburgerIcon span {
+  display: block !important;
+  height: 2px !important;
+  background-color: var(--tg-theme-secondary, #2551e7) !important;
+  border-radius: 0 !important;
+  transition: opacity 0.3s ease;
+  box-shadow: none !important;
+}
+
+/* First line - smaller */
+.line1 {
+  width: 16px;
+}
+
+/* Middle line - larger */
+.line2 {
+  width: 20px;
+}
+
+/* Third line - smaller */
+.line3 {
+  width: 16px;
+}
+
+.hamburgerIcon:hover span {
+  opacity: 0.7;
+}
+
+/* Dark theme */
+:global(.dark-theme) .hamburgerIcon {
+  background-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+:global(.dark-theme) .hamburgerIcon span {
+  background-color: var(--tg-theme-secondary, #2551e7) !important;
+  box-shadow: none !important;
+}
+
+:global(.dark-theme) .hamburgerIcon:hover span {
+  opacity: 0.8;
+  background-color: var(--tg-theme-secondary, #2551e7) !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 991.98px) {
+  .hamburgerIcon {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+
+/* Additional overrides with local class for CSS Modules compatibility */
+.hamburgerIcon button,
+button.hamburgerIcon,
+.hamburgerIcon.btn,
+.header__hamburger-btn,
+.header__sidebar-toggle,
+.header__hamburger-btn.hamburgerIcon,
+.header__sidebar-toggle.hamburgerIcon {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+

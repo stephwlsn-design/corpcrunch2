@@ -1,0 +1,179 @@
+/* RTL (Right-to-Left) Support for Arabic */
+
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .container,
+[dir="rtl"] .row {
+  direction: rtl;
+}
+
+/* Flip flex direction for RTL */
+[dir="rtl"] .d-flex {
+  flex-direction: row-reverse;
+}
+
+/* Adjust text alignment */
+[dir="rtl"] .text-left {
+  text-align: right !important;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left !important;
+}
+
+[dir="rtl"] .text-start {
+  text-align: right !important;
+}
+
+[dir="rtl"] .text-end {
+  text-align: left !important;
+}
+
+/* Adjust margins and padding */
+[dir="rtl"] .ml-auto {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-right: 0 !important;
+  margin-left: auto !important;
+}
+
+[dir="rtl"] .pl-0 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+[dir="rtl"] .pr-0 {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Adjust float */
+[dir="rtl"] .float-left {
+  float: right !important;
+}
+
+[dir="rtl"] .float-right {
+  float: left !important;
+}
+
+/* Adjust navigation menu */
+[dir="rtl"] .navigation {
+  direction: rtl;
+}
+
+[dir="rtl"] .navigation li {
+  margin-left: 0;
+  margin-right: 20px;
+}
+
+/* Adjust language selector dropdown */
+[dir="rtl"] .language-dropdown {
+  right: auto;
+  left: 0;
+}
+
+/* Adjust search bar */
+[dir="rtl"] .header-search input {
+  padding: 8px 15px 8px 40px;
+}
+
+[dir="rtl"] .header-search .fa-search {
+  left: 15px;
+  right: auto;
+}
+
+/* Adjust social media icons */
+[dir="rtl"] .tgAbout-social {
+  direction: rtl;
+}
+
+/* Adjust footer */
+[dir="rtl"] .footer__social ul {
+  direction: rtl;
+}
+
+/* Adjust breadcrumb */
+[dir="rtl"] .breadcrumb {
+  direction: rtl;
+}
+
+/* Adjust forms */
+[dir="rtl"] input[type="email"],
+[dir="rtl"] input[type="text"],
+[dir="rtl"] textarea {
+  text-align: right;
+}
+
+/* Adjust buttons */
+[dir="rtl"] .btn i.fa-long-arrow-right::before {
+  content: "\f060"; /* left arrow */
+}
+
+[dir="rtl"] .btn i.fa-long-arrow-left::before {
+  content: "\f061"; /* right arrow */
+}
+
+/* Adjust modal */
+[dir="rtl"] .modal-content {
+  direction: rtl;
+}
+
+/* Adjust dropdown menus */
+[dir="rtl"] .dropdown-menu {
+  right: auto;
+  left: 0;
+  text-align: right;
+}
+
+/* Adjust list items */
+[dir="rtl"] ul.list-wrap {
+  direction: rtl;
+}
+
+[dir="rtl"] ul.list-wrap li {
+  padding-right: 0;
+  padding-left: 20px;
+}
+
+/* Adjust icons in buttons */
+[dir="rtl"] .btn i {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+[dir="rtl"] .btn i:first-child {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+/* Adjust section titles */
+[dir="rtl"] .section__read-more {
+  text-align: left;
+}
+
+/* Adjust post cards */
+[dir="rtl"] .post-card {
+  direction: rtl;
+}
+
+/* Adjust sidebar */
+[dir="rtl"] .blog-sidebar {
+  direction: rtl;
+}
+
+/* Adjust category list */
+[dir="rtl"] .widget_categories ul li {
+  padding-right: 0;
+  padding-left: 15px;
+}
+
+[dir="rtl"] .widget_categories ul li .float-right {
+  float: left;
+}
+

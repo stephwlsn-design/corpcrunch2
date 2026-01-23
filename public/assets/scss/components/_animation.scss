@@ -1,0 +1,108 @@
+@use '../utils' as *;
+
+/*=============================
+    00. Keyframe Animation
+===============================*/
+@-webkit-keyframes lineMove {
+    from {
+		background-position: left;
+	}
+	to {
+		background-position: right;
+	}
+}
+
+@keyframes lineMove {
+    from {
+        background-position: left;
+    }
+
+    to {
+        background-position: right;
+    }
+}
+
+/* Slide Up Animation */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@-webkit-keyframes slideUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+    }
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@-webkit-keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+    }
+}
+
+/* Animated Card Class */
+.animate-on-scroll {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+    
+    &.delay-1 {
+        animation-delay: 0.1s;
+    }
+    
+    &.delay-2 {
+        animation-delay: 0.2s;
+    }
+    
+    &.delay-3 {
+        animation-delay: 0.3s;
+    }
+    
+    &.delay-4 {
+        animation-delay: 0.4s;
+    }
+    
+    &.delay-5 {
+        animation-delay: 0.5s;
+    }
+}
+
+/* Intersection Observer - Animate when in view */
+.animate-on-view {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    
+    &.animated {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

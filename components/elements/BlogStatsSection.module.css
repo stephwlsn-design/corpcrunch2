@@ -1,0 +1,232 @@
+ .sectionWrapper {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  box-sizing: border-box;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0f172a;
+  margin-bottom: 32px;
+}
+
+.eyebrowDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background-color: #1d4ed8;
+}
+
+.title {
+  font-size: clamp(36px, 5vw, 52px);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #020617;
+  margin: 0 0 16px 0;
+}
+
+.quote {
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #4b5563;
+  max-width: 760px;
+  margin: 0 auto 48px auto;
+}
+
+.content {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #111827;
+  max-width: 820px;
+  margin: 0 auto 64px auto;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 40px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.statLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.statDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background-color: #1d4ed8;
+}
+
+.statNumber {
+  font-size: clamp(48px, 6vw, 72px);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  color: #1d4ed8; /* Blue stats */
+}
+
+.quoteAuthor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 24px 0 40px 0;
+}
+
+.quoteAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.quoteAuthorMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.quoteAuthorName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.quoteAuthorTitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.extraRow {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  text-align: left;
+}
+
+.extraBlock h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.extraBlock p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+:global(.dark-theme) .sectionWrapper {
+  background-color: #020617;
+}
+
+:global(.dark-theme) .eyebrowDot {
+  background-color: #60a5fa;
+}
+
+:global(.dark-theme) .eyebrow {
+  color: #cbd5e1;
+}
+
+:global(.dark-theme) .title {
+  color: #f9fafb;
+}
+
+:global(.dark-theme) .content {
+  color: #cbd5e1;
+}
+
+:global(.dark-theme) .quoteAvatar {
+  background: #60a5fa;
+  color: #0f172a;
+}
+
+:global(.dark-theme) .quoteAuthorName {
+  color: #e5e7eb;
+}
+
+:global(.dark-theme) .quoteAuthorTitle {
+  color: #94a3b8;
+}
+
+:global(.dark-theme) .statDot {
+  background-color: #60a5fa;
+}
+
+:global(.dark-theme) .statLabel {
+  color: #94a3b8;
+}
+
+:global(.dark-theme) .statNumber {
+  color: #60a5fa;
+}
+
+:global(.dark-theme) .extraBlock h3 {
+  color: #60a5fa;
+}
+
+:global(.dark-theme) .extraBlock p {
+  color: #94a3b8;
+}
+
+@media (max-width: 900px) {
+  .sectionWrapper {
+    padding: 64px 20px;
+    min-height: 90vh;
+  }
+
+  .statsRow {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .extraRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+

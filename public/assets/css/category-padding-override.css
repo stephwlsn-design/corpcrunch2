@@ -1,0 +1,150 @@
+/* Category Content Padding Override */
+/* This file ensures consistent padding on both sides for all category content */
+
+.tgbanner__post.big-post .tgbanner__content {
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+}
+
+.tgbanner__post.small-post .tgbanner__content {
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+}
+
+.tgbanner__content-meta {
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+}
+
+.tgbanner__post .title {
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+}
+
+.tgbanner__post.big-post .title {
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+}
+
+.tgbanner__post.small-post .title {
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+}
+
+.featured-content-modern {
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+}
+
+.featured-meta-row {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.stories-post__content {
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+}
+
+.featured__content {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+}
+
+.trending__post-content {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+}
+
+/* Category page specific padding */
+.latest__post-content {
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+}
+
+.latest__post-content .tgbanner__content-meta {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.latest__post-content .title {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.latest__post-content p {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.latest__post-content .latest__post-read-more {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+    .latest__post-content {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+    .tgbanner__post.big-post .tgbanner__content {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+    
+    .tgbanner__content-meta {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+    
+    .tgbanner__post .title {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+    
+    .featured-content-modern {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+    
+    .stories-post__content {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .tgbanner__post.big-post .tgbanner__content {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+    
+    .tgbanner__content-meta {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+    
+    .tgbanner__post .title {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+    
+    .featured-content-modern {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+    
+    .stories-post__content {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+    
+    .latest__post-content {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+}
+
+
+

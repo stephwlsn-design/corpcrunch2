@@ -1,0 +1,106 @@
+{
+  "header": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "services": "Servicios",
+    "products": "Productos",
+    "eMagazine": "E-Revista",
+    "events": "Eventos",
+    "contact": "Contacto",
+    "categories": "Categorías",
+    "signIn": "Iniciar sesión",
+    "profile": "Perfil",
+    "searchPlaceholder": "Buscar blogs y artículos..."
+  },
+  "navigation": {
+    "technology": "Tecnología",
+    "politics": "Política",
+    "retail": "Retail",
+    "sportstech": "SportsTech",
+    "sustainability": "Sostenibilidad",
+    "telecom": "Telecomunicaciones",
+    "automobile": "Automóvil",
+    "fmcg": "FMCG",
+    "finance": "Finanzas",
+    "science": "Ciencia",
+    "magazine": "Revista",
+    "loadingCategories": "Cargando categorías..."
+  },
+  "home": {
+    "trendingNews": "Noticias Trending",
+    "popularPosts": "Publicaciones Populares",
+    "editorChoice": "Elección del Editor",
+    "featured": "Destacado",
+    "recentVideoPost": "Publicación de Video Reciente",
+    "moreVideoPost": "Más Publicaciones de Video",
+    "moreFeaturedPost": "Más Publicaciones Destacadas",
+    "storiesPost": "Publicación de Historias",
+    "popularStories": "Historias Populares",
+    "stories": "Historias",
+    "eMagazineLibrary": "Biblioteca de E-Revistas",
+    "noPostsAvailable": "No hay publicaciones disponibles",
+    "checkBackLater": "Por favor, vuelva más tarde para ver nuevo contenido.",
+    "by": "Por",
+    "readMore": "Leer Más",
+    "views": "Vistas",
+    "shares": "Compartidos"
+  },
+  "blog": {
+    "shareNow": "Compartir Ahora",
+    "relatedArticles": "Artículos Relacionados",
+    "tags": "Etiquetas",
+    "category": "Categoría",
+    "author": "Autor",
+    "publishedOn": "Publicado el"
+  },
+  "sidebar": {
+    "trendingCategory": "Categoría Trending",
+    "featuredPost": "Publicación Destacada",
+    "instagramFeeds": "Feeds de Instagram",
+    "followMe": "Sígueme",
+    "journalist": "PERIODISTA"
+  },
+  "footer": {
+    "about": "Acerca de",
+    "services": "Servicios",
+    "products": "Productos",
+    "eMagazine": "E-Revista",
+    "events": "Eventos",
+    "contact": "Contacto",
+    "signIn": "Iniciar sesión",
+    "profile": "Perfil",
+    "requestArticle": "Solicitar Artículo",
+    "privacyPolicy": "Política de Privacidad",
+    "termsCondition": "Términos y Condiciones",
+    "cancellationRefund": "Cancelación y Reembolso",
+    "allRightsReserved": "Todos los derechos reservados.",
+    "contactUs": "Contáctanos",
+    "advertise": "Anunciar",
+    "store": "Tienda",
+    "subscribe": "Suscribirse",
+    "emailPlaceholder": "Dirección de correo electrónico",
+    "viewAllPosts": "Ver Todas las Publicaciones",
+    "latestNews": "Últimas Noticias",
+    "trending": "Trending",
+    "featured": "Destacado"
+  },
+  "newsletter": {
+    "title": "Suscríbete a nuestro boletín",
+    "subTitle": "BOLETÍN",
+    "emailPlaceholder": "Dirección de correo electrónico",
+    "agreeText": "Acepto que mis datos enviados sean recopilados y almacenados.",
+    "subscribe": "Suscribirse",
+    "subscribing": "Suscribiendo..."
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "tryAgain": "Intentar de nuevo",
+    "backToHome": "Volver al Inicio",
+    "result": "resultado",
+    "results": "s",
+    "found": "encontrado",
+    "noArticlesFound": "No se encontraron artículos"
+  }
+}
+
