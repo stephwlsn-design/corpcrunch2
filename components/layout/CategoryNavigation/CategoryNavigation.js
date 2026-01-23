@@ -7,19 +7,26 @@ import "react-loading-skeleton/dist/skeleton.css";
 import styles from "./CategoryNavigation.module.css";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const CategoryNavigation = () => {
+const CategoryNavigation = ({ categories: serverCategories = null }) => {
   const router = useRouter();
   const { t } = useLanguage();
+  
+  // Use server-provided categories if available, otherwise fallback to client fetch
   const {
     refetch: fetchCategories,
-    data: categories,
+    data: clientCategories,
     isLoading: isLoadingCategory,
-  } = useCategory({ enabled: false });
+  } = useCategory({ enabled: !serverCategories }); // Only fetch if server didn't provide
+  
+  const categories = serverCategories || clientCategories || [];
   const [isVisible, setIsVisible] = useState(true);
 
+  // Only fetch on client if server didn't provide categories
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    if (!serverCategories) {
+      fetchCategories();
+    }
+  }, [serverCategories, fetchCategories]);
 
   // Hide on signin routes
   const onSigninRoute =

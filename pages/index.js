@@ -33,6 +33,7 @@ import {
   TwitterShareButton,
 } from "react-share";
 import { getPosts } from "@/lib/postService";
+import { getCategories } from "@/lib/categoryService";
 
 export const getServerSideProps = async ({ req }) => {
   try {
@@ -44,7 +45,14 @@ export const getServerSideProps = async ({ req }) => {
       location,
     });
 
-    const postsData = await getPosts({ lang: language, location });
+    // Fetch posts and categories in parallel
+    const [postsData, categories] = await Promise.all([
+      getPosts({ lang: language, location }),
+      getCategories().catch(err => {
+        console.error("[getServerSideProps] Failed to fetch categories:", err.message);
+        return [];
+      }),
+    ]);
 
     return {
       props: {
@@ -60,6 +68,7 @@ export const getServerSideProps = async ({ req }) => {
           ),
           videoPosts: JSON.parse(JSON.stringify(postsData.videoPosts || [])),
         },
+        categories: JSON.parse(JSON.stringify(categories || [])),
       },
     };
   } catch (error) {
@@ -71,6 +80,7 @@ export const getServerSideProps = async ({ req }) => {
           trendingPosts: [],
           videoPosts: [],
         },
+        categories: [],
       },
     };
   }
@@ -302,7 +312,7 @@ const _unused_getServerSideProps = async ({ req }) => {
   }
 };
 
-export default function Home({ posts }) {
+export default function Home({ posts, categories = [] }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -412,7 +422,7 @@ export default function Home({ posts }) {
 
   return (
     // <AuthAndSubscriptionProtected needSubscription={true}>
-    <Layout headerStyle={1} headTitle={"CorpCrunch"}>
+    <Layout headerStyle={1} headTitle={"CorpCrunch"} categories={categories}>
       <style jsx global>{`
         .featured-article-modern {
           position: relative;

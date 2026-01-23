@@ -5,15 +5,16 @@ export default function Automobile({ categoryDetails }) {
   return <CategoryPage categoryDetails={categoryDetails} />;
 }
 
-export const getServerSideProps = async ({ req }) => {
+export async function getStaticProps() {
   try {
-    const language = req?.cookies?.language || "en";
+    const language = "en";
     const categoryDetails = await getCategoryByName("Automobile", language);
     
     return { 
       props: { 
         categoryDetails: JSON.parse(JSON.stringify(categoryDetails)) 
-      } 
+      },
+      revalidate: 60,
     };
   } catch (error) {
     console.error("Error fetching Automobile:", error);
@@ -27,6 +28,7 @@ export const getServerSideProps = async ({ req }) => {
           newestPosts: [],
         },
       },
+      revalidate: 60,
     };
   }
-};
+}

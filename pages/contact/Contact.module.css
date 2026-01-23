@@ -1,0 +1,71 @@
+/* Contact Page Logo Styles */
+.contactPageLogo {
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.contactPageLogo a {
+  display: inline-block;
+  text-decoration: none;
+  position: relative;
+}
+
+.contactPageLogo :global(.logo-dark),
+.contactPageLogo :global(.logo-light) {
+  width: auto !important;
+  height: auto !important;
+  max-width: 380px;
+  max-height: 124px;
+  object-fit: contain;
+  display: block;
+  transition: opacity 0.3s ease;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Light theme - show black logo, hide white logo */
+.contactPageLogo :global(.logo-dark) {
+  display: block !important;
+}
+
+.contactPageLogo :global(.logo-light) {
+  display: none !important;
+}
+
+/* Dark theme - show white logo, hide black logo */
+:global(.dark-theme) .contactPageLogo :global(.logo-dark) {
+  display: none !important;
+}
+
+:global(.dark-theme) .contactPageLogo :global(.logo-light) {
+  display: block !important;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+  .contactPageLogo {
+    text-align: center;
+    margin-bottom: 30px;
+    justify-content: center;
+  }
+  
+  .contactPageLogo :global(.logo-dark),
+  .contactPageLogo :global(.logo-light) {
+    max-width: 300px;
+    max-height: 98px;
+    width: auto !important;
+    height: auto !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .contactPageLogo :global(.logo-dark),
+  .contactPageLogo :global(.logo-light) {
+    max-width: 250px;
+    max-height: 82px;
+    width: auto !important;
+    height: auto !important;
+  }
+}
+

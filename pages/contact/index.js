@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Layout from "@/components/layout/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import axiosInstance from "@/util/axiosInstance";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
+import styles from "./Contact.module.css";
 
 export default function ContactPage() {
   const { t } = useLanguage();
@@ -65,12 +67,30 @@ export default function ContactPage() {
             <div className="contact-page__info">
               <div className="contact-page__info-content">
                 {/* Logo */}
-                <div className="contact-page__logo">
-                  <Link href="/">
-                    <span className="contact-logo-text">
-                      <span className="logo-brackets">&lt;&gt;</span>
-                      <span className="logo-text">CorpCrunch</span>
-                    </span>
+                <div className={`contact-page__logo ${styles.contactPageLogo}`}>
+                  <Link href="/" scroll={true} aria-label="Go to homepage">
+                    <Image
+                      src="/assets/img/logo/Corp Crunch Black Logo.png"
+                      alt="CorpCrunch"
+                      width={380}
+                      height={124}
+                      className="logo-dark"
+                      priority
+                      quality={100}
+                      unoptimized
+                      style={{ width: 'auto', height: 'auto', maxWidth: '380px', maxHeight: '124px' }}
+                    />
+                    <Image
+                      src="/assets/img/logo/Corp Crunch White Logo.png"
+                      alt="CorpCrunch"
+                      width={380}
+                      height={124}
+                      className="logo-light"
+                      priority
+                      quality={100}
+                      unoptimized
+                      style={{ width: 'auto', height: 'auto', maxWidth: '380px', maxHeight: '124px' }}
+                    />
                   </Link>
                 </div>
                 

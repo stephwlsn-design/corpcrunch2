@@ -169,6 +169,24 @@ body.dark-theme {
   display: block !important;
 }
 
+/* Contact Page Logo - Light theme (default) */
+.contact-page__logo .logo-dark {
+  display: block !important;
+}
+
+.contact-page__logo .logo-light {
+  display: none !important;
+}
+
+/* Contact Page Logo - Dark theme */
+.dark-theme .contact-page__logo .logo-dark {
+  display: none !important;
+}
+
+.dark-theme .contact-page__logo .logo-light {
+  display: block !important;
+}
+
 /* Modern Header */
 .tg-header__area {
   background: #ffffff;

@@ -5,15 +5,16 @@ export default function Technology({ categoryDetails }) {
   return <CategoryPage categoryDetails={categoryDetails} />;
 }
 
-export const getServerSideProps = async ({ req }) => {
+export async function getStaticProps() {
   try {
-    const language = req?.cookies?.language || "en";
+    const language = "en"; // Default language for ISR
     const categoryDetails = await getCategoryByName("Technology", language);
     
     return { 
       props: { 
         categoryDetails: JSON.parse(JSON.stringify(categoryDetails)) 
-      } 
+      },
+      revalidate: 60, // Rebuild page every 60 seconds
     };
   } catch (error) {
     console.error("Error fetching Technology:", error);
@@ -27,6 +28,7 @@ export const getServerSideProps = async ({ req }) => {
           newestPosts: [],
         },
       },
+      revalidate: 60,
     };
   }
-};
+}

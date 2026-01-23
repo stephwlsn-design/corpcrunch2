@@ -13,6 +13,7 @@ const Layout = ({
   breadcrumbPostTitle,
   headTitle,
   seo = {},
+  categories = null, // Accept categories as prop to avoid duplicate fetches
 }) => {
   const handleMobileMenuOpen = () => {
     if (typeof window !== 'undefined') {
@@ -75,7 +76,7 @@ const Layout = ({
       />
 
       {/* Category Navigation Bar - Below Header */}
-      <CategoryNavigation />
+      <CategoryNavigation categories={categories} />
 
       <main className="main modern-layout">
         <div className="container">

@@ -190,9 +190,7 @@ export default function ProductsPage() {
                 <a href="/contact" className={styles.ctaButtonPrimary}>
                   Get in Touch
                 </a>
-                <a href="/services" className={styles.ctaButtonSecondary}>
-                  View Services
-                </a>
+               
               </div>
             </div>
           </div>

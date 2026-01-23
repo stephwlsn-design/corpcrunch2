@@ -5,9 +5,17 @@ export default function DynamicCategoryPage({ categoryDetails }) {
   return <CategoryPage categoryDetails={categoryDetails} />;
 }
 
-export const getServerSideProps = async ({ params, req }) => {
+export async function getStaticPaths() {
+  // For ISR, we'll use fallback: 'blocking' to generate pages on-demand
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+}
+
+export async function getStaticProps({ params }) {
   try {
-    const language = req?.cookies?.language || 'en';
+    const language = "en";
     const categoryDetails = await getCategoryById(params.categoryId, language);
     
     // If category not found, return 404
@@ -18,10 +26,11 @@ export const getServerSideProps = async ({ params, req }) => {
     return { 
       props: { 
         categoryDetails: JSON.parse(JSON.stringify(categoryDetails))
-      } 
+      },
+      revalidate: 60,
     };
   } catch (error) {
     console.error("Error fetching category:", error);
     return { notFound: true };
   }
-};
+}

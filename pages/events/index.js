@@ -1,4 +1,5 @@
 import Layout from "@/components/layout/Layout";
+import { getCategories } from "@/lib/categoryService";
 import Head from "next/head";
 import Link from "next/link";
 import { formatDate } from "@/util";
@@ -12,7 +13,7 @@ import "swiper/css/pagination";
 import styles from "@/components/events/EventsPage.module.css";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
 
-export default function EventsPage({ events, eventsPosts }) {
+export default function EventsPage({ events, eventsPosts, categories = [] }) {
   const allEvents = events || [];
   const [animatedMetrics, setAnimatedMetrics] = useState({
     total: 0,
@@ -150,7 +151,7 @@ export default function EventsPage({ events, eventsPosts }) {
   };
 
   return (
-    <Layout>
+    <Layout categories={categories}>
       <Head>
         <title>Events | CorpCrunch</title>
         <meta name="description" content="Corp Crunch Events and Intellectual Properties" />
@@ -316,132 +317,53 @@ export default function EventsPage({ events, eventsPosts }) {
   );
 }
 
-export const getServerSideProps = async ({ req }) => {
+import { getEvents } from "@/lib/eventService";
+
+export async function getStaticProps() {
   try {
-    const language = req?.cookies?.language || 'en';
-    const protocol = req?.headers?.['x-forwarded-proto'] || 'http';
-    const host = req?.headers?.host || 'localhost:3000';
-    const baseUrl = `${protocol}://${host}`;
+    const language = 'en';
     
-    // Fetch events from API
-    let events = [];
-    try {
-      const eventsUrl = `${baseUrl}/api/events?lang=${language}`;
-      const eventsResponse = await fetch(eventsUrl);
-      if (eventsResponse.ok) {
-        const eventsData = await eventsResponse.json();
-        events = eventsData?.events || [];
-      }
-    } catch (eventsError) {
-      console.error("Error fetching events:", eventsError);
+    // Direct MongoDB query - no API double-hop
+    let events = await getEvents({ lang: language, limit: 100 });
+    
+    // If no events from DB, use empty array (no mock data for production)
+    if (!events || events.length === 0) {
+      events = [];
     }
     
-    // If no events from API, use mock events
-    if (events.length === 0) {
-      events = [
-        {
-          _id: '1',
-          slug: 'tech-innovation-summit-2024',
-          title: 'Tech Innovation Summit 2024',
-          description: 'Join industry leaders for the biggest tech event of the year. Experience groundbreaking innovations, network with pioneers, and discover the future of technology.',
-          image: '/assets/img/HeroEvent/1.png',
-          type: 'image',
-          date: 'March 15, 2024',
-          location: 'San Francisco, CA',
-          eventDate: new Date('2024-03-15').toISOString(),
-          status: 'upcoming',
-          featured: true,
-          viewsCount: 1250,
-          content: 'Join us for the Tech Innovation Summit 2024, where industry leaders, innovators, and visionaries come together to explore the latest trends and breakthroughs in technology. This premier event features keynote speeches, panel discussions, networking opportunities, and hands-on workshops.',
-        },
-        {
-          _id: '2',
-          slug: 'digital-transformation-conference',
-          title: 'Digital Transformation Conference',
-          description: 'Explore the future of digital business and innovation. Learn from experts about cloud computing, AI integration, and the evolution of modern enterprises.',
-          image: '/assets/img/HeroEvent/2.png',
-          type: 'image',
-          date: 'April 20, 2024',
-          location: 'New York, NY',
-          eventDate: new Date('2024-04-20').toISOString(),
-          status: 'upcoming',
-          featured: true,
-          viewsCount: 980,
-          content: 'Discover how digital transformation is reshaping businesses across industries. Learn from experts about cloud computing, AI integration, data analytics, and the future of work in the digital age.',
-        },
-        {
-          _id: '3',
-          slug: 'startup-pitch-competition',
-          title: 'Startup Pitch Competition',
-          description: 'Watch emerging startups present their groundbreaking ideas to investors and industry experts. Witness innovation in action.',
-          image: '/assets/img/HeroEvent/3.png',
-          type: 'image',
-          date: 'May 10, 2024',
-          location: 'Austin, TX',
-          eventDate: new Date('2024-05-10').toISOString(),
-          status: 'upcoming',
-          featured: true,
-          viewsCount: 756,
-          content: 'Witness the next generation of entrepreneurs pitch their innovative ideas to a panel of investors and industry experts. This competition showcases cutting-edge startups and provides a platform for funding and mentorship.',
-        },
-        {
-          _id: '4',
-          slug: 'ai-machine-learning-workshop',
-          title: 'AI & Machine Learning Workshop',
-          description: 'Hands-on workshop on cutting-edge AI technologies. Learn neural networks, deep learning, and practical AI applications.',
-          image: '/assets/img/HeroEvent/4.png',
-          type: 'image',
-          date: 'June 5, 2024',
-          location: 'Seattle, WA',
-          eventDate: new Date('2024-06-05').toISOString(),
-          status: 'upcoming',
-          featured: true,
-          viewsCount: 1420,
-          content: 'Get hands-on experience with the latest AI and machine learning tools and techniques. This intensive workshop covers neural networks, deep learning, natural language processing, and practical applications.',
-        },
-        {
-          _id: '5',
-          slug: 'corporate-innovation-forum',
-          title: 'Corporate Innovation Forum',
-          description: 'Networking and collaboration for corporate innovators. Discover strategies for driving innovation within large organizations.',
-          image: '/assets/img/HeroEvent/5.png',
-          type: 'image',
-          date: 'July 18, 2024',
-          location: 'Chicago, IL',
-          eventDate: new Date('2024-07-18').toISOString(),
-          status: 'upcoming',
-          featured: true,
-          viewsCount: 892,
-          content: 'Connect with corporate innovation leaders and explore strategies for driving innovation within large organizations. Learn about intrapreneurship, innovation labs, and building a culture of continuous improvement.',
-        },
-      ];
-    }
-    
-    // Fetch posts with "Events" category or tag
+    // Fetch posts with "Events" category or tag - using direct DB query
     let eventsPosts = [];
     try {
-      const postsUrl = `${baseUrl}/api/posts?lang=${language}`;
-      const response = await fetch(postsUrl);
-      if (response.ok) {
-        const postsData = await response.json();
-        const allPosts = postsData?.frontPagePosts || postsData?.trendingPosts || [];
-        eventsPosts = allPosts.filter(post => 
-          post.categoryId?.name?.toLowerCase().includes('event') ||
-          post.tags?.some(tag => tag.toLowerCase().includes('event'))
-        ) || [];
-      }
+      const { getPosts } = await import('@/lib/postService');
+      const postsData = await getPosts({ lang: language, limit: 50 });
+      const allPosts = postsData?.frontPagePosts || postsData?.trendingPosts || [];
+      eventsPosts = allPosts.filter(post => 
+        post.categoryId?.name?.toLowerCase().includes('event') ||
+        post.tags?.some(tag => tag.toLowerCase().includes('event'))
+      ) || [];
     } catch (postsError) {
       console.error("Error fetching events posts:", postsError);
     }
     
+    // Fetch categories for navigation
+    const categories = await getCategories().catch(err => {
+      console.error("Error fetching categories:", err);
+      return [];
+    });
+    
     return { 
       props: { 
         events: JSON.parse(JSON.stringify(events)),
-        eventsPosts: JSON.parse(JSON.stringify(eventsPosts))
-      } 
+        eventsPosts: JSON.parse(JSON.stringify(eventsPosts)),
+        categories: JSON.parse(JSON.stringify(categories)),
+      },
+      revalidate: 60, // Rebuild page every 60 seconds
     };
   } catch (error) {
-    console.error("Error in getServerSideProps:", error);
-    return { props: { events: [], eventsPosts: [] } };
+    console.error("Error in getStaticProps:", error);
+    return { 
+      props: { events: [], eventsPosts: [] },
+      revalidate: 60,
+    };
   }
-};
+}
