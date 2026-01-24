@@ -1,8 +1,4 @@
-# MongoDB Setup Instructions
 
-## Database Credentials
-- **Username**: stefsoulwlsn_db_user
-- **Password**: 7QcZFG4VCSvys6ha
 
 ## Setup Steps
 
@@ -13,15 +9,13 @@ Create a file named `.env.local` with the following content:
 ```env
 # MongoDB Connection String
 # Replace <cluster-url> with your actual MongoDB Atlas cluster URL
-# Format: mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority
-MONGODB_URI=mongodb+srv://stefsoulwlsn_db_user:7QcZFG4VCSvys6ha@<cluster-url>/corpcrunch?retryWrites=true&w=majority
 
 # API URL - Points to local API routes
 NEXT_PUBLIC_API_URL=http://localhost:3001/api
 ```
 
 **Important**: Replace `<cluster-url>` with your actual MongoDB Atlas cluster URL. 
-Example: `cluster0.xxxxx.mongodb.net`
+
 
 ### 2. Install Dependencies
 
@@ -53,23 +47,7 @@ API routes are created in `pages/api/`:
 
 The frontend will automatically use the local API routes when `NEXT_PUBLIC_API_URL` points to `/api`.
 
-## MongoDB Atlas Setup
 
-If you're using MongoDB Atlas:
-
-1. Go to your MongoDB Atlas dashboard
-2. Click "Connect" on your cluster
-3. Choose "Connect your application"
-4. Copy the connection string
-5. Replace the username and password in the connection string:
-   - Username: `stefsoulwlsn_db_user`
-   - Password: `7QcZFG4VCSvys6ha`
-6. Replace `<database>` with `corpcrunch` or your preferred database name
-
-Example connection string:
-```
-mongodb+srv://stefsoulwlsn_db_user:7QcZFG4VCSvys6ha@cluster0.xxxxx.mongodb.net/corpcrunch?retryWrites=true&w=majority
-```
 
 ## Testing the Connection
 

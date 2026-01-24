@@ -26,22 +26,11 @@ You have two options for providing database connection strings:
 
 Set the environment variables before running the script:
 
-```bash
-export OLD_MONGODB_URI="mongodb+srv://username:password@old-cluster.mongodb.net/database?retryWrites=true&w=majority"
-export NEW_MONGODB_URI="mongodb+srv://username:password@new-cluster.mongodb.net/database?retryWrites=true&w=majority"
-```
 
 #### Option B: .env.local File
 
 Add the following to your `.env.local` file in the project root:
 
-```env
-# Old Database Connection String
-OLD_MONGODB_URI=mongodb+srv://username:password@old-cluster.mongodb.net/database?retryWrites=true&w=majority
-
-# New Database Connection String
-NEW_MONGODB_URI=mongodb+srv://username:password@new-cluster.mongodb.net/database?retryWrites=true&w=majority
-```
 
 **Note:** If you're currently using `MONGODB_URI` in your `.env.local`, the script will use that as the old database URI if `OLD_MONGODB_URI` is not set.
 
@@ -63,15 +52,8 @@ node scripts/migrate-database.js
 
 ### With Environment Variables
 
-```bash
-OLD_MONGODB_URI="mongodb+srv://..." NEW_MONGODB_URI="mongodb+srv://..." npm run migrate:db
-```
-
 Or:
 
-```bash
-OLD_MONGODB_URI="mongodb+srv://..." NEW_MONGODB_URI="mongodb+srv://..." node scripts/migrate-database.js
-```
 
 ## What Gets Migrated
 

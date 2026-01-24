@@ -6,16 +6,7 @@
 
 Add these connection strings to your `.env.local` file:
 
-```env
-# Old PostgreSQL database (from Vercel)
-OLD_POSTGRES_URI=postgres://corpcrunch:fsYeU6NF23UEcI04RVL05XKaso9Mm7@194.164.151.172:5432/corpcrunch-db
 
-# New MongoDB database
-NEW_MONGODB_URI=mongodb+srv://stefsoulwlsn_db_user:7QcZFG4VCSvys6ha@cluster0.qkqguav.mongodb.net/corpcrunch?retryWrites=true&w=majority
-
-# Current database (for the app to use)
-MONGODB_URI=mongodb+srv://stefsoulwlsn_db_user:7QcZFG4VCSvys6ha@cluster0.qkqguav.mongodb.net/corpcrunch?retryWrites=true&w=majority
-```
 
 ### Step 2: Run the Migration
 

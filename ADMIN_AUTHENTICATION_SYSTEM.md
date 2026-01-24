@@ -54,15 +54,7 @@ Token sent in Authorization header for future requests
 
 ### MongoDB Connection
 
-**Connection String Format:**
-```
-mongodb+srv://stefsoulwlsn_db_user:7QcZFG4VCSvys6ha@<cluster-url>/corpcrunch?retryWrites=true&w=majority
-```
 
-**Environment Variable:**
-```env
-MONGODB_URI=mongodb+srv://stefsoulwlsn_db_user:7QcZFG4VCSvys6ha@cluster0.qkqguav.mongodb.net/corpcrunch?retryWrites=true&w=majority
-```
 
 **Database Name:** `corpcrunch`
 

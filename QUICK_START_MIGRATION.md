@@ -27,19 +27,10 @@ If you haven't migrated yet, you need to:
 1. **Get your old database connection string**
    - This might be in your Vercel environment variables
    - Or from your old MongoDB Atlas cluster
-   - Format: `mongodb+srv://username:password@cluster.mongodb.net/database`
+   - Format:
 
 2. **Add both connection strings to `.env.local`:**
-   ```env
-   # Old database (where your data currently is)
-   OLD_MONGODB_URI=mongodb+srv://old-username:old-password@old-cluster.mongodb.net/old-database
-   
-   # New database (where you want the data)
-   NEW_MONGODB_URI=mongodb+srv://new-username:new-password@new-cluster.mongodb.net/new-database
-   
-   # Current database (for the app to use)
-   MONGODB_URI=mongodb+srv://new-username:new-password@new-cluster.mongodb.net/new-database
-   ```
+
 
 3. **Run the migration:**
    ```bash
@@ -55,9 +46,6 @@ If you haven't migrated yet, you need to:
 
 Make sure `.env.local` has:
 
-```env
-# MongoDB connection (required)
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority
 
 # API URL (for local development)
 NEXT_PUBLIC_API_URL=http://localhost:3001/api

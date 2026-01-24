@@ -28,9 +28,7 @@ This will show you:
 
 Make sure your `.env.local` file has the correct settings:
 
-```env
-# MongoDB Connection (required)
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority
+
 
 # API URL (should point to local API for development)
 NEXT_PUBLIC_API_URL=http://localhost:3001/api
@@ -45,13 +43,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3001/api
 If the verification shows no posts, you need to migrate the data:
 
 1. **Set both database connection strings in `.env.local`:**
-   ```env
-   # Old database (from Vercel/external source)
-   OLD_MONGODB_URI=mongodb+srv://old-connection-string
-   
-   # New database (MongoDB Atlas)
-   NEW_MONGODB_URI=mongodb+srv://new-connection-string
-   ```
+ 
 
 2. **Run the migration:**
    ```bash
