@@ -345,7 +345,49 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                       <p className={styles.cardDescription}>{card.description}</p>
                       
                       <div className={styles.cardActions}>
-                        <button className={styles.learnMoreBtn}>Learn more</button>
+                      <button 
+  className={styles.learnMoreBtn} 
+  style={{
+    background: card.isMiddle ? '#ffffff !important' : '#000000 !important',
+    color: card.isMiddle ? '#2551e7 !important' : '#ffffff !important',
+    border: card.isMiddle ? '1.5px solid #2551e7 !important' : '1.5px solid #ff0292 !important',
+    padding: '8px 18px !important',
+    borderRadius: '20px !important',
+    fontSize: '12px !important',
+    fontWeight: '800 !important',
+    cursor: 'pointer !important',
+    textTransform: 'uppercase !important',
+    letterSpacing: '1px !important',
+    transition: 'all 0.3s ease !important',
+    display: 'inline-block !important',
+    zIndex: 10,
+    position: 'relative !important'
+  }}
+  onMouseEnter={(e) => {
+    if (card.isMiddle) {
+      e.currentTarget.setAttribute('style', 
+        'background: #2551e7 !important; color: #ffffff !important; border: 2px solid #ff0292 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
+      );
+    } else {
+      e.currentTarget.setAttribute('style', 
+        'background: #ffffff !important; color: #000000 !important; border: 2px solid #ff0292 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
+      );
+    }
+  }}
+  onMouseLeave={(e) => {
+    if (card.isMiddle) {
+      e.currentTarget.setAttribute('style', 
+        'background: #ffffff !important; color: #2551e7 !important; border: 2px solid #ff0292 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
+      );
+    } else {
+      e.currentTarget.setAttribute('style', 
+        'background: #000000 !important; color: #ffffff !important; border: 2px solid #ff0292 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
+      );
+    }
+  }}
+>
+  Learn more
+</button>
                         <div className={styles.cardArrow}>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -361,8 +403,55 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
 
            
           </div>
+          
         </section>
+        <div className={styles.containerthreecards}>
+        <div className={styles.interactiveActionSection}>
+                <div className={styles.actionCardsGrid}>
+                  {/* Sponsorships Card */}
+                  <div className={`${styles.actionCard} ${styles.sponsorshipAction}`}>
+                    <div className={styles.actionCardContent}>
+                      <span className={styles.actionLabel}>Partnership</span>
+                      <h3>SPONSORSHIPS</h3>
+                      <p>Gain multi-year brand positioning and access to high-intent buyers with ROI potential up to 1200%.</p>
+                      <div className={styles.actionStats}>
+                        <div className={styles.aStat}><strong>$650K+</strong><span>ROI VALUE</span></div>
+                        <div className={styles.aStat}><strong>15M+</strong><span>IMPRESSIONS</span></div>
+                      </div>
+                    </div>
+                    <button className={styles.actionBtn}>Become a Partner</button>
+                  </div>
 
+                  {/* Exhibition Card */}
+                  <div className={`${styles.actionCard} ${styles.exhibitionAction}`}>
+                    <div className={styles.actionCardContent}>
+                      <span className={styles.actionLabel}>Showcase</span>
+                      <h3>EXHIBITION</h3>
+                      <p>Showcase groundbreaking AI technologies to 1,500+ global leaders and build enterprise portfolios.</p>
+                      <div className={styles.actionStats}>
+                        <div className={styles.aStat}><strong>$1.8M</strong><span>GAIN POTENTIAL</span></div>
+                        <div className={styles.aStat}><strong>1.2K+</strong><span>LEADS</span></div>
+                      </div>
+                    </div>
+                    <button className={styles.actionBtn}>Book a Booth</button>
+                  </div>
+
+                  {/* Tickets Card */}
+                  <div className={`${styles.actionCard} ${styles.ticketsAction}`}>
+                    <div className={styles.actionCardContent}>
+                      <span className={styles.actionLabel}>Attendance</span>
+                      <h3>DELEGATE TICKETS</h3>
+                      <p>Join the elite circle of AI founders, investors, and policymakers for the Global AI Trilogy.</p>
+                      <div className={styles.actionStats}>
+                        <div className={styles.aStat}><strong>1.5K+</strong><span>ATTENDEES</span></div>
+                        <div className={styles.aStat}><strong>VIP</strong><span>ACCESS</span></div>
+                      </div>
+                    </div>
+                    <button className={styles.actionBtn} onClick={() => setShowTicketModal(true)}>Get Tickets</button>
+                  </div>
+                </div>
+              </div> 
+              </div>
         {/* Event Details Section - Shows below cards when card is selected */}
         {selectedCard !== null && yearCards[selectedCard]?.event && (
           <section id="event-details-section" className={styles.eventDetailsSection}>
@@ -390,8 +479,8 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                     )}
                     <div className={styles.humanRoboImage}>
                       <Image
-                        src="/assets/img/bg/HumanRobo.png"
-                        alt="Human Robot"
+                        src="/assets/img/bg/AIX event page.png"
+                        alt="AIX event page"
                         fill
                         className={styles.humanRoboImg}
                       />
@@ -529,7 +618,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                     <div className={styles.tierPriceArea}>
                       <div className={styles.priceLabel}>Investment</div>
                       <div className={styles.mainPrice}>$299,999</div>
-                      <div className={styles.roiBadge}>ROI $650,000+</div>
+                      <div className={styles.PrimaryroiBadge}>ROI $650,000+</div>
                     </div>
                     <div className={styles.tierDeliverables}>
                       <h4>CORE DELIVERABLES</h4>
@@ -803,7 +892,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
               <div className={styles.interactiveActionSection}>
                 <div className={styles.actionCardsGrid}>
                   {/* Sponsorships Card */}
-                  <div className={`${styles.actionCard} ${styles.sponsorshipAction}`}>
+                  {/* <div className={`${styles.actionCard} ${styles.sponsorshipAction}`}>
                     <div className={styles.actionCardContent}>
                       <span className={styles.actionLabel}>Partnership</span>
                       <h3>SPONSORSHIPS</h3>
@@ -814,10 +903,10 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                       </div>
                     </div>
                     <button className={styles.actionBtn}>Become a Partner</button>
-                  </div>
+                  </div> */}
 
                   {/* Exhibition Card */}
-                  <div className={`${styles.actionCard} ${styles.exhibitionAction}`}>
+                  {/* <div className={`${styles.actionCard} ${styles.exhibitionAction}`}>
                     <div className={styles.actionCardContent}>
                       <span className={styles.actionLabel}>Showcase</span>
                       <h3>EXHIBITION</h3>
@@ -828,10 +917,10 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                       </div>
                     </div>
                     <button className={styles.actionBtn}>Book a Booth</button>
-                  </div>
+                  </div> */}
 
                   {/* Tickets Card */}
-                  <div className={`${styles.actionCard} ${styles.ticketsAction}`}>
+                  {/* <div className={`${styles.actionCard} ${styles.ticketsAction}`}>
                     <div className={styles.actionCardContent}>
                       <span className={styles.actionLabel}>Attendance</span>
                       <h3>DELEGATE TICKETS</h3>
@@ -842,7 +931,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                       </div>
                     </div>
                     <button className={styles.actionBtn} onClick={() => setShowTicketModal(true)}>Get Tickets</button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               </div>

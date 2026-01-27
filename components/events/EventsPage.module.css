@@ -32,6 +32,15 @@
   box-sizing: border-box;
 }
 
+.containerthreecards {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0;
+  margin-bottom: 0;
+}
 /* Year Cards Section - Instagram Story Style */
 .yearCardsSection {
   padding: 60px 20px;
@@ -271,21 +280,22 @@
   margin-top: 15px;
 }
 
-.learnMoreBtn {
+.learnMoreBtn  {
   background: #000000 !important;
   color: #ffffff !important;
   border: 1.5px solid #ffffff !important;
-  padding: 8px 18px;
-  border-radius: 25px;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  display: inline-block;
-  z-index: 10;
-  position: relative;
+  padding: 8px 18px !important;
+  border-radius: 25px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  transition: all 0.3s ease !important;
+  display: inline-block !important;
+  z-index: 10 !important;
+  position: relative !important;
+  border-radius: 20px !important;
 }
 
 .learnMoreBtn:hover {
@@ -294,7 +304,7 @@
   border-color: #000000 !important;
 }
 
-.middleCard .learnMoreBtn {
+.middleCard .learnMore  {
   background: #000000 !important;
   color: #ffffff !important;
   border: 1.5px solid #ffffff !important;
@@ -1790,8 +1800,8 @@
   position: absolute;
   top: 30px;
   right: -10px;
-  background: #3b82f6;
-  color: #fff;
+  background: #ffffff;
+  color: #2551e7;
   padding: 6px 20px;
   font-size: 10px;
   font-weight: 900;
@@ -1865,9 +1875,20 @@
 .headlineCard .mainPrice { color: #fff; }
 :global(.dark-theme) .mainPrice { color: #fff; }
 
+.PrimaryroiBadge {
+  display: inline-block;
+  background: #ffffff;
+  color: #2551e7;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-top: 15px;
+}
+
 .roiBadge {
   display: inline-block;
-  background: #3b82f6;
+  background: #2551e7;
   color: #fff;
   padding: 6px 14px;
   border-radius: 100px;
@@ -2089,7 +2110,7 @@
   font-weight: 800;
   letter-spacing: 6px;
     margin-bottom: 30px;
-  color: #60a5fa;
+  color: #ffffff;
   text-transform: uppercase;
 }
 

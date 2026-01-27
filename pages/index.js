@@ -10,7 +10,6 @@ import ExploreOurWorks from "@/components/elements/ExploreOurWorks";
 import EditorChoice from "@/components/elements/EditorChoice";
 import ModernHero from "@/components/elements/ModernHero";
 import WhyUsSection from "@/components/elements/WhyUsSection";
-import AnimatedTextSeparator from "@/components/elements/AnimatedTextSeparator";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
 import useGlobalState from "@/hooks/useGlobalState";
 import usePosts from "@/hooks/usePosts";
@@ -584,6 +583,16 @@ export default function Home({ posts, categories = [] }) {
         :global(.featured-category-tag) {
           margin-left: 0;
         }
+        
+        /* Blue Horizontal Line Separator */
+        .blue-separator {
+          width: 100%;
+          height: 5px;
+          background-color: #1a3fc4;
+          margin: 60px 0;
+          border: none;
+        }
+        
         @media (max-width: 991.98px) {
           .featured-content-modern {
             padding-left: 30px !important;
@@ -612,6 +621,9 @@ export default function Home({ posts, categories = [] }) {
           :global(.trending__post-content) {
             padding-left: 25px !important;
             padding-right: 25px !important;
+          }
+          .blue-separator {
+            margin: 40px 0;
           }
         }
         @media (max-width: 767.98px) {
@@ -642,6 +654,9 @@ export default function Home({ posts, categories = [] }) {
           :global(.trending__post-content) {
             padding-left: 15px !important;
             padding-right: 15px !important;
+          }
+          .blue-separator {
+            margin: 30px 0;
           }
         }
         @media (max-width: 991.98px) {
@@ -718,8 +733,8 @@ export default function Home({ posts, categories = [] }) {
           }}
         />
 
-        {/* Animated Text Separator - All 3 texts in sequence */}
-        <AnimatedTextSeparator />
+        {/* Blue Horizontal Line Separator */}
+        <hr className="blue-separator" />
 
         {/* Why Us Section with Trending News */}
         <WhyUsSection
@@ -727,21 +742,21 @@ export default function Home({ posts, categories = [] }) {
           isLoading={isLoading || isTranslatingTrending}
         />
 
-        {/* Animated Text Separator */}
-        <AnimatedTextSeparator />
+        {/* Blue Horizontal Line Separator */}
+        <hr className="blue-separator" />
 
         <EditorChoice isLoading={isLoading} />
 
-        {/* Animated Text Separator */}
-        <AnimatedTextSeparator />
+        {/* Blue Horizontal Line Separator */}
+        <hr className="blue-separator" />
 
         <PopularStories
           posts={translatedTrendingPosts || safePosts?.trendingPosts || []}
           isLoading={isLoading || isTranslatingTrending}
         />
 
-        {/* Animated Text Separator */}
-        <AnimatedTextSeparator />
+        {/* Blue Horizontal Line Separator */}
+        <hr className="blue-separator" />
 
         <ExploreOurWorks />
 

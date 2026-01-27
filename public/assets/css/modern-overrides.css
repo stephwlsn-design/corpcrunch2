@@ -710,21 +710,22 @@ a:hover {
 }
 
 /* Global Button Override */
-button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]),
-.btn:not(.btn-secondary):not(.btn-outline),
-[type="submit"]:not([class*="secondary"]),
-.tg-btn,
-.btn-eleven {
+/* Global Button Override - Updated with better exclusions */
+button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):not([class*="learnMore"]):not([class*="Learn"]):not([class*="actionBtn"]):not([class*="ticketModal"]):not([class*="stripe"]),
+.btn:not(.btn-secondary):not(.btn-outline):not([class*="learnMore"]):not([class*="Learn"]),
+[type="submit"]:not([class*="secondary"]):not([class*="learnMore"]),
+.tg-btn:not([class*="learnMore"]),
+.btn-eleven:not([class*="learnMore"]) {
   background-color: var(--tg-theme-secondary, #2551e7) !important;
   color: #ffffff !important;
   border-color: var(--tg-theme-secondary, #2551e7) !important;
 }
 
-button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):hover,
-.btn:not(.btn-secondary):not(.btn-outline):hover,
-[type="submit"]:not([class*="secondary"]):hover,
-.tg-btn:hover,
-.btn-eleven:hover {
+button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):not([class*="learnMore"]):not([class*="Learn"]):not([class*="actionBtn"]):not([class*="ticketModal"]):not([class*="stripe"]):hover,
+.btn:not(.btn-secondary):not(.btn-outline):not([class*="learnMore"]):not([class*="Learn"]):hover,
+[type="submit"]:not([class*="secondary"]):not([class*="learnMore"]):hover,
+.tg-btn:not([class*="learnMore"]):hover,
+.btn-eleven:not([class*="learnMore"]):hover {
   background-color: var(--tg-theme-secondary-dark, #1a3fc4) !important;
   border-color: var(--tg-theme-secondary-dark, #1a3fc4) !important;
   color: #ffffff !important;
@@ -799,4 +800,54 @@ button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not(
   flex: 0 0 auto !important;
   flex-shrink: 0 !important;
   margin-left: 0 !important;
+}
+
+
+/* Events Page Button Override - Must be at the end of file */
+[class*="Events_learnMoreBtn"],
+[class*="Events_"] button[class*="learnMore"],
+[class*="events_learnMoreBtn"],
+[class*="events_"] button[class*="learnMore"] {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #ffffff !important;
+}
+
+[class*="Events_learnMoreBtn"]:hover,
+[class*="Events_"] button[class*="learnMore"]:hover,
+[class*="events_learnMoreBtn"]:hover,
+[class*="events_"] button[class*="learnMore"]:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+[class*="Events_middleCard"] [class*="learnMore"],
+[class*="events_middleCard"] [class*="learnMore"] {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #ffffff !important;
+}
+
+[class*="Events_middleCard"] [class*="learnMore"]:hover,
+[class*="events_middleCard"] [class*="learnMore"]:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Custom Button Override - Must be last */
+button[data-custom-button="true"] {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #ffffff !important;
+  padding: 8px 18px !important;
+  border-radius: 20px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+button[data-custom-button="true"]:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
 }
