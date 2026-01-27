@@ -106,8 +106,8 @@
 .videoStackContainer {
   position: relative;
   width: 100%;
-  opacity: 0.3;
-  transform: translateX(-80px) scale(0.95);
+  opacity: 0.85; /* Increased from 0.3 to make second card clearly visible */
+  transform: translateX(-40px) scale(0.97); /* Less dramatic transform */
   transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -164,8 +164,8 @@
 /* Content Section */
 .contentSection {
   padding: 30px 0;
-  opacity: 0.3;
-  transform: translateX(80px) scale(0.95);
+  opacity: 0.85; /* Increased from 0.3 to make second card clearly visible */
+  transform: translateX(40px) scale(0.97); /* Less dramatic transform */
   transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s;
 }
 
