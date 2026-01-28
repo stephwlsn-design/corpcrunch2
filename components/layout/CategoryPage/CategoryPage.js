@@ -172,16 +172,6 @@ export default function CategoryPage({ categoryDetails }) {
                         {quotePost?.quoteText || `${categoryName} is evolving rapidly. Explore our curated insights on the future of this industry.`}
                       </p>
                     </div>
-                    <div className={styles.quoteIllustration}>
-                      <Image 
-                        src="/assets/img/bg/banner_bg.jpg" 
-                        alt="Illustration" 
-                        width={100} 
-                        height={100} 
-                        style={{ objectFit: 'contain' }}
-                        onError={(e) => { e.target.style.display = 'none'; }}
-                      />
-                    </div>
                   </div>
                 </div>
 

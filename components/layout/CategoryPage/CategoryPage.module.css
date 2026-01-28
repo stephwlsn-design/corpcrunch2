@@ -101,12 +101,14 @@
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 25px;
+  color: #ffffff;
 }
 
 .heroText {
   font-size: 16px;
   opacity: 0.8;
   line-height: 1.6;
+  color: #ffffff;
 }
 
 .introContent {

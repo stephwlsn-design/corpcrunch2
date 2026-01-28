@@ -35,6 +35,23 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
       }, 100);
     }
   };
+
+  // NEW: Handle "Become a Partner" button click
+  const handleBecomePartner = () => {
+    // First, ensure a card is selected (default to first card if none selected)
+    if (selectedCard === null) {
+      setSelectedCard(0);
+    }
+    
+    // Wait for the section to render, then scroll to partnerships
+    setTimeout(() => {
+      const partnershipsSection = document.getElementById('strategic-partnerships-section');
+      if (partnershipsSection) {
+        partnershipsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, selectedCard === null ? 200 : 100); // Longer delay if we need to render the section first
+  };
+
   const [animatedMetrics, setAnimatedMetrics] = useState({
     total: 0,
     views: 0,
@@ -348,9 +365,9 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                       <button 
   className={styles.learnMoreBtn} 
   style={{
-    background: card.isMiddle ? '#ffffff !important' : '#000000 !important',
-    color: card.isMiddle ? '#2551e7 !important' : '#ffffff !important',
-    border: card.isMiddle ? '1.5px solid #2551e7 !important' : '1.5px solid #ff0292 !important',
+    background: card.isMiddle ? '#ffffff !important' : '#ffffff !important',
+    color: card.isMiddle ? '#2551e7 !important' : '#2551e7 !important',
+    border: card.isMiddle ? '1.5px solid #2551e7 !important' : '1.5px solid #2551e7 !important',
     padding: '8px 18px !important',
     borderRadius: '20px !important',
     fontSize: '12px !important',
@@ -366,22 +383,22 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
   onMouseEnter={(e) => {
     if (card.isMiddle) {
       e.currentTarget.setAttribute('style', 
-        'background: #2551e7 !important; color: #ffffff !important; border: 2px solid #ff0292 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
+        'background: #2551e7 !important; color: #ffffff!important; border: 2px solid #ffffff !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
       );
     } else {
       e.currentTarget.setAttribute('style', 
-        'background: #ffffff !important; color: #000000 !important; border: 2px solid #ff0292 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
+        'background: #ffffff !important; color: #2551e7 !important; border: 2px solid #2551e7 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
       );
     }
   }}
   onMouseLeave={(e) => {
     if (card.isMiddle) {
       e.currentTarget.setAttribute('style', 
-        'background: #ffffff !important; color: #2551e7 !important; border: 2px solid #ff0292 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
+        'background: #2551e7 !important; color: #ffffff !important; border: 2px solid #ffffff !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
       );
     } else {
       e.currentTarget.setAttribute('style', 
-        'background: #000000 !important; color: #ffffff !important; border: 2px solid #ff0292 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
+        'background: #ffffff !important; color: #2551e7 !important; border: 2px solid #2551e7 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
       );
     }
   }}
@@ -406,7 +423,9 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
           
         </section>
         <div className={styles.containerthreecards}>
+        <h1 style={{textAlign: 'center', fontSize: '40px', fontWeight: '900', fontFamily: 'Urbanist'}}>Be a part of the event</h1>
         <div className={styles.interactiveActionSection}>
+          
                 <div className={styles.actionCardsGrid}>
                   {/* Sponsorships Card */}
                   <div className={`${styles.actionCard} ${styles.sponsorshipAction}`}>
@@ -419,7 +438,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                         <div className={styles.aStat}><strong>15M+</strong><span>IMPRESSIONS</span></div>
                       </div>
                     </div>
-                    <button className={styles.actionBtn}>Become a Partner</button>
+                    <button className={styles.actionBtn} onClick={handleBecomePartner}>Become a Partner</button>
                   </div>
 
                   {/* Exhibition Card */}
@@ -600,7 +619,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
               </div>
 
               {/* --- NEW STRATEGIC PARTNERSHIP ECOSYSTEM --- */}
-              <div className={styles.partnershipsMainSection}>
+              <div id="strategic-partnerships-section" className={styles.partnershipsMainSection}>
                 <div className={styles.partnershipHeader}>
                   <span className={styles.pSubHeading}>Investment Opportunities</span>
                   <h2 className={styles.pMainHeading}>STRATEGIC PARTNERSHIP TIERS</h2>
