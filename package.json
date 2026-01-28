@@ -19,7 +19,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.35.1",
     "axios": "^1.6.8",
-    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
     "braintree-web-drop-in": "^1.42.0",
     "critters": "^0.0.23",
     "drizzle-orm": "^0.44.2",
