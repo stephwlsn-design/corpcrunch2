@@ -20,15 +20,26 @@ export default async function handler(req, res) {
     }
   };
 
+  // Set CORS headers FIRST - before any other logic
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
   // Disable Next.js caching for this API route
-  if (!responseSent) {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+
+  // Handle OPTIONS preflight request
+  if (req.method === 'OPTIONS') {
+    return sendResponse(200, { success: true });
   }
 
+  // Only allow POST method
   if (req.method !== 'POST') {
-    return sendResponse(405, { success: false, message: 'Method not allowed' });
+    console.log('[API /admin/login] ❌ Method not allowed:', req.method);
+    return sendResponse(405, { success: false, message: 'Method not allowed. Only POST is supported.' });
   }
 
   try {
@@ -49,9 +60,20 @@ export default async function handler(req, res) {
 
     // Validate input
     if (!email || !password) {
+      console.log('[API /admin/login] ❌ Missing email or password');
       return sendResponse(400, {
         success: false,
         message: 'Email and password are required',
+      });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      console.log('[API /admin/login] ❌ Invalid email format:', email);
+      return sendResponse(400, {
+        success: false,
+        message: 'Invalid email format',
       });
     }
 
@@ -71,7 +93,7 @@ export default async function handler(req, res) {
       console.log('[API /admin/login] ❌ Admin account deactivated:', email);
       return sendResponse(403, {
         success: false,
-        message: 'Admin account is deactivated',
+        message: 'Admin account is deactivated. Please contact support.',
       });
     }
 
@@ -91,10 +113,10 @@ export default async function handler(req, res) {
       {
         id: admin._id.toString(),
         email: admin.email,
-        role: admin.role,
+        role: admin.role || 'admin',
       },
       JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: '7d' } // Changed from 24h to 7d for better UX
     );
 
     console.log('[API /admin/login] ✅ Login successful for:', email);
@@ -107,16 +129,35 @@ export default async function handler(req, res) {
         id: admin._id.toString(),
         email: admin.email,
         name: admin.name,
-        role: admin.role,
+        firstName: admin.firstName,
+        lastName: admin.lastName,
+        role: admin.role || 'admin',
       },
     });
   } catch (error) {
     console.error('[API /admin/login] ❌ Error:', error);
+    
+    // Handle specific MongoDB errors
+    if (error.name === 'MongooseError' || error.name === 'MongoError') {
+      return sendResponse(503, {
+        success: false,
+        message: 'Database connection error. Please try again later.',
+      });
+    }
+
+    // Handle JWT errors
+    if (error.name === 'JsonWebTokenError') {
+      return sendResponse(500, {
+        success: false,
+        message: 'Token generation error. Please try again.',
+      });
+    }
+
+    // Generic error response
     return sendResponse(500, {
       success: false,
-      message: 'Internal server error',
+      message: 'Internal server error. Please try again later.',
       error: process.env.NODE_ENV === 'development' ? error.message : undefined,
     });
   }
 }
-

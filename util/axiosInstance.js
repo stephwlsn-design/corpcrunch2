@@ -2,6 +2,9 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001') + "/api",
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 axiosInstance.interceptors.request.use((config) => {
@@ -10,7 +13,8 @@ axiosInstance.interceptors.request.use((config) => {
     // Try adminToken first, then fallback to token
     const token = localStorage.getItem("adminToken") || localStorage.getItem("token");
     if (token) {
-      config.headers.Authorization = token;
+      // FIXED: Add "Bearer " prefix if not already present
+      config.headers.Authorization = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
     }
   }
 
