@@ -338,7 +338,7 @@ export default function BlogDetails({ postsDetails }) {
               subtitle={heroSubtitle}
               mediaUrl={heroMediaUrl}
               mediaType={isVideo ? "video" : "image"}
-              journalistImage="/assets/img/others/about_me.png"
+              journalistImage="/assets/img/others/Mike_Evans.png"
               journalistName={authorName}
               publishedDate={postsDetails?.publishedAt ? formatDate(postsDetails.publishedAt) : null}
             />

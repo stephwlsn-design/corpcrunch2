@@ -1,10 +1,9 @@
-import HeaderTop from "@/components/elements/HeaderTop";
 import React from "react";
-
+import Layout from "@/components/layout/Layout";
 function TermsOfService() {
   return (
-    <div className="container d-flex flex-column min-vh-100 justify-content-between  align-items-center">
-      <HeaderTop />
+    <Layout>
+      <div className="container d-flex flex-column min-vh-100 justify-content-between  align-items-center">
 
       <div className="content w-75 mt-4">
         <h1 className="mb-4">Corp Crunch Terms of Service</h1>
@@ -157,6 +156,7 @@ function TermsOfService() {
         </p>
       </div>
     </div>
+    </Layout>
   );
 }
 

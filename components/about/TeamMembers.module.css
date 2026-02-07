@@ -1,0 +1,152 @@
+.teamSection {
+    padding: 100px 2rem;
+    background-color: var(--tg-common-color-gray, #f5f5f5);
+  }
+  
+  :global(.dark-theme) .teamSection {
+    background-color: var(--tg-dark-color-1, #181818);
+  }
+  
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  
+  .sectionHeader {
+    margin-bottom: 50px;
+  }
+  
+  .label {
+    display: inline-block;
+    padding: 6px 20px;
+    border: 1px solid #111;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    color: #111;
+  }
+  
+  :global(.dark-theme) .label {
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+  
+  .title {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 800;
+    color: #111;
+    margin: 0;
+  }
+  
+  :global(.dark-theme) .title {
+    color: #fff;
+  }
+  
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  
+  /* Blue Card Style */
+  .blueCard {
+    background-color: var(--tg-theme-secondary, #2551e7);
+    border-radius: 24px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #ffffff;
+  }
+  
+  .blueTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #ffffff;
+  }
+  
+  .blueRole {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+    color: #ffffff;
+  }
+  
+  .blueDesc {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    color: #ffffff;
+  }
+  
+  /* Member Card */
+  .memberCard {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    height: 400px;
+  }
+  
+  .imageWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+  }
+  
+  .memberImage {
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter 0.5s ease;
+  }
+  
+  .memberCard:hover .memberImage {
+    filter: grayscale(0%);
+  }
+  
+  .nameText {
+    color: #ffffff;
+  }
+  
+  .RoleText {
+    color: #ffffff;
+  }
+  
+  /* Name Overlay */
+  .nameOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 30px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+  }
+  
+  .nameOverlay h4 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  
+  .nameOverlay span {
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .memberCard {
+      height: 350px;
+    }
+  }

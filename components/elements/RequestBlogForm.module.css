@@ -158,7 +158,7 @@
 .formSelect:focus,
 .formTextarea:focus {
   outline: none;
-  border-color: #ff0292;
+  border-color: #2551e7;
   box-shadow: 0 0 0 4px rgba(255, 2, 146, 0.1);
   background: #ffffff;
 }
@@ -166,7 +166,7 @@
 :global(.dark-theme) .formInput:focus,
 :global(.dark-theme) .formSelect:focus,
 :global(.dark-theme) .formTextarea:focus {
-  border-color: #ff0292;
+  border-color: #2551e7;
   box-shadow: 0 0 0 4px rgba(255, 2, 146, 0.15);
   background: #0f172a;
 }
@@ -203,7 +203,7 @@
 }
 
 .errorMessage {
-  color: #ef4444;
+  color: #2551e7;
   font-size: 13px;
   margin-top: 6px;
   display: flex;
@@ -238,7 +238,7 @@
 .submitButton {
   width: 100%;
   padding: 16px 32px;
-  background: linear-gradient(135deg, #ff0292 0%, #e00282 100%);
+  background: #2551e7;
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -246,7 +246,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 20px rgba(255, 2, 146, 0.3);
+  box-shadow: 0 8px 20px rgba(37, 81, 231, 0.3);
   margin-top: 32px;
   letter-spacing: 0.3px;
   display: flex;
@@ -257,8 +257,8 @@
 
 .submitButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(255, 2, 146, 0.4);
-  background: linear-gradient(135deg, #ff1fa3 0%, #ff0292 100%);
+  box-shadow: 0 12px 28px rgba(37, 81, 231, 0.4);
+  background: #2551e7;
 }
 
 .submitButton:active:not(:disabled) {

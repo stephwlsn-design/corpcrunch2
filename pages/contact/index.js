@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Layout from "@/components/layout/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
-import axiosInstance from "@/util/axiosInstance";
+import axios from "axios"; // Using standard axios to hit local API
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
 import styles from "./Contact.module.css";
 
@@ -32,19 +32,24 @@ export default function ContactPage() {
     setSubmitStatus(null);
 
     try {
-      const response = await axiosInstance.post("/contact", {
-        name: formData.name,
-        email: formData.email,
-        subject: formData.subject,
-        message: formData.message,
+      // Pointing to your local Next.js API route (/api/contact)
+      const response = await axios.post("/api/contact", {
+        ...formData,
         formType: 'message',
       });
       
       if (response.data?.success) {
-        setSubmitStatus({ success: true, message: response.data.message || "Message sent successfully! We'll get back to you soon." });
+        setSubmitStatus({ 
+            success: true, 
+            message: response.data.message || "Message sent successfully! We'll get back to you soon." 
+        });
+        // Clear form on success
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
-        setSubmitStatus({ success: false, message: response.data?.message || "Failed to send message. Please try again." });
+        setSubmitStatus({ 
+            success: false, 
+            message: response.data?.message || "Failed to send message. Please try again." 
+        });
       }
     } catch (error) {
       console.error('Contact form error:', error);
@@ -66,7 +71,6 @@ export default function ContactPage() {
             {/* Left Column - Contact Information */}
             <div className="contact-page__info">
               <div className="contact-page__info-content">
-                {/* Logo */}
                 <div className={`contact-page__logo ${styles.contactPageLogo}`}>
                   <Link href="/" scroll={true} aria-label="Go to homepage">
                     <Image
@@ -95,28 +99,20 @@ export default function ContactPage() {
                 </div>
                 
                 <h1 className="contact-page__heading">
-                  HAVE
-                  <br />
-                  QUESTIONS?
-                  <br />
-                  JUST SAY HELLO!
+                  HAVE<br />QUESTIONS?<br />JUST SAY HELLO!
                 </h1>
                 
                 <div className="contact-page__details">
                   <div className="contact-detail-item">
-                    <div className="contact-detail-icon">
-                      <i className="fas fa-map-marker-alt"></i>
-                    </div>
+                    <div className="contact-detail-icon"><i className="fas fa-map-marker-alt"></i></div>
                     <div className="contact-detail-content">
                       <span className="contact-detail-label">Office</span>
-                      <span className="contact-detail-value">Pune, India 411015</span>
+                      <span className="contact-detail-value">Dubai, UAE </span>
                     </div>
                   </div>
                   
                   <div className="contact-detail-item">
-                    <div className="contact-detail-icon">
-                      <i className="fas fa-phone"></i>
-                    </div>
+                    <div className="contact-detail-icon"><i className="fas fa-phone"></i></div>
                     <div className="contact-detail-content">
                       <span className="contact-detail-label">Phone</span>
                       <span className="contact-detail-value">+91 7769892323</span>
@@ -124,9 +120,7 @@ export default function ContactPage() {
                   </div>
                   
                   <div className="contact-detail-item">
-                    <div className="contact-detail-icon">
-                      <i className="fas fa-envelope"></i>
-                    </div>
+                    <div className="contact-detail-icon"><i className="fas fa-envelope"></i></div>
                     <div className="contact-detail-content">
                       <span className="contact-detail-label">Email</span>
                       <span className="contact-detail-value">scoop@corpcrunch.io</span>
@@ -155,6 +149,7 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
+                        disabled={isSubmitting}
                       />
                     </div>
                     <div className="contact-form__field">
@@ -166,6 +161,7 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
+                        disabled={isSubmitting}
                       />
                     </div>
                   </div>
@@ -179,6 +175,7 @@ export default function ContactPage() {
                       value={formData.subject}
                       onChange={handleInputChange}
                       required
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -191,6 +188,7 @@ export default function ContactPage() {
                       onChange={handleInputChange}
                       required
                       rows="6"
+                      disabled={isSubmitting}
                     ></textarea>
                   </div>
 
@@ -201,7 +199,8 @@ export default function ContactPage() {
                   </p>
 
                   {submitStatus && (
-                    <div className={`contact-form__status ${submitStatus.success ? "success" : "error"}`}>
+                    <div className={`contact-form__status ${submitStatus.success ? styles.success : styles.error}`}
+                         style={{ color: submitStatus.success ? '#28a745' : '#dc3545', padding: '10px 0', fontWeight: 'bold' }}>
                       {submitStatus.message}
                     </div>
                   )}
@@ -211,8 +210,8 @@ export default function ContactPage() {
                     className="contact-form__submit-btn"
                     disabled={isSubmitting}
                   >
-                    <span>Submit</span>
-                    <i className="fas fa-arrow-right"></i>
+                    <span>{isSubmitting ? "Sending..." : "Submit"}</span>
+                    {!isSubmitting && <i className="fas fa-arrow-right"></i>}
                   </button>
                 </form>
               </div>

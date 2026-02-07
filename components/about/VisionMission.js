@@ -29,18 +29,13 @@ Because in the end, knowledge without emotion is forgotten. Insight without conn
       {/* Top Border */}
       <div className={styles.sectionBorderTop}></div>
 
-      {/* Decorative Shapes */}
-      <div className={styles.decorativeShapes}>
-        <div className={styles.shape1}></div>
-        <div className={styles.shape2}></div>
-      </div>
 
       {/* Main Content */}
       <div className={styles.contentWrapper}>
         {/* Vision Panel */}
-        <div className={styles.panel}>
-          <h2 className={styles.panelTitle}>{vision.title || '/Our Vision'}</h2>
-          <div className={styles.panelContent}>
+        <div className={styles.Visionpanel}>
+          <h2 className={styles.panelVisionTitle}>{vision.title || '/Our Vision'}</h2>
+          <div className={styles.panelVisionContent}>
             {(vision.content || defaultVision.content).split('\n').map((paragraph, index) => (
               paragraph.trim() && <p key={index}>{paragraph}</p>
             ))}

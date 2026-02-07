@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import LanguageSelector from "@/components/elements/LanguageSelector";
+import RegionSelector from "@/components/elements/RegionSelector";
 import ThemeToggle from "@/components/elements/ThemeToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -102,8 +103,11 @@ const MobileMenu = ({ handleMobileMenuClose }) => {
               </li>
             </ul>
             
-            {/* Mobile Language and Theme Controls */}
+            {/* Mobile Language, Region and Theme Controls */}
             <div className="mobile-menu-controls">
+              <div className="mobile-control-item">
+                <RegionSelector />
+              </div>
               <div className="mobile-control-item">
                 <LanguageSelector />
               </div>

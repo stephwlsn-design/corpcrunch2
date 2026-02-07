@@ -82,9 +82,31 @@ export default function SocialShareRibbon() {
       `}</style>
       <div className="home-social-ribbon">
         <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        <li>
+            <a 
+              href="https://www.linkedin.com/company/corp-crunch/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-share-btn"
+              title="Follow us on LinkedIn"
+            >
+              <i className="fab fa-linkedin-in"></i>
+            </a>
+          </li>
           <li>
             <a 
-              href="https://www.facebook.com/corpcrunch"
+              href="https://www.instagram.com/corp.crunch/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-share-btn"
+              title="Follow us on Instagram"
+            >
+              <i className="fab fa-instagram"></i>
+            </a>
+          </li>
+          <li>
+            <a 
+              href="https://www.facebook.com/p/Corp-Crunch-61558752871099/"
               target="_blank"
               rel="noopener noreferrer"
               className="social-share-btn"
@@ -110,48 +132,17 @@ export default function SocialShareRibbon() {
               />
             </a>
           </li>
+          
+          
           <li>
             <a 
-              href="https://www.linkedin.com/company/corpcrunch"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-share-btn"
-              title="Follow us on LinkedIn"
-            >
-              <i className="fab fa-linkedin-in"></i>
-            </a>
-          </li>
-          <li>
-            <a 
-              href="https://www.instagram.com/corpcrunch"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-share-btn"
-              title="Follow us on Instagram"
-            >
-              <i className="fab fa-instagram"></i>
-            </a>
-          </li>
-          <li>
-            <a 
-              href="https://www.youtube.com/@corpcrunch"
+              href="https://www.youtube.com/@corp.crunch1"
               target="_blank"
               rel="noopener noreferrer"
               className="social-share-btn"
               title="Subscribe to our YouTube channel"
             >
               <i className="fab fa-youtube"></i>
-            </a>
-          </li>
-          <li>
-            <a 
-              href="https://www.behance.net/corpcrunch"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-share-btn"
-              title="View our work on Behance"
-            >
-              <span>Bē</span>
             </a>
           </li>
         </ul>

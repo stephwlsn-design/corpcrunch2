@@ -102,6 +102,7 @@
   line-height: 1.8;
   color: var(--tg-body-color, #777777);
   max-width: 500px;
+  text-align: justify;
 }
 
 .description p {

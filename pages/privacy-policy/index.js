@@ -1,18 +1,16 @@
-import HeaderTop from "@/components/elements/HeaderTop";
 import React from "react";
-
+import Layout from "@/components/layout/Layout";
 function PrivacyPolicy() {
   return (
-    <div className="container d-flex flex-column min-vh-100 justify-content-between  align-items-center">
-      <HeaderTop />
-
-      <div className="content w-75 mt-4">
-        <h1 className="mb-4">Corp Crunch Privacy Policy</h1>
-        <p>
-          Corp Crunch respects your privacy and is committed to protecting your
-          personal information. This Privacy Policy explains what information we
-          collect, how we use it, and your choices regarding your information.
-        </p>
+      <Layout>
+      <div className="container d-flex flex-column min-vh-100 justify-content-between  align-items-center">
+        <div className="content w-75 mt-4">
+          <h1 className="mb-4">Corp Crunch Privacy Policy</h1>
+          <p>
+            Corp Crunch respects your privacy and is committed to protecting your
+            personal information. This Privacy Policy explains what information we
+            collect, how we use it, and your choices regarding your information.
+          </p>
 
         <div className="mb-4">
           <h4>1. Information We Collect</h4>
@@ -150,7 +148,9 @@ function PrivacyPolicy() {
           Thank you for being a trusted user of Corp Crunch!
         </p>
       </div>
+      
     </div>
+    </Layout>
   );
 }
 

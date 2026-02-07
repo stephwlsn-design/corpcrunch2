@@ -1,202 +1,151 @@
 import { useState, useEffect } from 'react';
-import Layout from '@/components/layout/Layout';
-import styles from './Products.module.css';
-import SocialShareRibbon from '@/components/elements/SocialShareRibbon';
+import Image from 'next/image'; 
+import Layout from '@/components/layout/Layout'; 
+import SocialShareRibbon from '@/components/elements/SocialShareRibbon'; 
+import styles from './Products.module.css'; 
 
 export default function ProductsPage() {
-  const [hoveredProduct, setHoveredProduct] = useState(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [visibleSections, setVisibleSections] = useState({});
+
+  const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
   useEffect(() => {
-    setIsVisible(true);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections((prev) => ({ ...prev, [entry.target.id]: true }));
+          }
+        });
+      },
+      { threshold: 0.1 } 
+    );
+
+    const sections = document.querySelectorAll(`.${styles.observeTrigger}`);
+    sections.forEach((sec) => observer.observe(sec));
+
+    return () => observer.disconnect();
   }, []);
 
   const products = [
     {
-      id: 1,
+      id: 'prod-1',
+      name: 'Qraytai',
+      tagline: 'Create Content That Converts',
+      description: 'All in one content hyper-personalization platform that can create content on scale based on the brand voice, custom avatars and SEO keyword targeting.',
+      url: 'https://qrayt.ai.corpcrunch.io',
+      image: '/assets/img/others/Qrayt web logo.gif', 
+      theme: 'blue',
+      available: true,
+    },
+    {
+      id: 'prod-2',
       name: 'Prowess',
-      description: 'Empowering businesses with cutting-edge solutions and innovative technology platforms.',
+      tagline: 'Get PR on Demand',
+      description: 'A Comprehensive PR-on-Demand Distribution platform that allows Instant access to Tier 1, 2, 3, and 4 publishing channels through a single unified platform, eliminating the need to manage multiple vendor relationships.',
       url: 'https://prowess.corpcrunch.io',
-      color: '#ff2092', // Primary pink
-      gradient: 'linear-gradient(135deg, #ff2092 0%, #ff4da6 100%)',
-      icon: '🚀',
-      features: ['Advanced Analytics', 'Real-time Insights', 'Scalable Infrastructure']
+      image: '/assets/img/others/Prowess logo.png',
+      theme: 'orange',
+      available: true,
     },
     {
-      id: 2,
-      name: 'Qrayt',
-      description: 'Revolutionary platform transforming how businesses interact with data and intelligence.',
-      url: 'https://qrayt.com',
-      color: '#2551e7', // Primary blue
-      gradient: 'linear-gradient(135deg, #2551e7 0%, #4d6feb 100%)',
-      icon: '✨',
-      features: ['AI-Powered', 'Data Intelligence', 'Smart Automation']
-    },
-    {
-      id: 3,
-      name: 'StephanyAI',
-      description: 'Next-generation AI assistant designed to enhance productivity and streamline workflows.',
-      url: 'https://stephanyai.com',
-      color: '#ff2092', // Primary pink
-      gradient: 'linear-gradient(135deg, #ff2092 0%, #a855f7 100%)',
-      icon: '🤖',
-      features: ['Natural Language', 'Workflow Automation', 'Intelligent Assistance']
+      id: 'prod-3',
+      name: 'Cnvrsn',
+      tagline: 'Identify and Stop Media Leakage. Maximize Omnichannel Advertising Distribution and ROI',
+      description: 'A cutting-edge programmatic advertising platform that combines innovative CPL-based capabilities with full-spectrum programmatic solutions across OTT, ad networks, DOOH, and beyond.',
+      url: 'https://cnvrsn.corpcrunch.io',
+      image: '/assets/img/others/cnversn.png',
+      theme: 'pink',
+      available: false, // Coming soon
     }
   ];
 
   return (
     <Layout headTitle="Products - CorpCrunch">
       <SocialShareRibbon />
-      <div className={styles.productsPage}>
-        {/* Hero Section */}
-        <section className={styles.heroSection}>
+
+      <div className={`${styles.productsPage} ${isDarkMode ? styles.darkMode : styles.lightMode}`}>
+        
+        <button onClick={toggleTheme} className={styles.themeToggleBtn} aria-label="Toggle Theme">
+          {isDarkMode ? '☀️' : '🌙'}
+        </button>
+
+        {/* --- HERO SECTION --- */}
+        <section className={styles.heroSection} id="hero">
           <div className={styles.heroContent}>
-            <div className={`${styles.heroBadge} ${isVisible ? styles.fadeInUp : ''}`}>
-              <span className={styles.badgeText}>Our Products</span>
-              <div className={styles.badgeGrid}>
-                {Array.from({ length: 9 }).map((_, i) => (
-                  <span key={i} className={styles.badgeDot} />
-                ))}
-              </div>
-            </div>
-            <h1 className={`${styles.heroTitle} ${isVisible ? styles.fadeInUp : ''}`}>
-              <span>Innovative</span>
-              <span>Solutions</span>
-              <span>For Modern</span>
-              <span>Business</span>
-            </h1>
-            <p className={`${styles.heroDescription} ${isVisible ? styles.fadeInUp : ''}`}>
-              Discover our suite of powerful products designed to transform your business operations
-              and drive growth in the digital age.
+            <h1 className={styles.heroTitle}>Explore Groundbreaking Technologies</h1>
+            <p className={styles.heroDesc}>
+            We are pioneering the integration of AI, machine learning, and advanced technologies into the heart of MarTech, MediaTech, and AdTech. We are committed to revolutionizing how brands interact with their audiences and optimize their media strategies.
             </p>
+            <div className={styles.heroCapsule}>
+              <div className={styles.capsuleText}>Welcome To The World Of High Media Tech</div>
+            </div>
           </div>
-          <div className={styles.heroShapes}>
-            <div className={styles.shape1}></div>
-            <div className={styles.shape2}></div>
-            <div className={styles.shape3}></div>
-          </div>
-        </section>
 
-        {/* Products Grid */}
-        <section className={styles.productsSection}>
-          <div className={styles.container}>
-            <div className={styles.productsGrid}>
-              {products.map((product, index) => (
-                <div
-                  key={product.id}
-                  className={`${styles.productCard} ${isVisible ? styles.fadeInUp : ''}`}
-                  style={{ animationDelay: `${index * 0.2}s` }}
-                  onMouseEnter={() => setHoveredProduct(product.id)}
-                  onMouseLeave={() => setHoveredProduct(null)}
-                >
-                  <div className={styles.cardInner}>
-                    {/* Animated Background */}
-                    <div 
-                      className={styles.cardBackground}
-                      style={{ 
-                        background: hoveredProduct === product.id 
-                          ? product.gradient 
-                          : 'transparent'
-                      }}
-                    ></div>
-
-                    {/* Icon */}
-                    <div className={styles.productIcon}>
-                      <span className={styles.iconEmoji}>{product.icon}</span>
-                      <div 
-                        className={styles.iconGlow}
-                        style={{ 
-                          background: hoveredProduct === product.id 
-                            ? product.gradient 
-                            : 'transparent'
-                        }}
-                      ></div>
-                    </div>
-
-                    {/* Content */}
-                    <div className={styles.productContent}>
-                      <h2 className={styles.productName}>{product.name}</h2>
-                      <p className={styles.productDescription}>{product.description}</p>
-                      
-                      {/* Features */}
-                      <ul className={styles.productFeatures}>
-                        {product.features.map((feature, idx) => (
-                          <li key={idx} className={styles.featureItem}>
-                            <span className={styles.featureDot}></span>
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* CTA Button */}
-                      <a
-                        href={product.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.productButton}
-                        style={{
-                          background: hoveredProduct === product.id 
-                            ? product.gradient 
-                            : '#ffffff',
-                          color: hoveredProduct === product.id 
-                            ? '#ffffff' 
-                            : product.color,
-                          boxShadow: hoveredProduct === product.id
-                            ? `0 10px 40px ${product.color}40`
-                            : '0 4px 20px rgba(0, 0, 0, 0.1)'
-                        }}
-                      >
-                        <span>Visit Website</span>
-                        <svg 
-                          width="20" 
-                          height="20" 
-                          viewBox="0 0 20 20" 
-                          fill="none"
-                          className={styles.buttonArrow}
-                        >
-                          <path 
-                            d="M7.5 5L12.5 10L7.5 15" 
-                            stroke="currentColor" 
-                            strokeWidth="2" 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </a>
-                    </div>
-
-                    {/* Decorative Elements */}
-                    <div className={styles.cardDecorations}>
-                      <div className={styles.decoration1}></div>
-                      <div className={styles.decoration2}></div>
-                      <div className={styles.decoration3}></div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+          <div className={styles.heroVisual}>
+            <div className={styles.mainImageContainer}>
+               <Image 
+                 src="/assets/img/others/Speaker.png" 
+                 alt="Tech Abstract" 
+                 fill
+                 priority
+                 className={styles.mainMockImage} 
+               />
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className={styles.ctaSection}>
-          <div className={styles.container}>
-            <div className={styles.ctaContent}>
-              <h2 className={styles.ctaTitle}>Ready to Transform Your Business?</h2>
-              <p className={styles.ctaDescription}>
-                Explore our products and discover how we can help you achieve your goals.
-              </p>
-              <div className={styles.ctaButtons}>
-                <a href="/contact" className={styles.ctaButtonPrimary}>
-                  Get in Touch
-                </a>
-               
+        {/* --- PRODUCTS GRID --- */}
+        <div className={styles.productsContainer}>
+          {products.map((product) => (
+            <section 
+              key={product.id} 
+              id={product.id}
+              className={`${styles.productRow} ${styles.observeTrigger} ${visibleSections[product.id] ? styles.isVisible : ''}`}
+            >
+              <div className={styles.productInfo}>
+                <h2 className={styles.productName}>{product.name}</h2>
+                <p className={styles.productTagline}>{product.tagline}</p>
+                <p className={styles.productDesc}>{product.description}</p>
+                
+                {product.available ? (
+                  <a href={product.url} target="_blank" rel="noopener noreferrer" className={styles.btnOutline}>
+                    Visit Website
+                  </a>
+                ) : (
+                  <button className={`${styles.btnOutline} ${styles.btnDisabled}`} disabled>
+                    Coming Soon
+                  </button>
+                )}
               </div>
-            </div>
-          </div>
-        </section>
+
+              <div className={`${styles.productVisual} ${
+                product.theme === 'pink' 
+                  ? styles.bgPink 
+                  : product.theme === 'blue' 
+                    ? styles.bgBlue 
+                    : styles.bgOrange
+              }`}>
+                <div className={styles.visualWrapper}>
+                  {product.image ? (
+                    <Image 
+                      src={product.image} 
+                      alt={product.name} 
+                      fill 
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className={styles.centeredImage}
+                      unoptimized={product.image.endsWith('.gif') || product.image.endsWith('.png')}
+                    />
+                  ) : (
+                    <div className={styles.placeholder}>Visual Coming Soon</div>
+                  )}
+                </div>
+              </div>
+            </section>
+          ))}
+        </div>
       </div>
     </Layout>
   );
 }
-

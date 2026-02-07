@@ -7,6 +7,7 @@ import Sidebar from "./Sidebar";
 import SearchBar from "@/components/elements/SearchBar";
 import LanguageSelector from "@/components/elements/LanguageSelector";
 import LocationSelector from "@/components/elements/LocationSelector";
+import RegionSelector from "@/components/elements/RegionSelector";
 import ThemeToggle from "@/components/elements/ThemeToggle";
 import HamburgerIcon from "@/components/elements/HamburgerIcon";
 import useCategory from "@/hooks/useCategory";
@@ -85,16 +86,22 @@ const Header1 = ({
                 </Link>
               </div>
               
-              {/* Right: Language, Theme, CTA Button & Mobile Menu */}
+              {/* Right: Region, Language, Theme, CTA Button & Mobile Menu */}
               <div className="header__actions">
                 {isLoadingCategory ? (
                   <div className="d-flex align-items-center gap-3">
+                    <Skeleton width={120} height={38} borderRadius={20} />
                     <Skeleton width={100} height={38} borderRadius={20} />
                     <Skeleton circle width={38} height={38} />
                     <Skeleton width={38} height={38} borderRadius={19} />
                   </div>
                 ) : (
                   <>
+                {/* Region Selector */}
+                <div className="header__region-toggle d-none d-md-flex">
+                  <RegionSelector />
+                </div>
+                
                 {/* Language Selector */}
                 <div className="header__language-toggle d-none d-md-flex">
                   <LanguageSelector />

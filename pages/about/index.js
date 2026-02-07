@@ -6,6 +6,7 @@ import NumbersThatMatter from '@/components/about/NumbersThatMatter';
 import FAQs from '@/components/about/FAQs';
 import axiosInstance from '@/util/axiosInstance';
 import SocialShareRibbon from '@/components/elements/SocialShareRibbon';
+import TeamMembers from '@/components/about/TeamMembers';
 
 export default function AboutPage() {
   const [aboutContent, setAboutContent] = useState(null);
@@ -135,14 +136,20 @@ export default function AboutPage() {
           missionContent={aboutContent?.mission}
         />
 
+
+        <TeamMembers />
+        
         {/* Numbers That Matter Section */}
         <NumbersThatMatter
           stats={stats}
           missionText={aboutContent?.numbers?.content}
         />
 
+        {/* Team Members Section */}
+        
+
         {/* FAQs Section */}
-        <FAQs faqs={faqs} />
+        {/* <FAQs faqs={faqs} /> */}
       </div>
     </Layout>
   );

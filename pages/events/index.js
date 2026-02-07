@@ -204,6 +204,29 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
     return () => clearInterval(timer);
   }, [totalEvents, totalViews, upcomingCount]);
 
+  const initialItems = [
+    { id: 1, title: "Global AI Summit 1", src: "/assets/img/previousEvent/3.png" },
+    { id: 2, title: "Global AI Summit 2", src: "/assets/img/previousEvent/4.png" },
+    { id: 3, title: "Global AI Summit 3", src: "/assets/img/previousEvent/5.png" },
+    { id: 4, title: "Global AI Summit 4", src: "/assets/img/previousEvent/6.png" },
+    { id: 5, title: "Global AI Summit 5", src: "/assets/img/previousEvent/7.png" },
+  ];
+  
+  const [items, setItems] = useState(initialItems);
+  
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setItems((prevItems) => {
+        const newItems = [...prevItems];
+        const firstItem = newItems.shift(); // Remove the leftmost image
+        newItems.push(firstItem); // Add it to the rightmost side
+        return newItems;
+      });
+    }, 3000); // Shift every 3 seconds
+  
+    return () => clearInterval(timer);
+  }, []);
+
   // Get excerpt from content
   const getExcerpt = (content, maxLength = 150) => {
     if (!content) return "";
@@ -300,7 +323,14 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
 
       <div className={styles.eventsPage}>
         {/* Year Cards Section - Instagram Story Style */}
+        <div className={styles.HeroTitle}>
+  <h1>C3 AIX Summit A Global AI Trilogy</h1>
+  <p className={styles.heroRevealLabel}>
+    A Three-Year Strategic AI Summit Series for Industry, Policy, and Innovation
+  </p>
+</div>
         <section className={styles.yearCardsSection}>
+          
           <div className={styles.container}>
             <div className={styles.yearCardsContainer}>
               {yearCards.map((card, index) => (
@@ -478,7 +508,6 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
               
               {/* 1. Main Headline Reveal */}
               <div className={styles.detailsHeroReveal}>
-                <div className={styles.heroRevealLabel}>WELCOME TO THE GLOBAL AI TRILOGY</div>
                 <h2 className={styles.heroRevealTitle}>{yearCards[selectedCard].event.title}</h2>
                 <div className={styles.heroRevealLine}></div>
               </div>
@@ -906,6 +935,43 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                   <p>Influencing multi-million dollar AI budgets across the globe.</p>
                 </div>
               </div>
+
+{/* --- PREVIOUS EVENTS CIRCULAR CAROUSEL (Always Moves Left) --- */}
+<section className={styles.previousEventsGallery}>
+  <div className={styles.galleryHeader}>
+    <span className={styles.galleryLabel}>CAPTURING MOMENTS</span>
+    <h2 className={styles.galleryTitle}>AIX Cyber Security Summit</h2>
+  </div>
+
+  <div className={styles.carouselWrapper}>
+    <div className={styles.fixedTrack}>
+      {items.map((item, index) => {
+        // Logic: The 3rd item (index 2) is always the visual center
+        const isCenter = index === 2;
+        
+        return (
+          <div 
+            key={item.id} 
+            className={`${styles.eventNode} ${isCenter ? styles.isActive : ''}`}
+          >
+            <div className={styles.nodeMedia}>
+              <Image 
+                src={item.src} 
+                alt="Previous Event" 
+                fill 
+                className={styles.nodeImg}
+              />
+              <div className={styles.nodeOverlay}>
+                <span className={styles.nodeRole}>EVENT HIGHLIGHT</span>
+                
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
 
               {/* 11. Final Call to Action Cards (Interactive) */}
               <div className={styles.interactiveActionSection}>

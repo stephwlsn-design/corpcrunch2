@@ -637,6 +637,7 @@
   line-height: 1.2;
   margin: 0 0 0.75rem 0;
   font-family: 'Urbanist', sans-serif;
+  color: #ffffff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -646,6 +647,7 @@
   margin: 0;
   opacity: 0.95;
   font-family: 'Urbanist', sans-serif;
+  color: #ffffff;
   max-width: 600px;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }

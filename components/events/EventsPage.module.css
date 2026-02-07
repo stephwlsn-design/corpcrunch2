@@ -25,6 +25,7 @@
 }
 
 .container {
+  
   max-width: 1400px;
   margin: 0 auto;
   padding: 60px 40px;
@@ -34,6 +35,7 @@
 }
 
 .containerthreecards {
+  padding-top: 0;
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 40px;
@@ -44,7 +46,8 @@
 }
 /* Year Cards Section - Instagram Story Style */
 .yearCardsSection {
-  padding: 60px 20px;
+  
+  padding: 0 20px 60px 20px;
   background: var(--tg-common-color-gray, #f5f5f5);
   margin-bottom: 0;
   min-height: calc(100vh - 200px);
@@ -433,6 +436,33 @@
   background: linear-gradient(135deg, #2551e7 0%, #1a3fb8 100%);
 }
 
+.HeroTitle {
+  font-size: 56px;
+  font-weight: 900;
+  color: #111111;
+  letter-spacing: -1px;
+  text-align: center;
+  font-family: Urbanist, sans-serif;
+  
+  /* FIX 1: Control the vertical leading of the main title */
+  line-height: 1.1; 
+  
+  /* FIX 2: Ensure no extra padding at the top of the section */
+  margin-top: 20px; 
+}
+.heroRevealLabel {
+  font-size: 18px; /* Or your preferred size */
+  font-weight: 500;
+  letter-spacing: 0;
+  
+  /* FIX 3: Remove default browser margins that push the text away */
+  margin: 10px 0 0 0; 
+  
+  /* FIX 4: Control line height for multi-line subtitles */
+  line-height: 1.4;
+  
+  color: #444444; /* Optional: subtle grey looks more "corporate" */
+}
 .heroSlider {
   width: 100%;
   height: 100%;
@@ -1269,12 +1299,18 @@
 }
 
 .heroRevealLabel {
-  font-size: 14px;
-  font-weight: 800;
-  color: #3b82f6;
-  text-transform: uppercase;
-  letter-spacing: 4px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: 0px;
+  margin-top: 40px;
   margin-bottom: 20px;
+  text-align: center;
+  font-family: Urbanist, sans-serif;
+
+}
+:global(.dark-theme) .heroRevealLabel {
+  color: #ffffff;
 }
 
 .heroRevealTitle {
@@ -3106,7 +3142,7 @@
   }
 
   .heroTitle {
-    font-size: 26px;
+    font-size: 36px;
   }
 
   .heroDescription {
@@ -3601,3 +3637,126 @@
   }
 }
 
+.previousEventsGallery {
+  /* Design Constants */
+  --slice-width: 110px;
+  --active-width: 480px;
+  --gap: 15px;
+  
+  padding: 100px 0;
+  background: #ffffff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius:50px;
+}
+
+:global(.dark-theme) .previousEventsGallery {
+  background: #0a0a0a;
+}
+
+.galleryTitle {
+  font-size: 48px;
+  font-weight: 900;
+  color: #111111;
+  letter-spacing: -2px;
+  text-align: center;
+  font-family: Urbanist, sans-serif;
+}
+
+:global(.dark-theme) .galleryTitle {
+  color: #ffffff;
+}
+
+.galleryLabel {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111111;
+  letter-spacing: 2px;
+  text-align: center;
+  font-family: Urbanist, sans-serif;
+}
+
+:global(.dark-theme) .galleryLabel {
+  color: #ffffff;
+}
+
+.carouselWrapper {
+  width: 100%;
+  height: 650px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.fixedTrack {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  /* The track stays centered, the items inside shift */
+  transition: all 0.8s ease-in-out;
+}
+
+.eventNode {
+  width: var(--slice-width);
+  height: 500px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.8;
+}
+
+/* The item currently in the 3rd position expands */
+.eventNode.isActive {
+  width: var(--active-width);
+  height: 600px;
+  opacity: 1;
+  z-index: 10;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+}
+
+.nodeMedia {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.nodeImg {
+  object-fit: cover;
+}
+
+.nodeOverlay {
+  position: absolute;
+  inset: 0;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.isActive .nodeOverlay {
+  opacity: 1;
+}
+
+.nodeRole { font-size: 11px; font-weight: 800; letter-spacing: 2px; margin-bottom: 5px; }
+.nodeName { font-size: 32px; font-weight: 900; line-height: 1; }
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .previousEventsGallery {
+    --slice-width: 40px;
+    --active-width: 280px;
+  }
+  .carouselWrapper { height: 450px; }
+  .eventNode { height: 350px; }
+  .eventNode.isActive { height: 400px; }
+}

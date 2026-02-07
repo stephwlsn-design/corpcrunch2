@@ -1,9 +1,10 @@
+import nodemailer from 'nodemailer';
 import connectDB from '@/lib/mongoose';
 import Contact from '@/models/Contact';
 import { publicRateLimiter } from '@/lib/rateLimiter';
 
 export default async function handler(req, res) {
-  // Apply rate limiting to all requests
+  // 1. Rate Limiting
   try {
     const rateLimitResult = await publicRateLimiter(req);
     if (!rateLimitResult.allowed) {
@@ -11,166 +12,92 @@ export default async function handler(req, res) {
       return res.status(429).json({
         success: false,
         message: `Rate limit exceeded. Please try again after ${rateLimitResult.retryAfter} seconds.`,
-        retryAfter: rateLimitResult.retryAfter,
       });
     }
-  } catch (rateLimitError) {
-    console.warn('[API /contact] Rate limiting error:', rateLimitError.message);
-    // Continue if rate limiting fails (fail open)
+  } catch (err) {
+    console.warn('[API /contact] Rate limiting error:', err.message);
   }
-  // Prevent multiple responses
-  let responseSent = false;
-  
-  const sendResponse = (statusCode, data) => {
-    if (!responseSent) {
-      responseSent = true;
-      res.status(statusCode).json(data);
-    }
-  };
 
-  // Disable Next.js caching for this API route
-  if (!responseSent) {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-  }
+  // 2. Security Headers (Disable Caching)
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
 
   if (req.method === 'POST') {
     try {
       await connectDB();
-      
       const { name, email, subject, message, formType } = req.body;
 
-      // Validate required fields
+      // Basic Validation
       if (!name || !email || !subject || !message) {
-        return sendResponse(400, {
-          success: false,
-          message: 'All fields are required',
-        });
+        return res.status(400).json({ success: false, message: 'All fields are required' });
       }
 
-      // Sanitize inputs
-      const sanitizedData = {
-        name: name.trim().substring(0, 200),
-        email: email.trim().toLowerCase().substring(0, 255),
-        subject: subject.trim().substring(0, 200),
-        message: message.trim().substring(0, 5000),
-        formType: (formType || 'message').trim().substring(0, 50),
-      };
-
-      // Validate email format
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(sanitizedData.email)) {
-        return sendResponse(400, {
-          success: false,
-          message: 'Invalid email format',
-        });
-      }
-
-      // Validate name length
-      if (sanitizedData.name.length < 2) {
-        return sendResponse(400, {
-          success: false,
-          message: 'Name must be at least 2 characters',
-        });
-      }
-
-      // Validate message length
-      if (sanitizedData.message.length < 10) {
-        return sendResponse(400, {
-          success: false,
-          message: 'Message must be at least 10 characters',
-        });
-      }
-
-      // Create contact entry
+      // Create Database Entry
       const contact = new Contact({
-        name: sanitizedData.name,
-        email: sanitizedData.email,
-        subject: sanitizedData.subject,
-        message: sanitizedData.message,
-        formType: sanitizedData.formType,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        subject: subject.trim(),
+        message: message.trim(),
+        formType: formType || 'message',
         status: 'new',
       });
 
       await contact.save();
 
-      console.log('[API /contact] Contact form submitted:', {
-        name: contact.name,
-        email: contact.email,
-        subject: contact.subject,
-      });
-
-      return sendResponse(200, {
-        success: true,
-        message: 'Thank you for your message! We will get back to you soon.',
-        data: {
-          id: contact._id,
-          name: contact.name,
-          email: contact.email,
+      // --- EMAIL NOTIFICATION LOGIC ---
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT || 465,
+        secure: true, 
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASSWORD,
         },
       });
+
+      const mailOptions = {
+        from: `"CorpCrunch Contact" <${process.env.SMTP_USER}>`,
+        replyTo: email,
+        to: 'scoop@corpcrunch.io',
+        subject: `New Message: ${subject}`,
+        html: `
+          <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee;">
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Subject:</strong> ${subject}</p>
+            <hr />
+            <p><strong>Message:</strong></p>
+            <p style="white-space: pre-wrap;">${message}</p>
+          </div>
+        `,
+      };
+
+      // Send the email (we don't 'await' here to keep response time fast, 
+      // or you can await if you want to ensure the email is sent before responding)
+      await transporter.sendMail(mailOptions);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Message sent successfully!',
+        data: { id: contact._id },
+      });
+
     } catch (error) {
       console.error('[API /contact] Error:', error);
-      return sendResponse(500, {
-        success: false,
-        message: 'Failed to submit contact form. Please try again later.',
-        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-      });
+      return res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
   }
 
+  // Handle GET for Admin
   if (req.method === 'GET') {
     try {
       await connectDB();
-      
-      // Get all contacts (for admin use)
-      const contacts = await Contact.find({})
-        .sort({ createdAt: -1 })
-        .limit(100)
-        .lean();
-
-      return sendResponse(200, {
-        success: true,
-        count: contacts.length,
-        contacts: contacts.map(contact => ({
-          id: contact._id,
-          name: contact.name,
-          email: contact.email,
-          subject: contact.subject,
-          message: contact.message,
-          status: contact.status,
-          formType: contact.formType,
-          createdAt: contact.createdAt,
-        })),
-      });
+      const contacts = await Contact.find({}).sort({ createdAt: -1 }).limit(100).lean();
+      return res.status(200).json({ success: true, contacts });
     } catch (error) {
-      console.error('[API /contact] Error fetching contacts:', error);
-      return sendResponse(500, {
-        success: false,
-        message: 'Failed to fetch contacts',
-        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-      });
+      return res.status(500).json({ success: false, message: 'Failed to fetch contacts' });
     }
   }
 
-  return sendResponse(405, {
-    success: false,
-    message: 'Method not allowed',
-  });
+  return res.status(405).json({ success: false, message: 'Method not allowed' });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
