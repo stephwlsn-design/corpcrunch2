@@ -689,9 +689,19 @@ export default function Home({ posts, categories = [] }) {
           display: none;
         }
         .home-page-container {
-          overflow-x: hidden;
-          width: 100%;
-        }
+  overflow-x: hidden;
+  overflow-y: clip; /* Prevents tiny sub-pixel overflows from triggering vertical scrolls */
+  width: 100%;
+  position: relative;
+  display: block;
+  /* The "Magic" fix for ghost scrollbars */
+  padding-bottom: 1px; 
+  margin-bottom: -1px;
+}
+        /* Fix: Remove bottom margin if the separator is the last visible element */
+.home-page-container > .blue-separator:last-child {
+  margin-bottom: 0;
+}
         .home-page-container > * {
           margin-top: 0;
           margin-bottom: 0;
@@ -761,11 +771,14 @@ export default function Home({ posts, categories = [] }) {
         <ExploreOurWorks />
 
         <RecentVideoPosts
-          posts={translatedVideoPosts || safePosts?.videoPosts || []}
-          isLoading={isLoading || isTranslatingVideos}
-        />
+  posts={translatedVideoPosts || safePosts?.videoPosts || []}
+  isLoading={isLoading || isTranslatingVideos}
+/>
 
-        <Newsletter />
+{/* If you had a <hr className="blue-separator" /> here, comment it out too */}
+{/* <Newsletter /> */}
+
+        {/* <Newsletter /> */}
       </div>
     </Layout>
     // </AuthAndSubscriptionProtected>

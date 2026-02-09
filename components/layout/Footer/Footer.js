@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Newsletter from "@/components/elements/Newsletter";
 
 export default function Footer1() {
   const { t } = useLanguage();
@@ -8,7 +9,9 @@ export default function Footer1() {
 
   return (
     <>
+    <Newsletter />
       <footer className="modern-footer">
+        
         <div className="container">
           {/* Navigation Buttons Section */}
           <div className="footer__navigation">

@@ -343,9 +343,9 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                   <div className={styles.cardMainContent}>
                     {/* Header/Title area */}
                     <div className={styles.cardTopArea}>
-                      <span className={styles.topBrand}>CorpCrunch™</span>
-                      <span className={styles.topYear}>{card.period.split(' ')[0]}</span>
-                    </div>
+  <span className={styles.topBrand}>Corp Crunch<sup>™</sup></span>
+  <span className={styles.topYear}>{card.period.split(' ')[0]}</span>
+</div>
 
                     {/* Interactive Circles / Images */}
                     <div className={styles.cardVisualArea}>
@@ -941,6 +941,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
   <div className={styles.galleryHeader}>
     <span className={styles.galleryLabel}>CAPTURING MOMENTS</span>
     <h2 className={styles.galleryTitle}>AIX Cyber Security Summit</h2>
+    <span className={styles.galleryLabelEvents}>Past Events</span>
   </div>
 
   <div className={styles.carouselWrapper}>

@@ -11,6 +11,16 @@
   --c-pink: #FFB4D9;
   --c-gray-light: #F0F0F0;
   --c-border: #E5E5E5;
+  
+  /* Dome Visual Colors - Light */
+  --dome-main: #A3CCF9;
+  --dome-slice: #CDE4FF;
+  --logo-filter: none;
+  
+  /* Product Backgrounds - Light */
+  --bg-prod-pink: #E5E5E5;
+  --bg-prod-blue: #ffffff;
+  --bg-prod-orange: #D0D0E0;
 }
 
 .darkMode {
@@ -23,17 +33,169 @@
   --c-pink: #ff4da6;
   --c-gray-light: #1F1F1F;
   --c-border: #333333;
+
+  /* Dome Visual Colors - Dark */
+  --dome-main: #1e3a8a;
+  --dome-slice: #2563eb;
+  --logo-filter: brightness(0) invert(1);
+
+  /* Product Backgrounds - Dark */
+  --bg-prod-pink: #1a1a1a;
+  --bg-prod-blue: #111827;
+  --bg-prod-orange: #1c1917;
 }
 
+/* Make sure the main container fills and overrides layout background */
 .productsPage {
   background-color: var(--bg-main);
   color: var(--text-main);
   font-family: 'Urbanist', sans-serif;
   width: 100%;
+  min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
   padding-bottom: 80px;
+  position: relative;
+  z-index: 1;
 }
 
+/* Fix for Qrayt AI title visibility */
+.productName {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-main);
+  transition: color 0.3s ease;
+}
+
+/* Ensure logo has proper spacing */
+.productLogoContainer {
+  margin-bottom: 1rem;
+  line-height: 1;
+}
+
+.productLogo {
+  width: auto;
+  height: auto;
+  max-width: 200px;
+  object-fit: contain;
+  display: block;
+  transition: filter 0.3s ease;
+}
+
+/* Don't apply filter to Qrayt AI logo (it's a GIF) */
+.darkMode .productLogo {
+  filter: none;
+}
+
+/* But apply filter to PNG logos only when needed */
+.lightMode .productLogo {
+  filter: none;
+}
+
+/* --- HERO SECTION ALIGNMENT --- */
+.heroSection {
+  padding: 120px 10%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 80px;
+  min-height: 80vh;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.heroTitle {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: var(--text-main);
+}
+
+.heroTitle span {
+  display: block;
+}
+
+.heroDesc {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 540px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+/* --- DOME BRAND VISUAL --- */
+.heroVisual {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.domeBrandWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 550px;
+  height: 220px;
+}
+
+.mainPill {
+  width: 380px;
+  height: 200px;
+  background-color: var(--dome-main);
+  border-radius: 100px;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  justify-content: space-between;
+  transition: background-color 0.3s ease;
+}
+
+.pillExploreBtn {
+  background: white;
+  color: #111;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.pillUrl {
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.slice {
+  position: absolute;
+  height: 200px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: var(--dome-slice);
+  border: 4px solid var(--bg-main);
+  
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Positioning disks on the right */
+.slice:nth-child(2) { left: 300px; z-index: 9; }
+.slice:nth-child(3) { left: 360px; z-index: 8; opacity: 0.8; transform: scale(0.95); }
+.slice:nth-child(4) { left: 410px; z-index: 7; opacity: 0.6; transform: scale(0.9); }
+.slice:nth-child(5) { left: 450px; z-index: 6; opacity: 0.4; transform: scale(0.85); }
+
+/* --- THEME TOGGLE & CAPSULE --- */
 .themeToggleBtn {
   position: fixed;
   bottom: 24px;
@@ -48,117 +210,34 @@
   cursor: pointer;
   z-index: 999;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
 }
 
-/* --- HERO SECTION (With more side space) --- */
-.heroSection {
-  padding: 100px 10%; /* Increased side space to 10% */
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 60px;
-  position: relative;
-}
-
-.heroTitle {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.1;
-  font-weight: 800;
-  margin-bottom: 24px;
-}
-
-.heroDesc {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  max-width: 600px;
-  line-height: 1.6;
-  margin-bottom: 40px;
-}
-
-.heroActions { margin-bottom: 60px; }
-
-.btnPillPrimary {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 32px;
-  border-radius: 50px;
-  border: 1px solid var(--text-main);
-  background: transparent;
-  color: var(--text-main);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.radioDot {
-  width: 10px;
-  height: 10px;
-  background: var(--c-blue);
-  border-radius: 50%;
-  box-shadow: 0 0 0 2px var(--bg-main), 0 0 0 4px var(--c-blue);
+.themeToggleBtn:hover {
+  transform: scale(1.1);
 }
 
 .heroCapsule {
-  background: linear-gradient(90deg, #2551e7 0%, #2551e7 100%);
+  background: linear-gradient(90deg, #2551e7 0%, #4d6feb 100%);
   border-radius: 100px;
   padding: 16px 32px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   color: #fff;
-  width: 100%;
-  max-width: 440px;
-  box-shadow: 0 10px 20px rgba(142, 181, 255, 0.3);
+  width: fit-content;
 }
 
-.capsuleText { font-size: 0.85rem; font-weight: 600; }
-.capsuleBtn { background: #fff; color: var(--c-blue-dark); border: none; padding: 8px 18px; border-radius: 20px; font-weight: 700; cursor: pointer; }
-
-/* Hero Visual */
-.heroVisual {
-  position: relative;
-  height: 450px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
+.capsuleText {
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
-.mainImageContainer {
-  position: relative;
-  width: 85%;
-  height: 85%;
-  background: transparent;
-  border-radius: 40px;
-}
-
-.mainMockImage {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: transparent !important;
-  border-radius: 40px;
-}
-
-.floatingImage {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  border-radius: 40px;
-  object-fit: cover;
-  border: 4px solid #fff;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-}
-
-.float1 { bottom: 20px; left: -30px; }
-.float2 { top: 20px; right: -30px; border-radius: 50%; }
-
-/* --- PRODUCT GRID (Increased Side Spacing) --- */
+/* --- PRODUCT GRID --- */
 .productsContainer {
   display: flex;
   flex-direction: column;
   gap: 120px;
-  padding: 80px 10%; /* Increased side space to 10% */
+  padding: 80px 10%;
 }
 
 .productRow {
@@ -167,149 +246,201 @@
   gap: 80px;
 }
 
-.productRow:nth-child(even) { flex-direction: row-reverse; }
-
-.productInfo { flex: 1.2; }
-
-.metaLabel {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-  text-transform: uppercase;
+.productRow:nth-child(even) {
+  flex-direction: row-reverse;
 }
 
-.metaDot { width: 6px; height: 6px; border-radius: 50%; border: 2px solid var(--text-main); }
-.productName { font-size: 2.5rem; font-weight: 700; margin-bottom: 8px; }
-.productTagline { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 24px; }
-.productDesc { font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 32px; }
+.productInfo {
+  flex: 1.2;
+}
+
+.productLogoContainer {
+  margin-bottom: 0.5rem;
+}
+
+.productLogo {
+  width: auto;
+  height: auto;
+  max-width: 200px;
+  object-fit: contain;
+  display: block;
+  filter: var(--logo-filter);
+  transition: filter 0.3s ease;
+}
+
+.productName {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+.productTagline {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  margin-top: 0;
+}
+
+.productDesc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
 
 .btnOutline {
   display: inline-block;
   text-decoration: none;
   padding: 12px 28px;
-  border: 1px solid var(--text-muted);
+  border: 1px solid var(--c-border);
   border-radius: 50px;
-  background: transparent;
   color: var(--text-main);
   font-weight: 600;
+  transition: all 0.3s ease;
+  background: transparent;
+  cursor: pointer;
 }
 
-/* ... keep your theme variables and page setup ... */
+.btnOutline:hover {
+  background: var(--text-main);
+  color: var(--bg-main);
+  border-color: var(--text-main);
+}
 
-/* Centering Logic for Product Visuals */
+.btnDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnDisabled:hover {
+  background: transparent;
+  color: var(--text-main);
+  border-color: var(--c-border);
+}
+
 .productVisual {
   flex: 0.8;
-  aspect-ratio: 1 / 1; /* Makes it a perfect square */
+  aspect-ratio: 1 / 1;
   border-radius: 40px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px; /* Space inside the colored background */
+  padding: 40px;
+  transition: background-color 0.3s ease;
 }
 
-/* This wrapper holds the media and maintains centering */
 .visualWrapper {
   position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Video Styling */
-.centeredMedia {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* ensures the whole video is visible */
-  border-radius: 20px;
-  z-index: 2;
-}
-
-/* Image Styling */
 .centeredImage {
-  object-fit: contain !important; /* ensures the whole image is visible */
+  object-fit: contain !important;
   width: 100% !important;
   height: 100% !important;
-  position: relative !important;
 }
 
-/* Background Gradients */
-.bgPink { background: radial-gradient(circle at center, #ffffff 0%, #ffffff 100%); }
-.bgBlue { background: radial-gradient(circle at center, #ffffff 0%, #ffffff 100%); }
-.bgOrange { background: radial-gradient(circle at center, #ffffff 0%, #ffffff 100%); }
-.bgblack { background: radial-gradient(circle at center, #111111 0%, #111111 100%); }
+/* Product Background Adaptability */
+.bgPink {
+  background: var(--bg-prod-pink);
+}
+
+.bgBlue {
+  background: var(--bg-prod-blue);
+}
+
+.bgOrange {
+  background: var(--bg-prod-orange);
+}
+
+/* Observe Animation */
+.observeTrigger {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+
+.isVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* Responsive */
 @media (max-width: 992px) {
-  .productVisual {
-    width: 100%;
-    aspect-ratio: 16 / 9; /* Wider on mobile */
-    margin-top: 20px;
+  .heroSection {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 60px;
+    padding-top: 80px;
+  }
+
+  .heroContent {
+    align-items: center;
+  }
+
+  .heroVisual {
+    justify-content: center;
+  }
+
+  .productRow,
+  .productRow:nth-child(even) {
+    flex-direction: column-reverse;
+    gap: 40px;
+  }
+
+  .domeBrandWrapper {
+    cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .domeBrandWrapper:hover {
+    transform: scale(1.02);
+  }
+
+  
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 60px 5%;
+  }
+
+  .productsContainer {
+    padding: 60px 5%;
+    gap: 80px;
+  }
+
+  .domeBrandWrapper {
+    transform: scale(0.6);
+  }
+
+  .productName {
+    font-size: 2rem;
   }
 }
-.arrowBadge {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 32px;
-  height: 32px;
-  background: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: #111;
+
+.domeBrandWrapper:hover .slice:nth-child(2) { 
+  left: 320px; 
+  transform: rotate(5deg);
 }
 
-.visualContent { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
-
-.productShape {
-  width: 55%;
-  height: 35%;
-  background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
-  backdrop-filter: blur(5px);
-  border-radius: 80px 80px 15px 15px;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+.domeBrandWrapper:hover .slice:nth-child(3) { 
+  left: 420px; 
+  transform: scale(0.98) rotate(10deg);
+  opacity: 0.9;
 }
 
-.handHint { position: absolute; bottom: 15%; right: 15%; font-size: 2.5rem; }
-
-/* --- CTA SECTION --- */
-.ctaSection { padding: 0 10%; }
-.ctaCard {
-  width: 100%;
-  background: linear-gradient(90deg, #7CA5FF 0%, #FFB4D9 100%);
-  border-radius: 40px;
-  padding: 60px;
-  text-align: center;
-  color: #fff;
-}
-.btnWhite {
-  margin-top: 24px;
-  padding: 16px 40px;
-  border: none;
-  background: #fff;
-  color: var(--c-blue-dark);
-  border-radius: 50px;
-  font-weight: 700;
-  cursor: pointer;
+.domeBrandWrapper:hover .slice:nth-child(4) { 
+  left: 500px; 
+  transform: scale(0.95) rotate(15deg);
+  opacity: 0.8;
 }
 
-.observeTrigger { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-.isVisible { opacity: 1; transform: translateY(0); }
-
-/* Responsive Adjustments */
-@media (max-width: 992px) {
-  .heroSection, .productsContainer, .ctaSection { padding: 40px 5%; }
-  .heroSection { grid-template-columns: 1fr; text-align: center; }
-  .productRow, .productRow:nth-child(even) { flex-direction: column-reverse; gap: 32px; }
-  .productVisual { width: 80%; margin: 0 auto; }
+.domeBrandWrapper:hover .slice:nth-child(5) { 
+  left: 560px; 
+  transform: scale(0.9) rotate(20deg);
+  opacity: 0.7;
 }
