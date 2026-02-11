@@ -96,7 +96,7 @@ export default function CategoryPage({ categoryDetails }) {
   return (
       <Layout categories={categoryDetails?.categories || null}>
         <Head>
-          <title>{categoryName} | CorpCrunch</title>
+          <title>{categoryName} | Corp Crunch</title>
           <meta name="description" content={`${categoryName} news and insights`} />
         </Head>
 

@@ -91,7 +91,7 @@ export default function ProductsPage() {
         }
       `}</style>
       
-      <Layout headTitle="Products - CorpCrunch">
+      <Layout headTitle="Products - Corp Crunch">
         <SocialShareRibbon />
 
         <div className={`${styles.productsPage} ${isDarkMode ? styles.darkMode : styles.lightMode}`}>

@@ -65,7 +65,7 @@ export default function AboutPage() {
 
   if (loading) {
     return (
-      <Layout headTitle="About Us - CorpCrunch">
+      <Layout headTitle="About Us - Corp Crunch">
         <div style={{ 
           minHeight: '100vh', 
           display: 'flex', 
@@ -96,7 +96,7 @@ export default function AboutPage() {
   }
 
   return (
-    <Layout headTitle="About Us - CorpCrunch">
+    <Layout headTitle="About Us - Corp Crunch">
       <SocialShareRibbon />
       <style jsx global>{`
         .about-page-wrapper {

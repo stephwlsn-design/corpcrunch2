@@ -421,7 +421,7 @@ export default function Home({ posts, categories = [] }) {
 
   return (
     // <AuthAndSubscriptionProtected needSubscription={true}>
-    <Layout headerStyle={1} headTitle={"CorpCrunch"} categories={categories}>
+    <Layout headerStyle={1} headTitle={"Corp Crunch"} categories={categories}>
       <style jsx global>{`
         .featured-article-modern {
           position: relative;

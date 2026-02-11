@@ -315,7 +315,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
   return (
     <Layout categories={categories}>
       <Head>
-        <title>Events | CorpCrunch</title>
+        <title>Events | Corp Crunch</title>
         <meta name="description" content="Corp Crunch Events and Intellectual Properties" />
       </Head>
 

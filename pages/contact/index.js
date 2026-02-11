@@ -63,7 +63,7 @@ export default function ContactPage() {
   };
 
   return (
-    <Layout headTitle="Contact Us - CorpCrunch">
+    <Layout headTitle="Contact Us - Corp Crunch">
       <SocialShareRibbon />
       <section className="contact-page-modern pt-80 pb-80">
         <div className="container">

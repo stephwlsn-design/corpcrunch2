@@ -109,7 +109,7 @@ export default function BlogDetails({ postsDetails }) {
   // Get author name from database
   const authorName = postsDetails.authorFirstName && postsDetails.authorLastName
     ? `${postsDetails.authorFirstName} ${postsDetails.authorLastName}`
-    : postsDetails.authorFirstName || postsDetails.authorLastName || 'CorpCrunch Team';
+    : postsDetails.authorFirstName || postsDetails.authorLastName || 'Corp Crunch Team';
   
   // Get trending categories (use backend data, fall back to predefined list of 9)
   const backendTrendingCategories = postsDetails?.trendingCategories || [];
