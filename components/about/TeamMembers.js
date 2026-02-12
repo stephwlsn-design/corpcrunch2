@@ -108,22 +108,22 @@ export default function TeamMembers() {
         {renderSection(
           'Explore our comprehensive team', 
           'EXPERTISE', 
-          'Leadership Team', 
-          'Steph leads our vision as founder, while Alex drives our global outreach through innovative sales and marketing strategies.', 
+          'Our Leadership Team', 
+          'Corp Crunch™ is led by a team of innovators committed to bringing genuine integrity and strategic foresight to the intersection of Media, Martech, and AdTech.', 
           teamMembers
         )}
         {renderSection(
           'Industry Advisors', 
           'STRATEGY', 
           'Strategic Council', 
-          'Our advisors bring decades of experience in global policy and technological innovation to guide our long-term roadmap.', 
+          'Our Advisors being deep-rooted experience in global media, events, and finance, they provide strategic oversight essential to our long-term growth and vision.', 
           advisors
         )}
         {renderSection(
           'Tech Team', 
           'TECH', 
           'Tech Team', 
-          'Our tech team is responsible for the development of our platform and the implementation of our technology.', 
+          'The Tech team at Corp Crunch™ is the engine behind our innovation, building the proprietary tools poised to redefine the industry’s trillion-dollar status quo.', 
           TechTeam
         )}
       </div>
