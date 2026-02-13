@@ -9,12 +9,7 @@ export default function TeamMembers() {
       image: '/assets/img/others/Professional photo (28).png',
       desc: '"The industry doesn\'t need another option. It needs a better standard." Steph Wilson is a visionary leader combining over 12 years of experience in MarComm, branding, and product development with hands-on expertise in AI-driven systems since 2016. Rooted in venture capital and tech, she has led GTM strategies for portfolio companies and driven brand and marketing initiatives at Black Dragon Capital, Compass, METRO, and Ericsson. Steph thrives at the intersection of human insight and technology, spotting the gaps where innovation lags behind opportunity and building solutions that leave a real-world impact. This venture isn\'t just another project; it\'s momentum and joining now means being on the winning side.' 
     },
-    { 
-      name: 'Alexander Wilkinson', 
-      role: 'Senior Sales Director, Middle East', 
-      image: '/assets/img/others/Professional photo (29).png',
-      desc: 'Alex Wilkinson is a seasoned growth leader with 20+ years of experience scaling programmatic advertising revenue, building high-value partnerships, and driving market expansion in emerging regions. He has worked with top-tier brands including MMP Worldwide, Yazle, Universal Studios, and Sony Music Entertainment.' 
-    },
+   
   ];
 
   const advisors = [
