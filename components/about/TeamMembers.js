@@ -5,7 +5,7 @@ export default function TeamMembers() {
   const teamMembers = [
     { 
       name: 'Steph Wilson', 
-      role: 'Founder, CEO & Direct, Middle East, India', 
+      role: 'Founder, CEO & Director, Middle East, India', 
       image: '/assets/img/others/Professional photo (28).png',
       desc: '"The industry doesn\'t need another option. It needs a better standard." Steph Wilson is a visionary leader combining over 12 years of experience in MarComm, branding, and product development with hands-on expertise in AI-driven systems since 2016. Rooted in venture capital and tech, she has led GTM strategies for portfolio companies and driven brand and marketing initiatives at Black Dragon Capital, Compass, METRO, and Ericsson. Steph thrives at the intersection of human insight and technology, spotting the gaps where innovation lags behind opportunity and building solutions that leave a real-world impact. This venture isn\'t just another project; it\'s momentum and joining now means being on the winning side.' 
     },
