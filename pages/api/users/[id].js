@@ -40,14 +40,16 @@ export default async function handler(req, res) {
   if (req.method === 'PATCH') {
     try {
       // Get token from Authorization header
-      const token = req.headers.authorization;
-      
-      if (!token) {
+      const authHeader = req.headers.authorization;
+
+      if (!authHeader) {
         return res.status(401).json({
           success: false,
           message: 'No authentication token provided',
         });
       }
+
+      const token = authHeader.startsWith('Bearer ') ? authHeader.substring(7) : authHeader;
 
       // Verify JWT_SECRET is configured
       if (!process.env.JWT_SECRET) {
@@ -78,30 +80,22 @@ export default async function handler(req, res) {
         });
       }
 
-      // Get update data from body
-      const {
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        address,
-        city,
-        state,
-        bio,
-        profilePicture,
-      } = req.body;
-
-      // Build update object (only include provided fields)
+      // Build update object dynamically from whatever the frontend sends
       const updateData = {};
-      if (firstName !== undefined) updateData.firstName = firstName;
-      if (lastName !== undefined) updateData.lastName = lastName;
-      if (email !== undefined) updateData.email = email;
-      if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
-      if (address !== undefined) updateData.address = address;
-      if (city !== undefined) updateData.city = city;
-      if (state !== undefined) updateData.state = state;
-      if (bio !== undefined) updateData.bio = bio ? bio.slice(0, 150) : bio;
-      if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
+      const allowedFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'address', 'city', 'state', 'bio', 'profilePicture', 'companyName', 'location'];
+
+      Object.keys(req.body).forEach(key => {
+        if (allowedFields.includes(key)) {
+          if (key === 'bio' && req.body[key]) {
+            updateData[key] = req.body[key].slice(0, 150);
+          } else {
+            updateData[key] = req.body[key];
+          }
+        }
+      });
+
+      console.log("BACKEND INCOMING BODY:", req.body);
+      console.log("BACKEND FILTERED UPDATE DATA:", updateData);
 
       // Update user
       const updatedUser = await User.findByIdAndUpdate(
@@ -127,7 +121,7 @@ export default async function handler(req, res) {
       });
     } catch (error) {
       console.error('Error updating user:', error);
-      
+
       // Handle duplicate email error
       if (error.code === 11000) {
         return res.status(400).json({
@@ -149,7 +143,7 @@ export default async function handler(req, res) {
     try {
       // Get token from Authorization header
       const token = req.headers.authorization;
-      
+
       if (!token) {
         return res.status(401).json({
           success: false,

@@ -32,12 +32,11 @@ export const ThemeProvider = ({ children }) => {
           }
         }
       } else {
-        // Check system preference if no saved theme
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          setTheme('dark-theme');
-          document.body.classList.add('dark-theme');
-          document.documentElement.classList.add('dark-theme');
-        }
+        // Set default theme to light if no saved theme
+        setTheme('light-theme');
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+        document.documentElement.classList.remove('dark-theme');
       }
     } catch (e) {
       console.error('Error parsing theme from localStorage', e);

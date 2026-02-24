@@ -11,7 +11,7 @@ import RegionSelector from "@/components/elements/RegionSelector";
 import ThemeToggle from "@/components/elements/ThemeToggle";
 import HamburgerIcon from "@/components/elements/HamburgerIcon";
 import useCategory from "@/hooks/useCategory";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -31,8 +31,14 @@ const Header1 = ({
     isLoading: isLoadingCategory,
   } = useCategory({ enabled: false });
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     fetchCategories();
+    // Check auth status safely on client side
+    if (typeof window !== "undefined") {
+      setIsLoggedIn(!!localStorage.getItem("token") || !!localStorage.getItem("adminToken"));
+    }
   }, []);
 
   const onSigninRoute =
@@ -45,18 +51,18 @@ const Header1 = ({
       <header className="modern-header">
         {/* Decorative Top Border */}
         <div className="header__border-top"></div>
-        
+
         {/* Main Header Content */}
         <div className="header__main">
           <div className="container">
             <div className="header__content">
               {/* Left: Hamburger Menu Button */}
-              <HamburgerIcon 
+              <HamburgerIcon
                 onClick={handleSidebarOpen}
                 ariaLabel="Open sidebar menu"
                 className="header__sidebar-toggle"
               />
-              
+
               {/* Center: Logo and Brand Name (centered) */}
               <div className="header__logo header__logo-centered">
                 <Link
@@ -85,7 +91,7 @@ const Header1 = ({
                   />
                 </Link>
               </div>
-              
+
               {/* Right: Region, Language, Theme, CTA Button & Mobile Menu */}
               <div className="header__actions">
                 {isLoadingCategory ? (
@@ -97,56 +103,73 @@ const Header1 = ({
                   </div>
                 ) : (
                   <>
-                {/* Region Selector */}
-                <div className="header__region-toggle d-none d-md-flex">
-                  <RegionSelector />
-                </div>
-                
-                {/* Language Selector */}
-                <div className="header__language-toggle d-none d-md-flex">
-                  <LanguageSelector />
-                </div>
-                
-                {/* Theme Toggle */}
-                <div className="header__theme-toggle d-none d-md-flex">
-                  <ThemeToggle />
-                </div>
-                
-                {!onSigninRoute && (
-                  <Link 
-                    href="/signin" 
-                    scroll={true}
-                    className="header__cta-btn d-none d-md-inline-flex"
-                    aria-label={t('header.signIn')}
-                  >
-                    <i className="fas fa-user-circle" style={{ fontSize: '20px' }}></i>
-                  </Link>
-                )}
-                
-                {/* Mobile Navigation Hamburger (Right Side) - Only on Mobile */}
-                <div className="header__mobile-nav-toggle">
-                  <HamburgerIcon 
-                    onClick={handleMobileMenuOpen}
-                    ariaLabel="Open navigation menu"
-                  />
-                </div>
-                </>
+                    {/* Region Selector */}
+                    <div className="header__region-toggle d-none d-md-flex">
+                      <RegionSelector />
+                    </div>
+
+                    {/* Language Selector */}
+                    <div className="header__language-toggle d-none d-md-flex">
+                      <LanguageSelector />
+                    </div>
+
+                    {/* Theme Toggle */}
+                    <div className="header__theme-toggle d-none d-md-flex">
+                      <ThemeToggle />
+                    </div>
+
+                    {!onSigninRoute && (
+                      <div className="d-flex align-items-center gap-2">
+                        <Link
+                          href={isLoggedIn ? "/profile" : "/signin"}
+                          scroll={true}
+                          className="header__cta-btn d-none d-md-inline-flex"
+                          aria-label={isLoggedIn ? "Go to profile" : t('header.signIn')}
+                        >
+                          <i className="fas fa-user-circle" style={{ fontSize: '20px' }}></i>
+                        </Link>
+                        {isLoggedIn && (
+                          <button
+                            onClick={() => {
+                              localStorage.removeItem("token");
+                              localStorage.removeItem("adminToken");
+                              window.location.href = "/signin";
+                            }}
+                            className="header__cta-btn d-none d-md-inline-flex"
+                            style={{ border: 'none', cursor: 'pointer', background: 'transparent' }}
+                            aria-label="Logout"
+                            title="Logout"
+                          >
+                            <i className="fas fa-sign-out-alt" style={{ fontSize: '20px' }}></i>
+                          </button>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Mobile Navigation Hamburger (Right Side) - Only on Mobile */}
+                    <div className="header__mobile-nav-toggle">
+                      <HamburgerIcon
+                        onClick={handleMobileMenuOpen}
+                        ariaLabel="Open navigation menu"
+                      />
+                    </div>
+                  </>
                 )}
               </div>
             </div>
           </div>
         </div>
-        
+
         {/* Decorative Bottom Border */}
         <div className="header__border-bottom"></div>
-        
+
         {/* Mobile Menu */}
         <MobileMenu handleMobileMenuClose={handleMobileMenuClose} />
-        
+
         {/* Sidebar */}
         <Sidebar handleSidebarClose={handleSidebarClose} />
       </header>
-      
+
       {/* Sticky Header Spacer */}
       <div
         id="header-fixed-height"

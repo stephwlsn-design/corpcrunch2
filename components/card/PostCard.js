@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
 import Image from "next/image";
-import { formatNumber } from "@/util";
+import { formatNumber, formatViews } from "@/util";
 import { getBlogPostUrl, getCategoryUrl } from "@/util/urlHelpers";
 
 const PostCard = ({ item }) => {
@@ -85,7 +85,7 @@ const PostCard = ({ item }) => {
         </h4>
         <ul className="post__activity list-wrap">
           <li>
-            <i className="fal fa-eye" /> {formatNumber(item?.viewsCount || 0)}
+            <i className="fal fa-eye" /> {formatViews(item?.viewsCount || 0)}
           </li>
           <li>
             <i className="fal fa-share-alt" /> {formatNumber(item?.sharesCount || 0)}

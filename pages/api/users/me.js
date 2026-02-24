@@ -11,14 +11,16 @@ export default async function handler(req, res) {
 
   try {
     // Get token from Authorization header
-    const token = req.headers.authorization;
-    
-    if (!token) {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
       return res.status(401).json({
         success: false,
         message: 'No authentication token provided',
       });
     }
+
+    const token = authHeader.startsWith('Bearer ') ? authHeader.substring(7) : authHeader;
 
     // Verify JWT_SECRET is configured
     if (!process.env.JWT_SECRET) {

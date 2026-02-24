@@ -47,7 +47,7 @@ const CategoryNavigation = ({ categories: serverCategories = null }) => {
     telecom: { name: t('navigation.telecom'), href: "/telecom", isPage: true },
     // Moved from header
     events: { name: t('header.events') || 'Events', href: "/events", isPage: true },
-    'e-magazine': { name: 'E magazine', href: "/e-magazine", isPage: true },
+    // 'e-magazine': { name: 'E magazine', href: "/e-magazine", isPage: true },
     // New categories - These will use ID-based URLs
     'market-analysis': { name: 'Market Analysis', href: null, isPage: false, useIdBased: true },
     'digital-retail': { name: 'Digital Retail', href: null, isPage: false, useIdBased: true },

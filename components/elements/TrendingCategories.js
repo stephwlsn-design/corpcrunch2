@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { formatNumber } from "@/util";
+import { formatNumber, formatViews } from "@/util";
 import { getBlogPostUrl, getCategoryUrl } from "@/util/urlHelpers";
 import styles from "./TrendingCategories.module.css";
 
@@ -47,7 +47,7 @@ export default function TrendingCategories({ categories = [] }) {
                   <div className={styles.categoryCard}>
                     <div className={styles.accentDot}></div>
                     <div className={styles.categoryIndex}>{cardNumber}</div>
-                    
+
                     <div className={styles.categoryContent}>
                       <i className={`${iconClass} ${styles.categoryIcon}`}></i>
                       <h5 className={styles.categoryName}>{category.name}</h5>
@@ -66,39 +66,39 @@ export default function TrendingCategories({ categories = [] }) {
                         // Ensure news has required properties
                         const newsUrl = news?.slug ? getBlogPostUrl(news) : `/blog/${news?.slug || news?._id || ''}`;
                         return (
-                        <Link
-                          key={`${news._id || nIdx}-${nIdx}`}
-                          href={newsUrl}
-                          className={styles.newsCardLink}
-                        >
-                          <div className={styles.newsCard}>
-                            {news.bannerImageUrl && (
-                              <div className={styles.newsImage}>
-                                <Image
-                                  src={news.bannerImageUrl}
-                                  alt={news.title}
-                                  fill
-                                  style={{ objectFit: "cover" }}
-                                />
-                              </div>
-                            )}
-                            
-                            <div className={styles.newsContent}>
-                              <h6 className={styles.newsTitle}>{news.title}</h6>
-                              
-                              <div className={styles.newsMeta}>
-                                <span>
-                                  <i className="fas fa-eye"></i>{" "}
-                                  {formatNumber(news.viewsCount || 0)}
-                                </span>
-                                <span>
-                                  <i className="fas fa-share"></i>{" "}
-                                  {formatNumber(news.sharesCount || 0)}
-                                </span>
+                          <Link
+                            key={`${news._id || nIdx}-${nIdx}`}
+                            href={newsUrl}
+                            className={styles.newsCardLink}
+                          >
+                            <div className={styles.newsCard}>
+                              {news.bannerImageUrl && (
+                                <div className={styles.newsImage}>
+                                  <Image
+                                    src={news.bannerImageUrl}
+                                    alt={news.title}
+                                    fill
+                                    style={{ objectFit: "cover" }}
+                                  />
+                                </div>
+                              )}
+
+                              <div className={styles.newsContent}>
+                                <h6 className={styles.newsTitle}>{news.title}</h6>
+
+                                <div className={styles.newsMeta}>
+                                  <span>
+                                    <i className="fas fa-eye"></i>{" "}
+                                    {formatViews(news.viewsCount || 0)}
+                                  </span>
+                                  <span>
+                                    <i className="fas fa-share"></i>{" "}
+                                    {formatNumber(news.sharesCount || 0)}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </Link>
+                          </Link>
                         );
                       })}
                     </div>

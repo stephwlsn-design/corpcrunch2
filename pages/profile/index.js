@@ -17,6 +17,8 @@ const ProfilePage = () => {
     lastName: "",
     email: "",
     phoneNumber: "",
+    companyName: "",
+    location: "",
     address: "",
     city: "",
     state: "",
@@ -33,26 +35,35 @@ const ProfilePage = () => {
           typeof window !== "undefined" &&
           window?.localStorage?.getItem("token");
         if (token) {
-          const { data } = await fetchUserProfile();
-          setUserData(data);
-          setEditedUser({
-            id: data?.id,
-            firstName: data?.firstName,
-            lastName: data?.lastName,
-            email: data?.email,
-            phoneNumber: data?.phoneNumber,
-            address: data?.address,
-            city: data?.city,
-            state: data?.state,
-            bio: data?.bio,
-          });
-
-          setIsLoading(false);
+          const queryResult = await fetchUserProfile();
+          if (queryResult.isSuccess && queryResult.data?.data) {
+            const user = queryResult.data.data;
+            setUserData(user);
+            setEditedUser({
+              id: user?.id,
+              firstName: user?.firstName,
+              lastName: user?.lastName,
+              email: user?.email,
+              phoneNumber: user?.phoneNumber,
+              companyName: user?.companyName,
+              location: user?.location,
+              address: user?.address,
+              city: user?.city,
+              state: user?.state,
+              bio: user?.bio,
+            });
+            setIsLoading(false);
+          } else {
+            localStorage.removeItem("token");
+            window.location.href = `/signin?redirectUrl=${router.pathname}`;
+          }
         } else {
-          router.push(`/signin?redirectUrl=${router.pathname}`);
+          window.location.href = `/signin?redirectUrl=${router.pathname}`;
         }
       } catch (error) {
         console.error("Error fetching user profile:", error);
+        localStorage.removeItem("token");
+        window.location.href = `/signin?redirectUrl=${router.pathname}`;
       }
     };
 
@@ -84,18 +95,23 @@ const ProfilePage = () => {
     try {
       setIsEditingProfileLoading(true);
 
-      const filterObject = Object.keys(editedUser).reduce((acc, key) => {
-        if (editedUser[key]) {
-          acc[key] = editedUser[key];
-        }
-        return acc;
-      }, {});
+      // Pass the fully user-edited object payload, so they can intentionally save empty strings to erase fields
+      const filterObject = { ...editedUser };
+      // Ensure the 'id' field is definitely included for the useEditProfile hook to construct the URL
+      filterObject.id = editedUser.id || userData.id;
 
       const response = await patchUser(filterObject);
-      response && notifySuccess("Profile updated successfully");
-      setIsEditingProfileLoading(false);
-      const { data } = await fetchUserProfile();
-      setUserData(data);
+      if (response && response.success) {
+        notifySuccess("Profile updated successfully");
+        // Refetch to get the latest fresh data from the DB to sync with UI
+        const queryResult = await fetchUserProfile();
+        if (queryResult.isSuccess && queryResult.data?.data) {
+          const freshUser = queryResult.data.data;
+          setUserData(freshUser);
+        }
+      } else {
+        notifyError(response?.message || "Error updating profile");
+      }
     } catch (error) {
       console.error("Error fetching user profile:", error);
       notifyError("Error updating profile");
@@ -112,9 +128,29 @@ const ProfilePage = () => {
   // };
   // console.log("userData: ", userData);
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("adminToken");
     router.push("/signin");
+    if (typeof window !== "undefined") {
+      window.location.reload(); // Hard reload to clear client state
+    }
   };
+
+  if (!userData && isLoading) {
+    return (
+      <AuthAndSubscriptionProtected needSubscription={false}>
+        <Layout>
+          <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
+            <Spinner />
+          </div>
+        </Layout>
+      </AuthAndSubscriptionProtected>
+    );
+  }
+
+  if (!userData && !isLoading) {
+    return null; // Will be redirected by useEffect
+  }
   return (
     <AuthAndSubscriptionProtected needSubscription={false}>
       <Layout>
@@ -267,8 +303,8 @@ const ProfilePage = () => {
                               {userData?.firstName !== null ||
                                 (userData?.firstName !== null &&
                                   userData?.firstName +
-                                    " " +
-                                    userData?.lastName)}
+                                  " " +
+                                  userData?.lastName)}
                             </span>
                           </div>
                         )}
@@ -288,7 +324,7 @@ const ProfilePage = () => {
               </div>
               <div className="profile-card">
                 <div className="profile-card-body">
-                  <h5 className="profile-card-title">Subscription Details</h5>
+
                   <ul className="list-group list-group-flush flex-column">
                     {/* {userData?.isSubscriptionValid ? (
                       <>
@@ -331,7 +367,7 @@ const ProfilePage = () => {
                     </li> */}
                     <li className="profile-list-item d-flex flex-column align-items-center">
                       <button
-                        className="profile-btn-logout"
+                        className="profile-btn-logout mt-3"
                         onClick={handleLogout}
                       >
                         <i className="bi bi-box-arrow-right me-2"></i>
@@ -427,6 +463,42 @@ const ProfilePage = () => {
                               handleUserInputs("phoneNumber", e.target.value)
                             }
                             value={editedUser.phoneNumber || ''}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-12 col-sm-12 col-md-6 col-lg-6">
+                        <div className="mb-3">
+                          <label htmlFor="companyName" className="profile-label">
+                            Company Name
+                          </label>
+                          <input
+                            type="text"
+                            className="profile-input"
+                            id="companyName"
+                            placeholder="Enter your company name"
+                            disabled={isInputDisable}
+                            onChange={(e) =>
+                              handleUserInputs("companyName", e.target.value)
+                            }
+                            value={editedUser.companyName || ''}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-12 col-sm-12 col-md-6 col-lg-6">
+                        <div className="mb-3">
+                          <label htmlFor="location" className="profile-label">
+                            Location
+                          </label>
+                          <input
+                            type="text"
+                            className="profile-input"
+                            id="location"
+                            placeholder="Enter your location"
+                            disabled={isInputDisable}
+                            onChange={(e) =>
+                              handleUserInputs("location", e.target.value)
+                            }
+                            value={editedUser.location || ''}
                           />
                         </div>
                       </div>

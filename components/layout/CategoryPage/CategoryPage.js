@@ -1,7 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import Head from "next/head";
 import Link from "next/link";
-import { formatDate } from "@/util";
+import { formatDate, formatViews } from "@/util";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination } from "swiper";
@@ -43,9 +43,7 @@ export default function CategoryPage({ categoryDetails }) {
               <>
                 #{index + 1} ·{" "}
                 <i className="fas fa-fire" />{" "}
-                {post.viewsCount > 1000
-                  ? (post.viewsCount / 1000).toFixed(1) + "k"
-                  : post.viewsCount}
+                {formatViews(post.viewsCount || 0)}
               </>
             ) : (
               <>{post.createdAt ? new Date(post.createdAt).getFullYear() : '2025'}-Present</>
@@ -69,8 +67,8 @@ export default function CategoryPage({ categoryDetails }) {
           <div className={styles.cardBody}>
             <div className={styles.cardMeta}>
               <span className={styles.cardAuthor}>
-                {post.authorFirstName && post.authorLastName 
-                  ? `${post.authorFirstName} ${post.authorLastName}` 
+                {post.authorFirstName && post.authorLastName
+                  ? `${post.authorFirstName} ${post.authorLastName}`
                   : post.authorFirstName || post.authorLastName || 'Mike Evans'}
               </span>
             </div>
@@ -82,7 +80,7 @@ export default function CategoryPage({ categoryDetails }) {
               </span>
               {variant !== "viewed" && post.viewsCount > 0 && (
                 <span className={styles.cardViews}>
-                  <i className="fas fa-eye" /> {post.viewsCount}
+                  <i className="fas fa-eye" /> {formatViews(post.viewsCount || 0)}
                 </span>
               )}
             </div>
@@ -94,18 +92,18 @@ export default function CategoryPage({ categoryDetails }) {
   );
 
   return (
-      <Layout categories={categoryDetails?.categories || null}>
-        <Head>
-          <title>{categoryName} | Corp Crunch</title>
-          <meta name="description" content={`${categoryName} news and insights`} />
-        </Head>
+    <Layout categories={categoryDetails?.categories || null}>
+      <Head>
+        <title>{categoryName} | Corp Crunch</title>
+        <meta name="description" content={`${categoryName} news and insights`} />
+      </Head>
 
-        <SocialShareRibbon />
+      <SocialShareRibbon />
 
-        <div className="category-page-wrapper">
+      <div className="category-page-wrapper">
         <section className={styles.categoryPage}>
           <div className={styles.container}>
-            
+
             {/* Top Intro Section */}
             <div className={styles.introSection}>
               {/* Left Column: Hero Slider */}
@@ -123,10 +121,10 @@ export default function CategoryPage({ categoryDetails }) {
                       <SwiperSlide key={post._id || index} className={styles.heroSlide}>
                         <Link href={`/blog/${post.slug || post._id}`}>
                           {post.bannerImageUrl && (
-                            <Image 
-                              src={post.bannerImageUrl} 
-                              alt={post.title} 
-                              layout="fill" 
+                            <Image
+                              src={post.bannerImageUrl}
+                              alt={post.title}
+                              layout="fill"
                               className={styles.heroImage}
                             />
                           )}
@@ -191,7 +189,7 @@ export default function CategoryPage({ categoryDetails }) {
                     </div>
                     <div className={`${styles.metricBox} ${styles.metric2}`}>
                       <span className={styles.metricValue}>
-                        {totalViews > 1000 ? (totalViews/1000).toFixed(1) + 'k' : totalViews}
+                        {formatViews(totalViews || 0)}
                       </span>
                       <span className={styles.metricLabel}>Total Views</span>
                     </div>
@@ -208,65 +206,65 @@ export default function CategoryPage({ categoryDetails }) {
             <div className={styles.blueDivider}></div>
 
             <div className={styles.columnsGrid}>
-               {/* Column 1: Trending Articles */}
-               <div className={styles.column}>
-                 <div className={styles.sectionHeader}>
-                   <h2 className={styles.sectionTitle}>Trending Articles</h2>
-                   <div className={styles.blockIcon}>
-                     <i className="fas fa-chevron-down"></i>
-                   </div>
-                 </div>
-                 <div className={styles.sectionDivider}></div>
-                 <div className={styles.articlesList}>
-                   {trendingPosts.length > 0 ? (
-                     trendingPosts.map((post, index) => (
-                       <ArticleCard key={post._id || post.id || index} post={post} index={index} variant="trending" />
-                     ))
-                   ) : (
-                     <div className={styles.emptyState}>No trending articles found.</div>
-                   )}
-                 </div>
-               </div>
+              {/* Column 1: Trending Articles */}
+              <div className={styles.column}>
+                <div className={styles.sectionHeader}>
+                  <h2 className={styles.sectionTitle}>Trending Articles</h2>
+                  <div className={styles.blockIcon}>
+                    <i className="fas fa-chevron-down"></i>
+                  </div>
+                </div>
+                <div className={styles.sectionDivider}></div>
+                <div className={styles.articlesList}>
+                  {trendingPosts.length > 0 ? (
+                    trendingPosts.map((post, index) => (
+                      <ArticleCard key={post._id || post.id || index} post={post} index={index} variant="trending" />
+                    ))
+                  ) : (
+                    <div className={styles.emptyState}>No trending articles found.</div>
+                  )}
+                </div>
+              </div>
 
-               {/* Column 2: Most Viewed */}
-               <div className={styles.column}>
-                 <div className={styles.sectionHeader}>
-                   <h2 className={styles.sectionTitle}>Most Viewed</h2>
-                   <div className={styles.blockIcon}>
-                     <i className="fas fa-chevron-down"></i>
-                   </div>
-                 </div>
-                 <div className={styles.sectionDivider}></div>
-                 <div className={styles.articlesList}>
-                   {mostViewedPosts.length > 0 ? (
-                     mostViewedPosts.map((post, index) => (
-                       <ArticleCard key={post._id || post.id || index} post={post} index={index} variant="viewed" />
-                     ))
-                   ) : (
-                     <div className={styles.emptyState}>No viewed articles found.</div>
-                   )}
-                 </div>
-               </div>
+              {/* Column 2: Most Viewed */}
+              <div className={styles.column}>
+                <div className={styles.sectionHeader}>
+                  <h2 className={styles.sectionTitle}>Most Viewed</h2>
+                  <div className={styles.blockIcon}>
+                    <i className="fas fa-chevron-down"></i>
+                  </div>
+                </div>
+                <div className={styles.sectionDivider}></div>
+                <div className={styles.articlesList}>
+                  {mostViewedPosts.length > 0 ? (
+                    mostViewedPosts.map((post, index) => (
+                      <ArticleCard key={post._id || post.id || index} post={post} index={index} variant="viewed" />
+                    ))
+                  ) : (
+                    <div className={styles.emptyState}>No viewed articles found.</div>
+                  )}
+                </div>
+              </div>
 
-               {/* Column 3: Newest to Oldest */}
-               <div className={styles.column}>
-                 <div className={styles.sectionHeader}>
-                   <h2 className={styles.sectionTitle}>Newest to Oldest</h2>
-                   <div className={styles.blockIcon}>
-                     <i className="fas fa-chevron-down"></i>
-                   </div>
-                 </div>
-                 <div className={styles.sectionDivider}></div>
-                 <div className={styles.articlesList}>
-                   {newestPosts.length > 0 ? (
-                     newestPosts.map((post, index) => (
-                       <ArticleCard key={post._id || post.id || index} post={post} index={index} variant="newest" />
-                     ))
-                   ) : (
-                     <div className={styles.emptyState}>No new articles found.</div>
-                   )}
-                 </div>
-               </div>
+              {/* Column 3: Newest to Oldest */}
+              <div className={styles.column}>
+                <div className={styles.sectionHeader}>
+                  <h2 className={styles.sectionTitle}>Newest to Oldest</h2>
+                  <div className={styles.blockIcon}>
+                    <i className="fas fa-chevron-down"></i>
+                  </div>
+                </div>
+                <div className={styles.sectionDivider}></div>
+                <div className={styles.articlesList}>
+                  {newestPosts.length > 0 ? (
+                    newestPosts.map((post, index) => (
+                      <ArticleCard key={post._id || post.id || index} post={post} index={index} variant="newest" />
+                    ))
+                  ) : (
+                    <div className={styles.emptyState}>No new articles found.</div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </section>

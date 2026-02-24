@@ -21,18 +21,31 @@ export const splitArrayIntoTwo = (array) => {
  */
 export function formatNumber(num) {
   if (!num || num === 0) return "0";
-  
+
   const numValue = typeof num === 'string' ? parseInt(num, 10) : num;
-  
+
   if (isNaN(numValue)) return "0";
-  
+
   if (numValue >= 1000000) {
     return (numValue / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
   }
-  
+
   if (numValue >= 1000) {
     return (numValue / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
   }
-  
+
   return numValue.toLocaleString();
+}
+
+/**
+ * Format view counts to always look like a large number (1000+)
+ * Deterministically inflates based on the actual count to remain stable
+ * @param {number} count - The raw number of views
+ * @returns {string} - Formatted inflated views string e.g. "1,234+"
+ */
+export function formatViews(count) {
+  const num = typeof count === 'number' ? count : parseInt(count) || 0;
+  // Deterministically inflate the number
+  const inflated = 1205 + (num * 17) + (num % 89);
+  return inflated.toLocaleString() + '+';
 }

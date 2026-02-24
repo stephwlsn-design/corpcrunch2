@@ -1,139 +1,41 @@
-import Spinner from "@/components/elements/Spinner";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
 import Layout from "@/components/layout/Layout";
+import Spinner from "@/components/elements/Spinner";
 import axiosInstance from "@/util/axiosInstance";
 import { notifyError, notifySuccess } from "@/util/toast";
-import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { CSSTransition } from "react-transition-group";
+import Link from "next/link";
 
 const SignIn = () => {
-  // email and phone number validation pattern
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const phoneNumberPattern =
-    /^\+(?:\d{1,3})?[ -]?\(?\d{1,4}\)?[ -]?\d{1,4}[ -]?\d{1,4}[ -]?\d{1,4}$/;
-
   const router = useRouter();
-
-  const urlParams = new URLSearchParams(
-    typeof window !== "undefined" ? window.location.search : ""
-  );
+  const urlParams = new URLSearchParams(typeof window !== "undefined" ? window.location.search : "");
   const redirectUrl = urlParams.get("redirectUrl") || "/";
 
   const [isLoading, setIsLoading] = useState(false);
 
   const {
-    register: registerUserInput,
-    handleSubmit: handleSubmitUserInput,
-    formState: { errors: errorsUserInput },
-    getValues,
-    setError: setIdentifierError,
+    register,
+    handleSubmit,
+    formState: { errors },
   } = useForm();
 
-  const {
-    register: registerOtpInput,
-    handleSubmit: handleSubmitOtpInput,
-    formState: { errors: errorsOtpInput },
-  } = useForm();
-
-  const [showOtpInput, setShowOtpInput] = useState(false);
-
-  const validateIdentifier = (identifier) => {
-    const isEmail = emailPattern.test(identifier);
-    const isPhoneNumber = phoneNumberPattern.test(identifier);
-
-    const authData = {};
-
-    if (!isEmail && !isPhoneNumber) {
-      return false;
-    } else if (isEmail) {
-      authData.email = identifier;
-    } else if (isPhoneNumber) {
-      authData.phone = identifier;
-    }
-
-    return authData;
-  };
-
-  const onSubmitUserInput = async (data) => {
+  const onSubmit = async (data) => {
     try {
       setIsLoading(true);
-      const authData = validateIdentifier(data.identifier);
-
-      if (!authData) {
-        setIdentifierError("identifier", {
-          message:
-            "Please enter a valid email address or phone number (with country code i.e +11234567890)",
-        });
-        return;
-      }
-
-      const res = await axiosInstance.post(
-        "/authentication?userType=BLOG_USER",
-        authData
-      );
-
-      if (res.success) {
-        notifySuccess("OTP sent successfully");
-        setShowOtpInput(true);
-      } else {
-        // Prefer backend-provided error message when available
-        const message =
-          res.message || "Failed to send OTP. Please check your details and try again.";
-        notifyError(message);
-      }
-    } catch (err) {
-      const message =
-        err?.response?.data?.message ||
-        (err instanceof Error ? err.message : null) ||
-        "Something went wrong, please try again";
-      notifyError(message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const onSubmitOtpInput = async ({ otp }) => {
-    try {
-      setIsLoading(true);
-
-      const { identifier } = getValues();
-      const authData = validateIdentifier(identifier);
-
-      if (!authData) {
-        notifyError(
-          "Your session seems invalid. Please go back and re-enter your email or phone number."
-        );
-        return;
-      }
-
-      const res = await axiosInstance.post(
-        "/authentication?userType=BLOG_USER",
-        {
-          ...(authData || {}),
-          otp,
-        }
-      );
+      const res = await axiosInstance.post("/auth/login", data);
 
       if (res.success) {
         notifySuccess("Logged in successfully");
         if (res.token) {
           localStorage.setItem("token", res.token);
         }
-        if (/\/blog\/\w+/.test(redirectUrl)) {
-          router.push(`/subscribe?redirectUrl=${redirectUrl}`);
-        } else {
-          router.push(redirectUrl);
-        }
+        window.location.href = redirectUrl;
       } else {
-        const message =
-          res.message || "Failed to verify OTP, please try again";
-        notifyError(message);
+        notifyError(res.message || "Failed to log in. Please check your credentials.");
       }
     } catch (err) {
-      const message =
-        err?.response?.data?.message ||
-        "Failed to verify OTP, please try again";
+      const message = err?.response?.data?.message || "Failed to log in, please try again";
       notifyError(message);
     } finally {
       setIsLoading(false);
@@ -148,123 +50,123 @@ const SignIn = () => {
 
   return (
     <Layout>
-      <div
-        id="videoLoader"
-        style={{
-          position: "absolute",
-          width: "80%",
-          height: "100%",
-          transform: "translate(-55%, -50%)",
-          top: "54%",
-          left: "45%",
-          zIndex: "-3",
-          borderRadius: "12px",
-          overflow: "hidden",
-          background: "black",
-        }}
-        className="full-width"
-      >
-        <video
-          className={"w-[100vw] h-[100vh]"}
-          src="/assets/video/ccbg.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{
-            objectFit: "cover",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          <source src="/assets/video/ccbg.mp4" type="video/mp4" />
-        </video>
-      </div>
-      <div style={{ marginTop: "0px" }} className=" 	full-width signin-form">
-        {!showOtpInput && (
-          <form
-            style={{
-              boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.2)",
-              padding: "1.5rem",
-              borderRadius: "5px",
-              margin: "2rem 0",
-            }}
-            onSubmit={handleSubmitUserInput(onSubmitUserInput)}
-            className="mt-3 full-width signInForm "
-          >
-            <h1>Single Sign-On</h1>
-            <div className={`mb-3 full-width`}>
-              <label htmlFor="content" className="form-label">
-                Phone Number or Email
-              </label>
-              <input
-                type="text"
-                className="form-control full-width"
-                placeholder="Enter Phone Number or Email"
-                {...registerUserInput("identifier", {
-                  required: "Phone Number or Email is required",
-                })}
-              />
-              <p className="text-danger" style={{ height: "auto" }}>
-                {errorsUserInput.identifier && (
-                  <>{errorsUserInput.identifier.message}</>
-                )}
-              </p>
-            </div>
-            <button
-              disabled={isLoading}
-              type="submit"
-              className="submitBtn me-2 full-width"
-            >
-              {isLoading ? <Spinner size="small" /> : "Next"}
-            </button>
-          </form>
-        )}
+      <style jsx>{`
+        .auth-container {
+          position: relative;
+          min-height: calc(100vh - 180px); /* Fill space between header and footer */
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem 1rem;
+        }
 
-        <CSSTransition
-          in={showOtpInput}
-          timeout={300}
-          classNames="fade"
-          unmountOnExit
-        >
-          <form
-            onSubmit={handleSubmitOtpInput(onSubmitOtpInput)}
-            style={{
-              boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.2)",
-              padding: "1.5rem",
-              borderRadius: "5px",
-              margin: "2rem 0",
-            }}
-            className=" full-width signInForm"
-          >
-            <div className="mb-3 full-width">
-              <p>
-                You will receive a code via SMS or Email. Please enter it below.
-              </p>
+        .video-bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          object-fit: cover;
+          z-index: -3;
+          background: black;
+          pointer-events: none;
+        }
+
+        .auth-card {
+          background: rgba(255, 255, 255, 0.85); /* Glass effect */
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+          border-radius: 16px;
+          padding: 2.5rem 2rem;
+          width: 100%;
+          max-width: 450px;
+          z-index: 1;
+        }
+        
+        /* Dark mode adjustments if needed */
+        :global(.dark-theme) .auth-card {
+            background: rgba(30, 30, 30, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        :global(.dark-theme) .auth-card h1, 
+        :global(.dark-theme) .auth-card label, 
+        :global(.dark-theme) .auth-card span {
+            color: #fff !important;
+        }
+
+        .auth-card input:focus {
+            outline: none !important;
+            border-color: #ccc !important;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1) !important;
+        }
+
+        .auth-card h1 {
+          text-align: center;
+          margin-bottom: 1.5rem;
+          font-weight: 700;
+        }
+
+        .auth-btn {
+          background-color: var(--tg-theme-secondary, #2551e7);
+          color: #fff;
+          border: none;
+          padding: 0.75rem;
+          border-radius: 8px;
+          font-weight: 600;
+          width: 100%;
+          transition: all 0.3s ease;
+          margin-top: 1rem;
+        }
+
+        .auth-btn:hover {
+          background-color: var(--tg-theme-primary, #ff0292);
+          transform: translateY(-2px);
+        }
+      `}</style>
+
+      <video
+        className="video-bg"
+        src="/assets/video/ccbg.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+
+      <div className="auth-container">
+        <div className="auth-card">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <h1>Log In</h1>
+
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input type="email" className="form-control" placeholder="Email Address"
+                {...register("email", { required: "Email is required" })} />
+              {errors.email && <p className="text-danger mt-1 mb-0">{errors.email.message}</p>}
             </div>
-            <div className="mb-3 full-width">
-              <label htmlFor="content" className="form-label">
-                OTP (One-Time Password)
-              </label>
-              <input
-                type="text"
-                className="form-control full-width"
-                placeholder="Enter OTP"
-                {...registerOtpInput("otp", { required: true })}
-              />
-              <p className="text-danger">
-                {errorsOtpInput.otp && <>OTP is required</>}
-              </p>
+
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <input type="password" className="form-control" placeholder="Password"
+                {...register("password", { required: "Password is required" })} />
+              {errors.password && <p className="text-danger mt-1 mb-0">{errors.password.message}</p>}
             </div>
-            <button
-              disabled={isLoading}
-              type="submit"
-              className="submitBtn me-2 full-width"
-            >
-              {isLoading ? <Spinner size="small" /> : "Submit"}
+
+            <button disabled={isLoading} type="submit" className="auth-btn">
+              {isLoading ? <Spinner size="small" /> : "Sign In"}
             </button>
+
+            <div className="mt-4 text-center">
+              <span style={{ color: "var(--tg-heading-color, #111)", fontSize: "1rem" }}>Don't have an account? </span>
+              <Link href="/register" style={{ color: "var(--tg-theme-secondary, #2551e7)", textDecoration: "none", fontWeight: "600" }}>Register here</Link>
+            </div>
           </form>
-        </CSSTransition>
+        </div>
       </div>
     </Layout>
   );

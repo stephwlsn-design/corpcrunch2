@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./BlogStatsSection.module.css";
+import { formatViews } from "@/util";
 
 export default function BlogStatsSection({
   quote,
@@ -16,7 +17,7 @@ export default function BlogStatsSection({
     quote && typeof quote === "string" && quote.trim().length > 0
       ? quote.trim()
       : quoteFallback ||
-        "We craft sharp, insight-led stories that help brands grow, connect, and stand out.";
+      "We craft sharp, insight-led stories that help brands grow, connect, and stand out.";
 
   const safeWhyThisMatters =
     whyThisMatters ||
@@ -68,7 +69,7 @@ export default function BlogStatsSection({
                 <span>Views</span>
               </div>
               <div className={styles.statNumber}>
-                {views.toLocaleString()}+
+                {formatViews(views)}
               </div>
             </div>
           )}

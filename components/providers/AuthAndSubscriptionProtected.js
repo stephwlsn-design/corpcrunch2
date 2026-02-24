@@ -47,6 +47,7 @@ export default function AuthAndSubscriptionProtected({
   }, []);
 
   if (isLoading || !isAuthenticated) {
+    return <Preloader />;
   }
 
   if (needSubscription && !isSubscribed) {

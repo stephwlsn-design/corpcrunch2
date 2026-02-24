@@ -50,7 +50,7 @@ export default function Sidebar({ handleSidebarClose }) {
     'Technology': { icon: 'fas fa-microchip', desc: 'Innovations' },
     'Automobile': { icon: 'fas fa-car', desc: 'Automotive' },
     'Sustainability': { icon: 'fas fa-leaf', desc: 'Environmental' },
-    
+
     'Retail': { icon: 'fas fa-shopping-bag', desc: 'Commerce' },
     'FMCG': { icon: 'fas fa-box', desc: 'Consumer Goods' },
     'Finance': { icon: 'fas fa-chart-line', desc: 'Markets' },
@@ -93,17 +93,37 @@ export default function Sidebar({ handleSidebarClose }) {
           {/* User & Theme Actions */}
           <div className="d-flex align-items-center justify-content-between mb-4 pb-3" style={{ borderBottom: '1px solid #eee' }}>
             <ThemeSwitch />
-            <Link 
-              href={isUserLogin ? "/profile" : "/signin"} 
-              onClick={handleSidebarClose}
-              style={{
-                width: '40px', height: '40px', borderRadius: '50%',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                backgroundColor: '#f8f9fa', border: '1px solid #eee', color: '#2551e7'
-              }}
-            >
-              <i className="fas fa-user" />
-            </Link>
+            <div className="d-flex align-items-center gap-2">
+              <Link
+                href={isUserLogin ? "/profile" : "/signin"}
+                onClick={handleSidebarClose}
+                style={{
+                  width: '40px', height: '40px', borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  backgroundColor: '#f8f9fa', border: '1px solid #eee', color: '#2551e7'
+                }}
+              >
+                <i className="fas fa-user" />
+              </Link>
+              {isUserLogin && (
+                <button
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("adminToken");
+                    window.location.href = "/signin";
+                  }}
+                  style={{
+                    width: '40px', height: '40px', borderRadius: '50%',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    backgroundColor: '#fff0f0', border: '1px solid #ffcccc', color: '#dc3545',
+                    cursor: 'pointer'
+                  }}
+                  title="Logout"
+                >
+                  <i className="fas fa-sign-out-alt" />
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Categories Section */}
@@ -113,7 +133,7 @@ export default function Sidebar({ handleSidebarClose }) {
               {categoryOrder.map((catName) => {
                 const config = categoryConfig[catName];
                 return (
-                  <Link 
+                  <Link
                     key={catName}
                     href={getCategoryLink(catName)}
                     onClick={handleSidebarClose}
@@ -152,9 +172,9 @@ export default function Sidebar({ handleSidebarClose }) {
                   <div key={index} className="d-flex flex-column gap-2 px-1">
                     {pair.map(({ id, name, logoUrl }) => (
                       <Link key={id} href={`/company/${id}`} onClick={handleSidebarClose}>
-                        <div style={{ 
-                          padding: '10px', borderRadius: '8px', border: '1px solid #eee', 
-                          display: 'flex', justifyContent: 'center', backgroundColor: '#fff' 
+                        <div style={{
+                          padding: '10px', borderRadius: '8px', border: '1px solid #eee',
+                          display: 'flex', justifyContent: 'center', backgroundColor: '#fff'
                         }}>
                           <img alt={name} src={logoUrl} style={{ height: '25px', width: 'auto', objectFit: 'contain' }} />
                         </div>
@@ -174,7 +194,7 @@ export default function Sidebar({ handleSidebarClose }) {
               <li className="mb-2"><i className="fas fa-phone me-2" style={{ color: '#2551e7' }} /> +91 7769892323</li>
               <li className="mb-2"><i className="fas fa-map-marker-alt me-2" style={{ color: '#2551e7' }} /> Dubai, UAE</li>
             </ul>
-           
+
           </div>
         </div>
       </div>
