@@ -419,8 +419,7 @@ export default function ModernHero({ videoUrl, stats }) {
           {/* Bottom Message Text */}
           <div className={styles.messageBox}>
             <p>
-              Feature in Corp Crunch is a great Honor. Drive engagement, boost
-              reputation, and track measurable ROI.
+            To be featured in Corp Crunch is a great honor. Drive engagement, boost reputation, and track measurable ROI.
             </p>
           </div>
 
