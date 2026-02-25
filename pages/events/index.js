@@ -73,7 +73,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
       year: "Year 1",
       period: "2026 – UAE",
       title: "AIX NOW: ADOPTION & READINESS",
-      description: "How could Switzerland's changing digital landscape impact socioeconomic systems across the world in the next three decades?",
+      description: "Building AI foundations across industries and governance.",
       gradient: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
       circleColor: "#1e40af",
       image: "/assets/img/blog/blog01.jpg", 
@@ -84,7 +84,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
         eventDate: "2026-11-15T10:00:00",
         location: "UAE, GCC",
         description: "The C3 AIX Summit is a premier gathering of over 1,500 global leaders in artificial intelligence, fintech, and medtech innovation. Designed as a convergence point for enterprises, startups, investors, and policymakers.",
-        content: `<div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">Summit Overview</h3><p>The Global AI Trilogy is a three-year strategic event series designed to chart the evolution of AI from adoption to scale to global leadership.</p></div><div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">Why Partner With Us?</h3><ul class="${styles.contentList}"><li><strong>Impressions:</strong> 15M+ impressions across social and digital platforms.</li><li><strong>Reach:</strong> 7.5M reach through multi-channel visibility.</li><li><strong>Media Mentions:</strong> 1,200+ organic mentions in regional & global outlets.</li><li><strong>Brand Exposure:</strong> Multi-channel visibility worth $250,000+.</li><li><strong>Sales Impact:</strong> $3.5M in sales generated with an average ROI of 580%.</li></ul></div><div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">High-Impact Audience</h3><p>Our audience influences multi-million dollar AI budgets:</p><ul class="${styles.contentList}"><li><strong>20%:</strong> CEOs, CTOs, CIOs, CMOs, CFOs</li><li><strong>15%:</strong> Investors & Venture Capitalists</li><li><strong>12%:</strong> Heads of AI, ML & Data Science</li><li><strong>10%:</strong> Tech Founders & Innovators</li><li><strong>10%:</strong> Academics & Researchers</li></ul></div>`,
+        content: `<div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">Summit Overview</h3><p>The Global Ethical AI Trilogy is a three-year strategic event series designed to chart the evolution of AI from adoption to scale to global leadership.</p></div><div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">Why Partner With Us?</h3><ul class="${styles.contentList}"><li><strong>Impressions:</strong> 15M+ impressions across social and digital platforms.</li><li><strong>Reach:</strong> 7.5M reach through multi-channel visibility.</li><li><strong>Media Mentions:</strong> 1,200+ organic mentions in regional & global outlets.</li><li><strong>Brand Exposure:</strong> Multi-channel visibility worth $250,000+.</li><li><strong>Sales Impact:</strong> $3.5M in sales generated with an average ROI of 580%.</li></ul></div><div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">High-Impact Audience</h3><p>Our audience influences multi-million dollar AI budgets:</p><ul class="${styles.contentList}"><li><strong>20%:</strong> CEOs, CTOs, CIOs, CMOs, CFOs</li><li><strong>15%:</strong> Investors & Venture Capitalists</li><li><strong>12%:</strong> Heads of AI, ML & Data Science</li><li><strong>10%:</strong> Tech Founders & Innovators</li><li><strong>10%:</strong> Academics & Researchers</li></ul></div>`,
         agenda: {
           day1: [
             { time: "10:00 – 10:30", session: "Registration & Welcome Coffee", type: "Networking" },
@@ -111,7 +111,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
       year: "Year 2",
       period: "2027 – GCC",
       title: "AI FUTURES: SCALE & CONVERGENCE",
-      description: "Scaling AI adoption, integrating AI with frontier technologies. Innovation-driven with strong R&D.",
+      description: "Scaling AI adoption, integrating AI with frontier technologies.",
       gradient: "linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)",
       circleColor: "#3b82f6",
       isMiddle: true,
@@ -122,7 +122,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
         eventDate: "2027-11-15T10:00:00",
         location: "GCC (TBD)",
         description: "Scaling operations and converging technologies to create unified digital ecosystems. This second edition draws transatlantic networks and focuses on Industry 5.0.",
-        content: `<div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">Strategic Trilogy: Scale & Convergence</h3><p>The Global AI Trilogy's second chapter shifts focus from foundation to expansion.</p></div><div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">Core Themes</h3><ul class="${styles.contentList}"><li><strong>Scaling Adoption:</strong> Integrating AI with frontier technologies across sectors.</li><li><strong>Industry 5.0:</strong> Human-centric AI collaboration and sustainable industrial evolution.</li><li><strong>Policy & R&D:</strong> Heavy emphasis on regulatory frameworks and cross-border innovation.</li></ul></div><div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">Partnership Value</h3><ul class="${styles.contentList}"><li><strong>Multi-Country Representation:</strong> Access to a diverse, global mixed ecosystem.</li><li><strong>Early Policy Visibility:</strong> Insight into global AI policy, investments, and industry adoption.</li><li><strong>ROI Potential:</strong> High-intent buyers with potential returns between 500–1200%.</li></ul></div>`,
+        content: `<div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">Strategic Trilogy: Scale & Convergence</h3><p>The Global Ethical AI Trilogy's second chapter shifts focus from foundation to expansion.</p></div><div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">Core Themes</h3><ul class="${styles.contentList}"><li><strong>Scaling Adoption:</strong> Integrating AI with frontier technologies across sectors.</li><li><strong>Industry 5.0:</strong> Human-centric AI collaboration and sustainable industrial evolution.</li><li><strong>Policy & R&D:</strong> Heavy emphasis on regulatory frameworks and cross-border innovation.</li></ul></div><div class="${styles.contentSection}"><h3 class="${styles.contentHeading}">Partnership Value</h3><ul class="${styles.contentList}"><li><strong>Multi-Country Representation:</strong> Access to a diverse, global mixed ecosystem.</li><li><strong>Early Policy Visibility:</strong> Insight into global AI policy, investments, and industry adoption.</li><li><strong>ROI Potential:</strong> High-intent buyers with potential returns between 500–1200%.</li></ul></div>`,
         agenda: {
           day1: [
             { time: "10:00", session: "Scale-up Summit Kickoff", type: "Keynote" },
@@ -136,7 +136,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
       year: "Year 3",
       period: "2028 – GCC",
       title: "AI NEXT MILLENIUM: GLOBAL LEADERSHIP",
-      description: "Shaping long-term AI futures and leadership in global governance. Global tech powerhouse.",
+      description: "Shaping long-term AI futures and leadership in global governance.",
       gradient: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
       circleColor: "#1e40af",
       image: "/assets/img/blog/blog02.jpg",
@@ -324,7 +324,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
       <div className={styles.eventsPage}>
         {/* Year Cards Section - Instagram Story Style */}
         <div className={styles.HeroTitle}>
-  <h1>C3 AIX Summit A Global AI Trilogy</h1>
+  <h1>C3 AIX Summit A Global Ethical AI Trilogy</h1>
   <p className={styles.heroRevealLabel}>
     A Three-Year Strategic AI Summit Series for Industry, Policy, and Innovation
   </p>
@@ -385,7 +385,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                     {/* Footer Area with Description and Arrow */}
                     <div className={styles.cardBottomArea}>
                       <div className={styles.cardMetaInfo}>
-                        <span className={styles.verticalBrand}>Global AI Trilogy</span>
+                        <span className={styles.verticalBrand}>Global Ethical AI Trilogy</span>
                         <span className={styles.verticalReport}>Series</span>
                       </div>
                       
@@ -490,7 +490,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                     <div className={styles.actionCardContent}>
                       <span className={styles.actionLabel}>Attendance</span>
                       <h3>DELEGATE TICKETS</h3>
-                      <p>Join the elite circle of AI founders, investors, and policymakers for the Global AI Trilogy.</p>
+                      <p>Join the elite circle of AI founders, investors, and policymakers for the Global Ethical AI Trilogy.</p>
                       <div className={styles.actionStats}>
                         <div className={styles.aStat}><strong>1.5K+</strong><span>ATTENDEES</span></div>
                         <div className={styles.aStat}><strong>VIP</strong><span>ACCESS</span></div>
@@ -1048,7 +1048,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
             <div className={styles.ticketModalContent}>
               <button className={styles.ticketModalClose} onClick={() => setShowTicketModal(false)}>×</button>
               <h2 className={styles.ticketModalTitle}>DELEGATE TICKETS</h2>
-              <p className={styles.ticketModalSubtitle}>Select your ticket type for the Global AI Trilogy</p>
+              <p className={styles.ticketModalSubtitle}>Select your ticket type for the Global Ethical AI Trilogy</p>
               
               <div className={styles.ticketOptions}>
                 {[
@@ -1101,7 +1101,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                           body: JSON.stringify({
                             ticketType: ticket.name,
                             amount: ticket.price * 100, // Convert to cents
-                            eventName: 'Global AI Trilogy - C3 AIX Summit',
+                            eventName: 'Global Ethical AI Trilogy - C3 AIX Summit',
                             quantity: 1
                           }),
                         });
