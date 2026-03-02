@@ -134,8 +134,10 @@
 
 .gridCell[data-position="top-left"] {
   grid-column: 1;
-  grid-row: 1 / 3; /* Span both rows */
-  border-bottom: none; /* No bottom border since it spans both rows */
+  grid-row: 1 / 3;
+  /* Span both rows */
+  border-bottom: none;
+  /* No bottom border since it spans both rows */
   align-items: flex-start;
   justify-content: flex-start;
   padding-top: 4.5rem;
@@ -292,7 +294,7 @@
 /* Mobile First - Responsive */
 @media (max-width: 767.98px) {
   .numbersSection {
-    padding: 2rem 1rem;
+    min-height: auto;
   }
 
   .verticalTextLeft,
@@ -308,9 +310,17 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     min-height: auto;
+    border: 1px solid #2551e7;
   }
 
+  :global(.dark-theme) .mainGrid {
+    border-color: #4d6feb;
+  }
+
+  /* Reset all grid placements to single column flow */
   .gridCell {
+    grid-column: 1 !important;
+    grid-row: auto !important;
     padding: 2rem 1.5rem;
     border-right: none;
     border-bottom: 1px solid #2551e7;
@@ -320,8 +330,43 @@
     border-color: #4d6feb;
   }
 
-  .gridCell:last-child {
+  /* Remove bottom border from the very last cell */
+  .gridCell[data-position="bottom-right"] {
     border-bottom: none;
+  }
+
+  /* Keep top-left (title cell) normal — no row span on mobile */
+  .gridCell[data-position="top-left"] {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 2rem;
+    padding-left: 1.5rem;
+  }
+
+  /* Stack the two bottom-left stats vertically */
+  .bottomLeftStats {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .bottomLeftStats .statCard:first-child {
+    border-right: none;
+    border-bottom: 1px solid #2551e7;
+    padding-right: 0;
+    padding-bottom: 1.5rem;
+  }
+
+  :global(.dark-theme) .bottomLeftStats .statCard:first-child {
+    border-color: #4d6feb;
+  }
+
+  .bottomLeftStats .statCard:last-child {
+    padding-left: 0;
+  }
+
+  /* Hide the empty bottom-middle cell on mobile */
+  .gridCell[data-position="bottom-middle"] {
+    display: none;
   }
 
   .title {
@@ -351,4 +396,3 @@
     grid-column: 1 / -1;
   }
 }
-

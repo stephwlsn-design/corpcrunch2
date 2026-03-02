@@ -144,17 +144,18 @@ const RegionSelector = () => {
           cursor: pointer;
           transition: all 0.2s ease;
           font-size: 14px;
-          color: var(--text-color, #333);
+          color: #333 !important;
+          background: transparent !important;
         }
 
         .region-selector__item:hover {
-          background: rgba(37, 81, 231, 0.05);
-          color: #2551e7;
+          background: rgba(37, 81, 231, 0.05) !important;
+          color: #2551e7 !important;
         }
 
         .region-selector__item.active {
-          background: rgba(37, 81, 231, 0.1);
-          color: #2551e7;
+          background: rgba(37, 81, 231, 0.1) !important;
+          color: #2551e7 !important;
           font-weight: 600;
         }
 
@@ -206,12 +207,35 @@ const RegionSelector = () => {
           }
 
           .region-selector__dropdown {
-            min-width: 150px;
+            position: fixed !important;
+            bottom: 120px !important;
+            left: 50% !important;
+            right: auto !important;
+            top: auto !important;
+            transform: translateX(-50%) !important;
+            min-width: 220px !important;
+            z-index: 99999 !important;
+            background: #ffffff !important;
+            border-radius: 12px !important;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2) !important;
           }
 
           .region-selector__item {
-            padding: 8px 12px;
-            font-size: 13px;
+            padding: 14px 20px !important;
+            font-size: 15px !important;
+            color: #111 !important;
+            background: transparent !important;
+          }
+
+          .region-selector__item:hover {
+            background: #f0f4ff !important;
+            color: #2551e7 !important;
+          }
+
+          .region-selector__item.active {
+            background: #e8eeff !important;
+            color: #2551e7 !important;
+            font-weight: 700 !important;
           }
         }
       `}</style>

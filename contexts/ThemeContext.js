@@ -2,7 +2,13 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    return { theme: 'light-theme', toggleTheme: () => { }, mounted: false };
+  }
+  return context;
+};
 
 export const ThemeProvider = ({ children }) => {
   // Initialize with 'light-theme' to prevent hydration mismatch
@@ -12,9 +18,9 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     // Only run on client side
     if (typeof window === 'undefined') return;
-    
+
     setMounted(true);
-    
+
     // Get saved theme from localStorage
     try {
       const savedTheme = localStorage.getItem('togglETHeme');
@@ -46,12 +52,12 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     // Only update DOM after component is mounted
     if (!mounted || typeof window === 'undefined') return;
-    
+
     try {
       localStorage.setItem('togglETHeme', JSON.stringify(theme));
       document.body.classList.remove('light-theme', 'dark-theme');
       document.body.classList.add(theme);
-      
+
       if (theme === 'dark-theme') {
         document.documentElement.classList.add('dark-theme');
       } else {

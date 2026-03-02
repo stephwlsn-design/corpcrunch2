@@ -1,7 +1,6 @@
 import { postPayableAmount } from "@/services/payment";
 import Spinner from "@/components/elements/Spinner";
 import Layout from "@/components/layout/Layout";
-import PaymentStatusModal from "@/components/Modals/PaymentStatusModal";
 import AuthAndSubscriptionProtected from "@/components/providers/AuthAndSubscriptionProtected";
 import { PAYMENT_STATUS, planDetails } from "@/config/constants";
 import useProfile from "@/hooks/useProfile";
@@ -185,14 +184,6 @@ const PaymentPlans = () => {
             </div>
           </div>
         </div>
-        {showStatusModal && (
-          <PaymentStatusModal
-            orderId={data?.orderID}
-            paymentAmount={data?.orderAmount}
-            status={paymentStatus}
-            setShowStatusModal={setShowStatusModal}
-          />
-        )}
       </Layout>
     </AuthAndSubscriptionProtected>
   );

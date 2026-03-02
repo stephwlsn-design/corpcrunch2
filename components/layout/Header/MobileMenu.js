@@ -69,10 +69,10 @@ const MobileMenu = ({ handleMobileMenuClose }) => {
           </div>
           <div className="nav-logo">
             <Link href="/" scroll={true} className="logo-dark">
-              <img src="/assets/img/logo/logo.png" alt="Logo" />
+              <img src="/assets/img/logo/Corp Crunch Black Logo.png" alt="CorpCrunch Logo" style={{ maxWidth: '180px' }} />
             </Link>
             <Link href="/" scroll={true} className="logo-light">
-              <img src="/assets/img/logo/w_logo.png" alt="Logo" />
+              <img src="/assets/img/logo/Corp Crunch White Logo.png" alt="CorpCrunch Logo" style={{ maxWidth: '180px' }} />
             </Link>
           </div>
           <div className="tgmobile__menu-outer">
@@ -86,8 +86,8 @@ const MobileMenu = ({ handleMobileMenuClose }) => {
               <li className={router.pathname === '/events' ? 'active' : ''}>
                 <Link href="/events" scroll={true} onClick={handleMobileMenuClose}>{t('header.events')}</Link>
               </li>
-              <li className={router.pathname === '/e-magazine' ? 'active' : ''}>
-                <Link href="/e-magazine" scroll={true} onClick={handleMobileMenuClose}>E magazine</Link>
+              <li className={router.pathname === '/about' ? 'active' : ''}>
+                <Link href="/about" scroll={true} onClick={handleMobileMenuClose}>About</Link>
               </li>
               <li className={router.pathname === '/contact' ? 'active' : ''}>
                 <Link href="/contact" scroll={true} onClick={handleMobileMenuClose}>{t('header.contact')}</Link>
@@ -102,17 +102,20 @@ const MobileMenu = ({ handleMobileMenuClose }) => {
                 <Link href="/make-article-request" scroll={true} onClick={handleMobileMenuClose}>{t('footer.requestArticle')}</Link>
               </li>
             </ul>
-            
+
             {/* Mobile Language, Region and Theme Controls */}
             <div className="mobile-menu-controls">
-              <div className="mobile-control-item">
+              <div className="mobile-control-item" style={{ flexDirection: 'column', gap: '4px' }}>
                 <RegionSelector />
+                <span style={{ fontSize: '10px', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Region</span>
               </div>
-              <div className="mobile-control-item">
+              <div className="mobile-control-item" style={{ flexDirection: 'column', gap: '4px' }}>
                 <LanguageSelector />
+                <span style={{ fontSize: '10px', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Language</span>
               </div>
-              <div className="mobile-control-item">
+              <div className="mobile-control-item" style={{ flexDirection: 'column', gap: '4px' }}>
                 <ThemeToggle />
+                <span style={{ fontSize: '10px', fontWeight: '600', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Theme</span>
               </div>
             </div>
           </div>

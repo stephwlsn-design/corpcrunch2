@@ -4118,6 +4118,8 @@
   .previousEventsGallery {
     --slice-width: 40px;
     --active-width: 280px;
+    border-radius: 24px;
+    padding: 60px 0;
   }
 
   .carouselWrapper {
@@ -4130,5 +4132,427 @@
 
   .eventNode.isActive {
     height: 400px;
+  }
+}
+
+/* =====================================================
+   COMPREHENSIVE EVENTS PAGE MOBILE FIXES
+   ===================================================== */
+
+/* --- Hero Title Section --- */
+@media (max-width: 768px) {
+  .HeroTitle {
+    font-size: clamp(28px, 8vw, 40px);
+    padding: 20px 16px 10px;
+    line-height: 1.15;
+  }
+
+  .HeroTitle h1 {
+    font-size: clamp(28px, 8vw, 40px);
+  }
+
+  .heroRevealLabel {
+    font-size: 15px;
+    margin-top: 8px;
+    padding: 0 16px;
+  }
+}
+
+/* --- Year Cards Section --- */
+@media (max-width: 768px) {
+  .yearCardsSection {
+    padding: 0 12px 40px;
+    min-height: auto;
+  }
+
+  .yearCardsContainer {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .yearCard {
+    aspect-ratio: auto;
+    min-height: 420px;
+    max-width: 100%;
+    border-radius: 20px;
+  }
+
+  .cardMainContent {
+    padding: 24px;
+  }
+
+  .cardTitle {
+    font-size: 22px;
+    letter-spacing: -0.5px;
+    margin: 16px 0 16px;
+  }
+
+  .circularImageContainer {
+    width: 160px;
+    height: 160px;
+  }
+
+  /* Half circle card override — prevent overflow */
+  .halfCircleCard .circularImageContainer {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin: 0 auto;
+  }
+
+  .cardTopArea {
+    margin-bottom: 16px;
+  }
+
+  .cardDescription {
+    font-size: 13px;
+  }
+
+  .cardBottomArea {
+    margin-top: 12px;
+  }
+}
+
+/* --- "Be a Part" section / containerthreecards --- */
+@media (max-width: 768px) {
+  .containerthreecards {
+    padding: 0 16px;
+  }
+
+  /* Target the h1 inside containerthreecards via class specificity trick */
+  .containerthreecards h1 {
+    font-size: clamp(24px, 7vw, 36px) !important;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .interactiveActionSection {
+    margin-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .actionCardsGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .actionCard {
+    min-height: 380px;
+    padding: 36px 28px;
+    border-radius: 24px;
+  }
+
+  .actionCard h3 {
+    font-size: 28px;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+
+  .actionCard p {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .actionStats {
+    gap: 24px;
+  }
+
+  .aStat strong {
+    font-size: 24px;
+  }
+
+  .actionBtn {
+    margin-top: 28px;
+    padding: 14px 28px;
+    font-size: 12px;
+  }
+}
+
+/* --- Event Details Section --- */
+@media (max-width: 768px) {
+  .eventDetailsSection {
+    padding: 40px 12px;
+  }
+
+  .detailsHeroReveal {
+    margin-bottom: 40px;
+  }
+
+  .heroRevealTitle {
+    font-size: clamp(22px, 6vw, 32px);
+    margin-bottom: 16px;
+  }
+
+  /* Asymmetrical grid -> single column already at 1024px,
+     but add padding fix for mobile */
+  .asymmetricalGrid {
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .animatedDetailImageWrapper {
+    height: 280px;
+    border-radius: 16px;
+  }
+
+  .glassContentCard {
+    padding: 24px 20px;
+    border-radius: 20px;
+  }
+
+  /* THE IMPACT section */
+  .impactSection {
+    padding: 32px 24px;
+    margin-bottom: 40px;
+    border-radius: 20px;
+  }
+
+  .impactText {
+    font-size: 16px;
+  }
+
+  /* Metrics grid: keep 2 cols on mobile */
+  .staggeredMetricsGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .metricSquare {
+    min-height: 160px;
+    padding: 28px 20px;
+    border-radius: 16px;
+  }
+
+  .metricValue {
+    font-size: 36px;
+    margin-bottom: 8px;
+  }
+
+  /* Timeline */
+  .timelineAgendaSection {
+    margin-bottom: 48px;
+  }
+
+  .timelineTitle {
+    font-size: 24px;
+    margin-bottom: 32px;
+  }
+
+  .timelineContainer {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  /* Audience orbit section */
+  .audienceOrbitSection {
+    flex-direction: column;
+    padding: 48px 20px;
+    border-radius: 24px;
+    margin: 32px 0;
+    gap: 32px;
+    text-align: center;
+  }
+
+  .orbitContainer {
+    width: 280px;
+    height: 280px;
+  }
+
+  .orbitingLabels span {
+    transform: translate(-50%, -50%) rotate(calc(45deg * var(--i))) translateY(-120px);
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .audienceText {
+    max-width: 100%;
+  }
+
+  .audienceText h3 {
+    font-size: clamp(28px, 8vw, 48px);
+    letter-spacing: -1px;
+  }
+
+  .audienceText p {
+    font-size: 16px;
+  }
+
+  /* Awards section */
+  .awardsSection {
+    padding: 48px 16px;
+    border-radius: 24px;
+  }
+
+  .awardsTitle {
+    font-size: 28px;
+    margin-bottom: 40px;
+    letter-spacing: -0.5px;
+  }
+
+  .awardsGridReveal {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .awardCardGlass {
+    padding: 20px;
+  }
+
+  /* Partnerships section */
+  .partnershipsMainSection {
+    padding: 48px 0;
+  }
+
+  .partnershipHeader {
+    margin-bottom: 40px;
+    padding: 0 16px;
+  }
+
+  .primaryTierCard {
+    padding: 32px 24px;
+    border-radius: 24px;
+  }
+
+  .tierTop h3 {
+    font-size: 22px;
+  }
+
+  .mainPrice {
+    font-size: 32px;
+  }
+
+  /* Additional partners */
+  .additionalPartnershipsArea {
+    margin-top: 48px;
+  }
+
+  .additionalPartnersGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Stats ribbon */
+  .statsRibbonSection {
+    padding: 36px 20px;
+    border-radius: 24px;
+    margin-top: 40px;
+  }
+
+  .ribbonStatValue {
+    font-size: 36px;
+  }
+
+  .statsRibbonGrid {
+    gap: 24px;
+  }
+
+  /* Exhibitor returns banner */
+  .exhibitorReturnsBanner {
+    padding: 60px 24px;
+    border-radius: 28px;
+    margin: 40px 0;
+  }
+
+  .exhibitorReturnsBanner h3 {
+    letter-spacing: 2px;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .exhibitorReturnsBanner p {
+    font-size: 14px;
+  }
+
+  /* Booth packages */
+  .boothPackagesSection {
+    padding: 48px 0;
+  }
+
+  .boothSectionTitle {
+    font-size: 28px;
+    margin-bottom: 40px;
+    letter-spacing: -0.5px;
+  }
+
+  .boothCardsGrid {
+    grid-template-columns: 1fr;
+    border-radius: 20px;
+  }
+
+  .boothCard {
+    padding: 36px 24px;
+  }
+
+  /* Companies orbit on mobile */
+  .companiesOrbitSection {
+    flex-direction: column;
+    padding: 48px 20px;
+    border-radius: 24px;
+    gap: 32px;
+  }
+
+  .companiesOrbitContainer {
+    width: 100%;
+    height: 300px;
+    margin-left: 0;
+  }
+
+  /* Summary container */
+  .container {
+    padding: 20px 16px;
+  }
+
+  .containerthreecards {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .HeroTitle h1 {
+    font-size: clamp(22px, 7vw, 30px) !important;
+  }
+
+  .yearCard {
+    min-height: 380px;
+  }
+
+  .cardTitle {
+    font-size: 18px;
+  }
+
+  .actionCard {
+    min-height: 340px;
+    padding: 28px 20px;
+  }
+
+  .actionCard h3 {
+    font-size: 24px;
+  }
+
+  .orbitContainer {
+    width: 220px;
+    height: 220px;
+  }
+
+  .orbitingLabels span {
+    transform: translate(-50%, -50%) rotate(calc(45deg * var(--i))) translateY(-90px);
+    font-size: 9px;
+  }
+
+  .metricSquare {
+    min-height: 140px;
+    padding: 20px 14px;
+  }
+
+  .metricValue {
+    font-size: 28px;
+  }
+
+  .ribbonStatValue {
+    font-size: 30px;
   }
 }

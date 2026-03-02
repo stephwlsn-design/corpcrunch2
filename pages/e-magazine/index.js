@@ -1,6 +1,38 @@
 import { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
-import DownloadCard from '@/components/card/DownloadCard';
+import Image from 'next/image';
+
+// Inline replacement for the deleted DownloadCard component
+function MagazineCard({ imageUrl, pdfUrl, title }) {
+  return (
+    <div style={{ borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', background: '#fff', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', overflow: 'hidden', background: '#f0f0f0' }}>
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            alt={title || 'Magazine'}
+            fill
+            style={{ objectFit: 'cover' }}
+            unoptimized
+          />
+        )}
+      </div>
+      <div style={{ padding: '16px' }}>
+        {title && <p style={{ fontWeight: 700, fontSize: '14px', marginBottom: '12px', color: '#111' }}>{title}</p>}
+        {pdfUrl && (
+          <a
+            href={pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'inline-block', background: '#2551e7', color: '#fff', padding: '8px 20px', borderRadius: '20px', fontSize: '13px', fontWeight: 600, textDecoration: 'none' }}
+          >
+            Download PDF
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
 import { magazines } from '@/util/magazineData';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper';
@@ -62,9 +94,8 @@ export default function EMagazinePage() {
                   {categories.map((category) => (
                     <button
                       key={category}
-                      className={`${styles.filterButton} ${
-                        selectedCategory === category ? styles.filterButtonActive : ''
-                      }`}
+                      className={`${styles.filterButton} ${selectedCategory === category ? styles.filterButtonActive : ''
+                        }`}
                       onClick={() => setSelectedCategory(category)}
                     >
                       {category === 'all' ? 'All Magazines' : category.charAt(0).toUpperCase() + category.slice(1)}
@@ -84,7 +115,7 @@ export default function EMagazinePage() {
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <div className={styles.cardWrapper}>
-                      <DownloadCard
+                      <MagazineCard
                         imageUrl={magazine.imageUrl}
                         pdfUrl={magazine.pdfUrl}
                         title={magazine.title}
@@ -137,7 +168,7 @@ export default function EMagazinePage() {
                   {magazines.map((magazine, index) => (
                     <SwiperSlide key={index}>
                       <div className={styles.carouselCard}>
-                        <DownloadCard
+                        <MagazineCard
                           imageUrl={magazine.imageUrl}
                           pdfUrl={magazine.pdfUrl}
                           title={magazine.title}

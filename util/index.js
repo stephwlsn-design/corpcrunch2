@@ -34,7 +34,10 @@ export function formatNumber(num) {
     return (numValue / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
   }
 
-  return numValue.toLocaleString();
+  // Always use 'en-US' locale to prevent server/client hydration mismatch.
+  // Without an explicit locale, Node.js may use the system locale (e.g. en-IN
+  // lakh format: 1,04,989) while the browser uses a different locale (104,989).
+  return numValue.toLocaleString('en-US');
 }
 
 /**
@@ -47,5 +50,5 @@ export function formatViews(count) {
   const num = typeof count === 'number' ? count : parseInt(count) || 0;
   // Deterministically inflate the number
   const inflated = 1205 + (num * 17) + (num % 89);
-  return inflated.toLocaleString() + '+';
+  return inflated.toLocaleString('en-US') + '+';
 }

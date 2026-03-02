@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import useCategory from '@/hooks/useCategory'
 import usePosts from '@/hooks/usePosts'
-import InstagramSidebarSlider from '../slider/InstagramSidebarSlider'
-import SidePostSlider from '../slider/SidePostSlider'
+
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { getBlogPostUrl, getCategoryUrl } from '@/util/urlHelpers'
@@ -11,26 +10,26 @@ export default function BlogSidebar({ author }) {
     const { t } = useLanguage();
     const { data: categories, isLoading } = useCategory();
     const { data: postsData } = usePosts();
-    
+
     // Category image mapping - maps category names to image files
     // Corrected to match industry types with appropriate images
     const categoryImageMap = {
         // Finance: Should show financial/money/banking imagery (not abstract sculpture)
         'finance': '/assets/img/category/category03.jpg',
-        
+
         // Technology: Should show tech/electronics/computers (currently showing plant - wrong)
         // Moving electronics image from FMCG to Technology
         'technology': '/assets/img/category/side_category01.jpg',
-        
+
         // FMCG: Should show consumer goods/products (currently showing electronics - wrong)
         'fmcg': '/assets/img/category/side_category03.jpg',
-        
+
         // Science: Should show science/research/lab imagery (currently showing architecture - wrong)
         'science': '/assets/img/category/category02.jpg',
-        
+
         // Politics: Should show political/government imagery (currently showing minimalist architecture - wrong)
         'politics': '/assets/img/category/side_category05.jpg',
-        
+
         // Automobile: Should show car/automotive imagery
         // IMPORTANT: The image file /assets/img/category/category04.jpg must contain a car image
         // If it currently shows architecture, replace the file with a car image
@@ -40,41 +39,41 @@ export default function BlogSidebar({ author }) {
         'adventure': '/assets/img/category/side_category04.jpg',
         'interior': '/assets/img/category/category01.jpg',
     };
-    
+
     // Get all posts
     const allPosts = [
         ...(postsData?.frontPagePosts || []),
         ...(postsData?.trendingPosts || [])
     ];
-    
+
     // Calculate post counts for each category
     const categoriesWithCounts = (categories || []).map(category => {
-        const postCount = allPosts.filter(post => 
+        const postCount = allPosts.filter(post =>
             post.Category?.id === category.id || post.categoryId === category.id
         ).length;
-        
+
         // Inflate the count with a random number between 100 and 1000
         // This ensures categories always show meaningful numbers
         const baseCount = postCount || 0;
         const inflatedCount = baseCount + Math.floor(Math.random() * 900) + 100;
-        
+
         // Get category image from mapping, prioritizing mapping over database imageUrl
         // This ensures correct images are shown for each industry type
         const categoryNameLower = (category.name || '').toLowerCase();
         const categoryImage = categoryImageMap[categoryNameLower] || category.imageUrl || null;
-        
+
         return {
             ...category,
             postCount: inflatedCount,
             imageUrl: categoryImage
         };
     });
-    
+
     // Sort by post count and get top 5
     const trendingCategories = categoriesWithCounts
         .sort((a, b) => (b.postCount || 0) - (a.postCount || 0))
         .slice(0, 5);
-    
+
     // Get a featured post for the sidebar (prefer travel or first available)
     const featuredPost = allPosts.find(p => p.Category?.name?.toLowerCase() === 'travel') || allPosts[0];
 
@@ -82,9 +81,9 @@ export default function BlogSidebar({ author }) {
         <>
             <aside className="blog-sidebar">
                 {/* Author Profile - Show default if no author provided */}
-                <div className="widget sidebar-widget" style={{ 
-                    borderRadius: '24px', 
-                    padding: '35px 25px', 
+                <div className="widget sidebar-widget" style={{
+                    borderRadius: '24px',
+                    padding: '35px 25px',
                     boxShadow: '0 10px 30px rgba(0,0,0,0.02)',
                     marginBottom: '40px'
                 }}>
@@ -120,12 +119,12 @@ export default function BlogSidebar({ author }) {
                             </div>
                         </div>
                         <div className="tgAbout-info" style={{ textAlign: 'center' }}>
-                            <p className="intro" style={{ 
-                                fontSize: '15px', 
+                            <p className="intro" style={{
+                                fontSize: '15px',
                                 marginBottom: '10px',
-                                fontWeight: '500' 
+                                fontWeight: '500'
                             }}>
-                                {t('sidebar.hiThere', "Hi there, I'm")} <span className="name" style={{ 
+                                {t('sidebar.hiThere', "Hi there, I'm")} <span className="name" style={{
                                     fontWeight: '800',
                                     display: 'block',
                                     fontSize: '22px',
@@ -147,28 +146,28 @@ export default function BlogSidebar({ author }) {
                             </span>
                         </div>
                         <div className="tgAbout-social">
-                            <Link 
+                            <Link
                                 target="_blank"
                                 href="https://www.facebook.com/people/Corp-Crunch/61558752871099/"
                                 className="social-icon-btn"
                             >
                                 <i className="fab fa-facebook-f" />
                             </Link>
-                            <Link 
+                            <Link
                                 target="_blank"
                                 href="https://twitter.com/corp_crunch"
                                 className="social-icon-btn"
                             >
                                 <i className="fab fa-twitter" />
                             </Link>
-                            <Link 
+                            <Link
                                 target="_blank"
                                 href="https://www.instagram.com/corp.crunch/"
                                 className="social-icon-btn"
                             >
                                 <i className="fab fa-instagram" />
                             </Link>
-                            <Link 
+                            <Link
                                 target="_blank"
                                 href="https://www.youtube.com/@Corp.Crunch"
                                 className="social-icon-btn"
@@ -179,15 +178,15 @@ export default function BlogSidebar({ author }) {
                     </div>
                 </div>
 
-                <div className="widget sidebar-widget widget_categories" style={{ 
-                    borderRadius: '24px', 
-                    padding: '35px 25px', 
+                <div className="widget sidebar-widget widget_categories" style={{
+                    borderRadius: '24px',
+                    padding: '35px 25px',
                     boxShadow: '0 10px 30px rgba(0,0,0,0.02)',
                     marginBottom: '40px'
                 }}>
-                    <h4 className="widget-title" style={{ 
-                        fontSize: '20px', 
-                        fontWeight: '800', 
+                    <h4 className="widget-title" style={{
+                        fontSize: '20px',
+                        fontWeight: '800',
                         marginBottom: '25px',
                         color: '#0f172a',
                         display: 'flex',
@@ -200,13 +199,13 @@ export default function BlogSidebar({ author }) {
                     {isLoading ? (
                         <p>{t('common.loading', 'Loading...')}</p>
                     ) : (
-                    <ul className="list-wrap">
+                        <ul className="list-wrap">
                             {trendingCategories.map((category, index) => (
                                 <li
                                     key={category.id || index}
                                     style={{
-                                    marginBottom: '15px', 
-                                    paddingBottom: '15px', 
+                                        marginBottom: '15px',
+                                        paddingBottom: '15px',
                                         borderBottom:
                                             index === trendingCategories.length - 1
                                                 ? 'none'
@@ -218,17 +217,17 @@ export default function BlogSidebar({ author }) {
                                 >
                                     <div
                                         style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
+                                            display: 'flex',
+                                            alignItems: 'center',
                                         }}
                                     >
                                         <Link
                                             href={getCategoryUrl(category)}
                                             className="category-link"
                                             style={{
-                                            fontSize: '14px', 
-                                            fontWeight: '700', 
-                                            textTransform: 'uppercase',
+                                                fontSize: '14px',
+                                                fontWeight: '700',
+                                                textTransform: 'uppercase',
                                                 letterSpacing: '0.5px',
                                             }}
                                         >
@@ -238,9 +237,9 @@ export default function BlogSidebar({ author }) {
                                     <span
                                         className="post-count"
                                         style={{
-                                        fontSize: '12px', 
-                                        fontWeight: '800', 
-                                        padding: '4px 10px',
+                                            fontSize: '12px',
+                                            fontWeight: '800',
+                                            padding: '4px 10px',
                                             borderRadius: '100px',
                                         }}
                                     >
@@ -248,15 +247,15 @@ export default function BlogSidebar({ author }) {
                                     </span>
                                 </li>
                             ))}
-                    </ul>
+                        </ul>
                     )}
                 </div>
-                
+
                 {/* Featured Post Section */}
                 {featuredPost && (
-                    <div className="widget sidebar-widget" style={{ 
-                        borderRadius: '24px', 
-                        padding: '10px', 
+                    <div className="widget sidebar-widget" style={{
+                        borderRadius: '24px',
+                        padding: '10px',
                         boxShadow: '0 10px 30px rgba(0,0,0,0.02)',
                         marginBottom: '40px'
                     }}>
@@ -277,10 +276,10 @@ export default function BlogSidebar({ author }) {
                                 padding: '30px'
                             }}>
                                 <div className="sidePost__content" style={{ position: 'absolute', bottom: '30px', left: '25px', right: '25px' }}>
-                                    <Link 
-                                        href={getCategoryUrl(featuredPost.Category)} 
+                                    <Link
+                                        href={getCategoryUrl(featuredPost.Category)}
                                         className="tag"
-                                        style={{ 
+                                        style={{
                                             background: 'var(--tg-theme-primary)',
                                             color: 'white',
                                             fontWeight: '700',
@@ -294,7 +293,7 @@ export default function BlogSidebar({ author }) {
                                         {featuredPost.Category?.name?.toUpperCase() || 'FEATURED'}
                                     </Link>
                                     <h5 className="title tgcommon__hover" style={{ marginTop: '15px', lineHeight: '1.4' }}>
-                                        <Link 
+                                        <Link
                                             href={getBlogPostUrl(featuredPost)}
                                             style={{ color: 'white', fontSize: '18px', fontWeight: '800' }}
                                         >
@@ -308,15 +307,15 @@ export default function BlogSidebar({ author }) {
                 )}
 
                 {/* Instagram Feeds Section */}
-                <div className="widget sidebar-widget" style={{ 
-                    borderRadius: '24px', 
-                    padding: '35px 25px', 
+                <div className="widget sidebar-widget" style={{
+                    borderRadius: '24px',
+                    padding: '35px 25px',
                     boxShadow: '0 10px 30px rgba(0,0,0,0.02)',
                     marginBottom: '40px'
                 }}>
-                    <h4 className="widget-title" style={{ 
-                        fontSize: '20px', 
-                        fontWeight: '800', 
+                    <h4 className="widget-title" style={{
+                        fontSize: '20px',
+                        fontWeight: '800',
                         marginBottom: '25px',
                         color: '#0f172a',
                         display: 'flex',
@@ -345,7 +344,7 @@ export default function BlogSidebar({ author }) {
                             </div>
                             <div className="sidebarInsta__info" style={{ marginLeft: '15px' }}>
                                 <h6 className="name" style={{ margin: 0, fontSize: '15px', fontWeight: '700' }}>
-                                    <Link 
+                                    <Link
                                         target="_blank"
                                         href="https://www.instagram.com/corp.crunch/"
                                         style={{ color: '#1e293b' }}
@@ -356,15 +355,15 @@ export default function BlogSidebar({ author }) {
                                 <span className="designation" style={{ fontSize: '12px', color: '#64748b' }}>Corp Crunch Official</span>
                             </div>
                         </div>
-                        <div className="sidebarInsta__slider-wrap" style={{ borderRadius: '16px', overflow: 'hidden', marginBottom: '25px' }}>
-                            <div className="swiper-container sidebarInsta-active">
-                                <InstagramSidebarSlider />
-                            </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px', borderRadius: '16px', overflow: 'hidden', marginBottom: '25px' }}>
+                            {[1, 2, 3, 4, 5, 6].map((i) => (
+                                <div key={i} style={{ aspectRatio: '1', background: 'linear-gradient(135deg, #f09433, #dc2743, #bc1888)', borderRadius: '8px', opacity: 0.85 }} />
+                            ))}
                         </div>
                         <div className="sidebarInsta__bottom">
-                            <Link 
-                                href="https://www.instagram.com/corp.crunch/" 
-                                target="_blank" 
+                            <Link
+                                href="https://www.instagram.com/corp.crunch/"
+                                target="_blank"
                                 className="btn"
                                 style={{
                                     width: '100%',

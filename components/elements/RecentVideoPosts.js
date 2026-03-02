@@ -19,7 +19,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
   // Helper: validate that an image URL is from an allowed/known-safe host AND is actually an image
   const isSafeImageUrl = (url) => {
     if (!url || typeof url !== "string") return false;
-    
+
     // Fix duplicated URLs (if URL appears twice, take first part)
     let cleanUrl = url.trim();
     if (cleanUrl.length > 200) {
@@ -29,30 +29,27 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
         cleanUrl = urlMatch[1];
       }
     }
-    
+
     // Check if it's actually an image file (not video, HTML, etc.)
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif', '.bmp'];
     const videoExtensions = ['.mp4', '.webm', '.ogg', '.mov', '.avi'];
     const htmlExtensions = ['.html', '.htm'];
-    
+
     const lowerUrl = cleanUrl.toLowerCase();
     const hasImageExt = imageExtensions.some(ext => lowerUrl.includes(ext));
     const hasVideoExt = videoExtensions.some(ext => lowerUrl.includes(ext));
     const hasHtmlExt = htmlExtensions.some(ext => lowerUrl.endsWith(ext) || lowerUrl.includes(ext + '?') || lowerUrl.includes(ext + '#'));
-    
+
     // Reject video URLs and HTML pages
     if (hasVideoExt || hasHtmlExt) {
       return false;
     }
-    
+
     // If it has an image extension, check hostname
     if (hasImageExt) {
       try {
         const parsed = new URL(cleanUrl);
         const allowedHosts = [
-          "recroot-next.vercel.app",
-          "recroot.ai",
-          "www.recroot.ai",
           "images.unsplash.com",
           "image.cnbcfm.com",
           "www.autonews.com",
@@ -61,20 +58,19 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
           "corpcrunch.io",
           "www.corpcrunch.io",
           "prowess.corpcrunch.io",
+          "images.pexels.com",
+          "media.istockphoto.com",
         ];
         return allowedHosts.includes(parsed.hostname);
       } catch {
         return false;
       }
     }
-    
+
     // If no extension, check if hostname is in allowed list (might be an image API endpoint)
     try {
       const parsed = new URL(cleanUrl);
       const allowedHosts = [
-        "recroot-next.vercel.app",
-        "recroot.ai",
-        "www.recroot.ai",
         "images.unsplash.com",
         "image.cnbcfm.com",
         "www.autonews.com",
@@ -82,6 +78,8 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
         "corpcrunch.io",
         "www.corpcrunch.io",
         "prowess.corpcrunch.io",
+        "images.pexels.com",
+        "media.istockphoto.com",
       ];
       // Only allow if hostname is in list AND doesn't look like a video/HTML page
       if (allowedHosts.includes(parsed.hostname)) {
@@ -95,7 +93,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
     } catch {
       return false;
     }
-    
+
     return false;
   };
 
@@ -105,20 +103,20 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
   // Otherwise, filter to ensure only videos
   const videoPosts = posts.filter(post => {
     if (!post) return false;
-    
+
     // Check contentType
     if (post.contentType === 'video') return true;
-    
+
     // Check videoUrl (various formats)
-    const hasVideoUrl = post.videoUrl && 
+    const hasVideoUrl = post.videoUrl &&
       (typeof post.videoUrl === 'string' && post.videoUrl.trim() !== '');
     if (hasVideoUrl) return true;
-    
+
     // Check video_url (alternative field name)
-    const hasVideo_url = post.video_url && 
+    const hasVideo_url = post.video_url &&
       (typeof post.video_url === 'string' && post.video_url.trim() !== '');
     if (hasVideo_url) return true;
-    
+
     return false;
   });
 
@@ -153,7 +151,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
       });
     }
   }, [posts, videoPosts, isLoading, activeIndex]);
-  
+
   // Use ONLY video posts - no articles or news allowed - show all videos
   const sections = videoPosts;
 
@@ -182,7 +180,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
   // Scroll-based animation for sticky sections
   useEffect(() => {
     if (!sectionRef.current || sections.length === 0) return;
-    
+
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
@@ -192,21 +190,21 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
             ticking = false;
             return;
           }
-          
+
           const rect = sectionRef.current.getBoundingClientRect();
           const windowHeight = window.innerHeight;
           const totalHeight = sectionRef.current.offsetHeight;
-          
+
           // Calculate scroll progress (0 to sections.length - 1)
           // Each section should be active for 1 viewport height
           const scrollDistance = totalHeight - windowHeight;
-          
+
           if (scrollDistance > 0) {
             // Calculate which section should be active based on scroll position
             // Progress from 0 to sections.length - 1
             const progress = Math.max(0, Math.min(sections.length - 1, -rect.top / windowHeight));
             setScrollProgress(progress);
-            
+
             // Set active index based on scroll progress
             const newActiveIndex = Math.floor(progress);
             if (newActiveIndex >= 0 && newActiveIndex < sections.length) {
@@ -270,7 +268,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
   const cleanUrl = (url) => {
     if (!url || typeof url !== "string") return null;
     let cleaned = url.trim();
-    
+
     // Fix duplicated URLs (if URL appears twice)
     if (cleaned.length > 200) {
       const urlMatch = cleaned.match(/^(https?:\/\/[^\s]+)/);
@@ -278,13 +276,13 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
         cleaned = urlMatch[1];
       }
     }
-    
+
     // Remove trailing duplicates
     const halfLength = Math.floor(cleaned.length / 2);
     if (halfLength > 0 && cleaned.substring(0, halfLength) === cleaned.substring(halfLength, halfLength * 2)) {
       cleaned = cleaned.substring(0, halfLength);
     }
-    
+
     return cleaned;
   };
 
@@ -296,7 +294,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
     const videoUrlSource = sectionPost.videoUrl || sectionPost.video_url || '';
     const cleanVideoUrl = cleanUrl(videoUrlSource);
     const cleanBannerUrl = cleanUrl(sectionPost.bannerImageUrl);
-    
+
     const videoId = getYouTubeVideoId(cleanVideoUrl);
     const isPlaying = playingVideoId === videoId;
 
@@ -307,30 +305,51 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
             {/* Left Side - Video */}
             <div className={`${styles.videoStackContainer} ${activeIndex === sectionIndex ? styles.active : ""}`}>
               <div className={styles.videoCardWrapper}>
-              <div className={styles.videoCard}>
-                {isPlaying && videoId ? (
-                  <div className={styles.videoEmbed}>
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className={styles.videoIframe}
-                    />
-                  </div>
-                ) : (cleanBannerUrl && isSafeImageUrl(cleanBannerUrl)) ? (
-                  <div className={styles.videoWrapper}>
-                    <Image
-                      src={cleanBannerUrl}
-                      alt={sectionPost.title || "Video"}
-                      fill
-                      className={styles.videoImage}
-                      style={{ objectFit: "cover" }}
-                      unoptimized
-                    />
-                    {videoId && (
+                <div className={styles.videoCard}>
+                  {isPlaying && videoId ? (
+                    <div className={styles.videoEmbed}>
+                      <iframe
+                        width="100%"
+                        height="100%"
+                        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className={styles.videoIframe}
+                      />
+                    </div>
+                  ) : (cleanBannerUrl && isSafeImageUrl(cleanBannerUrl)) ? (
+                    <div className={styles.videoWrapper}>
+                      <Image
+                        src={cleanBannerUrl}
+                        alt={sectionPost.title || "Video"}
+                        fill
+                        className={styles.videoImage}
+                        style={{ objectFit: "cover" }}
+                        unoptimized
+                      />
+                      {videoId && (
+                        <button
+                          onClick={() => handleVideoPlay(cleanVideoUrl)}
+                          className={styles.playButton}
+                          aria-label="Play video"
+                        >
+                          <i className="fas fa-play" />
+                        </button>
+                      )}
+                    </div>
+                  ) : videoId ? (
+                    <div className={styles.videoWrapper}>
+                      <img
+                        src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                        alt={sectionPost.title || "Video"}
+                        className={styles.videoImage}
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        onError={(e) => {
+                          // Fallback to hqdefault if maxresdefault fails
+                          e.currentTarget.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                        }}
+                      />
                       <button
                         onClick={() => handleVideoPlay(cleanVideoUrl)}
                         className={styles.playButton}
@@ -338,36 +357,15 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
                       >
                         <i className="fas fa-play" />
                       </button>
-                    )}
-                  </div>
-                ) : videoId ? (
-                  <div className={styles.videoWrapper}>
-                    <img
-                      src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
-                      alt={sectionPost.title || "Video"}
-                      className={styles.videoImage}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                      onError={(e) => {
-                        // Fallback to hqdefault if maxresdefault fails
-                        e.currentTarget.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                      }}
-                    />
-                    <button
-                      onClick={() => handleVideoPlay(cleanVideoUrl)}
-                      className={styles.playButton}
-                      aria-label="Play video"
-                    >
-                      <i className="fas fa-play" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className={styles.videoPlaceholder}>
-                    <div className={styles.playIcon}>
-                      <i className="fas fa-play" />
                     </div>
-                    <p>Video Placeholder</p>
-                  </div>
-                )}
+                  ) : (
+                    <div className={styles.videoPlaceholder}>
+                      <div className={styles.playIcon}>
+                        <i className="fas fa-play" />
+                      </div>
+                      <p>Video Placeholder</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -375,13 +373,13 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
             {/* Right Side - Content */}
             <div className={`${styles.contentSection} ${activeIndex === sectionIndex ? styles.active : ""}`}>
               <div className={styles.branding}>
-                {sectionPost.Category?.name 
+                {sectionPost.Category?.name
                   ? `* ${sectionPost.Category.name}`
                   : sectionPost.category?.name
-                  ? `* ${sectionPost.category.name}`
-                  : sectionPost.title?.split(" ")[0]
-                  ? `* ${sectionPost.title.split(" ")[0]}`
-                  : "* Video"}
+                    ? `* ${sectionPost.category.name}`
+                    : sectionPost.title?.split(" ")[0]
+                      ? `* ${sectionPost.title.split(" ")[0]}`
+                      : "* Video"}
               </div>
               <h2 className={styles.title}>
                 {sectionPost.title || "Video Post"}
@@ -393,11 +391,6 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
                     sectionPost.category?.name ||
                     (sectionPost.contentType === 'video' ? 'Video Content' : 'Featured Content')}
                 </p>
-                <div className={styles.yearBadge}>
-                  {sectionPost.createdAt || sectionPost.publishDate
-                    ? `/${new Date(sectionPost.createdAt || sectionPost.publishDate).getFullYear()}`
-                    : '/2025'}
-                </div>
               </div>
               <p className={styles.description}>
                 {sectionPost.content
@@ -405,10 +398,10 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
                     ? sectionPost.content.substring(0, 200) + "..."
                     : sectionPost.content
                   : sectionPost.excerpt
-                  ? sectionPost.excerpt.length > 200
-                    ? sectionPost.excerpt.substring(0, 200) + "..."
-                    : sectionPost.excerpt
-                  : "Watch this engaging video content."}
+                    ? sectionPost.excerpt.length > 200
+                      ? sectionPost.excerpt.substring(0, 200) + "..."
+                      : sectionPost.excerpt
+                    : "Watch this engaging video content."}
               </p>
 
               <button
@@ -431,10 +424,11 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
   // Dynamic height based on number of videos
   // Each video gets 100vh, ensuring all videos have space to be visible
   return (
-    <section 
-      className={styles.videoPostsSection} 
+    <section
+      className={styles.videoPostsSection}
       ref={sectionRef}
-      style={{ 
+      style={{
+        // We handle the actual height responsive overrides in CSS using !important for mobile
         height: `${sections.length * 100}vh`,
         minHeight: `${Math.max(sections.length, 1) * 100}vh`
       }}
@@ -443,16 +437,16 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
         const isPast = activeIndex > index;
         const isActive = activeIndex === index;
         const isNext = activeIndex < index;
-        
+
         // Calculate individual section progress for smooth transitions
         const sectionProgress = scrollProgress - index;
-        
+
         // Dynamic visibility: Make all videos clearly visible based on distance from active
         // This works for ANY number of videos (2, 3, 4, 5, 10, etc.)
         const distanceFromActive = Math.abs(index - activeIndex);
-        
+
         let sectionOpacity, sectionScale;
-        
+
         if (isActive) {
           // Active video: 100% visible
           sectionOpacity = 1;
@@ -471,7 +465,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
           sectionOpacity = Math.max(0.7, 0.85 - (distanceFromActive - 2) * 0.03);
           sectionScale = Math.max(0.92, 0.94 - (distanceFromActive - 2) * 0.005);
         }
-        
+
         return (
           <div
             key={sectionPost._id || sectionPost.id || `section-${index}`}
@@ -481,16 +475,15 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
               zIndex: sections.length - Math.abs(index - activeIndex), // Higher z-index for videos closer to active
             }}
           >
-            <div 
+            <div
               className={styles.sectionInner}
               style={{
-                transform: `scale(${sectionScale}) translateY(${
-                  isPast 
-                    ? `-${3 + distanceFromActive * 1.5}vh` 
-                    : isNext 
-                    ? `${3 + distanceFromActive * 1.5}vh` 
+                transform: `scale(${sectionScale}) translateY(${isPast
+                  ? `-${3 + distanceFromActive * 1.5}vh`
+                  : isNext
+                    ? `${3 + distanceFromActive * 1.5}vh`
                     : '0'
-                })`,
+                  })`,
                 opacity: sectionOpacity,
                 transition: 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease',
                 pointerEvents: sectionOpacity > 0.3 ? 'auto' : 'none',

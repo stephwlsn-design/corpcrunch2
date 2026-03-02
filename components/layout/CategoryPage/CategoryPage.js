@@ -10,6 +10,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import styles from "./CategoryPage.module.css";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
+import { isUnoptimizableImage } from "@/util/imageUtils";
 
 export default function CategoryPage({ categoryDetails }) {
   const trendingPosts = categoryDetails?.trendingPosts || [];
@@ -56,6 +57,7 @@ export default function CategoryPage({ categoryDetails }) {
                 alt={post.title || "Article"}
                 width={300}
                 height={200}
+                unoptimized={isUnoptimizableImage(post.bannerImageUrl)}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -94,7 +96,7 @@ export default function CategoryPage({ categoryDetails }) {
   return (
     <Layout categories={categoryDetails?.categories || null}>
       <Head>
-        <title>{categoryName} | Corp Crunch</title>
+        <title>{`${categoryName} | Corp Crunch`}</title>
         <meta name="description" content={`${categoryName} news and insights`} />
       </Head>
 
@@ -123,8 +125,10 @@ export default function CategoryPage({ categoryDetails }) {
                           {post.bannerImageUrl && (
                             <Image
                               src={post.bannerImageUrl}
-                              alt={post.title}
-                              layout="fill"
+                              alt={post.title || 'Category article'}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 50vw"
+                              priority={index === 0}
                               className={styles.heroImage}
                             />
                           )}

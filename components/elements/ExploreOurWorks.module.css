@@ -188,8 +188,8 @@
 @media (max-width: 767.98px) {
   .exploreSection {
     padding: 60px 0;
-    border-top-width: 6px;
-    border-bottom-width: 6px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
   }
 
   .container {
@@ -228,4 +228,3 @@
     gap: 15px;
   }
 }
-

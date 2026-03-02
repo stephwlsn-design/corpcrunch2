@@ -6,7 +6,6 @@ import { notifyError, notifyMessage, notifySuccess } from "@/util/toast";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import PaymentStatusModal from "../Modals/PaymentStatusModal";
 import styles from './RequestBlogForm.module.css';
 import axios from 'axios';
 
@@ -76,7 +75,7 @@ const RequestBlogForm = () => {
       };
 
       const response = await axios.post('/api/post-requests/send-article-request-email', emailData);
-      
+
       if (response.data.success) {
         console.log('Email sent successfully:', response.data.messageId);
         return true;
@@ -104,7 +103,7 @@ const RequestBlogForm = () => {
       submitterPhone: data.contactNo?.trim(),
       companyName: data.company?.trim(),
       submitterAddress: data.location?.trim(),
-      categoryID: data.blogCategory, 
+      categoryID: data.blogCategory,
       description: data.content?.trim(),
       title: `[Article Request] ${data.company} - ${Date.now()}`,
     };
@@ -128,7 +127,7 @@ const RequestBlogForm = () => {
     try {
       // Send email first
       const emailSent = await sendEmail(data, categoryName);
-      
+
       if (emailSent) {
         notifySuccess("Article request email sent successfully!");
       } else {
@@ -137,11 +136,11 @@ const RequestBlogForm = () => {
 
       // Then submit the post request
       const post = await submitPostRequest(postData);
-      
+
       if (post && post.id) {
         let token = localStorage.getItem("token");
         localStorage.setItem("postId", post.id);
-        
+
         let checkoutPlan = { postID: post.id, planID: planIDs.THREE_MONTH };
 
         if (!token) {
@@ -149,7 +148,7 @@ const RequestBlogForm = () => {
         }
 
         const res = await postPayableAmount(checkoutPlan);
-        
+
         if (res?.payment_url) {
           notifyMessage("Redirecting to payment gateway...");
           setTimeout(() => {
@@ -236,7 +235,7 @@ const RequestBlogForm = () => {
                     className={styles.formInput}
                     type="email"
                     placeholder="james@example.com"
-                    {...register("email", { 
+                    {...register("email", {
                       required: "Email is required!",
                       pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Invalid email" }
                     })}

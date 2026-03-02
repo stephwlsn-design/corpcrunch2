@@ -16,7 +16,7 @@ export default function LanguageSelector() {
   useEffect(() => {
     // Close dropdown when clicking outside - only on client side
     if (typeof window === 'undefined') return;
-    
+
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
@@ -126,22 +126,26 @@ export default function LanguageSelector() {
           align-items: center;
           width: 100%;
           padding: 12px 16px;
-          background: transparent;
+          background: transparent !important;
+          background-color: transparent !important;
           border: none;
           cursor: pointer;
           transition: background 0.2s ease;
           text-align: left;
           font-size: 14px;
-          color: #333;
+          color: #333 !important;
         }
         
         .language-option:hover {
-          background: #f5f5f5;
+          background: #f5f5f5 !important;
+          background-color: #f5f5f5 !important;
+          color: #333 !important;
         }
 
         .language-option.active {
-          background: #f0f7ff;
-          color: #ff0292;
+          background: #f0f7ff !important;
+          background-color: #f0f7ff !important;
+          color: #2551e7 !important;
         }
 
         .language-option .language-name {
@@ -155,12 +159,40 @@ export default function LanguageSelector() {
           }
 
           .language-name {
-            display: none;
+            display: inline !important;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
           }
 
           .language-dropdown {
-            right: 0;
-            min-width: 150px;
+            position: fixed;
+            bottom: 120px;
+            right: auto;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 200px;
+            z-index: 99999;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2);
+          }
+
+          .language-option {
+            color: #111 !important;
+            background: transparent !important;
+            font-size: 15px;
+            padding: 14px 20px;
+          }
+
+          .language-option:hover {
+            background: #f5f5f5 !important;
+          }
+
+          .language-option.active {
+            background: #f0f4ff !important;
+            color: #2551e7 !important;
           }
         }
       `}</style>

@@ -39,12 +39,12 @@ export default function AdminEditPost() {
   const [readingTime, setReadingTime] = useState("");
   const [canonicalUrl, setCanonicalUrl] = useState("");
   const [relatedArticles, setRelatedArticles] = useState("");
-  
+
   // Quote Fields
   const [quoteText, setQuoteText] = useState("");
   const [quoteAuthorName, setQuoteAuthorName] = useState("");
   const [quoteAuthorTitle, setQuoteAuthorTitle] = useState("");
-  
+
   // Additional Content Fields
   const [whyThisMatters, setWhyThisMatters] = useState("");
   const [whyThisMattersMultimediaUrl, setWhyThisMattersMultimediaUrl] = useState("");
@@ -98,7 +98,7 @@ export default function AdminEditPost() {
       // axiosInstance interceptor returns response.data directly
       // The response from /posts/[slug] returns the post object directly or wrapped in success
       let post = null;
-      
+
       if (response.success && response.title) {
         // Response has success flag and post data
         post = response;
@@ -109,9 +109,9 @@ export default function AdminEditPost() {
         // Response is wrapped
         post = response.data;
       }
-      
+
       if (post && post.title) {
-        
+
         // Populate form fields
         setTitle(post.title || "");
         setPostSlug(post.slug || "");
@@ -126,7 +126,7 @@ export default function AdminEditPost() {
         setBannerImageUrl(post.bannerImageUrl || "");
         setImageAltText(post.imageAltText || "");
         setPublishStatus(post.publishStatus || "published");
-        
+
         if (post.publishDate) {
           const pubDate = new Date(post.publishDate);
           setPublishDate(pubDate.toISOString().split("T")[0]);
@@ -136,7 +136,7 @@ export default function AdminEditPost() {
           setPublishDate(now.toISOString().split("T")[0]);
           setPublishTime(now.toTimeString().slice(0, 5));
         }
-        
+
         setVisibility(post.visibility || "public");
         setExcerpt(post.excerpt || "");
         setReadingTime(post.readingTime?.toString() || "");
@@ -191,7 +191,7 @@ export default function AdminEditPost() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    
+
     if (!title.trim() || !postSlug.trim() || !content.trim() || !bannerImageUrl.trim() || !categoryId) {
       notifyError("Please fill in all required fields");
       return;
@@ -270,6 +270,25 @@ export default function AdminEditPost() {
     } finally {
       setIsUpdating(false);
     }
+  };
+
+  const handleImageUrlChange = (e) => {
+    let url = e.target.value;
+
+    // Auto-convert Google Drive share links to direct image links
+    if (url.includes('drive.google.com/file/d/')) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        url = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      }
+    } else if (url.includes('drive.google.com/open?id=')) {
+      const match = url.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        url = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      }
+    }
+
+    setBannerImageUrl(url);
   };
 
   if (loading) {
@@ -385,9 +404,12 @@ export default function AdminEditPost() {
                       type="url"
                       className="form-control"
                       value={bannerImageUrl}
-                      onChange={(e) => setBannerImageUrl(e.target.value)}
+                      onChange={handleImageUrlChange}
                       required
                     />
+                    <small className="text-muted" style={{ fontSize: "12px", marginTop: "5px", display: "block" }}>
+                      💡 Paste a Google Drive share link and it will automatically convert to a direct image URL!
+                    </small>
                   </div>
 
                   <div className="row mb-4">

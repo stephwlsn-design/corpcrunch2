@@ -226,9 +226,11 @@
   border-color: #111 !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
+
 .metric1 .metricValue {
   color: #fff !important;
 }
+
 .metric1 .metricLabel {
   color: rgba(255, 255, 255, 0.6) !important;
 }
@@ -238,9 +240,11 @@
   border-color: var(--tg-theme-secondary, #2551e7) !important;
   box-shadow: 0 10px 30px rgba(37, 81, 231, 0.2);
 }
+
 .metric2 .metricValue {
   color: #fff !important;
 }
+
 .metric2 .metricLabel {
   color: rgba(255, 255, 255, 0.7) !important;
 }
@@ -249,9 +253,11 @@
   background: #fff !important;
   border: 2px solid var(--tg-theme-secondary, #2551e7) !important;
 }
+
 .metric3 .metricValue {
   color: var(--tg-theme-secondary, #2551e7) !important;
 }
+
 .metric3 .metricLabel {
   color: #666 !important;
 }
@@ -568,26 +574,118 @@
 
 /* Responsive fixes */
 @media (max-width: 1200px) {
-  .container { padding: 0; }
-  .columnsGrid { 
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px; 
+  .container {
+    padding: 0;
   }
+
+  .introSection {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .introHero {
+    height: 500px;
+  }
+
+  .columnsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
   .column:last-child {
     grid-column: 1 / -1;
   }
-  .column { border-radius: 24px; }
+
+  .column {
+    border-radius: 24px;
+  }
 }
 
 @media (max-width: 768px) {
-  .pageTitle { font-size: 36px; letter-spacing: -1px; }
-  .container { padding: 0; }
-  .columnsGrid { grid-template-columns: 1fr; gap: 20px; }
-  .column:last-child { grid-column: auto; }
-  .sectionHeader { padding: 24px 24px 16px; }
-  .sectionTitle { font-size: 20px; }
-  .cardImage { height: 160px; }
-  .header { padding: 30px 20px; border-radius: 30px; }
+  .pageTitle {
+    font-size: 36px;
+    letter-spacing: -1px;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  .introSection {
+    margin-bottom: 40px;
+  }
+
+  .introHero {
+    height: 350px;
+    border-radius: 24px;
+  }
+
+  .heroOverlay {
+    padding: 30px 20px;
+  }
+
+  .heroTitle {
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+
+  .heroText {
+    font-size: 14px;
+  }
+
+  .quoteCard {
+    padding: 24px;
+    min-height: auto;
+    border-radius: 24px;
+  }
+
+  .quoteTitle {
+    font-size: 22px;
+  }
+
+  .blockTitle {
+    font-size: 28px;
+  }
+
+  .metricsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .metricBox {
+    padding: 24px 16px;
+    border-radius: 24px;
+  }
+
+  .metricValue {
+    font-size: 32px;
+  }
+
+  .columnsGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .column:last-child {
+    grid-column: auto;
+  }
+
+  .sectionHeader {
+    padding: 24px 24px 16px;
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+  }
+
+  .cardImage {
+    height: 160px;
+  }
+
+  .header {
+    padding: 30px 20px;
+    border-radius: 30px;
+  }
 }
 
 /* Dark mode support */

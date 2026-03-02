@@ -54,11 +54,12 @@
 
 /* Responsive adjustments */
 @media (max-width: 991.98px) {
+
   .header__language-toggle,
   .header__theme-toggle {
     display: none;
   }
-  
+
   .mobile-menu-controls {
     display: flex;
   }
@@ -70,3 +71,83 @@
   }
 }
 
+
+/* =====================================================
+   MOBILE HEADER — Left & Right Hamburger Visibility
+   ===================================================== */
+
+@media (max-width: 767.98px) {
+
+  /* Switch from center to space-between so both hamburgers
+     sit at opposite ends of the header row */
+  .modern-header .header__content {
+    justify-content: space-between !important;
+    align-items: center !important;
+    position: relative;
+    padding: 0 8px;
+  }
+
+  /* Logo: drop the absolute centering trick on mobile;
+     use a smaller logo and let flexbox center it naturally */
+  .modern-header .header__logo-centered {
+    position: static !important;
+    left: auto !important;
+    transform: none !important;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modern-header .header__logo-centered .corp-crunch-logo img,
+  .modern-header .header__logo-centered .corp-crunch-logo .logo-image {
+    max-width: 120px !important;
+    height: auto !important;
+  }
+
+  /* Left hamburger (opens sidebar) — always visible, good tap area */
+  .modern-header .header__sidebar-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    flex-shrink: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Right hamburger (opens nav menu) — bigger tap area */
+  .header__mobile-nav-toggle {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0;
+  }
+
+  /* Make the actions container not auto-margin (that was for desktop) */
+  .modern-header .header__actions {
+    margin-left: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  /* Hamburger icon lines — slightly wider on mobile for better visibility */
+  .header__sidebar-toggle span,
+  .header__mobile-nav-toggle span {
+    background-color: var(--tg-theme-secondary, #2551e7) !important;
+  }
+}
+
+/* Dark theme hamburger lines on mobile */
+@media (max-width: 767.98px) {
+
+  .dark-theme .modern-header .header__sidebar-toggle span,
+  .dark-theme .header__mobile-nav-toggle span {
+    background-color: #60a5fa !important;
+  }
+}

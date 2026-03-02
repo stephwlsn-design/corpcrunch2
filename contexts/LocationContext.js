@@ -5,7 +5,10 @@ const LocationContext = createContext();
 export const useLocation = () => {
   const context = useContext(LocationContext);
   if (!context) {
-    throw new Error('useLocation must be used within a LocationProvider');
+    // Return safe defaults instead of throwing — prevents SSR crash when
+    // a component using this hook renders before LocationProvider is mounted
+    // (e.g. during Next.js 404/500 server rendering passes).
+    return { location: 'all', changeLocation: () => { } };
   }
   return context;
 };
@@ -19,7 +22,7 @@ export const LocationProvider = ({ children }) => {
       try {
         const savedLocation = localStorage.getItem('location') || 'all';
         setLocation(savedLocation);
-        
+
         // Set cookie for server-side access
         document.cookie = `location=${savedLocation}; path=/; max-age=31536000; SameSite=Lax`;
       } catch (error) {

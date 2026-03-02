@@ -25,8 +25,8 @@
 .modernHero {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 100vh;
-  max-height: 100vh;
+  min-height: 100svh;
+  /* Changed from 100vh / max-height: 100vh */
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -76,15 +76,20 @@
 }
 
 @keyframes waveFloat {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0) translateY(0) rotate(0deg);
   }
+
   25% {
     transform: translateX(-15%) translateY(-15px) rotate(2deg);
   }
+
   50% {
     transform: translateX(-30%) translateY(0) rotate(0deg);
   }
+
   75% {
     transform: translateX(-15%) translateY(15px) rotate(-2deg);
   }
@@ -100,7 +105,6 @@
   grid-template-rows: 1fr 1fr;
   gap: 0;
   height: 100%;
-  max-height: 100vh;
   overflow: hidden;
 }
 
@@ -310,9 +314,12 @@
 }
 
 @keyframes newsPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
   }
+
   50% {
     box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
   }
@@ -346,6 +353,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -436,7 +444,6 @@
   position: relative;
   overflow: hidden;
   height: 100%;
-  max-height: 100vh;
 }
 
 :global(.dark-theme) .heroRight {
@@ -591,12 +598,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.3) 50%,
-    rgba(0, 0, 0, 0.7) 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.7) 100%);
   z-index: 1;
 }
 
@@ -811,7 +816,7 @@
   .modernHero {
     grid-template-columns: 1fr;
     height: auto;
-    max-height: none;
+    min-height: auto;
   }
 
   .heroLeft {
@@ -1010,4 +1015,3 @@
     bottom: 1rem;
   }
 }
-

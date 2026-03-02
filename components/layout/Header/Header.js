@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import Menu from "./Menu";
 import MobileMenu from "./MobileMenu";
 import Sidebar from "./Sidebar";
-import SearchBar from "@/components/elements/SearchBar";
 import LanguageSelector from "@/components/elements/LanguageSelector";
 import LocationSelector from "@/components/elements/LocationSelector";
 import RegionSelector from "@/components/elements/RegionSelector";

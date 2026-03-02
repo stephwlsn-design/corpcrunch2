@@ -7,7 +7,7 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
-  
+
   webpack(config, { isServer }) {
     // Add file-loader for video files
     config.module.rules.push({
@@ -92,7 +92,15 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'images.pexels.com',
+      },
+      {
+        protocol: 'https',
         hostname: '**.corpcrunch.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'prowess.corpcrunch.io',
       },
       {
         protocol: 'https',
@@ -101,6 +109,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'www.corpcrunch.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'drive.google.com',
       },
     ],
     // Legacy domains support (deprecated but still works)
@@ -125,6 +137,7 @@ const nextConfig = {
       'corpcrunch.io',
       'www.corpcrunch.io',
       'prowess.corpcrunch.io',
+      'drive.google.com',
     ],
     // Optimize images for production
     formats: ['image/avif', 'image/webp'],
@@ -132,7 +145,7 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Remove contentSecurityPolicy - it was blocking external image proxying
   },
   // Configure custom port for development
   async rewrites() {
@@ -217,12 +230,15 @@ const nextConfig = {
   // Optimize production builds
   productionBrowserSourceMaps: false,
   // Enable static page generation where possible
-  output: 'standalone',
+  // output: 'standalone', // Disabled - causes image optimizer issues in dev
   // Optimize fonts
   optimizeFonts: true,
-  // Experimental features for better performance
+  // optimizeCss disabled: this experimental feature uses `critters` to inline
+  // critical CSS but it looks for stylesheets in the `.next/` build output.
+  // Our stylesheets live in `public/assets/css/` and are served via <link> tags
+  // in _document.js, so optimizeCss cannot find them and breaks CSS rendering.
   experimental: {
-    optimizeCss: true,
+    optimizeCss: false,
   },
   // Suppress CSS warnings during build (files in public/ are available at runtime)
   onDemandEntries: {

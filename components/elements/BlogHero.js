@@ -1,8 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 import styles from './BlogHero.module.css';
+import { isUnoptimizableImage } from '@/util/imageUtils';
 
-export default function BlogHero({ 
+export default function BlogHero({
   title = "Smart Digital Marketing that turns strategy into growth.",
   highlightText = "Digital Marketing",
   subtitle = "We combine strategy, creativity, and performance marketing to help digital brands grow, compete, and scale with confidence.",
@@ -15,15 +16,15 @@ export default function BlogHero({
   // Extract YouTube video ID from URL
   const getYouTubeEmbedUrl = (url) => {
     if (!url) return null;
-    
+
     // Check if it's already an embed URL
     if (url.includes('youtube.com/embed/')) {
       return url;
     }
-    
+
     // Extract video ID from various YouTube URL formats
     let videoId = null;
-    
+
     // Format: https://www.youtube.com/watch?v=VIDEO_ID
     if (url.includes('youtube.com/watch?v=')) {
       videoId = url.split('v=')[1]?.split('&')[0];
@@ -36,7 +37,7 @@ export default function BlogHero({
     else if (url.includes('youtube.com/embed/')) {
       return url;
     }
-    
+
     return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
   };
 
@@ -56,10 +57,10 @@ export default function BlogHero({
 
   // Check if it's a YouTube URL
   const isYouTubeUrl = mediaUrl && (
-    mediaUrl.includes('youtube.com') || 
+    mediaUrl.includes('youtube.com') ||
     mediaUrl.includes('youtu.be')
   );
-  
+
   const embedUrl = isYouTubeUrl ? getYouTubeEmbedUrl(mediaUrl) : null;
 
   return (
@@ -73,8 +74,8 @@ export default function BlogHero({
         {renderTitle()}
         <p className={styles.subtitle}>
           {subtitle}{' '}
-          <a 
-            href="#blog-main-content" 
+          <a
+            href="#blog-main-content"
             className={styles.readMoreLink}
             onClick={(e) => {
               e.preventDefault();
@@ -113,12 +114,14 @@ export default function BlogHero({
                 />
               )
             ) : (
-              <Image 
-                src={mediaUrl} 
-                alt="Hero Media" 
-                fill 
+              <Image
+                src={mediaUrl}
+                alt="Hero Media"
+                fill
+                sizes="(max-width: 768px) 100vw, 60vw"
                 className={styles.mediaImage}
                 priority
+                unoptimized={isUnoptimizableImage(mediaUrl)}
               />
             )}
           </div>
@@ -130,11 +133,11 @@ export default function BlogHero({
         {/* Consultation Box - Left */}
         <div className={styles.consultationBox}>
           <div className={styles.avatarWrapper}>
-            <Image 
-              src={journalistImage} 
-              alt="Consultant" 
-              width={44} 
-              height={44} 
+            <Image
+              src={journalistImage}
+              alt="Consultant"
+              width={44}
+              height={44}
               className={styles.avatar}
             />
             <div className={styles.statusDot}></div>

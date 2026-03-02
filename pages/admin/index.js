@@ -34,12 +34,12 @@ export default function AdminCreatePost() {
   const [readingTime, setReadingTime] = useState("");
   const [canonicalUrl, setCanonicalUrl] = useState("");
   const [relatedArticles, setRelatedArticles] = useState("");
-  
+
   // Quote Fields
   const [quoteText, setQuoteText] = useState("");
   const [quoteAuthorName, setQuoteAuthorName] = useState("");
   const [quoteAuthorTitle, setQuoteAuthorTitle] = useState("");
-  
+
   // Additional Content Fields
   const [whyThisMatters, setWhyThisMatters] = useState("");
   const [whyThisMattersMultimediaUrl, setWhyThisMattersMultimediaUrl] = useState("");
@@ -128,29 +128,29 @@ export default function AdminCreatePost() {
 
   const handleGenerateSlug = (value) => {
     setTitle(value);
-    
+
     // Auto-generate slug if empty or if it matches the previous title's slug
     const previousSlug = title
       ? generateSlugFromTitle(title)
       : "";
-    
+
     if (!slug || slug === previousSlug) {
       const generated = generateSlugFromTitle(value);
       setSlug(generated);
     }
-    
+
     // Auto-generate meta title if empty (limit to 60 chars for SEO)
     if (!metaTitle) {
       const metaTitleValue = value.length > 60 ? value.substring(0, 57) + "..." : value;
       setMetaTitle(metaTitleValue);
     }
-    
+
     // Auto-generate OG title if empty
     if (!ogTitle) {
       const ogTitleValue = value.length > 60 ? value.substring(0, 57) + "..." : value;
       setOgTitle(ogTitleValue);
     }
-    
+
     // Auto-generate meta description from content if content exists and metaDescription is empty
     if (!metaDescription && content) {
       const generatedDesc = generateMetaDescription(content);
@@ -185,10 +185,24 @@ export default function AdminCreatePost() {
   }, [content]);
 
   const handleImageUrlChange = (e) => {
-    const url = e.target.value;
+    let url = e.target.value;
+
+    // Auto-convert Google Drive share links to direct image links
+    if (url.includes('drive.google.com/file/d/')) {
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        url = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      }
+    } else if (url.includes('drive.google.com/open?id=')) {
+      const match = url.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        url = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      }
+    }
+
     setBannerImageUrl(url);
     setImageError(false);
-    
+
     // Warn if user enters iStock page URL instead of direct image URL
     if (url.includes('istockphoto.com/photo/') && !url.includes('media.istockphoto.com')) {
       // This is a page URL, not a direct image URL
@@ -240,12 +254,12 @@ export default function AdminCreatePost() {
   const resetForm = (skipConfirmation = false) => {
     // Confirm before clearing if form has content (unless skipConfirmation is true)
     if (!skipConfirmation) {
-    const hasContent = title || content || slug;
-    if (hasContent && typeof window !== "undefined" && !window.confirm("Are you sure you want to clear the form? All unsaved changes will be lost.")) {
-      return;
+      const hasContent = title || content || slug;
+      if (hasContent && typeof window !== "undefined" && !window.confirm("Are you sure you want to clear the form? All unsaved changes will be lost.")) {
+        return;
       }
     }
-    
+
     setTitle("");
     setSlug("");
     setAuthorFirstName("");
@@ -293,7 +307,7 @@ export default function AdminCreatePost() {
     setVideoUrl("");
     setImageError(false);
     setShowPreview(false);
-    
+
     // Show success message
     notifySuccess("Form cleared successfully");
   };
@@ -305,7 +319,7 @@ export default function AdminCreatePost() {
 
     // For draft saves, only validate required fields
     const isDraft = statusOverride === 'draft' || publishStatus === 'draft';
-    
+
     if (!isDraft && !validateForm()) {
       return;
     }
@@ -346,14 +360,14 @@ export default function AdminCreatePost() {
           // Create date from date and time strings
           const dateTimeString = `${publishDate}T${publishTime}`;
           publishDateTime = new Date(dateTimeString).toISOString();
-          
+
           // Validate the date is valid
           if (isNaN(new Date(dateTimeString).getTime())) {
             notifyError("Invalid publish date or time. Please check the format.");
             setIsPublishing(false);
             return;
           }
-          
+
           // If status is "scheduled", validate that the date is in the future
           const finalStatus = statusOverride || publishStatus;
           if (finalStatus === 'scheduled') {
@@ -414,17 +428,17 @@ export default function AdminCreatePost() {
         ...(readingTime && { readingTime: Number(readingTime) }),
         ...(canonicalUrl && isValidUrl(canonicalUrl) && { canonicalUrl: canonicalUrl.trim() }),
         // Related Articles - convert comma-separated string to array
-        ...(relatedArticles && { 
-          relatedArticles: relatedArticles.split(",").map((a) => a.trim()).filter(Boolean) 
+        ...(relatedArticles && {
+          relatedArticles: relatedArticles.split(",").map((a) => a.trim()).filter(Boolean)
         }),
         // Inline Images - convert newline-separated string to array, validate URLs
-        ...(inlineImages && { 
+        ...(inlineImages && {
           inlineImages: inlineImages.split("\n")
             .map(url => url.trim())
             .filter(url => url && isValidUrl(url))
         }),
         // Attachments - convert newline-separated string to array, validate URLs
-        ...(attachments && { 
+        ...(attachments && {
           attachments: attachments.split("\n")
             .map(url => url.trim())
             .filter(url => url && isValidUrl(url))
@@ -441,7 +455,7 @@ export default function AdminCreatePost() {
         ...(redirectFrom && { redirectFrom: redirectFrom.trim() }),
         ...(language && { language }),
         ...(region && { region: region.trim() }),
-        ...(structuredData && structuredData.trim() && { 
+        ...(structuredData && structuredData.trim() && {
           structuredData: structuredData.trim()
         }),
         ...(quoteText && { quoteText: quoteText.trim() }),
@@ -474,8 +488,8 @@ export default function AdminCreatePost() {
       }
 
       await axiosInstance.post("/posts", payload);
-      const statusMessage = statusOverride === 'draft' 
-        ? "Post saved as draft successfully!" 
+      const statusMessage = statusOverride === 'draft'
+        ? "Post saved as draft successfully!"
         : "Post published successfully!";
       notifySuccess(statusMessage);
 
@@ -486,7 +500,7 @@ export default function AdminCreatePost() {
       }
     } catch (error) {
       console.error("Failed to publish post", error);
-      
+
       // Auto-handle errors with centralized error handler
       try {
         const { handleApiError } = await import('@/lib/errorHandler');
@@ -515,7 +529,7 @@ export default function AdminCreatePost() {
         } else {
           notifyError(
             error?.response?.data?.message ||
-              "Failed to publish post. Please check the data and try again."
+            "Failed to publish post. Please check the data and try again."
           );
         }
       }
@@ -552,10 +566,10 @@ export default function AdminCreatePost() {
       // Clear all tokens
       localStorage.removeItem("adminToken");
       localStorage.removeItem("token");
-      
+
       // Show success message
       notifySuccess("Logged out successfully");
-      
+
       // Redirect to login page
       setTimeout(() => {
         window.location.href = "/admin/login";
@@ -569,10 +583,10 @@ export default function AdminCreatePost() {
         <title>Admin | Create Post - Corp Crunch</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
-      
+
       {/* Admin-only layout - no header, footer, navbar */}
-      <div style={{ 
-        minHeight: "100vh", 
+      <div style={{
+        minHeight: "100vh",
         backgroundColor: "#f5f5f5",
         paddingTop: "20px",
         paddingBottom: "40px"
@@ -604,7 +618,7 @@ export default function AdminCreatePost() {
                     type="button"
                     onClick={() => router.push("/admin/dashboard")}
                     className="btn"
-                    style={{ 
+                    style={{
                       minWidth: "100px",
                       backgroundColor: "#17a2b8",
                       borderColor: "#17a2b8",
@@ -622,7 +636,7 @@ export default function AdminCreatePost() {
                     type="button"
                     onClick={() => setShowPreview(!showPreview)}
                     className="btn"
-                    style={{ 
+                    style={{
                       minWidth: "100px",
                       backgroundColor: "#ff0292",
                       borderColor: "#ff0292",
@@ -640,7 +654,7 @@ export default function AdminCreatePost() {
                     type="button"
                     onClick={handleLogout}
                     className="btn"
-                    style={{ 
+                    style={{
                       minWidth: "100px",
                       backgroundColor: "#dc3545",
                       borderColor: "#dc3545",
@@ -821,7 +835,7 @@ export default function AdminCreatePost() {
                     )}
                   </div>
                 ) : (
-                <form onSubmit={handlePublish}>
+                  <form onSubmit={handlePublish}>
                     {/* Core Required Fields */}
                     <SectionHeader
                       title="Core Required Fields"
@@ -829,15 +843,15 @@ export default function AdminCreatePost() {
                     />
                     {expandedSections.core && (
                       <div style={{ marginBottom: "30px", padding: "0 15px" }}>
-                  <div className="input-group-meta position-relative mb-25">
+                        <div className="input-group-meta position-relative mb-25">
                           <label className="form-label">
                             Title <span style={{ color: "red" }}>*</span>
                           </label>
-                    <input
-                      className="form-control articleInput"
-                      type="text"
-                      value={title}
-                      onChange={(e) => handleGenerateSlug(e.target.value)}
+                          <input
+                            className="form-control articleInput"
+                            type="text"
+                            value={title}
+                            onChange={(e) => handleGenerateSlug(e.target.value)}
                             placeholder="Enter post title"
                             required
                             minLength={5}
@@ -854,9 +868,9 @@ export default function AdminCreatePost() {
                               {title.length} characters
                             </small>
                           )}
-                  </div>
+                        </div>
 
-                  <div className="input-group-meta position-relative mb-25">
+                        <div className="input-group-meta position-relative mb-25">
                           <label className="form-label">
                             Slug (URL-friendly) <span style={{ color: "red" }}>*</span>
                             <span className="ms-2" style={{ fontSize: "12px", color: "#666" }}>
@@ -867,16 +881,16 @@ export default function AdminCreatePost() {
                             <span className="me-2" style={{ color: "#777" }}>
                               /blog/
                             </span>
-                    <input
-                      className="form-control articleInput"
-                      type="text"
-                      value={slug}
-                      onChange={(e) => {
-                        // Only allow valid slug characters
-                        const value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "");
-                        setSlug(value);
-                      }}
-                      placeholder="unique-url-slug"
+                            <input
+                              className="form-control articleInput"
+                              type="text"
+                              value={slug}
+                              onChange={(e) => {
+                                // Only allow valid slug characters
+                                const value = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "");
+                                setSlug(value);
+                              }}
+                              placeholder="unique-url-slug"
                               required
                               minLength={3}
                               pattern="[a-z0-9-]+"
@@ -913,7 +927,7 @@ export default function AdminCreatePost() {
                               display: "block",
                             }}
                           >
-                            Only lowercase letters, numbers, and hyphens allowed. 
+                            Only lowercase letters, numbers, and hyphens allowed.
                             {slug && slug.length < 3 && (
                               <span style={{ color: "#f44336" }}> ⚠ Slug must be at least 3 characters</span>
                             )}
@@ -921,7 +935,7 @@ export default function AdminCreatePost() {
                               <span style={{ color: "#4caf50" }}> ✓ Valid format</span>
                             )}
                           </small>
-                  </div>
+                        </div>
 
                         <div className="row">
                           <div className="col-md-6">
@@ -939,58 +953,58 @@ export default function AdminCreatePost() {
                             </div>
                           </div>
                           <div className="col-md-6">
-                  <div className="input-group-meta position-relative mb-25">
+                            <div className="input-group-meta position-relative mb-25">
                               <label className="form-label">Author Last Name</label>
-                    <input
-                      className="form-control articleInput"
-                      type="text"
+                              <input
+                                className="form-control articleInput"
+                                type="text"
                                 value={authorLastName}
                                 onChange={(e) => setAuthorLastName(e.target.value)}
                                 placeholder="Last name"
-                    />
+                              />
                             </div>
                           </div>
-                  </div>
+                        </div>
 
-                  <div className="input-group-meta position-relative mb-25">
+                        <div className="input-group-meta position-relative mb-25">
                           <label className="form-label">
                             Category <span style={{ color: "red" }}>*</span>
                           </label>
-                    <select
+                          <select
                             className="form-control articleInput"
-                      value={categoryId}
-                      onChange={(e) => setCategoryId(e.target.value)}
+                            value={categoryId}
+                            onChange={(e) => setCategoryId(e.target.value)}
                             required
                             disabled={categoriesLoading}
-                    >
+                          >
                             <option value="">
                               {categoriesLoading
                                 ? "Loading categories..."
                                 : "Select category"}
                             </option>
-                      {categories &&
-                        categories.map((category) => (
-                          <option key={category.id} value={category.id}>
-                            {category.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
+                            {categories &&
+                              categories.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                  {category.name}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
 
-                  <div className="input-group-meta position-relative mb-25">
+                        <div className="input-group-meta position-relative mb-25">
                           <label className="form-label">
                             Content Type <span style={{ color: "red" }}>*</span>
                           </label>
-                    <select
+                          <select
                             className="form-control articleInput"
-                      value={contentType}
-                      onChange={(e) => setContentType(e.target.value)}
+                            value={contentType}
+                            onChange={(e) => setContentType(e.target.value)}
                             required
-                    >
+                          >
                             <option value="article">Article</option>
                             <option value="video">Video</option>
                             <option value="magazine">Magazine</option>
-                    </select>
+                          </select>
                           <small
                             className="text-muted"
                             style={{
@@ -1001,7 +1015,7 @@ export default function AdminCreatePost() {
                           >
                             Select the type of content: Article (text-based), Video (video content), or Magazine (digital magazine)
                           </small>
-                  </div>
+                        </div>
 
                         <div className="input-group-meta position-relative mb-25">
                           <label className="form-label">Tags</label>
@@ -1022,22 +1036,22 @@ export default function AdminCreatePost() {
                           >
                             Separate multiple tags with commas
                           </small>
-                  </div>
+                        </div>
 
-                  <div className="input-group-meta position-relative mb-25">
-                    <label className="form-label">
+                        <div className="input-group-meta position-relative mb-25">
+                          <label className="form-label">
                             Article Body / Content{" "}
                             <span style={{ color: "red" }}>*</span>
-                    </label>
-                    <textarea
-                      ref={contentTextareaRef}
-                      className="form-control articleInput"
+                          </label>
+                          <textarea
+                            ref={contentTextareaRef}
+                            className="form-control articleInput"
                             style={{
                               minHeight: "400px",
                               fontFamily: "monospace",
                             }}
-                      value={content}
-                      onChange={(e) => setContent(e.target.value)}
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
                             placeholder="Write the full article content here... You can use HTML or Markdown formatting. Use H2/H3 tags for subheadings to improve SEO structure."
                             required
                             minLength={50}
@@ -1153,7 +1167,7 @@ export default function AdminCreatePost() {
                                     notifyError("Please enter author name");
                                     return;
                                   }
-                                  
+
                                   const textarea = contentTextareaRef.current;
                                   if (textarea) {
                                     const start = textarea.selectionStart || content.length;
@@ -1164,14 +1178,14 @@ export default function AdminCreatePost() {
                                     const quoteMarker = `\n\n[QUOTE_PLACEHOLDER]\n\n`;
                                     const newContent = beforeText + quoteMarker + afterText;
                                     setContent(newContent);
-                                    
+
                                     // Update cursor position after state update
                                     setTimeout(() => {
                                       const newCursorPos = start + quoteMarker.length;
                                       textarea.setSelectionRange(newCursorPos, newCursorPos);
                                       textarea.focus();
                                     }, 0);
-                                    
+
                                     notifySuccess("Quote placeholder inserted. The quote will automatically appear in the blog post when published.");
                                   } else {
                                     // Fallback: append to content
@@ -1223,7 +1237,7 @@ export default function AdminCreatePost() {
                                 </small>
                               )}
                             </div>
-                            
+
                             <div className="input-group-meta position-relative mb-25">
                               <label className="form-label">Multimedia (Graphic or Video)</label>
                               <div className="row mb-3">
@@ -1309,7 +1323,7 @@ export default function AdminCreatePost() {
                                 </small>
                               )}
                             </div>
-                            
+
                             <div className="input-group-meta position-relative mb-25">
                               <label className="form-label">Multimedia (Graphic or Video)</label>
                               <div className="row mb-3">
@@ -1410,7 +1424,7 @@ export default function AdminCreatePost() {
                                 display: "block",
                               }}
                             >
-                              {metaTitle.length}/60 characters 
+                              {metaTitle.length}/60 characters
                               {metaTitle.length < 50 && (
                                 <span style={{ color: "#ff9800" }}> ⚠ Recommended: 50-60 characters</span>
                               )}
@@ -1515,6 +1529,10 @@ export default function AdminCreatePost() {
                             <span style={{ color: "#4CAF50" }}>
                               ✓ Unsplash: Use direct image URLs (e.g., https://images.unsplash.com/photo-...)
                             </span>
+                            <br />
+                            <span style={{ color: "#4CAF50" }}>
+                              ✓ Google Drive: Paste the share link, it will be auto-converted!
+                            </span>
                           </small>
                           {bannerImageUrl &&
                             isValidUrl(bannerImageUrl) && (
@@ -1532,23 +1550,23 @@ export default function AdminCreatePost() {
                                 }}
                               >
                                 {!imageError ? (
-                                <img
-                                  src={bannerImageUrl}
-                                  alt="Banner preview"
-                                  style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    objectFit: "cover",
-                                  }}
+                                  <img
+                                    src={bannerImageUrl}
+                                    alt="Banner preview"
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      objectFit: "cover",
+                                    }}
                                     onError={(e) => {
                                       console.error('Image load error:', bannerImageUrl);
                                       setImageError(true);
                                     }}
-                                  onLoad={(e) => {
+                                    onLoad={(e) => {
                                       setImageError(false);
-                                    const img = e.target;
-                                    const naturalWidth = img.naturalWidth;
-                                    const naturalHeight = img.naturalHeight;
+                                      const img = e.target;
+                                      const naturalWidth = img.naturalWidth;
+                                      const naturalHeight = img.naturalHeight;
                                       console.log('Image loaded successfully:', { width: naturalWidth, height: naturalHeight });
                                     }}
                                   />
@@ -1587,8 +1605,8 @@ export default function AdminCreatePost() {
                                         </span>
                                       )}
                                     </div>
-                              </div>
-                            )}
+                                  </div>
+                                )}
                               </div>
                             )}
                           {imageError && bannerImageUrl && isValidUrl(bannerImageUrl) && (
@@ -1973,7 +1991,7 @@ export default function AdminCreatePost() {
                             onChange={(e) => {
                               const newStatus = e.target.value;
                               setPublishStatus(newStatus);
-                              
+
                               // If changing to scheduled, ensure date/time is set
                               if (newStatus === 'scheduled' && (!publishDate || !publishTime)) {
                                 const now = new Date();
@@ -2278,7 +2296,7 @@ export default function AdminCreatePost() {
                             const urls = inlineImages.split("\n").filter(url => url.trim());
                             const validUrls = urls.filter(url => isValidUrl(url.trim()));
                             const invalidUrls = urls.filter(url => !isValidUrl(url.trim()));
-                            
+
                             return (
                               <div style={{ marginTop: "5px" }}>
                                 {urls.length > 0 && (
@@ -2327,7 +2345,7 @@ export default function AdminCreatePost() {
                           >
                             One URL per line for images or videos to embed in the article. Add alt text in the Advanced SEO section.
                           </small>
-                  </div>
+                        </div>
 
                         <div className="input-group-meta position-relative mb-25">
                           <label className="form-label">
@@ -2344,7 +2362,7 @@ export default function AdminCreatePost() {
                             const urls = attachments.split("\n").filter(url => url.trim());
                             const validUrls = urls.filter(url => isValidUrl(url.trim()));
                             const invalidUrls = urls.filter(url => !isValidUrl(url.trim()));
-                            
+
                             return (
                               <div style={{ marginTop: "5px" }}>
                                 {urls.length > 0 && (
@@ -2398,17 +2416,17 @@ export default function AdminCreatePost() {
                     )}
 
                     <div className="d-flex gap-3 mt-4">
-                  <button
-                    type="submit"
-                    onClick={() => {
-                      // If status is currently draft, set it to published for the main button
-                      if (publishStatus === 'draft') {
-                        setPublishStatus('published');
-                      }
-                    }}
-                    disabled={isPublishing}
+                      <button
+                        type="submit"
+                        onClick={() => {
+                          // If status is currently draft, set it to published for the main button
+                          if (publishStatus === 'draft') {
+                            setPublishStatus('published');
+                          }
+                        }}
+                        disabled={isPublishing}
                         className="btn-eleven fw-500 tran3s"
-                        style={{ 
+                        style={{
                           minWidth: "150px",
                           backgroundColor: "#ff0292",
                           borderColor: "#ff0292",
@@ -2462,16 +2480,16 @@ export default function AdminCreatePost() {
                         disabled={isPublishing}
                       >
                         {isPublishing ? "Saving..." : "Save as Draft"}
-                  </button>
+                      </button>
                     </div>
-                </form>
+                  </form>
                 )}
               </div>
             </div>
           </div>
         </div>
       </div>
-      
+
       {/* Toast Container for notifications */}
       <ToastContainer />
     </>

@@ -1,7 +1,4 @@
-import DownloadCard from "@/components/card/DownloadCard";
 import Layout from "@/components/layout/Layout";
-import AuthAndSubscriptionProtected from "@/components/providers/AuthAndSubscriptionProtected";
-import TrendingSlider from "@/components/slider/TrendingSlider";
 import FeaturedPosts from "@/components/elements/FeaturedPosts";
 import PopularStories from "@/components/elements/PopularStories";
 import Newsletter from "@/components/elements/Newsletter";
@@ -85,231 +82,7 @@ export const getServerSideProps = async ({ req }) => {
   }
 };
 
-const _unused_getServerSideProps = async ({ req }) => {
-  try {
-    const language = req?.cookies?.language || "en";
-    const location = req?.cookies?.location || "all";
-
-    console.log("[getServerSideProps] Fetching posts with params:", {
-      lang: language,
-      location,
-    });
-
-    let response;
-    try {
-      response = await axiosInstance.get(`/posts`, {
-        params: {
-          lang: language,
-          location: location !== "all" ? location : undefined,
-        },
-        timeout: 10000,
-      });
-
-      console.log("[getServerSideProps] Raw API response:", {
-        type: typeof response,
-        isArray: Array.isArray(response),
-        keys: response ? Object.keys(response) : [],
-        hasFrontPagePosts: response?.frontPagePosts !== undefined,
-        frontPagePostsType: typeof response?.frontPagePosts,
-        frontPagePostsIsArray: Array.isArray(response?.frontPagePosts),
-        frontPagePostsLength: Array.isArray(response?.frontPagePosts)
-          ? response.frontPagePosts.length
-          : "N/A",
-        hasTrendingPosts: response?.trendingPosts !== undefined,
-        trendingPostsType: typeof response?.trendingPosts,
-        trendingPostsIsArray: Array.isArray(response?.trendingPosts),
-        trendingPostsLength: Array.isArray(response?.trendingPosts)
-          ? response.trendingPosts.length
-          : "N/A",
-        success: response?.success,
-        message: response?.message,
-        fullResponsePreview: JSON.stringify(response).substring(0, 1000),
-      });
-    } catch (apiError) {
-      console.error("[getServerSideProps] API call failed:", {
-        message: apiError.message,
-        response: apiError.response?.data,
-        status: apiError.response?.status,
-      });
-      return {
-        props: {
-          posts: {
-            frontPagePosts: [],
-            trendingPosts: [],
-          },
-        },
-      };
-    }
-
-    const frontPagePosts = Array.isArray(response?.frontPagePosts)
-      ? response.frontPagePosts
-      : [];
-    const trendingPosts = Array.isArray(response?.trendingPosts)
-      ? response.trendingPosts
-      : [];
-
-    console.log("[getServerSideProps] Extracted posts:", {
-      frontPagePostsCount: frontPagePosts.length,
-      trendingPostsCount: trendingPosts.length,
-      firstPostTitle: frontPagePosts[0]?.title,
-      firstPostId: frontPagePosts[0]?._id,
-    });
-
-    const serializePost = (post) => {
-      if (!post || typeof post !== "object") {
-        console.warn("[getServerSideProps] Invalid post:", post);
-        return null;
-      }
-      try {
-        const serialized = JSON.parse(JSON.stringify(post));
-
-        if (serialized._id) {
-          serialized._id = String(serialized._id);
-        }
-        if (serialized.categoryId) {
-          serialized.categoryId = String(serialized.categoryId);
-        }
-
-        if (serialized.createdAt) {
-          serialized.createdAt =
-            serialized.createdAt instanceof Date
-              ? serialized.createdAt.toISOString()
-              : String(serialized.createdAt);
-        }
-        if (serialized.updatedAt) {
-          serialized.updatedAt =
-            serialized.updatedAt instanceof Date
-              ? serialized.updatedAt.toISOString()
-              : String(serialized.updatedAt);
-        }
-
-        if (serialized.Category && typeof serialized.Category === "object") {
-          serialized.Category = {
-            ...serialized.Category,
-            id:
-              serialized.Category.id?.toString() ||
-              serialized.Category._id?.toString() ||
-              serialized.Category.id,
-          };
-        }
-
-        return serialized;
-      } catch (e) {
-        console.error(
-          "[getServerSideProps] Error serializing post:",
-          e.message,
-          {
-            postId: post._id,
-            postTitle: post.title,
-            error: e.stack,
-          }
-        );
-        return {
-          _id: post._id?.toString() || "unknown",
-          title: post.title || "Untitled",
-          slug: post.slug || "",
-        };
-      }
-    };
-
-    const serializedFrontPage = frontPagePosts
-      .map(serializePost)
-      .filter((post) => post !== null);
-    const serializedTrending = trendingPosts
-      .map(serializePost)
-      .filter((post) => post !== null);
-
-    const serializablePosts = {
-      frontPagePosts: serializedFrontPage,
-      trendingPosts: serializedTrending,
-    };
-
-    console.log("[getServerSideProps] ✓ Final serialized posts:", {
-      frontPagePostsCount: serializablePosts.frontPagePosts.length,
-      trendingPostsCount: serializablePosts.trendingPosts.length,
-      firstPostTitle: serializablePosts.frontPagePosts[0]?.title,
-      firstPostId: serializablePosts.frontPagePosts[0]?._id,
-      canStringify: (() => {
-        try {
-          JSON.stringify(serializablePosts);
-          return true;
-        } catch (e) {
-          console.error(
-            "[getServerSideProps] ❌ Cannot stringify posts:",
-            e.message
-          );
-          return false;
-        }
-      })(),
-    });
-
-    try {
-      const testStringify = JSON.stringify(serializablePosts);
-      console.log(
-        "[getServerSideProps] ✓ Posts are JSON-serializable, size:",
-        testStringify.length,
-        "bytes"
-      );
-    } catch (e) {
-      console.error(
-        "[getServerSideProps] ❌ Posts are NOT JSON-serializable:",
-        e.message
-      );
-      return {
-        props: {
-          posts: {
-            frontPagePosts: [],
-            trendingPosts: [],
-          },
-        },
-      };
-    }
-
-    return {
-      props: { posts: serializablePosts },
-    };
-  } catch (error) {
-    console.error("[getServerSideProps] Error fetching posts:", {
-      message: error.message,
-      code: error.code,
-      response: error.response?.data,
-      status: error.response?.status,
-    });
-
-    if (error.response?.data) {
-      const errorData = error.response.data;
-      if (
-        errorData.frontPagePosts !== undefined ||
-        errorData.trendingPosts !== undefined
-      ) {
-        return {
-          props: {
-            posts: {
-              frontPagePosts: Array.isArray(errorData.frontPagePosts)
-                ? errorData.frontPagePosts
-                : [],
-              trendingPosts: Array.isArray(errorData.trendingPosts)
-                ? errorData.trendingPosts
-                : [],
-            },
-          },
-        };
-      }
-    }
-
-    console.warn(
-      "[getServerSideProps] ⚠ Returning empty posts due to error"
-    );
-    return {
-      props: {
-        posts: {
-          frontPagePosts: [],
-          trendingPosts: [],
-        },
-      },
-    };
-  }
-};
+// Removed _unused_getServerSideProps as part of cleanup
 
 export default function Home({ posts, categories = [] }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -334,11 +107,11 @@ export default function Home({ posts, categories = [] }) {
     posts || { frontPagePosts: [], trendingPosts: [], videoPosts: [] };
 
   // Translate posts based on current language
-  const { translatedPosts: translatedTrendingPosts, isTranslating: isTranslatingTrending } = 
+  const { translatedPosts: translatedTrendingPosts, isTranslating: isTranslatingTrending } =
     usePostsTranslation(safePosts?.trendingPosts || []);
-  const { translatedPosts: translatedVideoPosts, isTranslating: isTranslatingVideos } = 
+  const { translatedPosts: translatedVideoPosts, isTranslating: isTranslatingVideos } =
     usePostsTranslation(safePosts?.videoPosts || []);
-  const { translatedPosts: translatedFrontPagePosts, isTranslating: isTranslatingFrontPage } = 
+  const { translatedPosts: translatedFrontPagePosts, isTranslating: isTranslatingFrontPage } =
     usePostsTranslation(safePosts?.frontPagePosts || []);
 
   const [apiStatus, setApiStatus] = useState(null);
@@ -659,6 +432,36 @@ export default function Home({ posts, categories = [] }) {
             margin: 30px 0;
           }
         }
+        @media (max-width: 480px) {
+          .featured-content-modern {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+          :global(.tgbanner__content) {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+          :global(.tgbanner__content-meta) {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+          :global(.tgbanner__post .title) {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+          :global(.stories-post__content) {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+          :global(.featured__content) {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+          :global(.trending__post-content) {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+        }
         @media (max-width: 991.98px) {
           .home-social-ribbon {
             display: none;
@@ -771,12 +574,12 @@ export default function Home({ posts, categories = [] }) {
         <ExploreOurWorks />
 
         <RecentVideoPosts
-  posts={translatedVideoPosts || safePosts?.videoPosts || []}
-  isLoading={isLoading || isTranslatingVideos}
-/>
+          posts={translatedVideoPosts || safePosts?.videoPosts || []}
+          isLoading={isLoading || isTranslatingVideos}
+        />
 
-{/* If you had a <hr className="blue-separator" /> here, comment it out too */}
-{/* <Newsletter /> */}
+        {/* If you had a <hr className="blue-separator" /> here, comment it out too */}
+        {/* <Newsletter /> */}
 
         {/* <Newsletter /> */}
       </div>

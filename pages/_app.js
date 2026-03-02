@@ -1,4 +1,6 @@
-// Critical CSS - loaded in _document.js
+// Critical CSS is served via link tags in _document.js
+// Note: public/ files cannot be imported as JS modules in Next.js
+
 // Swiper CSS - needed for components
 import "swiper/css";
 import "swiper/css/navigation";
@@ -44,7 +46,7 @@ function MyApp({ Component, pageProps }) {
         link.href = href;
         document.head.appendChild(link);
       };
-      
+
       // Load non-critical CSS
       loadCSS('/assets/css/flaticon.css');
       loadCSS('/assets/css/fontawesome-all.min.css');
@@ -68,7 +70,7 @@ function MyApp({ Component, pageProps }) {
       script.src = '/assets/js/scroll-animations.js';
       script.async = true;
       document.body.appendChild(script);
-      
+
       return () => {
         if (document.body.contains(script)) {
           document.body.removeChild(script);
@@ -84,8 +86,8 @@ function MyApp({ Component, pageProps }) {
       const handleUnhandledRejection = (event) => {
         // Check if it's a MetaMask connection error
         const errorMessage = event.reason?.message || event.reason?.toString() || '';
-        const isMetaMaskError = 
-          errorMessage.includes('MetaMask') || 
+        const isMetaMaskError =
+          errorMessage.includes('MetaMask') ||
           errorMessage.includes('Failed to connect') ||
           errorMessage.includes('ethereum') ||
           event.reason?.code === 4001 || // User rejected request
@@ -102,8 +104,8 @@ function MyApp({ Component, pageProps }) {
       // Handle general errors
       const handleError = (event) => {
         const errorMessage = event.message || event.error?.message || '';
-        const isMetaMaskError = 
-          errorMessage.includes('MetaMask') || 
+        const isMetaMaskError =
+          errorMessage.includes('MetaMask') ||
           errorMessage.includes('Failed to connect') ||
           errorMessage.includes('ethereum');
 

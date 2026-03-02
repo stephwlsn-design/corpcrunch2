@@ -7,11 +7,11 @@ export default function Document() {
         {/* DNS Prefetch for external resources */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-        
+
         {/* Preconnect to font services for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+
         {/* Fonts with font-display: swap for better performance */}
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
@@ -21,26 +21,14 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
-        
-        {/* Critical CSS - Load synchronously to prevent FOUC */}
-        {/* Using absolute paths to ensure proper loading */}
-        <link
-          rel="stylesheet"
-          href="/assets/css/bootstrap.min.css"
-        />
-        <link
-          rel="stylesheet"
-          href="/assets/css/main.css"
-        />
-        <link
-          rel="stylesheet"
-          href="/assets/css/modern-theme.css"
-        />
-        <link
-          rel="stylesheet"
-          href="/assets/css/modern-overrides.css"
-        />
-        
+
+        {/* Critical CSS - served from public/assets/css/ at runtime */}
+        {/* Note: 'Unable to locate stylesheet' in dev logs is harmless Next.js noise - CSS IS loaded correctly */}
+        <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="stylesheet" href="/assets/css/modern-theme.css" />
+        <link rel="stylesheet" href="/assets/css/modern-overrides.css" />
+
         {/* Preload other CSS for faster loading */}
         <link
           rel="preload"
