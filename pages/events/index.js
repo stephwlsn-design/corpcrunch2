@@ -18,6 +18,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
   const [selectedCard, setSelectedCard] = useState(0);
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [selectedSpeaker, setSelectedSpeaker] = useState(null);
 
   // Handle card click with smooth scroll
   const handleCardClick = (index) => {
@@ -484,6 +485,146 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                 </div>
               )}
 
+              {/* Featured Speakers Section */}
+              {selectedCard === 0 && (() => {
+                const speakers = [
+                  {
+                    id: 'goffi',
+                    name: 'Dr. Emmanuel Goffi',
+                    image: '/assets/img/others/EmmanuelGoffi.png',
+                    bio: 'Dr. Goffi is a leading expert in the ethical implications of emerging technologies. With a rich background in military ethics and international relations, he brings a unique, grounded perspective to the high-level debate on AI. He is a co-founder and co-director of the Global AI Ethics Institute and has dedicated his career to ensuring that the digital future is as diverse as the humanity it serves.',
+                    quote: '"AI is not a neutral tool; it is a mirror of the values we feed it. To build ethical AI, we must first ensure our ethical frameworks are inclusive of the entire human experience."'
+                  },
+                  {
+                    id: 'hegde',
+                    name: 'Saveen Hegde',
+                    image: '/assets/img/others/SaveenHegde.png',
+                    bio: 'Saveen Hegde is the Principal Consultant at Unbox Experience, where he has spearheaded innovation and strategic transformation for over 100 global firms across 22 countries. A certified practitioner from Harvard University and the Stanford Graduate School of Business, Saveen bridges the gap between academic rigor and practical corporate application. Beyond the boardroom, Saveen is a powerhouse of communication and performance:',
+                    quote: '"Innovation is not just about the next big technology; it\'s about the next big way of thinking. When we unbox the human experience, we find the true potential of our digital future."'
+                  }
+                ];
+                return (
+                  <div className={styles.speakersSection}>
+                    <div className={styles.speakersSectionHeader}>
+                      <span className={styles.speakersEyebrow}>C3 AIX Summit 2026</span>
+                      <h3 className={styles.speakersSectionTitle}>FEATURED SPEAKERS</h3>
+                      <div className={styles.speakersTitleLine}></div>
+                    </div>
+
+                    <div className={`${styles.speakersLayout} ${selectedSpeaker ? styles.speakersLayoutActive : ''}`}>
+                      {/* Speaker Photo Cards */}
+                      <div className={styles.speakerPhotosGrid}>
+                        {speakers.map((speaker) => (
+                          <div
+                            key={speaker.id}
+                            className={`${styles.speakerCard} ${selectedSpeaker?.id === speaker.id ? styles.speakerCardActive : ''}`}
+                            onClick={() => setSelectedSpeaker(selectedSpeaker?.id === speaker.id ? null : speaker)}
+                            role="button"
+                            tabIndex={0}
+                            aria-label={`View bio for ${speaker.name}`}
+                            onKeyDown={(e) => e.key === 'Enter' && setSelectedSpeaker(selectedSpeaker?.id === speaker.id ? null : speaker)}
+                          >
+                            <div className={styles.speakerPhotoWrap}>
+                              <Image
+                                src={speaker.image}
+                                alt={speaker.name}
+                                fill
+                                className={styles.speakerPhoto}
+                                style={{ objectFit: 'cover', objectPosition: 'top' }}
+                              />
+                              <div className={styles.speakerPhotoOverlay}>
+                                <span className={styles.speakerPhotoOverlayText}>View Bio →</span>
+                              </div>
+                            </div>
+                            <div className={styles.speakerCardInfo}>
+
+                              <h4 className={styles.speakerName}>{speaker.name} <span className={styles.speakerArrow}>↗</span></h4>
+                              <span className={styles.speakerTitle}></span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Bio Panel */}
+                      <div className={`${styles.speakerBioPanel} ${selectedSpeaker ? styles.speakerBioPanelVisible : ''}`}>
+                        {selectedSpeaker && (
+                          <>
+                            <button
+                              className={styles.bioPanelClose}
+                              onClick={() => setSelectedSpeaker(null)}
+                              aria-label="Close bio panel"
+                            >✕</button>
+                            <div className={styles.bioPanelInner}>
+                              <h3 className={styles.bioPanelName}>{selectedSpeaker.name}</h3>
+                              <div className={styles.bioPanelDivider}></div>
+                              <p className={styles.bioPanelBio}>{selectedSpeaker.bio}</p>
+                              <blockquote className={styles.bioPanelQuote}>{selectedSpeaker.quote}</blockquote>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    {/* --- Call to Action Button --- */}
+                    <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0 0' }}>
+                      <Link href="/events/application-form" passHref>
+                        <button
+                          style={{
+                            background: '#2551e7',
+                            color: 'white',
+                            padding: '16px 32px',
+                            fontSize: '18px',
+                            fontWeight: '800',
+                            fontFamily: 'Urbanist',
+                            border: 'none',
+                            borderRadius: '30px',
+                            cursor: 'pointer',
+                            boxShadow: '0 10px 20px rgba(37, 81, 231, 0.2)',
+                            transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+                          }}
+                          onMouseEnter={e => {
+                            e.currentTarget.style.transform = 'translateY(-3px)';
+                            e.currentTarget.style.boxShadow = '0 15px 25px rgba(37, 81, 231, 0.3)';
+                          }}
+                          onMouseLeave={e => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = '0 10px 20px rgba(37, 81, 231, 0.2)';
+                          }}
+                        >
+                          Become A Speaker
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })()}
+
+
+
+              {/* 4. Interactive Agenda Timeline */}
+              {yearCards[selectedCard].event.agenda && (
+                <div className={styles.timelineAgendaSection}>
+                  <h3 className={styles.timelineTitle}>Event Timeline</h3>
+                  <div className={styles.timelineContainer}>
+                    {Object.keys(yearCards[selectedCard].event.agenda).map((day, dIdx) => (
+                      <div key={day} className={styles.timelineDay}>
+                        <div className={styles.dayIndicator}>{day.toUpperCase()}</div>
+                        <div className={styles.timelineItems}>
+                          {yearCards[selectedCard].event.agenda[day].map((item, i) => (
+                            <div key={i} className={styles.timelineItem}>
+                              <div className={styles.itemTime}>{item.time}</div>
+                              <div className={styles.itemContent}>
+                                <h5>{item.session}</h5>
+                                <span className={styles.itemTypeTag}>{item.type}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* BE A PART OF THE EVENT MOVED HERE */}
               <div className={styles.containerthreecards}>
                 <h1 style={{ textAlign: 'center', fontSize: '40px', fontWeight: '900', fontFamily: 'Urbanist' }}>Be a part of the event</h1>
@@ -536,31 +677,6 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                   </div>
                 </div>
               </div>
-
-              {/* 4. Interactive Agenda Timeline */}
-              {yearCards[selectedCard].event.agenda && (
-                <div className={styles.timelineAgendaSection}>
-                  <h3 className={styles.timelineTitle}>Event Timeline</h3>
-                  <div className={styles.timelineContainer}>
-                    {Object.keys(yearCards[selectedCard].event.agenda).map((day, dIdx) => (
-                      <div key={day} className={styles.timelineDay}>
-                        <div className={styles.dayIndicator}>{day.toUpperCase()}</div>
-                        <div className={styles.timelineItems}>
-                          {yearCards[selectedCard].event.agenda[day].map((item, i) => (
-                            <div key={i} className={styles.timelineItem}>
-                              <div className={styles.itemTime}>{item.time}</div>
-                              <div className={styles.itemContent}>
-                                <h5>{item.session}</h5>
-                                <span className={styles.itemTypeTag}>{item.type}</span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* 5. Audience Orbit Section (Enhanced) */}
               <div className={styles.audienceOrbitSection}>
@@ -1153,7 +1269,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
         )}
       </div>
 
-    </Layout>
+    </Layout >
   );
 }
 
