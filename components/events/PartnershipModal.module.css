@@ -1,0 +1,175 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+}
+
+.modalContent {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.closeButton {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.closeButton:hover {
+    color: #000;
+}
+
+.modalTitle {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.formGroupRow {
+    display: flex;
+    gap: 20px;
+}
+
+.formGroupRow .formGroup {
+    flex: 1;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formGroup label {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a4a4a;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #f9fafb;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #2551e7;
+    box-shadow: 0 0 0 3px rgba(37, 81, 231, 0.1);
+    background-color: #ffffff;
+}
+
+.pSelect {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px top 50%;
+    background-size: 12px auto;
+}
+
+.formGroup textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.submitButton {
+    background: #2551e7;
+    color: #ffffff;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.submitButton:hover:not(:disabled) {
+    background: #1e40af;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 81, 231, 0.3);
+}
+
+.submitButton:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+}
+
+.errorMessage {
+    color: #e53e3e;
+    font-size: 14px;
+    padding: 12px;
+    background: #fff5f5;
+    border-radius: 6px;
+    border-left: 4px solid #e53e3e;
+}
+
+.successMessage {
+    color: #38a169;
+    font-size: 16px;
+    padding: 24px;
+    background: #f0fff4;
+    border-radius: 8px;
+    border: 1px solid #c6f6d5;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Base mobile adjustments */
+@media (max-width: 768px) {
+    .modalContent {
+        padding: 24px 20px;
+        width: 95%;
+    }
+
+    .formGroupRow {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .modalTitle {
+        font-size: 20px;
+    }
+}

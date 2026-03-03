@@ -1,5 +1,6 @@
 import Layout from "@/components/layout/Layout";
 import { getCategories } from "@/lib/categoryService";
+import { getEvents } from "@/lib/eventService";
 import Head from "next/head";
 import Link from "next/link";
 import { formatDate } from "@/util";
@@ -8,23 +9,19 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination } from "swiper";
 import { useState, useEffect } from "react";
 import "swiper/css";
-import "swiper/css/effect-fade";
-import "swiper/css/pagination";
 import styles from "@/components/events/EventsPage.module.css";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
 import { useTheme } from "@/contexts/ThemeContext";
 
 export default function EventsPage({ events, eventsPosts, categories = [] }) {
   const allEvents = events || [];
-  const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedCard, setSelectedCard] = useState(0);
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
 
   // Handle card click with smooth scroll
   const handleCardClick = (index) => {
-    if (selectedCard === index) {
-      setSelectedCard(null);
-    } else {
+    if (selectedCard !== index) {
       setSelectedCard(index);
       // Small timeout to allow the section to render before scrolling
       setTimeout(() => {
@@ -42,7 +39,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
     if (selectedCard === null) {
       setSelectedCard(0);
     }
-    
+
     // Wait for the section to render, then scroll to partnerships
     setTimeout(() => {
       const partnershipsSection = document.getElementById('strategic-partnerships-section');
@@ -76,7 +73,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
       description: "Building AI foundations across industries and governance.",
       gradient: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
       circleColor: "#1e40af",
-      image: "/assets/img/blog/blog01.jpg", 
+      image: "/assets/img/blog/blog01.jpg",
       theme: "light",
       event: {
         title: "AIX NOW: Adoption, Readiness & Real-World Impact",
@@ -179,18 +176,18 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
     const duration = 2000;
     const steps = 60;
     const stepDuration = duration / steps;
-    
+
     let currentStep = 0;
     const timer = setInterval(() => {
       currentStep++;
       const progress = currentStep / steps;
-      
+
       setAnimatedMetrics({
         total: Math.floor(totalEvents * progress),
         views: Math.floor(totalViews * progress),
         upcoming: Math.floor(upcomingCount * progress)
       });
-      
+
       if (currentStep >= steps) {
         clearInterval(timer);
         setAnimatedMetrics({
@@ -200,7 +197,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
         });
       }
     }, stepDuration);
-    
+
     return () => clearInterval(timer);
   }, [totalEvents, totalViews, upcomingCount]);
 
@@ -211,9 +208,9 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
     { id: 4, title: "Global AI Summit 4", src: "/assets/img/previousEvent/6.png" },
     { id: 5, title: "Global AI Summit 5", src: "/assets/img/previousEvent/7.png" },
   ];
-  
+
   const [items, setItems] = useState(initialItems);
-  
+
   useEffect(() => {
     const timer = setInterval(() => {
       setItems((prevItems) => {
@@ -223,7 +220,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
         return newItems;
       });
     }, 3000); // Shift every 3 seconds
-  
+
     return () => clearInterval(timer);
   }, []);
 
@@ -239,8 +236,8 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
     if (!dateString) return '';
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', { 
-        month: 'short', 
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
         day: 'numeric',
         year: 'numeric'
       });
@@ -286,18 +283,18 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
               </div>
             </div>
           )}
-          
+
           <div className={styles.eventContent}>
             <div className={styles.eventMeta}>
               <span>{formatEventDate(event.eventDate || event.date)}</span>
             </div>
-            
+
             <h3 className={styles.eventTitle}>{event.title}</h3>
-            
+
             <p className={styles.eventExcerpt}>
               {getExcerpt(event.description || event.content)}
             </p>
-            
+
             <div className={styles.eventFooter}>
               {event.location && (
                 <span className={styles.eventLocation}>{event.location}</span>
@@ -324,18 +321,18 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
       <div className={styles.eventsPage}>
         {/* Year Cards Section - Instagram Story Style */}
         <div className={styles.HeroTitle}>
-  <h1>C3 AIX Summit A Global Ethical AI Trilogy</h1>
-  <p className={styles.heroRevealLabel}>
-    A Three-Year Strategic AI Summit Series for Industry, Policy, and Innovation
-  </p>
-</div>
+          <h1>C3 AIX Summit A Global Ethical AI Trilogy</h1>
+          <p className={styles.heroRevealLabel}>
+            A Three-Year Strategic AI Summit Series for Industry, Policy, and Innovation
+          </p>
+        </div>
         <section className={styles.yearCardsSection}>
-          
+
           <div className={styles.container}>
             <div className={styles.yearCardsContainer}>
               {yearCards.map((card, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={`${styles.yearCard} ${card.isMiddle ? styles.middleCard : ''} ${selectedCard === index ? styles.cardSelected : ''} ${card.isHalfCircle ? styles.halfCircleCard : ''}`}
                   onClick={() => handleCardClick(index)}
                 >
@@ -343,9 +340,9 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                   <div className={styles.cardMainContent}>
                     {/* Header/Title area */}
                     <div className={styles.cardTopArea}>
-  <span className={styles.topBrand}>Corp Crunch<sup>™</sup></span>
-  <span className={styles.topYear}>{card.period.split(' ')[0]}</span>
-</div>
+                      <span className={styles.topBrand}>Corp Crunch<sup>™</sup></span>
+                      <span className={styles.topYear}>{card.period.split(' ')[0]}</span>
+                    </div>
 
                     {/* Interactive Circles / Images */}
                     <div className={styles.cardVisualArea}>
@@ -358,18 +355,18 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
 
                       {/* Main Circular Image Container */}
                       {!card.isMiddle && (
-                        <div 
+                        <div
                           className={`${styles.circularImageContainer} ${card.isHalfCircle ? styles.halfCircle : ''}`}
                         >
                           <div className={styles.circularImageWrapper}>
                             {card.image ? (
-                      <Image 
+                              <Image
                                 src={card.image}
                                 alt={card.title}
-                        fill
+                                fill
                                 className={styles.circularImage}
-                        style={{ objectFit: 'cover' }}
-                      />
+                                style={{ objectFit: 'cover' }}
+                              />
                             ) : (
                               <div className={styles.circularPlaceholder}>
                                 <span>{card.year}</span>
@@ -388,53 +385,10 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                         <span className={styles.verticalBrand}>Global Ethical AI Trilogy</span>
                         <span className={styles.verticalReport}>Series</span>
                       </div>
-                      
+
                       <p className={styles.cardDescription}>{card.description}</p>
-                      
+
                       <div className={styles.cardActions}>
-                      <button 
-  className={styles.learnMoreBtn} 
-  style={{
-    background: card.isMiddle ? '#ffffff !important' : '#ffffff !important',
-    color: card.isMiddle ? '#2551e7 !important' : '#2551e7 !important',
-    border: card.isMiddle ? '1.5px solid #2551e7 !important' : '1.5px solid #2551e7 !important',
-    padding: '8px 18px !important',
-    borderRadius: '20px !important',
-    fontSize: '12px !important',
-    fontWeight: '800 !important',
-    cursor: 'pointer !important',
-    textTransform: 'uppercase !important',
-    letterSpacing: '1px !important',
-    transition: 'all 0.3s ease !important',
-    display: 'inline-block !important',
-    zIndex: 10,
-    position: 'relative !important'
-  }}
-  onMouseEnter={(e) => {
-    if (card.isMiddle) {
-      e.currentTarget.setAttribute('style', 
-        'background: #2551e7 !important; color: #ffffff!important; border: 2px solid #ffffff !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
-      );
-    } else {
-      e.currentTarget.setAttribute('style', 
-        'background: #ffffff !important; color: #2551e7 !important; border: 2px solid #2551e7 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
-      );
-    }
-  }}
-  onMouseLeave={(e) => {
-    if (card.isMiddle) {
-      e.currentTarget.setAttribute('style', 
-        'background: #2551e7 !important; color: #ffffff !important; border: 2px solid #ffffff !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
-      );
-    } else {
-      e.currentTarget.setAttribute('style', 
-        'background: #ffffff !important; color: #2551e7 !important; border: 2px solid #2551e7 !important; padding: 8px 18px !important; border-radius: 20px !important; font-size: 12px !important; font-weight: 800 !important; cursor: pointer !important; text-transform: uppercase !important; letter-spacing: 1px !important; transition: all 0.3s ease !important; display: inline-block !important; z-index: 10; position: relative !important;'
-      );
-    }
-  }}
->
-  Learn more
-</button>
                         <div className={styles.cardArrow}>
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -448,64 +402,16 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
               ))}
             </div>
 
-           
+
           </div>
-          
+
         </section>
-        <div className={styles.containerthreecards}>
-        <h1 style={{textAlign: 'center', fontSize: '40px', fontWeight: '900', fontFamily: 'Urbanist'}}>Be a part of the event</h1>
-        <div className={styles.interactiveActionSection}>
-          
-                <div className={styles.actionCardsGrid}>
-                  {/* Sponsorships Card */}
-                  <div className={`${styles.actionCard} ${styles.sponsorshipAction}`}>
-                    <div className={styles.actionCardContent}>
-                      <span className={styles.actionLabel}>Partnership</span>
-                      <h3>SPONSORSHIPS</h3>
-                      <p>Gain multi-year brand positioning and access to high-intent buyers with ROI potential up to 1200%.</p>
-                      <div className={styles.actionStats}>
-                        <div className={styles.aStat}><strong>$650K+</strong><span>ROI VALUE</span></div>
-                        <div className={styles.aStat}><strong>15M+</strong><span>IMPRESSIONS</span></div>
-                      </div>
-                    </div>
-                    <button className={styles.actionBtn} onClick={handleBecomePartner}>Become a Partner</button>
-                  </div>
 
-                  {/* Exhibition Card */}
-                  <div className={`${styles.actionCard} ${styles.exhibitionAction}`}>
-                    <div className={styles.actionCardContent}>
-                      <span className={styles.actionLabel}>Showcase</span>
-                      <h3>EXHIBITION</h3>
-                      <p>Showcase groundbreaking AI technologies to 1,500+ global leaders and build enterprise portfolios.</p>
-                      <div className={styles.actionStats}>
-                        <div className={styles.aStat}><strong>$1.8M</strong><span>GAIN POTENTIAL</span></div>
-                        <div className={styles.aStat}><strong>1.2K+</strong><span>LEADS</span></div>
-                      </div>
-                    </div>
-                    <button className={styles.actionBtn}>Book a Booth</button>
-                  </div>
-
-                  {/* Tickets Card */}
-                  <div className={`${styles.actionCard} ${styles.ticketsAction}`}>
-                    <div className={styles.actionCardContent}>
-                      <span className={styles.actionLabel}>Attendance</span>
-                      <h3>DELEGATE TICKETS</h3>
-                      <p>Join the elite circle of AI founders, investors, and policymakers for the Global Ethical AI Trilogy.</p>
-                      <div className={styles.actionStats}>
-                        <div className={styles.aStat}><strong>1.5K+</strong><span>ATTENDEES</span></div>
-                        <div className={styles.aStat}><strong>VIP</strong><span>ACCESS</span></div>
-                      </div>
-                    </div>
-                    <button className={styles.actionBtn} onClick={() => setShowTicketModal(true)}>Get Tickets</button>
-                  </div>
-                </div>
-              </div> 
-              </div>
         {/* Event Details Section - Shows below cards when card is selected */}
         {selectedCard !== null && yearCards[selectedCard]?.event && (
           <section id="event-details-section" className={styles.eventDetailsSection}>
-        <div className={styles.container}>
-              
+            <div className={styles.container}>
+
               {/* 1. Main Headline Reveal */}
               <div className={styles.detailsHeroReveal}>
                 <h2 className={styles.heroRevealTitle}>{yearCards[selectedCard].event.title}</h2>
@@ -532,13 +438,13 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                         fill
                         className={styles.humanRoboImg}
                       />
-            </div>
+                    </div>
                     <div className={styles.imageOverlayText}>
                       <span>{yearCards[selectedCard].event.location}</span>
                       <span>{formatEventDate(yearCards[selectedCard].event.eventDate)}</span>
-            </div>
-            </div>
-          </div>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Right Column - Deep Dive Content */}
                 <div className={styles.gridRightCol}>
@@ -577,6 +483,59 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                   </div>
                 </div>
               )}
+
+              {/* BE A PART OF THE EVENT MOVED HERE */}
+              <div className={styles.containerthreecards}>
+                <h1 style={{ textAlign: 'center', fontSize: '40px', fontWeight: '900', fontFamily: 'Urbanist' }}>Be a part of the event</h1>
+                <div className={styles.interactiveActionSection}>
+
+                  <div className={styles.actionCardsGrid}>
+                    {/* Sponsorships Card */}
+                    <div className={`${styles.actionCard} ${styles.sponsorshipAction}`}>
+                      <div className={styles.actionCardContent}>
+                        <span className={styles.actionLabel}>Partnership</span>
+                        <h3>SPONSORSHIPS</h3>
+                        <p>Gain multi-year brand positioning and access to high-intent buyers with ROI potential up to 1200%.</p>
+                        <div className={styles.actionStats}>
+                          <div className={styles.aStat}><strong>$650K+</strong><span>ROI VALUE</span></div>
+                          <div className={styles.aStat}><strong>15M+</strong><span>IMPRESSIONS</span></div>
+                        </div>
+                      </div>
+                      <button className={styles.actionBtn} onClick={handleBecomePartner}>Become a Partner</button>
+                    </div>
+
+                    {/* Exhibition Card */}
+                    <div className={`${styles.actionCard} ${styles.exhibitionAction}`}>
+                      <div className={styles.actionCardContent}>
+                        <span className={styles.actionLabel}>Showcase</span>
+                        <h3>EXHIBITION</h3>
+                        <p>Showcase groundbreaking AI technologies to 1,500+ global leaders and build enterprise portfolios.</p>
+                        <div className={styles.actionStats}>
+                          <div className={styles.aStat}><strong>$1.8M</strong><span>GAIN POTENTIAL</span></div>
+                          <div className={styles.aStat}><strong>1.2K+</strong><span>LEADS</span></div>
+                        </div>
+                      </div>
+                      <Link href="/events/application-form" passHref>
+                        <button className={styles.actionBtn}>Book a Booth</button>
+                      </Link>
+                    </div>
+
+                    {/* Tickets Card */}
+                    <div className={`${styles.actionCard} ${styles.ticketsAction}`}>
+                      <div className={styles.actionCardContent}>
+                        <span className={styles.actionLabel}>Attendance</span>
+                        <h3>DELEGATE TICKETS</h3>
+                        <p>Join the elite circle of AI founders, investors, and policymakers for the Global Ethical AI Trilogy.</p>
+                        <div className={styles.actionStats}>
+                          <div className={styles.aStat}><strong>1.5K+</strong><span>ATTENDEES</span></div>
+                          <div className={styles.aStat}><strong>VIP</strong><span>ACCESS</span></div>
+                        </div>
+                      </div>
+                      <button className={styles.actionBtn} onClick={() => setShowTicketModal(true)}>Get Tickets</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* 4. Interactive Agenda Timeline */}
               {yearCards[selectedCard].event.agenda && (
@@ -751,6 +710,37 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                   </div>
                 </div>
 
+                {/* --- Call to Action Button --- */}
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '60px 0' }}>
+                  <Link href="/events/application-form" passHref>
+                    <button
+                      style={{
+                        background: '#2551e7',
+                        color: 'white',
+                        padding: '16px 32px',
+                        fontSize: '18px',
+                        fontWeight: '800',
+                        fontFamily: 'Urbanist',
+                        border: 'none',
+                        borderRadius: '30px',
+                        cursor: 'pointer',
+                        boxShadow: '0 10px 20px rgba(37, 81, 231, 0.2)',
+                        transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.transform = 'translateY(-3px)';
+                        e.currentTarget.style.boxShadow = '0 15px 25px rgba(37, 81, 231, 0.3)';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '0 10px 20px rgba(37, 81, 231, 0.2)';
+                      }}
+                    >
+                      Apply for Partnership
+                    </button>
+                  </Link>
+                </div>
+
                 {/* Additional Partnerships Section */}
                 <div className={styles.additionalPartnershipsArea}>
                   <h3 className={styles.additionalHeading}>ADDITIONAL PARTNERSHIP CATEGORIES</h3>
@@ -904,6 +894,37 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                     </div>
                   </div>
                 </div>
+
+                {/* --- Call to Action Button --- */}
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '60px 0' }}>
+                  <Link href="/events/application-form" passHref>
+                    <button
+                      style={{
+                        background: '#2551e7',
+                        color: 'white',
+                        padding: '16px 32px',
+                        fontSize: '18px',
+                        fontWeight: '800',
+                        fontFamily: 'Urbanist',
+                        border: 'none',
+                        borderRadius: '30px',
+                        cursor: 'pointer',
+                        boxShadow: '0 10px 20px rgba(37, 81, 231, 0.2)',
+                        transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.transform = 'translateY(-3px)';
+                        e.currentTarget.style.boxShadow = '0 15px 25px rgba(37, 81, 231, 0.3)';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '0 10px 20px rgba(37, 81, 231, 0.2)';
+                      }}
+                    >
+                      Apply for Booth
+                    </button>
+                  </Link>
+                </div>
               </div>
 
               {/* 10. At the Event Companies Section */}
@@ -912,17 +933,17 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                   <div className={styles.centerDot}></div>
                   <div className={styles.companiesOrbitingLogos}>
                     {[
-                      "amazon.png", "aramex.png", "Deloitte.png", "Foodics.jpg", 
-                      "hcl.png", "IBM.png", "Infosys.png", "Microsoft.png", 
+                      "amazon.png", "aramex.png", "Deloitte.png", "Foodics.jpg",
+                      "hcl.png", "IBM.png", "Infosys.png", "Microsoft.png",
                       "nvidia.jpg", "persistent.png", "salesforce.png", "tabby.png",
                     ].map((logo, idx) => (
                       <div key={idx} className={styles.orbitingLogo} style={{ '--i': idx + 1 }}>
                         <div className={styles.logoWrapper}>
-                          <Image 
-                            src={`/assets/img/CompanyLogos/${logo}`} 
-                            alt="Company Logo" 
-                            width={140} 
-                            height={70} 
+                          <Image
+                            src={`/assets/img/CompanyLogos/${logo}`}
+                            alt="Company Logo"
+                            width={140}
+                            height={70}
                             className={styles.companyLogoImg}
                           />
                         </div>
@@ -936,43 +957,43 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                 </div>
               </div>
 
-{/* --- PREVIOUS EVENTS CIRCULAR CAROUSEL (Always Moves Left) --- */}
-<section className={styles.previousEventsGallery}>
-  <div className={styles.galleryHeader}>
-    <span className={styles.galleryLabel}>CAPTURING MOMENTS</span>
-    <h2 className={styles.galleryTitle}>AIX Cyber Security Summit</h2>
-    <span className={styles.galleryLabelEvents}>Past Events</span>
-  </div>
+              {/* --- PREVIOUS EVENTS CIRCULAR CAROUSEL (Always Moves Left) --- */}
+              <section className={styles.previousEventsGallery}>
+                <div className={styles.galleryHeader}>
+                  <span className={styles.galleryLabel}>CAPTURING MOMENTS</span>
+                  <h2 className={styles.galleryTitle}>AIX Cyber Security Summit</h2>
+                  <span className={styles.galleryLabelEvents}>Past Events</span>
+                </div>
 
-  <div className={styles.carouselWrapper}>
-    <div className={styles.fixedTrack}>
-      {items.map((item, index) => {
-        // Logic: The 3rd item (index 2) is always the visual center
-        const isCenter = index === 2;
-        
-        return (
-          <div 
-            key={item.id} 
-            className={`${styles.eventNode} ${isCenter ? styles.isActive : ''}`}
-          >
-            <div className={styles.nodeMedia}>
-              <Image 
-                src={item.src} 
-                alt="Previous Event" 
-                fill 
-                className={styles.nodeImg}
-              />
-              <div className={styles.nodeOverlay}>
-                <span className={styles.nodeRole}>EVENT HIGHLIGHT</span>
-                
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  </div>
-</section>
+                <div className={styles.carouselWrapper}>
+                  <div className={styles.fixedTrack}>
+                    {items.map((item, index) => {
+                      // Logic: The 3rd item (index 2) is always the visual center
+                      const isCenter = index === 2;
+
+                      return (
+                        <div
+                          key={item.id}
+                          className={`${styles.eventNode} ${isCenter ? styles.isActive : ''}`}
+                        >
+                          <div className={styles.nodeMedia}>
+                            <Image
+                              src={item.src}
+                              alt="Previous Event"
+                              fill
+                              className={styles.nodeImg}
+                            />
+                            <div className={styles.nodeOverlay}>
+                              <span className={styles.nodeRole}>EVENT HIGHLIGHT</span>
+
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </section>
 
               {/* 11. Final Call to Action Cards (Interactive) */}
               <div className={styles.interactiveActionSection}>
@@ -1002,7 +1023,9 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                         <div className={styles.aStat}><strong>1.2K+</strong><span>LEADS</span></div>
                       </div>
                     </div>
-                    <button className={styles.actionBtn}>Book a Booth</button>
+                    <Link href="/events/application-form" passHref>
+                      <button className={styles.actionBtn}>Book a Booth</button>
+                    </Link>
                   </div> */}
 
                   {/* Tickets Card */}
@@ -1020,9 +1043,9 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                   </div> */}
                 </div>
               </div>
-              </div>
-            </section>
-          )}
+            </div>
+          </section>
+        )}
 
         {/* Show all events if no card is selected */}
         {selectedCard === null && allEvents.length > 0 && (
@@ -1031,16 +1054,16 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
               <h2 className={styles.allEventsTitle}>All Events</h2>
               <div className={styles.eventsGrid}>
                 {allEvents.map((event, index) => (
-                  <EventCard 
-                    key={event._id || event.id || index} 
-                    event={event} 
-                    variant={event.status || "upcoming"} 
+                  <EventCard
+                    key={event._id || event.id || index}
+                    event={event}
+                    variant={event.status || "upcoming"}
                   />
                 ))}
               </div>
-              </div>
-            </section>
-          )}
+            </div>
+          </section>
+        )}
 
         {/* Ticket Pricing Modal - Full Screen */}
         {showTicketModal && (
@@ -1049,7 +1072,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
               <button className={styles.ticketModalClose} onClick={() => setShowTicketModal(false)}>×</button>
               <h2 className={styles.ticketModalTitle}>DELEGATE TICKETS</h2>
               <p className={styles.ticketModalSubtitle}>Select your ticket type for the Global Ethical AI Trilogy</p>
-              
+
               <div className={styles.ticketOptions}>
                 {[
                   { id: 'standard', name: 'Standard Delegate', desc: 'Full access to all sessions, networking events, and exhibition', price: 999 },
@@ -1066,7 +1089,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                       <div className={styles.ticketOptionDesc}>{ticket.desc}</div>
                     </div>
                     <div className={styles.ticketOptionPrice}>${ticket.price}</div>
-              </div>
+                  </div>
                 ))}
               </div>
 
@@ -1090,7 +1113,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                         { id: 'premium', price: 1999, name: 'Premium Delegate' },
                         { id: 'vip', price: 3999, name: 'VIP Delegate' }
                       ].find(t => t.id === selectedTicket);
-                      
+
                       // Create Stripe Checkout Session
                       try {
                         const response = await fetch('/api/create-checkout-session', {
@@ -1105,9 +1128,9 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                             quantity: 1
                           }),
                         });
-                        
+
                         const session = await response.json();
-                        
+
                         if (session.url) {
                           // Redirect to Stripe Checkout
                           window.location.href = session.url;
@@ -1126,49 +1149,48 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                 </>
               )}
             </div>
-            </div>
-          )}
+          </div>
+        )}
       </div>
+
     </Layout>
   );
 }
 
-import { getEvents } from "@/lib/eventService";
-
 export async function getStaticProps() {
   try {
     const language = 'en';
-    
+
     // Direct MongoDB query - no API double-hop
     let events = await getEvents({ lang: language, limit: 100 });
-    
+
     // If no events from DB, use empty array (no mock data for production)
     if (!events || events.length === 0) {
       events = [];
     }
-    
+
     // Fetch posts with "Events" category or tag - using direct DB query
     let eventsPosts = [];
     try {
       const { getPosts } = await import('@/lib/postService');
       const postsData = await getPosts({ lang: language, limit: 50 });
       const allPosts = postsData?.frontPagePosts || postsData?.trendingPosts || [];
-      eventsPosts = allPosts.filter(post => 
+      eventsPosts = allPosts.filter(post =>
         post.categoryId?.name?.toLowerCase().includes('event') ||
         post.tags?.some(tag => tag.toLowerCase().includes('event'))
       ) || [];
     } catch (postsError) {
       console.error("Error fetching events posts:", postsError);
     }
-    
+
     // Fetch categories for navigation
     const categories = await getCategories().catch(err => {
       console.error("Error fetching categories:", err);
       return [];
     });
-    
-    return { 
-      props: { 
+
+    return {
+      props: {
         events: JSON.parse(JSON.stringify(events)),
         eventsPosts: JSON.parse(JSON.stringify(eventsPosts)),
         categories: JSON.parse(JSON.stringify(categories)),
@@ -1177,7 +1199,7 @@ export async function getStaticProps() {
     };
   } catch (error) {
     console.error("Error in getStaticProps:", error);
-    return { 
+    return {
       props: { events: [], eventsPosts: [] },
       revalidate: 60,
     };

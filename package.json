@@ -48,6 +48,7 @@
     "react-toastify": "^10.0.5",
     "react-transition-group": "^4.4.5",
     "rehype-raw": "^7.0.0",
+    "resend": "^6.9.3",
     "sass": "^1.59.3",
     "stripe": "^20.3.1",
     "swiper": "^9.1.1"

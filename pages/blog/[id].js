@@ -57,7 +57,7 @@ function AnimatedCounter({ end, duration = 2000, formatFn = (n) => n }) {
             const progress = Math.min((now - startTime) / duration, 1);
             const easeOutQuad = progress * (2 - progress);
             const currentCount = Math.floor(easeOutQuad * (endValue - startValue) + startValue);
-            
+
             setCount(currentCount);
 
             if (progress < 1) {
@@ -90,10 +90,10 @@ function AnimatedCounter({ end, duration = 2000, formatFn = (n) => n }) {
 export default function BlogDetails({ postsDetails }) {
   const { t } = useLanguage();
   const { translatedPost, isTranslating } = usePostTranslation(postsDetails);
-  
+
   // Use translated post if available, otherwise use original
   const displayPost = translatedPost || postsDetails;
-  
+
   // Guard against undefined or invalid postsDetails
   if (!postsDetails || !postsDetails.title) {
     return (
@@ -105,12 +105,12 @@ export default function BlogDetails({ postsDetails }) {
       </Layout>
     );
   }
-  
+
   // Get author name from database
   const authorName = postsDetails.authorFirstName && postsDetails.authorLastName
     ? `${postsDetails.authorFirstName} ${postsDetails.authorLastName}`
     : postsDetails.authorFirstName || postsDetails.authorLastName || 'Corp Crunch Team';
-  
+
   // Get trending categories (use backend data, fall back to predefined list of 9)
   const backendTrendingCategories = postsDetails?.trendingCategories || [];
   const fallbackTrendingCategories = [
@@ -127,7 +127,7 @@ export default function BlogDetails({ postsDetails }) {
   const trendingCategories = backendTrendingCategories.length > 0
     ? backendTrendingCategories.slice(0, 9)
     : fallbackTrendingCategories;
-  
+
   // Get tags from database
   const postTags = postsDetails?.tags || [];
   // const { checkArticleAuthorizedAndSubscription, isValidating } =
@@ -138,34 +138,34 @@ export default function BlogDetails({ postsDetails }) {
   // Extract a meaningful quote from the content
   const extractQuote = (content) => {
     if (!content) return null;
-    
+
     // Remove markdown formatting
     const text = content
       .replace(/[#*\[\]()]/g, "")
       .replace(/\n/g, " ")
       .replace(/\s+/g, " ")
       .trim();
-    
+
     // Split into sentences
     const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
-    
+
     if (sentences.length === 0) return null;
-    
+
     // Find a substantial sentence (between 50-200 characters)
     let quote = sentences.find(s => s.length >= 50 && s.length <= 200);
-    
+
     // If no sentence in that range, take the longest sentence under 250 chars
     if (!quote) {
       quote = sentences
         .filter(s => s.length <= 250)
         .sort((a, b) => b.length - a.length)[0];
     }
-    
+
     // If still no quote, take the first substantial sentence
     if (!quote) {
       quote = sentences.find(s => s.length >= 30) || sentences[0];
     }
-    
+
     return quote ? quote.trim() : null;
   };
 
@@ -194,38 +194,38 @@ export default function BlogDetails({ postsDetails }) {
   const blogQuote = postsDetails?.quoteText || null;
   const quoteAuthorName = postsDetails?.quoteAuthorName;
   const quoteAuthorTitle = postsDetails?.quoteAuthorTitle;
-  
+
   // Quote author info from database
   const quoteAuthor = blogQuote && quoteAuthorName
     ? {
-        name: quoteAuthorName,
-        title: quoteAuthorTitle || "",
-        initials: quoteAuthorName 
-          ? quoteAuthorName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-          : "Q"
-      }
+      name: quoteAuthorName,
+      title: quoteAuthorTitle || "",
+      initials: quoteAuthorName
+        ? quoteAuthorName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+        : "Q"
+    }
     : null;
-  
+
   // Split content into parts to insert quote between paragraphs
   const splitContentForQuote = (content) => {
     if (!content || !blogQuote) return { before: content, after: null };
-    
+
     // Split content by double newlines (paragraph breaks)
     const paragraphs = content.split(/\n\n+/).filter(p => p.trim());
-    
+
     if (paragraphs.length < 2) return { before: content, after: null };
-    
+
     // Insert quote after the first paragraph
     const insertIndex = Math.min(1, Math.floor(paragraphs.length / 2));
-    
+
     const beforeContent = paragraphs.slice(0, insertIndex + 1).join('\n\n');
     const afterContent = paragraphs.slice(insertIndex + 1).join('\n\n');
-    
+
     return { before: beforeContent, after: afterContent };
   };
 
   const { before: contentBeforeQuote, after: contentAfterQuote } = splitContentForQuote(displayPost?.content);
-  
+
   // Cursor-driven motion for animated tags
   const [tagMouseOffset, setTagMouseOffset] = useState({ x: 0, y: 0 });
 
@@ -338,7 +338,7 @@ export default function BlogDetails({ postsDetails }) {
               subtitle={heroSubtitle}
               mediaUrl={heroMediaUrl}
               mediaType={isVideo ? "video" : "image"}
-              journalistImage="/assets/img/others/Mike_Evans.png"
+              journalistImage="/assets/img/others/mike_evans.png"
               journalistName={authorName}
               publishedDate={postsDetails?.publishedAt ? formatDate(postsDetails.publishedAt) : null}
             />
@@ -1257,86 +1257,86 @@ export default function BlogDetails({ postsDetails }) {
 
       {/* Removed: Author bio + sidebar + trending categories + Instagram */}
       {false && (
-      <section className="blog-details-area pt-80 pb-100">
-        <div className="blog-details-simple-layout">
-          <div className="row justify-content-center">
-            <div className="col-xl-8 col-lg-7">
-              {/* Author Biography Section (text only, no image) - HIDDEN */}
-              <div
-                className="blog-avatar-wrap"
-                style={{
-                  marginTop: "0px",
-                  padding: "50px 30px",
-                  borderRadius: "24px",
-                  textAlign: "center",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
+        <section className="blog-details-area pt-80 pb-100">
+          <div className="blog-details-simple-layout">
+            <div className="row justify-content-center">
+              <div className="col-xl-8 col-lg-7">
+                {/* Author Biography Section (text only, no image) - HIDDEN */}
                 <div
-                  className="bio-accent-line"
+                  className="blog-avatar-wrap"
                   style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "4px",
-                    height: "100%",
+                    marginTop: "0px",
+                    padding: "50px 30px",
+                    borderRadius: "24px",
+                    textAlign: "center",
+                    position: "relative",
+                    overflow: "hidden",
                   }}
-                ></div>
-                <div className="blog-avatar-content">
-                  <p
-                    className="bio-text"
+                >
+                  <div
+                    className="bio-accent-line"
                     style={{
-                      marginBottom: "25px",
-                      fontSize: "17px",
-                      lineHeight: "1.8",
-                      maxWidth: "650px",
-                      margin: "0 auto 25px",
-                      fontWeight: "500",
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "4px",
+                      height: "100%",
                     }}
-                  >
-                    Aditya Telsinge is a Writer at CorpCrunch covering emerging
-                    technologies, venture capital, and the latest news from
-                    startups to tech giants.
-                  </p>
-                  <h5
-                    className="name bio-name"
-                    style={{
-                      marginBottom: "10px",
-                      fontSize: "22px",
-                      fontWeight: "800",
-                    }}
-                  >
-                    Aditya Telsinge
-                  </h5>
-                  <span
-                    className="designation"
-                    style={{
-                      padding: "6px 16px",
-                      borderRadius: "100px",
-                      fontSize: "12px",
-                      fontWeight: "700",
-                      textTransform: "uppercase",
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    JOURNALIST
-                  </span>
+                  ></div>
+                  <div className="blog-avatar-content">
+                    <p
+                      className="bio-text"
+                      style={{
+                        marginBottom: "25px",
+                        fontSize: "17px",
+                        lineHeight: "1.8",
+                        maxWidth: "650px",
+                        margin: "0 auto 25px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      Aditya Telsinge is a Writer at CorpCrunch covering emerging
+                      technologies, venture capital, and the latest news from
+                      startups to tech giants.
+                    </p>
+                    <h5
+                      className="name bio-name"
+                      style={{
+                        marginBottom: "10px",
+                        fontSize: "22px",
+                        fontWeight: "800",
+                      }}
+                    >
+                      Aditya Telsinge
+                    </h5>
+                    <span
+                      className="designation"
+                      style={{
+                        padding: "6px 16px",
+                        borderRadius: "100px",
+                        fontSize: "12px",
+                        fontWeight: "700",
+                        textTransform: "uppercase",
+                        letterSpacing: "1px",
+                      }}
+                    >
+                      JOURNALIST
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-xl-3 col-lg-4 col-md-6">
-              <BlogSidebar
-                author={{
-                  firstName: postsDetails?.authorFirstName,
-                  lastName: postsDetails?.authorLastName,
-                  displayPicture: null,
-                }}
-              />
+              <div className="col-xl-3 col-lg-4 col-md-6">
+                <BlogSidebar
+                  author={{
+                    firstName: postsDetails?.authorFirstName,
+                    lastName: postsDetails?.authorLastName,
+                    displayPicture: null,
+                  }}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
 
       {/* Trending Categories Section - New Component */}
@@ -1351,7 +1351,7 @@ export const getServerSideProps = async ({ params, req }) => {
   try {
     const language = req?.cookies?.language || 'en';
     const postsDetails = await getPostBySlug(params.id);
-    
+
     if (!postsDetails) {
       return { notFound: true };
     }
@@ -1359,9 +1359,9 @@ export const getServerSideProps = async ({ params, req }) => {
     // Redirect to category-based URL if category exists
     const category = postsDetails.Category || postsDetails.category;
     if (category) {
-      const categorySlug = category.slug?.toLowerCase() || 
-                          category.name?.toLowerCase().replace(/\s+/g, '-') || '';
-      
+      const categorySlug = category.slug?.toLowerCase() ||
+        category.name?.toLowerCase().replace(/\s+/g, '-') || '';
+
       if (categorySlug) {
         return {
           redirect: {
@@ -1373,7 +1373,7 @@ export const getServerSideProps = async ({ params, req }) => {
     }
 
     return {
-      props: { 
+      props: {
         postsDetails: JSON.parse(JSON.stringify(postsDetails))
       }
     };
