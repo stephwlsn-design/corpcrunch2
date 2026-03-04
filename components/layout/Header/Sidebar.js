@@ -169,7 +169,7 @@ export default function Sidebar({ handleSidebarClose }) {
           {/* Categories Section — fully dynamic from API */}
           <div className="mb-4">
             <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '15px', color: '#333' }}>Explore Categories</h4>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px' }}>
               {(!categories || categories.length === 0) ? (
                 <p style={{ fontSize: '13px', color: '#999', gridColumn: '1 / -1' }}>Loading categories...</p>
               ) : (
@@ -181,13 +181,13 @@ export default function Sidebar({ handleSidebarClose }) {
                     className="category-item-clean"
                     style={{
                       display: 'flex', gap: '10px', alignItems: 'center',
-                      padding: '10px 12px', borderRadius: '8px',
+                      padding: '9px 12px', borderRadius: '8px',
                       backgroundColor: '#fcfcfc', border: '1px solid #f0f0f0',
                       textDecoration: 'none', transition: 'all 0.2s ease'
                     }}
                   >
-                    <i className={getCategoryIcon(category.name)} style={{ color: '#2551e7', fontSize: '14px', flexShrink: 0 }} />
-                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#444', lineHeight: '1.2' }}>{category.name}</span>
+                    <i className={getCategoryIcon(category.name)} style={{ color: '#2551e7', fontSize: '13px', flexShrink: 0 }} />
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#444' }}>{category.name}</span>
                   </Link>
                 ))
               )}
@@ -199,13 +199,13 @@ export default function Sidebar({ handleSidebarClose }) {
                   className="category-item-clean"
                   style={{
                     display: 'flex', gap: '10px', alignItems: 'center',
-                    padding: '10px 12px', borderRadius: '8px',
+                    padding: '9px 12px', borderRadius: '8px',
                     backgroundColor: '#fcfcfc', border: '1px solid #f0f0f0',
                     textDecoration: 'none', transition: 'all 0.2s ease'
                   }}
                 >
-                  <i className="fas fa-calendar-alt" style={{ color: '#2551e7', fontSize: '14px', flexShrink: 0 }} />
-                  <span style={{ fontSize: '13px', fontWeight: '600', color: '#444', lineHeight: '1.2' }}>Events</span>
+                  <i className="fas fa-calendar-alt" style={{ color: '#2551e7', fontSize: '13px', flexShrink: 0 }} />
+                  <span style={{ fontSize: '13px', fontWeight: '600', color: '#444' }}>Events</span>
                 </Link>
               )}
             </div>
