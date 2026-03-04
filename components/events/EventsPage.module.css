@@ -4605,18 +4605,16 @@
   margin: 0 auto;
 }
 
-/* Main two-column layout */
+/* Main single-column layout — bio panel always appears below photos */
 .speakersLayout {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 0;
-  align-items: start;
-  transition: grid-template-columns 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .speakersLayoutActive {
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  /* Keep single-column stacked — no side-by-side */
+  gap: 0;
 }
 
 /* Photo grid – speakers side by side */
@@ -4750,25 +4748,26 @@
   color: #94a3b8;
 }
 
-/* ── Bio Panel ── */
+/* ── Bio Panel ── slides down below photo cards ── */
 .speakerBioPanel {
   position: relative;
   background: #ffffff;
   border-radius: 24px;
   overflow: hidden;
   min-height: 0;
-  height: 0;
+  max-height: 0;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(37, 81, 231, 0.1);
-  /* Hidden state */
+  /* Hidden state – slide up & fade out */
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateY(-12px);
   pointer-events: none;
+  margin-top: 0;
   transition:
     opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-  align-self: stretch;
+    max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    margin-top 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :global(.dark-theme) .speakerBioPanel {
@@ -4777,11 +4776,11 @@
 }
 
 .speakerBioPanelVisible {
-  height: auto;
-  min-height: 200px;
+  max-height: 800px;
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
   pointer-events: auto;
+  margin-top: 36px;
 }
 
 /* Top blue accent stripe */
@@ -4913,7 +4912,7 @@
 
   .speakersLayout,
   .speakersLayoutActive {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 0;
   }
 
@@ -4934,11 +4933,12 @@
   }
 
   .speakerBioPanel {
-    margin: 28px 16px 0;
-    transform: translateY(20px);
+    margin: 0 16px;
+    transform: translateY(-10px);
   }
 
   .speakerBioPanelVisible {
+    margin: 28px 16px 0;
     transform: translateY(0);
   }
 

@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import dynamic from "next/dynamic";
 import "react-multi-carousel/lib/styles.css";
+import { getCategoryUrl } from "@/util/urlHelpers";
 
 const ThemeSwitch = dynamic(() => import("@/components/elements/ThemeSwitch"), {
   ssr: false,
@@ -46,30 +47,69 @@ export default function Sidebar({ handleSidebarClose }) {
     },
   };
 
-  const categoryConfig = {
-    'Technology': { icon: 'fas fa-microchip', desc: 'Innovations' },
-    'Automobile': { icon: 'fas fa-car', desc: 'Automotive' },
-    'Sustainability': { icon: 'fas fa-leaf', desc: 'Environmental' },
-
-    'Retail': { icon: 'fas fa-shopping-bag', desc: 'Commerce' },
-    'FMCG': { icon: 'fas fa-box', desc: 'Consumer Goods' },
-    'Finance': { icon: 'fas fa-chart-line', desc: 'Markets' },
-    'Politics': { icon: 'fas fa-landmark', desc: 'Governance' },
-    'Science': { icon: 'fas fa-flask', desc: 'Discoveries' },
-    'Telecom': { icon: 'fas fa-broadcast-tower', desc: 'Connectivity' },
-    'Events': { icon: 'fas fa-calendar-alt', desc: 'Meetups' },
+  // Icon map for known categories — add more as needed
+  const categoryIconMap = {
+    'technology': 'fas fa-microchip',
+    'automobile': 'fas fa-car',
+    'sustainability': 'fas fa-leaf',
+    'retail': 'fas fa-shopping-bag',
+    'fmcg': 'fas fa-box',
+    'finance': 'fas fa-chart-line',
+    'politics': 'fas fa-landmark',
+    'science': 'fas fa-flask',
+    'telecom': 'fas fa-broadcast-tower',
+    'events': 'fas fa-calendar-alt',
+    'health': 'fas fa-heartbeat',
+    'healthcare': 'fas fa-heartbeat',
+    'education': 'fas fa-graduation-cap',
+    'real estate': 'fas fa-building',
+    'real-estate': 'fas fa-building',
+    'energy': 'fas fa-bolt',
+    'agriculture': 'fas fa-seedling',
+    'media': 'fas fa-newspaper',
+    'entertainment': 'fas fa-film',
+    'logistics': 'fas fa-truck',
+    'travel': 'fas fa-plane',
+    'lifestyle': 'fas fa-star',
+    'sports': 'fas fa-futbol',
+    'legal': 'fas fa-balance-scale',
+    'manufacturing': 'fas fa-industry',
+    'aerospace': 'fas fa-rocket',
+    'cybersecurity': 'fas fa-shield-alt',
+    'cyber security': 'fas fa-shield-alt',
+    'ai': 'fas fa-robot',
+    'blockchain': 'fas fa-cubes',
+    'startup': 'fas fa-rocket',
+    'startups': 'fas fa-rocket',
+    'hr': 'fas fa-users',
+    'human resources': 'fas fa-users',
+    'marketing': 'fas fa-bullhorn',
+    'food': 'fas fa-utensils',
+    'pharma': 'fas fa-pills',
+    'pharmaceuticals': 'fas fa-pills',
+    'insurance': 'fas fa-umbrella',
+    'banking': 'fas fa-university',
+    'e-commerce': 'fas fa-shopping-cart',
+    'ecommerce': 'fas fa-shopping-cart',
+    'environment': 'fas fa-globe-americas',
+    'defence': 'fas fa-shield-alt',
+    'defense': 'fas fa-shield-alt',
+    'mining': 'fas fa-hard-hat',
+    'chemicals': 'fas fa-vial',
+    'aviation': 'fas fa-plane-departure',
+    'infrastructure': 'fas fa-road',
+    'default': 'fas fa-tag',
   };
 
-  const getCategoryLink = (categoryName) => {
-    if (categoryName === 'Events') return '/events';
-    if (categories && Array.isArray(categories)) {
-      const found = categories.find(cat => cat.name?.toLowerCase() === categoryName.toLowerCase());
-      if (found) return `/category/${found.id || found._id}`;
-    }
-    return `/category/${categoryName.toLowerCase().replace(/\s+/g, '-')}`;
+  const getCategoryIcon = (name = '') => {
+    const key = name.toLowerCase().trim();
+    return categoryIconMap[key] || categoryIconMap['default'];
   };
 
-  const categoryOrder = Object.keys(categoryConfig);
+  const getCategoryHref = (category) => {
+    if (category.name?.toLowerCase() === 'events') return '/events';
+    return getCategoryUrl(category);
+  };
 
   return (
     <>
@@ -126,30 +166,48 @@ export default function Sidebar({ handleSidebarClose }) {
             </div>
           </div>
 
-          {/* Categories Section */}
+          {/* Categories Section — fully dynamic from API */}
           <div className="mb-4">
             <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '15px', color: '#333' }}>Explore Categories</h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-              {categoryOrder.map((catName) => {
-                const config = categoryConfig[catName];
-                return (
+              {(!categories || categories.length === 0) ? (
+                <p style={{ fontSize: '13px', color: '#999', gridColumn: '1 / -1' }}>Loading categories...</p>
+              ) : (
+                categories.map((category) => (
                   <Link
-                    key={catName}
-                    href={getCategoryLink(catName)}
+                    key={category.id || category._id || category.name}
+                    href={getCategoryHref(category)}
                     onClick={handleSidebarClose}
                     className="category-item-clean"
                     style={{
-                      display: 'flex', gap: '12px', alignItems: 'center',
-                      padding: '12px', borderRadius: '8px',
+                      display: 'flex', gap: '10px', alignItems: 'center',
+                      padding: '10px 12px', borderRadius: '8px',
                       backgroundColor: '#fcfcfc', border: '1px solid #f0f0f0',
                       textDecoration: 'none', transition: 'all 0.2s ease'
                     }}
                   >
-                    <i className={config.icon} style={{ color: '#2551e7', fontSize: '16px' }} />
-                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#444' }}>{catName}</span>
+                    <i className={getCategoryIcon(category.name)} style={{ color: '#2551e7', fontSize: '14px', flexShrink: 0 }} />
+                    <span style={{ fontSize: '13px', fontWeight: '600', color: '#444', lineHeight: '1.2' }}>{category.name}</span>
                   </Link>
-                );
-              })}
+                ))
+              )}
+              {/* Always show Events — it's a standalone page not in the API categories */}
+              {(!categories || !categories.some(c => c.name?.toLowerCase() === 'events')) && (
+                <Link
+                  href="/events"
+                  onClick={handleSidebarClose}
+                  className="category-item-clean"
+                  style={{
+                    display: 'flex', gap: '10px', alignItems: 'center',
+                    padding: '10px 12px', borderRadius: '8px',
+                    backgroundColor: '#fcfcfc', border: '1px solid #f0f0f0',
+                    textDecoration: 'none', transition: 'all 0.2s ease'
+                  }}
+                >
+                  <i className="fas fa-calendar-alt" style={{ color: '#2551e7', fontSize: '14px', flexShrink: 0 }} />
+                  <span style={{ fontSize: '13px', fontWeight: '600', color: '#444', lineHeight: '1.2' }}>Events</span>
+                </Link>
+              )}
             </div>
           </div>
 
