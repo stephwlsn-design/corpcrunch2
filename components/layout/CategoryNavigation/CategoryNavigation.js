@@ -10,14 +10,14 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const CategoryNavigation = ({ categories: serverCategories = null }) => {
   const router = useRouter();
   const { t } = useLanguage();
-  
+
   // Use server-provided categories if available, otherwise fallback to client fetch
   const {
     refetch: fetchCategories,
     data: clientCategories,
     isLoading: isLoadingCategory,
   } = useCategory({ enabled: !serverCategories }); // Only fetch if server didn't provide
-  
+
   const categories = serverCategories || clientCategories || [];
   const [isVisible, setIsVisible] = useState(true);
 
@@ -42,7 +42,7 @@ const CategoryNavigation = ({ categories: serverCategories = null }) => {
     technology: { name: t('navigation.technology'), href: "/technology", isPage: true },
     politics: { name: t('navigation.politics'), href: "/politics", isPage: true },
     retail: { name: t('navigation.retail'), href: "/retail", isPage: true },
-    sportstech: { name: t('navigation.sportstech'), href: "/sportstech", isPage: true },
+    sportstech: { name: t('navigation.sportstech'), href: "/sport-tech", isPage: true },
     sustainability: { name: t('navigation.sustainability'), href: "/sustainability", isPage: true },
     telecom: { name: t('navigation.telecom'), href: "/telecom", isPage: true },
     // Moved from header
@@ -124,7 +124,7 @@ const CategoryNavigation = ({ categories: serverCategories = null }) => {
             const catName = cat.name?.toLowerCase().replace(/\s+/g, '-');
             return catName === key;
           });
-          
+
           if (found && (found.id || found._id)) {
             // Use ID-based URL
             result.push({

@@ -8,11 +8,23 @@ export default function SportsTech({ categoryDetails }) {
 export async function getStaticProps() {
   try {
     const language = "en";
-    const categoryDetails = await getCategoryByName("SportsTech", language);
-    
-    return { 
-      props: { 
-        categoryDetails: JSON.parse(JSON.stringify(categoryDetails)) 
+
+    // Try multiple name variants — the DB may store it as any of these
+    let categoryDetails = await getCategoryByName("Sport Tech", language);
+
+    if (!categoryDetails || !categoryDetails.id) {
+      categoryDetails = await getCategoryByName("SportsTech", language);
+    }
+    if (!categoryDetails || !categoryDetails.id) {
+      categoryDetails = await getCategoryByName("sport-tech", language);
+    }
+    if (!categoryDetails || !categoryDetails.id) {
+      categoryDetails = await getCategoryByName("Sports Tech", language);
+    }
+
+    return {
+      props: {
+        categoryDetails: JSON.parse(JSON.stringify(categoryDetails))
       },
       revalidate: 60,
     };
