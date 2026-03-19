@@ -14,6 +14,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 // Non-critical CSS will be loaded asynchronously in useEffect
 
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -37,6 +38,19 @@ const queryClient = new QueryClient({
 });
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Google Analytics - track client-side route changes (SPA navigation)
+    const handleRouteChange = (url) => {
+      if (typeof window.gtag === "function") {
+        window.gtag("config", "G-8MJ7BXCFYK", { page_path: url });
+      }
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => router.events.off("routeChangeComplete", handleRouteChange);
+  }, [router.events]);
+
   useEffect(() => {
     // Load non-critical CSS asynchronously
     if (typeof window !== 'undefined') {
