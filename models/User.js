@@ -63,6 +63,13 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    lastLoginAt: {
+      type: Date,
+    },
+    loginCount: {
+      type: Number,
+      default: 0,
+    },
     // Subscription fields (commented out as per the profile page)
     // isSubscriptionValid: {
     //   type: Boolean,

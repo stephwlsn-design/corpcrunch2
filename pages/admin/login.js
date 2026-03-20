@@ -5,6 +5,7 @@ import axiosInstance from "@/util/axiosInstance";
 import { notifyError, notifySuccess } from "@/util/toast";
 import Spinner from "@/components/elements/Spinner";
 import ToastContainer from "@/components/ToastContainer/ToastContainer";
+import { isAdminSessionValid } from "@/lib/adminSession";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -14,10 +15,9 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Check if already logged in
-    const token = typeof window !== "undefined" && localStorage.getItem("adminToken");
-    if (token) {
-      router.push("/admin");
+    // Check if already logged in with valid session (2hr + same day)
+    if (typeof window !== "undefined" && isAdminSessionValid()) {
+      router.push("/admin/dashboard");
     }
   }, [router]);
 
@@ -39,10 +39,14 @@ export default function AdminLogin() {
       });
 
       if (response.success && response.token) {
+        const expiresAt = Date.now() + 2 * 60 * 60 * 1000; // 2 hours
+        const loginDate = new Date().toISOString().split("T")[0];
         localStorage.setItem("adminToken", response.token);
         localStorage.setItem("token", response.token); // Also set regular token
+        localStorage.setItem("adminTokenExpiry", expiresAt.toString());
+        localStorage.setItem("adminLoginDate", loginDate);
         notifySuccess("Logged in successfully");
-        router.push("/admin");
+        router.push("/admin/dashboard");
       } else {
         throw new Error(response.message || "Invalid credentials");
       }
@@ -112,7 +116,7 @@ export default function AdminLogin() {
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="admin@corpcrunch.io"
+                      placeholder="Enter your email"
                       required
                       style={{ padding: "12px" }}
                     />

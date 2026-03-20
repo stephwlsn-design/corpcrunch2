@@ -1,4 +1,5 @@
 import axios from "axios";
+import { clearAdminSession } from "@/lib/adminSession";
 
 const axiosInstance = axios.create({
   baseURL: typeof window !== 'undefined' ? '/api' : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'),
@@ -33,17 +34,19 @@ axiosInstance.interceptors.response.use(
         error.response.config.url !== "/authentication?userType=BLOG_USER"
       ) {
         try {
-          localStorage.clear();
+          if (window.location.pathname.startsWith("/admin")) {
+            clearAdminSession();
+          } else {
+            localStorage.clear();
+          }
         } catch (e) {
           // Ignore localStorage errors
         }
 
-        // If user is on any admin route, force redirect to admin login on token expiry
         if (window.location.pathname.startsWith("/admin")) {
           window.location.href = "/admin/login";
         } else if (!window.location.href.includes("make-article-request")) {
-          // For non-admin routes we just clear tokens and let the error propagate
-          // so pages like blog request can handle it gracefully.
+          // For non-admin routes let the error propagate
         }
       }
 

@@ -5,6 +5,8 @@ import axiosInstance from "@/util/axiosInstance";
 import { notifyError, notifySuccess } from "@/util/toast";
 import useCategory from "@/hooks/useCategory";
 import ToastContainer from "@/components/ToastContainer/ToastContainer";
+import AdminLayout from "@/components/admin/AdminLayout";
+import { isAdminSessionValid, clearAdminSession } from "@/lib/adminSession";
 
 export default function AdminEditPost() {
   const router = useRouter();
@@ -75,13 +77,10 @@ export default function AdminEditPost() {
   const { data: categories, isLoading: categoriesLoading } = useCategory();
 
   useEffect(() => {
-    const token =
-      typeof window !== "undefined" && (localStorage.getItem("adminToken") || localStorage.getItem("token"));
-    if (!token) {
-      notifyError("You must be signed in with an admin account to access the admin panel.");
-      if (typeof window !== "undefined") {
-        window.location.href = "/admin/login";
-      }
+    if (typeof window !== "undefined" && !isAdminSessionValid()) {
+      clearAdminSession();
+      notifyError("Admin session expired. Please login again.");
+      window.location.href = "/admin/login";
       return;
     }
 
@@ -313,53 +312,23 @@ export default function AdminEditPost() {
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
-      <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5", paddingTop: "20px", paddingBottom: "40px" }}>
-        <div className="container">
-          <div className="row justify-content-center">
+      <AdminLayout
+        title="Edit Post"
+        subtitle={`Edit post: ${title || slug}`}
+        actions={
+          <button
+            type="button"
+            onClick={() => router.push("/admin/dashboard")}
+            className="btn btn-outline-secondary"
+            style={{ fontSize: "14px", padding: "8px 16px" }}
+          >
+            Back to Dashboard
+          </button>
+        }
+      >
+        <div className="container-fluid px-0">
+          <div className="row">
             <div className="col-xl-10 col-lg-11">
-              {/* Admin Header Bar */}
-              <div style={{
-                backgroundColor: "#fff",
-                padding: "15px 20px",
-                borderRadius: "8px",
-                marginBottom: "20px",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center"
-              }}>
-                <div>
-                  <h2 className="mb-0" style={{ fontSize: "24px", fontWeight: "600", color: "#333" }}>
-                    Admin Panel - Edit Post
-                  </h2>
-                  <small style={{ color: "#666", fontSize: "12px" }}>
-                    Edit post: {title || slug}
-                  </small>
-                </div>
-                <div className="d-flex gap-2 align-items-center">
-                  <button
-                    type="button"
-                    onClick={() => router.push("/admin/dashboard")}
-                    className="btn btn-outline-secondary"
-                    style={{ fontSize: "14px", padding: "8px 16px" }}
-                  >
-                    Back to Dashboard
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      localStorage.removeItem("adminToken");
-                      localStorage.removeItem("token");
-                      router.push("/admin/login");
-                    }}
-                    className="btn btn-outline-danger"
-                    style={{ fontSize: "14px", padding: "8px 16px" }}
-                  >
-                    Logout
-                  </button>
-                </div>
-              </div>
-
               <form onSubmit={handleUpdate}>
                 <div className="blog-details-wrap" style={{ backgroundColor: "#fff", padding: "30px", borderRadius: "8px", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
                   <h2 className="title mb-4" style={{ fontSize: "28px", fontWeight: "600" }}>Edit Post</h2>
@@ -517,7 +486,7 @@ export default function AdminEditPost() {
             </div>
           </div>
         </div>
-      </div>
+      </AdminLayout>
 
       <ToastContainer />
     </>

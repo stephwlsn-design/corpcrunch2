@@ -4,6 +4,8 @@ import Head from "next/head";
 import axiosInstance from "@/util/axiosInstance";
 import { notifyError, notifySuccess } from "@/util/toast";
 import ToastContainer from "@/components/ToastContainer/ToastContainer";
+import AdminLayout from "@/components/admin/AdminLayout";
+import { isAdminSessionValid, clearAdminSession } from "@/lib/adminSession";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -70,8 +72,7 @@ export default function AdminDashboard() {
       if (error?.response?.status === 401) {
         errorMessage = "Authentication failed. Please login again.";
         if (typeof window !== "undefined") {
-          localStorage.removeItem("adminToken");
-          localStorage.removeItem("token");
+          clearAdminSession();
           setTimeout(() => {
             window.location.href = "/admin/login";
           }, 2000);
@@ -90,24 +91,18 @@ export default function AdminDashboard() {
     }
   }, [filterContentType, filterStatus, searchQuery, currentPage]);
 
-  // Check authentication only once on mount
+  // Check authentication only once on mount (auth guard in _app also redirects)
   useEffect(() => {
-    const token =
-      typeof window !== "undefined" && (localStorage.getItem("adminToken") || localStorage.getItem("token"));
-    if (!token) {
-      notifyError("You must be signed in with an admin account to access the admin panel.");
-      if (typeof window !== "undefined") {
-        window.location.href = "/admin/login";
-      }
-      return;
+    if (typeof window !== "undefined" && !isAdminSessionValid()) {
+      clearAdminSession();
+      notifyError("Admin session expired. Please login again.");
+      window.location.href = "/admin/login";
     }
-  }, []); // Only run once on mount
+  }, []);
 
   // Fetch posts when filters change
   useEffect(() => {
-    const token =
-      typeof window !== "undefined" && (localStorage.getItem("adminToken") || localStorage.getItem("token"));
-    if (token) {
+    if (typeof window !== "undefined" && isAdminSessionValid()) {
       fetchPosts();
     }
   }, [fetchPosts]);
@@ -185,58 +180,22 @@ export default function AdminDashboard() {
         <meta name="robots" content="noindex, nofollow" />
       </Head>
 
-      <div style={{
-        minHeight: "100vh",
-        backgroundColor: "#f5f5f5",
-        paddingTop: "20px",
-        paddingBottom: "40px"
-      }}>
-        <div className="container">
-          <div className="row justify-content-center">
+      <AdminLayout
+        title="Manage Posts"
+        subtitle="View, edit, and delete all posts, articles, videos, and stories"
+        actions={
+          <button
+            className="btn btn-primary"
+            onClick={() => router.push("/admin/posts/create")}
+            style={{ fontSize: "14px", padding: "8px 16px" }}
+          >
+            Create New Post
+          </button>
+        }
+      >
+        <div className="container-fluid px-0">
+          <div className="row">
             <div className="col-xl-12">
-              {/* Admin Header Bar */}
-              <div style={{
-                backgroundColor: "#fff",
-                padding: "15px 20px",
-                borderRadius: "8px",
-                marginBottom: "20px",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexWrap: "wrap",
-                gap: "15px"
-              }}>
-                <div>
-                  <h2 className="mb-0" style={{ fontSize: "24px", fontWeight: "600", color: "#333" }}>
-                    Admin Dashboard - Manage Posts
-                  </h2>
-                  <small style={{ color: "#666", fontSize: "12px" }}>
-                    View, edit, and delete all posts, articles, videos, and stories
-                  </small>
-                </div>
-                <div className="d-flex gap-2 align-items-center flex-wrap">
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => router.push("/admin")}
-                    style={{ fontSize: "14px", padding: "8px 16px" }}
-                  >
-                    Create New Post
-                  </button>
-                  <button
-                    className="btn btn-outline-secondary"
-                    onClick={() => {
-                      localStorage.removeItem("adminToken");
-                      localStorage.removeItem("token");
-                      router.push("/admin/login");
-                    }}
-                    style={{ fontSize: "14px", padding: "8px 16px" }}
-                  >
-                    Logout
-                  </button>
-                </div>
-              </div>
-
               {/* Filters */}
               <div style={{
                 backgroundColor: "#fff",
@@ -380,7 +339,7 @@ export default function AdminDashboard() {
                     <p className="text-muted">No posts found matching your filters.</p>
                     <button
                       className="btn btn-primary mt-3"
-                      onClick={() => router.push("/admin")}
+                      onClick={() => router.push("/admin/posts/create")}
                     >
                       Create Your First Post
                     </button>
@@ -543,7 +502,7 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
-      </div>
+      </AdminLayout>
 
       <ToastContainer />
     </>

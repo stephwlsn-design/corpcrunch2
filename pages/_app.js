@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { isAdminSessionValid, clearAdminSession } from "@/lib/adminSession";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { LocationProvider } from "@/contexts/LocationContext";
@@ -39,6 +40,18 @@ const queryClient = new QueryClient({
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
+
+  // Admin auth guard: redirect to login if session invalid (2hr or new day)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const pathname = router.pathname;
+    if (!pathname.startsWith("/admin") || pathname === "/admin/login") return;
+
+    if (!isAdminSessionValid()) {
+      clearAdminSession();
+      window.location.href = "/admin/login";
+    }
+  }, [router.pathname]);
 
   useEffect(() => {
     // Google Analytics - track client-side route changes (SPA navigation)

@@ -35,7 +35,7 @@ export default async function handler(req, res) {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Create user
+        // Create user (lastLoginAt set on first login via /auth/login)
         const user = await User.create({
             firstName,
             lastName,
@@ -43,6 +43,8 @@ export default async function handler(req, res) {
             companyName,
             location,
             password: hashedPassword,
+            lastLoginAt: new Date(),
+            loginCount: 1,
         });
 
         // Create token

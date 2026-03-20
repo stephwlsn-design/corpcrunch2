@@ -34,6 +34,12 @@ export default async function handler(req, res) {
             return res.status(403).json({ success: false, message: 'Account is deactivated' });
         }
 
+        // Update last login and login count
+        await User.findByIdAndUpdate(user._id, {
+            lastLoginAt: new Date(),
+            $inc: { loginCount: 1 },
+        });
+
         // Create token
         const token = jwt.sign(
             { id: user._id, email: user.email, role: user.role },
