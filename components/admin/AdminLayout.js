@@ -4,9 +4,10 @@ import Link from "next/link";
 import { clearAdminSession } from "@/lib/adminSession";
 
 const NAV_ITEMS = [
-  { href: "/admin/dashboard", label: "Manage Posts", icon: "📋" },
-  { href: "/admin/posts/create", label: "Create Post", icon: "✏️" },
-  { href: "/admin/users", label: "User Management", icon: "👥" },
+  { href: "/admin/dashboard", label: "Manage Posts" },
+  { href: "/admin/posts/create", label: "Create Post" },
+  { href: "/admin/users", label: "User Management" },
+  { href: "/admin/analytics", label: "Analytics" },
 ];
 
 export default function AdminLayout({ title, subtitle, actions, children }) {
@@ -22,6 +23,7 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
     if (href === "/admin/dashboard") return router.pathname === "/admin/dashboard";
     if (href === "/admin/posts/create") return router.pathname === "/admin/posts/create";
     if (href === "/admin/users") return router.pathname.startsWith("/admin/users");
+    if (href === "/admin/analytics") return router.pathname.startsWith("/admin/analytics");
     return false;
   };
 
@@ -40,7 +42,7 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
 
   const SidebarContent = () => (
     <>
-      <div style={{ padding: "0 16px 20px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+      <div style={{ padding: "0 16px 20px", borderBottom: "1px solid rgba(255,255,255,0.1)", flexShrink: 0 }}>
         <Link
           href="/admin/dashboard"
           style={{ textDecoration: "none" }}
@@ -51,7 +53,7 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
           <small style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px" }}>Admin Panel</small>
         </Link>
       </div>
-      <nav style={{ padding: "16px 0", flex: 1 }}>
+      <nav style={{ padding: "16px 0", flex: 1, minHeight: 0, overflowY: "auto" }}>
         {NAV_ITEMS.map((item) => (
           <Link
             key={item.href}
@@ -59,12 +61,11 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
             onClick={() => setSidebarOpen(false)}
             style={navLinkStyle(item.href)}
           >
-            <span style={{ fontSize: "18px" }}>{item.icon}</span>
             {item.label}
           </Link>
         ))}
       </nav>
-      <div style={{ padding: "16px" }}>
+      <div style={{ padding: "16px", flexShrink: 0, marginTop: "auto" }}>
         <button
           onClick={handleLogout}
           style={{
@@ -92,15 +93,21 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
         display: "flex",
       }}
     >
-      {/* Desktop Sidebar */}
+      {/* Desktop Sidebar - fixed so it doesn't scroll */}
       <aside
         className="d-none d-md-flex flex-column"
         style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          bottom: 0,
           width: "240px",
-          minHeight: "100vh",
+          height: "100vh",
           backgroundColor: "#1e293b",
           padding: "20px 0",
-          flexShrink: 0,
+          display: "flex",
+          flexDirection: "column",
+          zIndex: 100,
         }}
       >
         <SidebarContent />
@@ -169,6 +176,7 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
           padding: "70px 0 20px",
           display: "flex",
           flexDirection: "column",
+          overflow: "hidden",
         }}
       >
         <SidebarContent />
@@ -182,7 +190,7 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
           marginLeft: 0,
           minWidth: 0,
         }}
-        className="admin-main-content"
+        className="admin-main-content admin-main-with-sidebar"
       >
         {(title || actions) && (
           <div
@@ -219,6 +227,9 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
         {children}
       </main>
       <style dangerouslySetInnerHTML={{ __html: `
+        @media (min-width: 768px) {
+          .admin-main-with-sidebar { margin-left: 240px !important; }
+        }
         @media (max-width: 767px) {
           .admin-main-content { padding-top: 76px !important; }
         }

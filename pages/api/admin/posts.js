@@ -1,5 +1,6 @@
 import connectDB from '@/lib/mongoose';
 import Post from '@/models/Post';
+import Category from '@/models/Category';
 import { requireAdminAuth } from '@/lib/adminAuth';
 
 export default async function handler(req, res) {
