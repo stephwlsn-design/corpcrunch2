@@ -2,6 +2,7 @@ import dbConnect from '@/lib/mongoose';
 import User from '@/models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { hsTrackLogin } from '@/lib/hubspot';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -39,6 +40,11 @@ export default async function handler(req, res) {
             lastLoginAt: new Date(),
             $inc: { loginCount: 1 },
         });
+
+        // HubSpot: track login (fire-and-forget)
+        hsTrackLogin(user.email).catch((err) =>
+            console.error('[HubSpot] trackLogin failed:', err)
+        );
 
         // Create token
         const token = jwt.sign(

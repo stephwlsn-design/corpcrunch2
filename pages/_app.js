@@ -54,12 +54,34 @@ function MyApp({ Component, pageProps }) {
   }, [router.pathname]);
 
   useEffect(() => {
+    const trackPageView = (url) => {
+      if (typeof window !== "undefined" && !url.startsWith("/admin")) {
+        const token = localStorage.getItem("token");
+        if (token) {
+          fetch("/api/track/pageview", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+            body: JSON.stringify({
+              url,
+              title: document?.title || "",
+              referrer: document?.referrer || "",
+            }),
+          }).catch(() => {});
+        }
+      }
+    };
+
     // Google Analytics - track client-side route changes (SPA navigation)
     const handleRouteChange = (url) => {
       if (typeof window.gtag === "function") {
         window.gtag("config", "G-8MJ7BXCFYK", { page_path: url });
       }
+      trackPageView(url);
     };
+
+    // Track initial page load (once on mount)
+    trackPageView(router.asPath);
+
     router.events.on("routeChangeComplete", handleRouteChange);
     return () => router.events.off("routeChangeComplete", handleRouteChange);
   }, [router.events]);

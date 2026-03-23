@@ -2,6 +2,7 @@ import dbConnect from '@/lib/mongoose';
 import User from '@/models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { hsCreateContact } from '@/lib/hubspot';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -46,6 +47,11 @@ export default async function handler(req, res) {
             lastLoginAt: new Date(),
             loginCount: 1,
         });
+
+        // HubSpot: create contact (fire-and-forget)
+        hsCreateContact({ email: user.email, firstName: user.firstName, lastName: user.lastName, companyName: user.companyName, location: user.location }).catch((err) =>
+            console.error('[HubSpot] createContact failed:', err)
+        );
 
         // Create token
         const token = jwt.sign(

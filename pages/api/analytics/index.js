@@ -25,7 +25,10 @@ export default async function handler(req, res) {
   }
 
   const site = req.query.site || 'corpcrunch';
-  const range = req.query.range || '28daysAgo';
+  const range = req.query.range || '7daysAgo';
+
+  const startDate = range;
+  const endDate = 'today';
 
   const property = PROPERTIES[site];
   if (!property) {
@@ -60,7 +63,7 @@ export default async function handler(req, res) {
     ] = await Promise.all([
       client.runReport({
         property,
-        dateRanges: [{ startDate: range, endDate: 'today' }],
+        dateRanges: [{ startDate, endDate }],
         metrics: [
           { name: 'sessions' },
           { name: 'screenPageViews' },
@@ -71,14 +74,14 @@ export default async function handler(req, res) {
       }),
       client.runReport({
         property,
-        dateRanges: [{ startDate: range, endDate: 'today' }],
+        dateRanges: [{ startDate, endDate }],
         dimensions: [{ name: 'date' }],
         metrics: [{ name: 'sessions' }, { name: 'screenPageViews' }],
         orderBys: [{ dimension: { dimensionName: 'date' } }],
       }),
       client.runReport({
         property,
-        dateRanges: [{ startDate: range, endDate: 'today' }],
+        dateRanges: [{ startDate, endDate }],
         dimensions: [{ name: 'sessionSourceMedium' }],
         metrics: [{ name: 'sessions' }],
         orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
@@ -86,7 +89,7 @@ export default async function handler(req, res) {
       }),
       client.runReport({
         property,
-        dateRanges: [{ startDate: range, endDate: 'today' }],
+        dateRanges: [{ startDate, endDate }],
         dimensions: [{ name: 'pagePath' }],
         metrics: [{ name: 'screenPageViews' }],
         orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
@@ -94,7 +97,7 @@ export default async function handler(req, res) {
       }),
       client.runReport({
         property,
-        dateRanges: [{ startDate: range, endDate: 'today' }],
+        dateRanges: [{ startDate, endDate }],
         dimensions: [{ name: 'country' }],
         metrics: [{ name: 'sessions' }],
         orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
@@ -102,7 +105,7 @@ export default async function handler(req, res) {
       }),
       client.runReport({
         property,
-        dateRanges: [{ startDate: range, endDate: 'today' }],
+        dateRanges: [{ startDate, endDate }],
         dimensions: [{ name: 'deviceCategory' }],
         metrics: [{ name: 'sessions' }],
       }),

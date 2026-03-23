@@ -14,6 +14,13 @@ const SITES = [
   { id: "otto", label: "otto" },
 ];
 
+const DATE_RANGES = [
+  { value: "today", label: "Today" },
+  { value: "7daysAgo", label: "Weekly" },
+  { value: "30daysAgo", label: "Monthly" },
+  { value: "3650daysAgo", label: "Lifetime" },
+];
+
 
 function formatDuration(seconds) {
   const s = parseFloat(seconds || 0);
@@ -25,7 +32,7 @@ function formatDuration(seconds) {
 
 export default function AnalyticsPage() {
   const [site, setSite] = useState("corpcrunch");
-  const [range, setRange] = useState("28daysAgo");
+  const [range, setRange] = useState("7daysAgo");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -120,6 +127,23 @@ export default function AnalyticsPage() {
                 ))}
               </select>
             </div>
+            <div>
+              <label className="form-label" style={{ marginBottom: "4px", fontSize: "12px", color: "#666" }}>
+                Date range
+              </label>
+              <select
+                className="form-select"
+                value={range}
+                onChange={(e) => setRange(e.target.value)}
+                style={{ width: "180px" }}
+              >
+                {DATE_RANGES.map((r) => (
+                  <option key={r.value} value={r.value}>
+                    {r.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {loading ? (
@@ -203,7 +227,7 @@ export default function AnalyticsPage() {
                     ))}
                   </div>
                   <div style={{ marginTop: "8px", fontSize: "11px", color: "#666" }}>
-                    Last {Math.min(14, data.timeseries.length)} days
+                    {range === "today" ? "Today" : `Last ${Math.min(14, data.timeseries.length)} days`}
                   </div>
                 </div>
               )}
