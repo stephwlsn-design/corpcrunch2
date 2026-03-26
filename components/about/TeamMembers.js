@@ -25,12 +25,6 @@ export default function TeamMembers() {
       image: '/assets/img/others/Malay Kumar.jpeg',
       desc: 'Malay Kumar brings 25+ years of expertise in events, sponsorship sales, and revenue strategy across media, advertising, and MarTech. His career spans leading organizations such as Filmfare ME, Viacom18, Mid-Day, and The Times of India.' 
     },
-    { 
-      name: 'Amit Singh', 
-      role: 'Fractional CFO', 
-      image: '/assets/img/others/Amit Singh.png',
-      desc: 'Amit Singh is an accomplished corporate strategy, M&A, and investment banking professional with 13+ years driving inorganic growth, private equity fundraising, structured finance, and GCC-focused global strategies. He is an alumnus of EY and Deloitte.' 
-    },
   ];
 
   const TechTeam = [
