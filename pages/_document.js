@@ -10,7 +10,7 @@ export default function Document() {
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
         {/* <script async src="http://localhost:8000/pixel.js?id=OTTO-PX-5DAE1720"></script> */}
-        <script async src="https://ottoplatform-410578063330.us-central1.run.app/pixel.js?id=OTTO-PX-CAD5ED57"></script>
+        <script async src="https://ottoplatform-410578063330.us-central1.run.app/pixel.js?id=OTTO-PX-FE92E881"></script>
 
         {/* Google Analytics (gtag.js) */}
         <script
