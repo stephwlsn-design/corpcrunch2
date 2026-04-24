@@ -2,6 +2,15 @@ import nodemailer from 'nodemailer';
 import connectDB from '@/lib/mongoose';
 import Contact from '@/models/Contact';
 import { publicRateLimiter } from '@/lib/rateLimiter';
+import { requireAdminAuth } from '@/lib/adminAuth';
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
 export default async function handler(req, res) {
   // 1. Rate Limiting
@@ -31,50 +40,64 @@ export default async function handler(req, res) {
         return res.status(400).json({ success: false, message: 'All fields are required' });
       }
 
+      const safeFormType =
+        formType === 'project' || formType === 'message' ? formType : 'message';
+
       // Create Database Entry
       const contact = new Contact({
         name: name.trim(),
         email: email.trim().toLowerCase(),
         subject: subject.trim(),
         message: message.trim(),
-        formType: formType || 'message',
+        formType: safeFormType,
         status: 'new',
       });
 
       await contact.save();
 
-      // --- EMAIL NOTIFICATION LOGIC ---
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT || 465,
-        secure: true, 
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASSWORD,
-        },
-      });
+      const smtpHost = process.env.SMTP_HOST;
+      const smtpUser = process.env.SMTP_USER;
+      const smtpPass = process.env.SMTP_PASSWORD;
+      if (smtpHost && smtpUser && smtpPass) {
+        try {
+          const transporter = nodemailer.createTransport({
+            host: smtpHost,
+            port: Number(process.env.SMTP_PORT) || 465,
+            secure: true,
+            auth: {
+              user: smtpUser,
+              pass: smtpPass,
+            },
+          });
 
-      const mailOptions = {
-        from: `"CorpCrunch Contact" <${process.env.SMTP_USER}>`,
-        replyTo: email,
-        to: 'scoop@corpcrunch.io',
-        subject: `New Message: ${subject}`,
-        html: `
+          const safeName = escapeHtml(name);
+          const safeEmail = escapeHtml(email);
+          const safeSubject = escapeHtml(subject);
+          const safeMessage = escapeHtml(message);
+
+          await transporter.sendMail({
+            from: `"CorpCrunch Contact" <${smtpUser}>`,
+            replyTo: email.trim(),
+            to: 'scoop@corpcrunch.io',
+            subject: `New Message: ${subject}`,
+            html: `
           <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee;">
             <h2>New Contact Form Submission</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Subject:</strong> ${subject}</p>
+            <p><strong>Name:</strong> ${safeName}</p>
+            <p><strong>Email:</strong> ${safeEmail}</p>
+            <p><strong>Subject:</strong> ${safeSubject}</p>
             <hr />
             <p><strong>Message:</strong></p>
-            <p style="white-space: pre-wrap;">${message}</p>
+            <p style="white-space: pre-wrap;">${safeMessage}</p>
           </div>
         `,
-      };
-
-      // Send the email (we don't 'await' here to keep response time fast, 
-      // or you can await if you want to ensure the email is sent before responding)
-      await transporter.sendMail(mailOptions);
+          });
+        } catch (emailErr) {
+          console.error('[API /contact] Email notification failed:', emailErr);
+        }
+      } else {
+        console.warn('[API /contact] SMTP not fully configured; submission saved without email notify');
+      }
 
       return res.status(200).json({
         success: true,
@@ -92,6 +115,20 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       await connectDB();
+    } catch (dbError) {
+      console.error('[API /contact] Database connection error:', dbError);
+      return res.status(500).json({ success: false, message: 'Database connection failed.' });
+    }
+
+    const authResult = await requireAdminAuth(req);
+    if (!authResult.authorized) {
+      return res.status(401).json({
+        success: false,
+        message: authResult.error || 'Unauthorized. Admin authentication required.',
+      });
+    }
+
+    try {
       const contacts = await Contact.find({}).sort({ createdAt: -1 }).limit(100).lean();
       return res.status(200).json({ success: true, contacts });
     } catch (error) {
