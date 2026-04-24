@@ -5,10 +5,12 @@ import Skeleton from "react-loading-skeleton";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { formatDate } from "@/util";
 import { getBlogPostUrl } from "@/util/urlHelpers";
+import { useAuth } from "@/contexts/AuthContext";
 import styles from "./PopularStories.module.css";
 
 export default function PopularStories({ posts = [], isLoading = false }) {
   const { t } = useLanguage();
+  const { requireAuth } = useAuth();
   const [isMounted, setIsMounted] = useState(false);
   const [playingVideoId, setPlayingVideoId] = useState(null);
   const sliderRef = useRef(null);
@@ -181,9 +183,18 @@ export default function PopularStories({ posts = [], isLoading = false }) {
                               : ''}
                           </span>
                         </div>
-                        <Link href={getBlogPostUrl(post)} className={styles.readMoreBtn}>
+                        <a
+                          href={getBlogPostUrl(post)}
+                          className={styles.readMoreBtn}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const url = getBlogPostUrl(post);
+                            const allowed = requireAuth(url);
+                            if (allowed) window.location.href = url;
+                          }}
+                        >
                           Read More <i className="fas fa-arrow-right" />
-                        </Link>
+                        </a>
                       </div>
                     </div>
                   </div>

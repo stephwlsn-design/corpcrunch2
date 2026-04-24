@@ -4,9 +4,11 @@ import Link from "next/link";
 import axiosInstance from "@/util/axiosInstance";
 import { formatDate } from "@/util";
 import Image from "next/image";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function AIXPage({ posts }) {
   const aixPosts = posts || [];
+  const { requireAuth } = useAuth();
 
   const getExcerpt = (content) => {
     if (!content) return "";
@@ -46,7 +48,15 @@ export default function AIXPage({ posts }) {
                   {aixPosts.map((item, index) => (
                     <div className="latest__post-item" key={item.id || index} style={{ marginBottom: '40px' }}>
                       <div className="latest__post-thumb tgImage__hover">
-                        <Link href={`/blog/${item.slug}`}>
+                        <a
+                          href={`/blog/${item.slug}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const url = `/blog/${item.slug}`;
+                            const allowed = requireAuth(url);
+                            if (allowed) window.location.href = url;
+                          }}
+                        >
                           {item.bannerImageUrl ? (
                             <Image
                               src={item.bannerImageUrl}
@@ -75,7 +85,7 @@ export default function AIXPage({ posts }) {
                               <i className="fas fa-image" style={{ fontSize: "48px", color: "#ccc" }} />
                             </div>
                           )}
-                        </Link>
+                        </a>
                       </div>
                       <div className="latest__post-content">
                         <ul className="tgbanner__content-meta list-wrap">
@@ -89,13 +99,31 @@ export default function AIXPage({ posts }) {
                           <li>{formatDate(item.createdAt)}</li>
                         </ul>
                         <h3 className="title tgcommon__hover">
-                          <Link href={`/blog/${item.slug}`}>{item.title}</Link>
+                          <a
+                            href={`/blog/${item.slug}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const url = `/blog/${item.slug}`;
+                              const allowed = requireAuth(url);
+                              if (allowed) window.location.href = url;
+                            }}
+                          >
+                            {item.title}
+                          </a>
                         </h3>
                         <p>{getExcerpt(item.content)}</p>
                         <div className="latest__post-read-more">
-                          <Link href={`/blog/${item.slug}`}>
+                          <a
+                            href={`/blog/${item.slug}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const url = `/blog/${item.slug}`;
+                              const allowed = requireAuth(url);
+                              if (allowed) window.location.href = url;
+                            }}
+                          >
                             Read More <i className="far fa-long-arrow-right" />
-                          </Link>
+                          </a>
                         </div>
                       </div>
                     </div>

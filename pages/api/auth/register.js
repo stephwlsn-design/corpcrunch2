@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     await dbConnect();
 
     try {
-        const { firstName, lastName, email, companyName, location, password } = req.body;
+        const { firstName, lastName, email, companyName, location, password, phoneNumber } = req.body;
 
         if (!firstName || !lastName || !email || !companyName || !location || !password) {
             return res.status(400).json({ success: false, message: 'All fields are required' });
@@ -43,6 +43,7 @@ export default async function handler(req, res) {
             email: email.toLowerCase(),
             companyName,
             location,
+            phoneNumber: phoneNumber || '',
             password: hashedPassword,
             lastLoginAt: new Date(),
             loginCount: 1,

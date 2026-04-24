@@ -22,6 +22,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { LocationProvider } from "@/contexts/LocationContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 // Create QueryClient with proper configuration
 const queryClient = new QueryClient({
@@ -182,9 +183,11 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider>
         <LanguageProvider>
           <LocationProvider>
-            <QueryClientProvider client={queryClient}>
-              <Component {...pageProps} />
-            </QueryClientProvider>
+            <AuthProvider>
+              <QueryClientProvider client={queryClient}>
+                <Component {...pageProps} />
+              </QueryClientProvider>
+            </AuthProvider>
           </LocationProvider>
         </LanguageProvider>
       </ThemeProvider>

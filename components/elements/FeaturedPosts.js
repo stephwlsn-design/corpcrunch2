@@ -4,9 +4,11 @@ import Skeleton from "react-loading-skeleton";
 import { formatDate } from "@/util";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getBlogPostUrl } from "@/util/urlHelpers";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function FeaturedPosts({ posts = [], isLoading = false }) {
   const { t } = useLanguage();
+  const { requireAuth } = useAuth();
   
   if (isLoading) {
     return (
@@ -60,7 +62,16 @@ export default function FeaturedPosts({ posts = [], isLoading = false }) {
         <div className="featured-posts__grid">
           {featuredPosts.map((item, i) => (
             <div className="featured-post-modern__card" key={item.id || i}>
-              <Link href={getBlogPostUrl(item)} className="featured-post-modern__link">
+              <a
+                href={getBlogPostUrl(item)}
+                className="featured-post-modern__link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const url = getBlogPostUrl(item);
+                  const allowed = requireAuth(url);
+                  if (allowed) window.location.href = url;
+                }}
+              >
                 <div className="featured-post-modern__thumb">
                   {item.bannerImageUrl && (
                     <Image
@@ -91,7 +102,7 @@ export default function FeaturedPosts({ posts = [], isLoading = false }) {
                     <span>By Mike Evans</span>
                   </div>
                 </div>
-              </Link>
+              </a>
             </div>
           ))}
         </div>

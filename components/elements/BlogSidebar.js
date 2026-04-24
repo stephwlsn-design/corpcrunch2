@@ -5,9 +5,11 @@ import usePosts from '@/hooks/usePosts'
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { getBlogPostUrl, getCategoryUrl } from '@/util/urlHelpers'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function BlogSidebar({ author }) {
     const { t } = useLanguage();
+    const { requireAuth } = useAuth();
     const { data: categories, isLoading } = useCategory();
     const { data: postsData } = usePosts();
 
@@ -293,12 +295,18 @@ export default function BlogSidebar({ author }) {
                                         {featuredPost.Category?.name?.toUpperCase() || 'FEATURED'}
                                     </Link>
                                     <h5 className="title tgcommon__hover" style={{ marginTop: '15px', lineHeight: '1.4' }}>
-                                        <Link
+                                        <a
                                             href={getBlogPostUrl(featuredPost)}
                                             style={{ color: 'white', fontSize: '18px', fontWeight: '800' }}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                const url = getBlogPostUrl(featuredPost);
+                                                const allowed = requireAuth(url);
+                                                if (allowed) window.location.href = url;
+                                            }}
                                         >
                                             {featuredPost.title}
-                                        </Link>
+                                        </a>
                                     </h5>
                                 </div>
                             </div>

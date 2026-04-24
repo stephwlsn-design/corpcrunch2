@@ -6,10 +6,12 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getBlogPostUrl } from "@/util/urlHelpers";
+import { useAuth } from "@/contexts/AuthContext";
 import styles from "./RecentVideoPosts.module.css";
 
 export default function RecentVideoPosts({ posts = [], isLoading = false }) {
   const { t } = useLanguage();
+  const { requireAuth } = useAuth();
   const [playingVideoId, setPlayingVideoId] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -407,9 +409,10 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
               <button
                 className={styles.learnMoreBtn}
                 onClick={() => {
-                  if (sectionPost.slug) {
-                    window.location.href = getBlogPostUrl(sectionPost);
-                  }
+                  const url = sectionPost.slug ? getBlogPostUrl(sectionPost) : null;
+                  if (!url) return;
+                  const allowed = requireAuth(url);
+                  if (allowed) window.location.href = url;
                 }}
               >
                 Learn More <i className="fas fa-arrow-right" />

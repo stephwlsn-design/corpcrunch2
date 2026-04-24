@@ -3,9 +3,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatNumber, formatViews } from "@/util";
 import { getBlogPostUrl, getCategoryUrl } from "@/util/urlHelpers";
+import { useAuth } from "@/contexts/AuthContext";
 import styles from "./TrendingCategories.module.css";
 
 export default function TrendingCategories({ categories = [] }) {
+  const { requireAuth } = useAuth();
   const categoryIcons = {
     technology: "fas fa-rocket",
     finance: "fas fa-chart-line",
@@ -66,10 +68,15 @@ export default function TrendingCategories({ categories = [] }) {
                         // Ensure news has required properties
                         const newsUrl = news?.slug ? getBlogPostUrl(news) : `/blog/${news?.slug || news?._id || ''}`;
                         return (
-                          <Link
+                          <a
                             key={`${news._id || nIdx}-${nIdx}`}
                             href={newsUrl}
                             className={styles.newsCardLink}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const allowed = requireAuth(newsUrl);
+                              if (allowed) window.location.href = newsUrl;
+                            }}
                           >
                             <div className={styles.newsCard}>
                               {news.bannerImageUrl && (
@@ -98,7 +105,7 @@ export default function TrendingCategories({ categories = [] }) {
                                 </div>
                               </div>
                             </div>
-                          </Link>
+                          </a>
                         );
                       })}
                     </div>
