@@ -185,7 +185,18 @@ export default function AnalyticsPage() {
                       <div style={{ fontSize: "28px", fontWeight: "700", color: "#7c3aed" }}>
                         {parseInt(data.overview.totalUsers, 10).toLocaleString()}
                       </div>
-                      <div style={{ fontSize: "12px", color: "#666" }}>Users</div>
+                      <div style={{ fontSize: "12px", color: "#666" }}>Visitors</div>
+                    </div>
+                  </div>
+                  <div className="col-md col-6">
+                    <div style={{ ...cardStyle, textAlign: "center" }}>
+                      <div style={{ fontSize: "28px", fontWeight: "700", color: "#0ea5e9" }}>
+                        {parseInt(data.overview.realtimeUsers || 0, 10).toLocaleString()}
+                      </div>
+                      <div style={{ fontSize: "12px", color: "#666" }}>Live Visitors</div>
+                      <div style={{ fontSize: "10px", color: "#999", marginTop: "4px" }}>
+                        Active visitors in last 30 minutes
+                      </div>
                     </div>
                   </div>
                   <div className="col-md col-6">

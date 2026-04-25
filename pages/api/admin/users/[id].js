@@ -125,13 +125,7 @@ export default async function handler(req, res) {
 
   if (req.method === 'DELETE') {
     try {
-      const user = await User.findByIdAndUpdate(
-        id,
-        { $set: { isActive: false } },
-        { new: true }
-      )
-        .select('-password')
-        .lean();
+      const user = await User.findByIdAndDelete(id).lean();
 
       if (!user) {
         return res.status(404).json({ success: false, message: 'User not found' });
@@ -139,13 +133,13 @@ export default async function handler(req, res) {
 
       return res.status(200).json({
         success: true,
-        message: 'User deactivated successfully',
+        message: 'User deleted successfully',
       });
     } catch (error) {
       console.error('[API /admin/users/[id]] DELETE Error:', error);
       return res.status(500).json({
         success: false,
-        message: 'Failed to deactivate user',
+        message: 'Failed to delete user',
       });
     }
   }

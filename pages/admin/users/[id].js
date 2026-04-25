@@ -126,20 +126,19 @@ export default function AdminUserDetail() {
     }
   };
 
-  const handleDeactivate = async () => {
-    if (!confirm("Deactivate this user? They will no longer be able to log in.")) return;
+  const handleDelete = async () => {
+    if (!confirm("Delete this user? This action cannot be undone.")) return;
     try {
       setDeleting(true);
       const response = await axiosInstance.delete(`/admin/users/${id}`);
       if (response?.success) {
-        notifySuccess("User deactivated successfully");
-        setForm((prev) => ({ ...prev, isActive: false }));
-        setUser((prev) => (prev ? { ...prev, isActive: false } : null));
+        notifySuccess("User deleted successfully");
+        router.push("/admin/users");
       } else {
-        notifyError(response?.message || "Failed to deactivate user");
+        notifyError(response?.message || "Failed to delete user");
       }
     } catch (error) {
-      notifyError(error?.response?.data?.message || "Failed to deactivate user");
+      notifyError(error?.response?.data?.message || "Failed to delete user");
     } finally {
       setDeleting(false);
     }
@@ -422,23 +421,21 @@ export default function AdminUserDetail() {
                         "Save Changes"
                       )}
                     </button>
-                    {user.isActive && (
-                      <button
-                        type="button"
-                        className="btn btn-danger"
-                        onClick={handleDeactivate}
-                        disabled={deleting}
-                      >
-                        {deleting ? (
-                          <>
-                            <span className="spinner-border spinner-border-sm me-1" role="status" />
-                            Deactivating...
-                          </>
-                        ) : (
-                          "Deactivate User"
-                        )}
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={handleDelete}
+                      disabled={deleting}
+                    >
+                      {deleting ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm me-1" role="status" />
+                          Deleting...
+                        </>
+                      ) : (
+                        "Delete User"
+                      )}
+                    </button>
                   </div>
                 </div>
               </form>

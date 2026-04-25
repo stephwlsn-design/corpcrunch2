@@ -29,8 +29,6 @@ export default function AdminUsersList() {
         sortOrder: "desc",
       });
       if (searchQuery.trim()) params.append("search", searchQuery.trim());
-      if (filterRole !== "all") params.append("role", filterRole);
-      if (filterStatus !== "all") params.append("isActive", filterStatus === "active");
 
       const response = await axiosInstance.get(`/admin/users?${params.toString()}`);
 
@@ -73,18 +71,18 @@ export default function AdminUsersList() {
   }, [fetchUsers]);
 
   const handleDelete = async (userId, userName) => {
-    if (!confirm(`Deactivate user "${userName}"? They will no longer be able to log in.`)) return;
+    if (!confirm(`Delete user "${userName}"? This action cannot be undone.`)) return;
     try {
       setDeletingId(userId);
       const response = await axiosInstance.delete(`/admin/users/${userId}`);
       if (response?.success) {
-        notifySuccess("User deactivated successfully");
+        notifySuccess("User deleted successfully");
         fetchUsers();
       } else {
-        notifyError(response?.message || "Failed to deactivate user");
+        notifyError(response?.message || "Failed to delete user");
       }
     } catch (error) {
-      notifyError(error?.response?.data?.message || "Failed to deactivate user");
+      notifyError(error?.response?.data?.message || "Failed to delete user");
       if (error?.response?.status === 401) {
         clearAdminSession();
         window.location.href = "/admin/login";
@@ -124,7 +122,7 @@ export default function AdminUsersList() {
         <div className="container-fluid px-0">
           <div className="row">
             <div className="col-xl-12">
-              {/* Filters */}
+              {/* Filters & Stats */}
               <div
                 style={{
                   backgroundColor: "#fff",
@@ -134,8 +132,8 @@ export default function AdminUsersList() {
                   boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                 }}
               >
-                <div className="row g-3">
-                  <div className="col-md-4">
+                <div className="row g-3 align-items-end">
+                  <div className="col-md-8">
                     <label className="form-label" style={{ fontWeight: "500", marginBottom: "8px" }}>
                       Search
                     </label>
@@ -150,60 +148,22 @@ export default function AdminUsersList() {
                       }}
                     />
                   </div>
-                  <div className="col-md-3">
-                    <label className="form-label" style={{ fontWeight: "500", marginBottom: "8px" }}>
-                      Role
-                    </label>
-                    <select
-                      className="form-select"
-                      value={filterRole}
-                      onChange={(e) => {
-                        setFilterRole(e.target.value);
-                        setCurrentPage(1);
+                  <div className="col-md-4 text-md-end text-start mt-4 mt-md-0">
+                    <div
+                      style={{
+                        padding: "10px 20px",
+                        backgroundColor: "#f8f9fa",
+                        borderRadius: "8px",
+                        border: "1px solid #eee",
+                        display: "inline-block",
+                        textAlign: "center"
                       }}
                     >
-                      <option value="all">All Roles</option>
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                      <option value="editor">Editor</option>
-                    </select>
-                  </div>
-                  <div className="col-md-3">
-                    <label className="form-label" style={{ fontWeight: "500", marginBottom: "8px" }}>
-                      Status
-                    </label>
-                    <select
-                      className="form-select"
-                      value={filterStatus}
-                      onChange={(e) => {
-                        setFilterStatus(e.target.value);
-                        setCurrentPage(1);
-                      }}
-                    >
-                      <option value="all">All</option>
-                      <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {/* Stats */}
-              <div className="row mb-3">
-                <div className="col-md-4">
-                  <div
-                    style={{
-                      backgroundColor: "#fff",
-                      padding: "15px",
-                      borderRadius: "8px",
-                      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                      textAlign: "center",
-                    }}
-                  >
-                    <div style={{ fontSize: "24px", fontWeight: "600", color: "#333" }}>
-                      {totalUsers}
+                      <div style={{ fontSize: "20px", fontWeight: "600", color: "#333", lineHeight: "1.2" }}>
+                        {totalUsers}
+                      </div>
+                      <div style={{ fontSize: "12px", color: "#666" }}>Total Users</div>
                     </div>
-                    <div style={{ fontSize: "12px", color: "#666" }}>Total Users</div>
                   </div>
                 </div>
               </div>
@@ -237,13 +197,12 @@ export default function AdminUsersList() {
                             <th>Name</th>
                             <th style={{ width: "140px", minWidth: "140px" }}>Actions</th>
                             <th>Email</th>
+                            <th>Phone</th>
                             <th>Company</th>
                             <th>Location</th>
-                            <th>Role</th>
                             <th>Registered</th>
                             <th>Last Login</th>
                             <th>Logins</th>
-                            <th>Status</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -272,15 +231,15 @@ export default function AdminUsersList() {
                                           user.email
                                       )
                                     }
-                                    disabled={deletingId === user.id || !user.isActive}
-                                    title="Deactivate"
+                                    disabled={deletingId === user.id}
+                                    title="Delete"
                                   >
                                     {deletingId === user.id ? (
                                       <span className="spinner-border spinner-border-sm" role="status">
-                                        <span className="visually-hidden">Deactivating...</span>
+                                        <span className="visually-hidden">Deleting...</span>
                                       </span>
                                     ) : (
-                                      "Deactivate"
+                                      "Delete"
                                     )}
                                   </button>
                                 </div>
@@ -288,13 +247,9 @@ export default function AdminUsersList() {
                               <td>
                                 <small>{user.email}</small>
                               </td>
+                              <td>{user.phoneNumber || "—"}</td>
                               <td>{user.companyName || "—"}</td>
                               <td>{user.location || "—"}</td>
-                              <td>
-                                <span className={`badge ${getRoleBadgeClass(user.role)}`}>
-                                  {user.role || "user"}
-                                </span>
-                              </td>
                               <td>
                                 <small className="text-muted">
                                   {formatDate(user.createdAt)}
@@ -306,13 +261,6 @@ export default function AdminUsersList() {
                                 </small>
                               </td>
                               <td>{user.loginCount ?? 0}</td>
-                              <td>
-                                <span
-                                  className={`badge ${user.isActive ? "bg-success" : "bg-secondary"}`}
-                                >
-                                  {user.isActive ? "Active" : "Inactive"}
-                                </span>
-                              </td>
                             </tr>
                           ))}
                         </tbody>

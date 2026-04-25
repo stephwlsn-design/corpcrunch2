@@ -60,6 +60,7 @@ export default async function handler(req, res) {
       [pagesResponse],
       [countriesResponse],
       [devicesResponse],
+      [realtimeResponse],
     ] = await Promise.all([
       client.runReport({
         property,
@@ -70,6 +71,7 @@ export default async function handler(req, res) {
           { name: 'totalUsers' },
           { name: 'bounceRate' },
           { name: 'averageSessionDuration' },
+          { name: 'activeUsers' },
         ],
       }),
       client.runReport({
@@ -109,6 +111,10 @@ export default async function handler(req, res) {
         dimensions: [{ name: 'deviceCategory' }],
         metrics: [{ name: 'sessions' }],
       }),
+      client.runRealtimeReport({
+        property,
+        metrics: [{ name: 'activeUsers' }],
+      }),
     ]);
 
     // GA4 API returns metricValues as ordered array (no name property) — use index
@@ -123,6 +129,8 @@ export default async function handler(req, res) {
           totalUsers: getMetricByIndex(overviewRow, 2),
           bounceRate: getMetricByIndex(overviewRow, 3),
           averageSessionDuration: getMetricByIndex(overviewRow, 4),
+          activeUsers: getMetricByIndex(overviewRow, 5),
+          realtimeUsers: realtimeResponse?.rows?.[0] ? getMetricByIndex(realtimeResponse.rows[0], 0) : '0',
         }
       : null;
 
