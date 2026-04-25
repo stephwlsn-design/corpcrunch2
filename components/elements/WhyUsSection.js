@@ -4,9 +4,11 @@ import Image from 'next/image';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './WhyUsSection.module.css';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function WhyUsSection({ trendingPosts = [], isLoading = false }) {
   const [scrollIndex, setScrollIndex] = useState(0);
+  const { requireAuth } = useAuth();
 
   // Auto-scroll through posts (upward animation)
   useEffect(() => {
@@ -77,7 +79,15 @@ export default function WhyUsSection({ trendingPosts = [], isLoading = false }) 
             key={`post-1-${scrollIndex}`}
           >
             {post1 ? (
-              <Link href={`/blog/${post1.slug || post1._id}`} className={styles.newsLink}>
+              <Link 
+                href={`/blog/${post1.slug || post1._id}`} 
+                className={styles.newsLink}
+                onClick={(e) => {
+                  if (!requireAuth(`/blog/${post1.slug || post1._id}`)) {
+                    e.preventDefault();
+                  }
+                }}
+              >
                 {post1.bannerImageUrl && (
                   <div className={styles.newsImageWrapper}>
                     <Image
@@ -118,7 +128,15 @@ export default function WhyUsSection({ trendingPosts = [], isLoading = false }) 
             key={`post-2-${scrollIndex}`}
           >
             {post2 ? (
-              <Link href={`/blog/${post2.slug || post2._id}`} className={styles.newsLink}>
+              <Link 
+                href={`/blog/${post2.slug || post2._id}`} 
+                className={styles.newsLink}
+                onClick={(e) => {
+                  if (!requireAuth(`/blog/${post2.slug || post2._id}`)) {
+                    e.preventDefault();
+                  }
+                }}
+              >
                 {post2.bannerImageUrl && (
                   <div className={styles.newsImageWrapper}>
                     <Image
@@ -159,7 +177,15 @@ export default function WhyUsSection({ trendingPosts = [], isLoading = false }) 
             key={`post-3-${scrollIndex}`}
           >
             {post3 ? (
-              <Link href={`/blog/${post3.slug || post3._id}`} className={styles.newsLink}>
+              <Link 
+                href={`/blog/${post3.slug || post3._id}`} 
+                className={styles.newsLink}
+                onClick={(e) => {
+                  if (!requireAuth(`/blog/${post3.slug || post3._id}`)) {
+                    e.preventDefault();
+                  }
+                }}
+              >
                 {post3.bannerImageUrl && (
                   <div className={styles.newsImageWrapper}>
                     <Image

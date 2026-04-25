@@ -6,6 +6,7 @@ import Carousel from "react-multi-carousel";
 import dynamic from "next/dynamic";
 import "react-multi-carousel/lib/styles.css";
 import { getCategoryUrl } from "@/util/urlHelpers";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ThemeSwitch = dynamic(() => import("@/components/elements/ThemeSwitch"), {
   ssr: false,
@@ -16,6 +17,7 @@ export default function Sidebar({ handleSidebarClose }) {
   const sliderRef = useRef(null);
   const { data: categories, refetch: fetchCategories } = useCategory({ enabled: false });
   const [isUserLogin, setIsUserLogin] = useState(false);
+  const { requireAuth } = useAuth();
 
   useEffect(() => {
     fetchCategories();
@@ -177,7 +179,13 @@ export default function Sidebar({ handleSidebarClose }) {
                   <Link
                     key={category.id || category._id || category.name}
                     href={getCategoryHref(category)}
-                    onClick={handleSidebarClose}
+                    onClick={(e) => {
+                      if (!requireAuth(getCategoryHref(category))) {
+                        e.preventDefault();
+                        return;
+                      }
+                      handleSidebarClose();
+                    }}
                     className="category-item-clean"
                     style={{
                       display: 'flex', gap: '10px', alignItems: 'center',
@@ -195,7 +203,13 @@ export default function Sidebar({ handleSidebarClose }) {
               {(!categories || !categories.some(c => c.name?.toLowerCase() === 'events')) && (
                 <Link
                   href="/events"
-                  onClick={handleSidebarClose}
+                  onClick={(e) => {
+                    if (!requireAuth('/events')) {
+                      e.preventDefault();
+                      return;
+                    }
+                    handleSidebarClose();
+                  }}
                   className="category-item-clean"
                   style={{
                     display: 'flex', gap: '10px', alignItems: 'center',

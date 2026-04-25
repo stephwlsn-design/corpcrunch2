@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './EditorChoice.module.css';
+import { useAuth } from '@/contexts/AuthContext';
 
 const editorCards = [
   {
@@ -72,6 +73,8 @@ const editorCards = [
 ];
 
 export default function EditorChoice({ isLoading = false }) {
+  const { requireAuth } = useAuth();
+
   if (isLoading) {
     return (
       <section className={styles.editorSection}>
@@ -117,7 +120,16 @@ export default function EditorChoice({ isLoading = false }) {
 
           {/* Cards */}
           {editorCards.map((card) => (
-            <Link key={card.id} href={card.categoryLink} className={styles.productCard}>
+            <Link 
+              key={card.id} 
+              href={card.categoryLink} 
+              className={styles.productCard}
+              onClick={(e) => {
+                if (!requireAuth(card.categoryLink)) {
+                  e.preventDefault();
+                }
+              }}
+            >
               <div className={styles.cardInfo}>
                 <h3 className={styles.cardTitle}>{card.title}</h3>
                 <p className={styles.cardDescription}>{card.description}</p>

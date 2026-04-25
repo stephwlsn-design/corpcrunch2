@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from './ModernHero.module.css';
+import { useAuth } from '@/contexts/AuthContext';
 
 // Realistic Windows 11 "Bloom" Style Wave Animation
 function WindowsBloom({ className }) {
@@ -187,6 +188,7 @@ function AnimatedCounter({ end, suffix = '', duration = 2000 }) {
 }
 
 export default function ModernHero({ videoUrl, stats }) {
+  const { requireAuth } = useAuth();
   const [currentTime, setCurrentTime] = useState('');
   const [newsArticles, setNewsArticles] = useState([]);
   const [newsLoading, setNewsLoading] = useState(true);
@@ -480,7 +482,14 @@ export default function ModernHero({ videoUrl, stats }) {
         {/* Latest Events Slider */}
         <div className={styles.videoContainer}>
           <div className={styles.eventsSlider}>
-            <a href="/events">
+            <a 
+              href="/events"
+              onClick={(e) => {
+                if (!requireAuth('/events')) {
+                  e.preventDefault();
+                }
+              }}
+            >
             {mockEvents.map((event, index) => (
               <div
                 key={event.id}

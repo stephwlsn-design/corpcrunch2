@@ -6,10 +6,12 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from "./CategoryNavigation.module.css";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 const CategoryNavigation = ({ categories: serverCategories = null }) => {
   const router = useRouter();
   const { t } = useLanguage();
+  const { requireAuth } = useAuth();
 
   // Use server-provided categories if available, otherwise fallback to client fetch
   const {
@@ -191,6 +193,11 @@ const CategoryNavigation = ({ categories: serverCategories = null }) => {
                   <li key={category.href || index} className={styles.categoryItem}>
                     <Link
                       href={category.href}
+                      onClick={(e) => {
+                        if (!requireAuth(category.href)) {
+                          e.preventDefault();
+                        }
+                      }}
                       scroll={true}
                       className={`${styles.categoryLink} ${isActive(category.href) ? styles.active : ''}`}
                     >
@@ -205,6 +212,11 @@ const CategoryNavigation = ({ categories: serverCategories = null }) => {
                   <li key={`dup-${category.href || index}`} className={styles.categoryItem}>
                     <Link
                       href={category.href}
+                      onClick={(e) => {
+                        if (!requireAuth(category.href)) {
+                          e.preventDefault();
+                        }
+                      }}
                       scroll={true}
                       className={`${styles.categoryLink} ${isActive(category.href) ? styles.active : ''}`}
                     >
