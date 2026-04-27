@@ -163,7 +163,7 @@ const SignIn = () => {
         }
 
         .auth-btn {
-          background: linear-gradient(135deg, #2551e7, #7b2ff7);
+          background: #2551e7;
           color: #fff;
           border: none;
           padding: 0.82rem;

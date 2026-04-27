@@ -12,6 +12,7 @@ import "swiper/css";
 import styles from "@/components/events/EventsPage.module.css";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
 import { useTheme } from "@/contexts/ThemeContext";
+import AuthAndSubscriptionProtected from '@/components/providers/AuthAndSubscriptionProtected';
 
 export default function EventsPage({ events, eventsPosts, categories = [] }) {
   const allEvents = events || [];
@@ -317,8 +318,9 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
         <meta name="description" content="Corp Crunch Events and Intellectual Properties" />
       </Head>
 
-      <SocialShareRibbon />
-
+      <AuthAndSubscriptionProtected>
+        <SocialShareRibbon />
+      
       <div className={styles.eventsPage}>
         {/* Year Cards Section - Instagram Story Style */}
         <div className={styles.HeroTitle}>
@@ -1268,7 +1270,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
           </div>
         )}
       </div>
-
+      </AuthAndSubscriptionProtected>
     </Layout >
   );
 }

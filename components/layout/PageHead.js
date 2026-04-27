@@ -2,8 +2,8 @@
 import Head from "next/head";
 
 const PageHead = ({
-  title = "Corp Crunch — Your Daily Scoop of Corporate Intel",
-  description = "Corp Crunch delivers your daily scoop of corporate intelligence — financial insights, global market news, economic trends, and expert analysis you can trust.",
+  title = "Corp Crunch — Making Media and Advertising Smarter",
+  description = "Corp Crunch making media and advertising smarter — financial insights, global market news, economic trends, and expert analysis you can trust.",
   url = "https://www.corpcrunch.io/",
   image = "https://www.corpcrunch.io/assets/img/logo/logo.png",
   type = "website",
@@ -14,7 +14,7 @@ const PageHead = ({
   // Ensure title is always a string, not an array
   const safeTitle = Array.isArray(title) 
     ? title.join(' ') 
-    : (typeof title === 'string' ? title : String(title || "Corp Crunch — Your Daily Scoop of Corporate Intel"));
+    : (typeof title === 'string' ? title : String(title || "Corp Crunch — Making Media and Advertising Smarter"));
   
   // Ensure description is always a string
   const safeDescription = Array.isArray(description)
