@@ -49,6 +49,7 @@ const CategoryNavigation = ({ categories: serverCategories = null }) => {
     telecom: { name: t('navigation.telecom'), href: "/telecom", isPage: true },
     // Moved from header
     events: { name: t('header.events') || 'Events', href: "/events", isPage: true },
+    intelligent: { name: t('header.intelligent') || 'Intelligent', href: "/intelligent", isPage: true },
     // 'e-magazine': { name: 'E magazine', href: "/e-magazine", isPage: true },
     // New categories - These will use ID-based URLs
     'market-analysis': { name: 'Market Analysis', href: null, isPage: false, useIdBased: true },
@@ -72,7 +73,7 @@ const CategoryNavigation = ({ categories: serverCategories = null }) => {
     const processedNames = new Set();
 
     // Add pages first (Technology, Politics, Retail, SportsTech, Sustainability, Telecom, Events, E-magazine)
-    const pageCategories = ['technology', 'politics', 'retail', 'sportstech', 'sustainability', 'telecom', 'events', 'e-magazine'];
+    const pageCategories = ['technology', 'politics', 'retail', 'sportstech', 'sustainability', 'telecom', 'events', 'intelligent', 'e-magazine'];
     pageCategories.forEach(key => {
       if (categoryConfig[key]) {
         result.push(categoryConfig[key]);

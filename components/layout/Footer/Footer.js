@@ -30,6 +30,9 @@ export default function Footer1() {
             <Link href="/contact" className="footer__nav-btn">
               {t('header.contact')}
             </Link>
+            <Link href="/intelligent" className="footer__nav-btn">
+              {t('header.intelligent')}
+            </Link>
           </div>
           
           <div className="footer__content">

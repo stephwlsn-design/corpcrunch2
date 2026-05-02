@@ -1,0 +1,1137 @@
+.intelligentPage {
+    font-family: 'Inter', system-ui, sans-serif;
+  color: #111;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Force white text on blue/dark backgrounds */
+.bgBlue, .bgDark, .glanceSection, .actionCard, .largeBlueCard, .quoteBox, .ctaBlock, .footerColDark, .footerColBlue, .blackMetricBox {
+  color: white !important;
+}
+
+.bgBlue p, .bgBlue span, .bgBlue li, .bgBlue strong, .bgBlue h2, .bgBlue h3, .bgBlue h4,
+.bgDark p, .bgDark span, .bgDark li, .bgDark strong, .bgDark h2, .bgDark h3, .bgDark h4,
+.glanceSection p, .glanceSection span, .glanceSection h1, .glanceSection h2, .glanceSection h3,
+.actionCard p, .actionCard span, .actionCard h2, .actionCard h3,
+.largeBlueCard p, .largeBlueCard span, .largeBlueCard li, .largeBlueCard strong, .largeBlueCard h2, .largeBlueCard h3, .largeBlueCard h4,
+.ctaBlock h3, .ctaBlock p,
+.footerColDark h3, .footerColDark p,
+.footerColBlue h3, .footerColBlue p,
+.blackMetricBox h4, .blackMetricBox p,
+.quoteBox {
+  color: white !important;
+}
+
+/* Ensure contact items on dark backgrounds are also white */
+.footerColDark .contactItem strong, .footerColDark .contactItem p,
+.footerColBlue .contactItem strong, .footerColBlue .contactItem p,
+.footerConfidentialMark {
+  color: white !important;
+}
+
+/* Fix for extra scrollbars */
+.intelligentPage {
+  overflow-x: hidden;
+  position: relative;
+}
+
+.pageContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 5%;
+}
+
+/* Observer Animations */
+.observeTrigger {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.observeTrigger.isVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero Section (Slide 1) */
+.heroSection {
+  position: relative;
+  background: linear-gradient(135deg, #0d32ff 0%, #3054ff 100%);
+  color: white;
+  min-height: 80vh;
+  padding: 100px 5%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+  
+  .heroContent {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .arrowIcon {
+    font-size: 5rem;
+    font-weight: 300;
+    margin-bottom: 20px;
+  }
+  
+  .heroTitle {
+    font-size: 4.5rem;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 60px;
+    letter-spacing: -1px;
+  }
+  .heroTitle span {
+    font-size: 3rem;
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .heroMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 40px;
+    font-size: 0.9rem;
+  }
+  .metaRow {
+    display: flex;
+    gap: 20px;
+  }
+  .metaLabel { width: 100px; }
+  .metaValueRed { color: #ff5555; }
+  .metaValue { color: #fff; }
+  
+  .heroBadges {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 60px;
+  }
+  .heroBadges span {
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .badgeDark { background: #000; color: #fff; }
+  .badgeLight { background: #f0f0f0; color: #000; }
+  
+  .heroFooter {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+  .updatedBadge {
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 30px;
+    padding: 10px 30px;
+    font-size: 0.9rem;
+  }
+  
+  /* Page Container (for interior slides) */
+  .pageContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 5%;
+    border-left: 2px solid #2b4cff; /* Simulating the presentation's left accent line */
+  }
+  
+  /* Common Typography */
+  .section { margin-bottom: 120px; }
+  .sectionKicker {
+    color: #2b4cff;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+  .sectionTitle {
+    font-size: 3.5rem;
+    font-weight: 400;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+  .sectionSubtitle {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 40px;
+  }
+  
+  /* Overview Section */
+  .quoteBox {
+    background-color: #2551e7;
+    color: white;
+    border-radius: 20px;
+    padding: 40px;
+    font-size: 1.5rem;
+    font-family: 'Comic Sans MS', cursive, sans-serif; /* Simulating the handwritten font from slide */
+    line-height: 1.5;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  .overviewText {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  /* Philosophy Section */
+  .philosophyGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .philosophyList {
+    list-style: none;
+    padding: 0;
+  }
+  .philosophyList li { margin-bottom: 30px; }
+  .philosophyList strong {
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+  .philosophyList p { color: #555; line-height: 1.5; }
+  .imagePlaceholder {
+    background: #e0e5ff;
+    min-height: 400px;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2551e7;
+    border: 4px solid #111;
+    overflow: hidden;
+  }
+  
+  /* Architecture Pillars */
+  .sixGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+  }
+  .gridItem .gridArrow {
+    font-size: 2.5rem;
+    color: #2b4cff;
+    margin-bottom: 20px;
+  }
+  .gridItem h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    line-height: 1.3;
+  }
+  .gridItem p {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  /* Executive Summary */
+  .summaryText {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 900px;
+    margin-bottom: 40px;
+  }
+  .actionCards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .actionCard {
+    background: #2b4cff;
+    color: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+  }
+  .actionCard h3 { margin-bottom: 40px; font-weight: 400; font-size: 1.5rem; }
+  .actionCard p { opacity: 0.9; line-height: 1.5; }
+  
+  .statCards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .statCard {
+    background: #f4f5f7;
+    padding: 30px 20px;
+    border-radius: 20px;
+    text-align: center;
+  }
+  .statCard h4 { font-size: 2.5rem; font-weight: 400; margin-bottom: 10px; }
+  .statCard p { color: #666; font-size: 0.9rem; }
+  
+  /* Solution Portfolio */
+  .portfolioGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 50px;
+  }
+  .portfolioCard {
+    border-radius: 120px; /* creating the pill shape */
+    padding: 60px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 350px;
+  }
+  .bgBlue { background: #2b4cff; color: white; }
+  .bgGrey { background: #f0f2f5; color: #111; }
+  
+  .cardNumber {
+    background: #000;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .cardContent h3 { font-size: 1.5rem; margin-bottom: 15px; }
+  .cardContent p { line-height: 1.5; margin-bottom: 30px; opacity: 0.9; }
+  
+  .cardTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .cardTags span {
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    background: rgba(255,255,255,0.2);
+  }
+  .bgGrey .cardTags span { background: #e0e5ff; color: #2b4cff; }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 992px) {
+    .heroTitle { font-size: 3.5rem; }
+    .philosophyGrid, .sixGrid, .actionCards, .statCards, .portfolioGrid {
+      grid-template-columns: 1fr;
+    }
+    .portfolioCard { border-radius: 40px; padding: 40px; }
+    .pageContainer { border-left: none; padding-left: 20px; }
+  }
+
+  /* ---- EXISTING STYLES ---- */
+.intelligentPage {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #111;
+    overflow-x: hidden;
+  }
+  
+  .observeTrigger {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  .observeTrigger.isVisible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .heroSection {
+    position: relative;
+    background: linear-gradient(135deg, #2551e7 0%, #4d6feb 100%);
+    color: white;
+    min-height: 80vh;
+    padding: 100px 5%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .heroContent {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .arrowIcon {
+    font-size: 5rem;
+    font-weight: 300;
+    margin-bottom: 20px;
+  }
+  
+  .heroTitle {
+    font-size: 4.5rem;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 60px;
+    letter-spacing: -1px;
+  }
+  .heroTitle span {
+    font-size: 3rem;
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .heroMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 40px;
+    font-size: 0.9rem;
+  }
+  .metaRow { display: flex; gap: 20px; }
+  .metaLabel { width: 100px; }
+  .metaValueRed { color: #ff5555; }
+  .metaValue { color: #fff; }
+  
+  .heroBadges {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 60px;
+  }
+  .heroBadges span {
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .badgeDark { background: #000; color: #fff; }
+  .badgeLight { background: #f0f0f0; color: #000; }
+  
+  .heroFooter { position: absolute; bottom: 0; right: 0; }
+  .updatedBadge {
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 30px;
+    padding: 10px 30px;
+    font-size: 0.9rem;
+  }
+  
+  .pageContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 5%;
+    border-left: 2px solid #2b4cff;
+  }
+  
+  .section { margin-bottom: 120px; }
+  .sectionKicker {
+    color: #2b4cff;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+  .sectionTitle {
+    font-size: 3.5rem;
+    font-weight: 400;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+    line-height: 1.1;
+    display: inline-block;
+  }
+  .sectionSubtitle {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 40px;
+  }
+  
+  .quoteBox {
+    background-color: #2551e7;
+    color: white;
+    border-radius: 20px;
+    padding: 40px;
+    font-size: 1.5rem;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    line-height: 1.5;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  .overviewText {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .philosophyGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .philosophyList { list-style: none; padding: 0; }
+  .philosophyList li { margin-bottom: 30px; }
+  .philosophyList strong { display: block; font-size: 1.3rem; margin-bottom: 8px; }
+  .philosophyList p { color: #555; line-height: 1.5; }
+  .imagePlaceholder {
+    background: #e0e5ff;
+    min-height: 600px;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2551e7;
+    border: 4px solid #111;
+    overflow: hidden;
+  }
+  
+  .sixGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+  }
+  .gridItem .gridArrow { font-size: 2.5rem; color: #2b4cff; margin-bottom: 20px; }
+  .gridItem h3 { font-size: 1.3rem; margin-bottom: 15px; line-height: 1.3; }
+  .gridItem p { color: #555; font-size: 0.95rem; line-height: 1.6; }
+  
+  .summaryText { font-size: 1.1rem; line-height: 1.6; max-width: 900px; margin-bottom: 40px; }
+  .actionCards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+  .actionCard { background: #2551e7; color: white; padding: 40px 30px; border-radius: 20px; }
+  .actionCard h3 { margin-bottom: 40px; font-weight: 400; font-size: 1.5rem; }
+  .actionCard p { opacity: 0.9; line-height: 1.5; }
+  
+  .statCards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .statCard { background: #f4f5f7; padding: 30px 20px; border-radius: 20px; text-align: center; }
+  .statCard h4 { font-size: 2.5rem; font-weight: 400; margin-bottom: 10px; }
+  .statCard p { color: #666; font-size: 0.9rem; }
+  
+  .portfolioGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 50px; }
+  .portfolioCard { border-radius: 120px; padding: 60px; position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 350px; }
+  .bgBlue { background: #2551e7; color: white; }
+  .bgGrey { background: #f0f2f5; color: #111; }
+  .bgLightGrey { background: #eaeaea; color: #111; }
+  .bgDark { background: #000; color: #fff; }
+  
+  .cardNumber { background: #000; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-bottom: 20px; }
+  .cardContent h3 { font-size: 1.5rem; margin-bottom: 15px; }
+  .cardContent p { line-height: 1.5; margin-bottom: 30px; opacity: 0.9; }
+  .cardTags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .cardTags span { padding: 8px 20px; border-radius: 20px; font-size: 0.8rem; background: rgba(255,255,255,0.2); }
+  .bgGrey .cardTags span { background: #e0e5ff; color: #2b4cff; }
+  
+  /* ---- NEW STYLES: SERVICE DEEP DIVES & GLANCE ---- */
+  
+  /* Glace Transition Section (Image 1) */
+  .glanceSection {
+    background-color: #2551e7;
+    color: white;
+    padding: 150px 5%;
+    position: relative;
+    overflow: hidden;
+    margin: 60px 0;
+  }
+  .glanceDecor {
+    position: absolute;
+    right: -10%;
+    bottom: -20%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    border: 4px solid rgba(255,255,255,0.8);
+    box-shadow: 0 0 0 80px rgba(255,255,255,0.1);
+    pointer-events: none;
+  }
+  .glanceContent {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .glanceSubtitle {
+    font-size: 1.5rem;
+    margin-bottom: 100px;
+  }
+  .glanceTitle {
+    font-size: 5rem;
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+  .glanceDesc {
+    font-size: 1.1rem;
+  }
+  
+  /* Reusable Header for Service Sections */
+  .deepDiveHeaderBar {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 60px;
+  }
+  .pillLeft {
+    flex-grow: 1;
+    border: 2px solid #111;
+    border-radius: 30px;
+    padding: 15px 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: #2b4cff;
+  }
+  .pillRight {
+    border: 2px solid #111;
+    border-radius: 30px;
+    padding: 15px 40px;
+    font-size: 1rem;
+  }
+  
+  /* Scribble Title Underline */
+  .scribbleUnderline {
+    position: relative;
+    padding-bottom: 15px;
+  }
+  .scribbleUnderline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 6px;
+    background-color: #2b4cff;
+    border-radius: 10px;
+  }
+  
+  .serviceDesc {
+    font-size: 1.1rem;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 900px;
+  }
+  
+  /* Grids & Splits */
+  .splitLayout2Col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  .grid3x2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .grid3x1 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .grid2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  /* Reusable Cards */
+  .serviceCard {
+    padding: 40px;
+    border-radius: 20px;
+  }
+  .serviceCard h3 { font-size: 1.3rem; margin-bottom: 15px; font-weight: 500; }
+  .serviceCard p { font-size: 0.95rem; line-height: 1.5; opacity: 0.9; }
+  
+  .serviceCardTall {
+    padding: 50px 40px;
+    border-radius: 20px;
+  }
+  .serviceCardTall h3 { font-size: 1.5rem; margin-bottom: 30px; font-weight: 400; }
+  
+  .serviceCardComplex {
+    padding: 40px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .cardHeaderWithNum {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  .numBadge { background: white; color: black; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+  .numBadgeDark { background: black; color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+  .serviceCardComplex p { line-height: 1.6; margin-bottom: 40px; opacity: 0.9; flex-grow: 1; }
+  
+  .cardIntroText {
+    margin-bottom: 30px;
+    line-height: 1.5;
+    opacity: 0.9;
+  }
+  
+  /* Lists & Bullets */
+  .servicePillList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .listPill {
+    background: #f4f5f7;
+    padding: 20px 30px;
+    border-radius: 40px;
+  }
+  .listPill strong { display: block; font-size: 1.1rem; margin-bottom: 5px; font-weight: 500; }
+  .listPill p { color: #555; font-size: 0.9rem; line-height: 1.4; margin: 0; }
+  
+  .listPillColor {
+    padding: 30px;
+    border-radius: 40px;
+    margin-bottom: 15px;
+  }
+  .listPillColor strong { display: block; font-size: 1.2rem; margin-bottom: 10px; }
+  .listPillColor p { font-size: 0.95rem; line-height: 1.5; opacity: 0.9; margin: 0; }
+  
+  .bulletList { list-style: none; padding: 0; }
+  .bulletList li { position: relative; padding-left: 25px; margin-bottom: 15px; line-height: 1.4; opacity: 0.9; }
+  .bulletList li::before {
+    content: ""; position: absolute; left: 0; top: 6px; width: 10px; height: 10px;
+    background-color: currentColor; border-radius: 50%;
+  }
+  
+  /* Large Presentation Blocks (AI & Data, Finance) */
+  .largeBlueCard {
+    background: #2b4cff;
+    color: white;
+    border-radius: 30px;
+    padding: 50px;
+    height: 100%;
+  }
+  .cardMiniHeader { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; opacity: 0.8; }
+  .cardMiniHeaderCenter { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 30px; opacity: 0.8; text-align: center; }
+  .mt40 { margin-top: 40px; }
+  
+  .metricsGrid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .metricBoxWhite { background: white; color: #2b4cff; padding: 25px 20px; border-radius: 20px; text-align: center; }
+  .metricBoxWhite h5 { font-size: 2rem; font-weight: 400; margin-bottom: 5px; }
+  .metricBoxWhite p { color: #333; font-size: 0.8rem; margin: 0; }
+  
+  .metricsListVertical { display: flex; flex-direction: column; gap: 15px; }
+  .metricBoxWhiteWide { background: white; color: #2b4cff; padding: 30px; border-radius: 20px; text-align: center; }
+  .metricBoxWhiteWide h5 { font-size: 2.5rem; font-weight: 400; margin-bottom: 5px; }
+  .metricBoxWhiteWide p { color: #333; font-size: 0.9rem; margin: 0; }
+  
+  .useCaseGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .useCaseList { list-style: none; padding: 0; margin: 0; }
+  .useCaseList li { position: relative; padding-left: 20px; margin-bottom: 15px; font-size: 0.9rem; opacity: 0.9; }
+  .useCaseList li::before {
+    content: ""; position: absolute; left: 0; top: 6px; width: 8px; height: 8px;
+    background-color: white; border-radius: 50%;
+  }
+  
+  .cyberMetricsStrip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .blackMetricBox {
+    background: black; color: white; padding: 20px; border-radius: 40px; text-align: center;
+  }
+  .blackMetricBox h4 { font-size: 1.5rem; font-weight: 400; margin-bottom: 5px; }
+  .blackMetricBox p { font-size: 0.8rem; opacity: 0.8; margin: 0; }
+  
+  /* Tags for Emerging Tech */
+  .tagStrip { display: flex; gap: 10px; flex-wrap: wrap; }
+  .tagStrip span { background: rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 20px; font-size: 0.8rem; }
+  .tagStripGrey { display: flex; gap: 10px; flex-wrap: wrap; }
+  .tagStripGrey span { background: #e0b4a4; color: #552818; padding: 8px 20px; border-radius: 20px; font-size: 0.8rem; } /* Matched pinkish tint from screenshot */
+  .bgLightGrey .tagStripGrey span { background: #dfd3cd; color: #333; }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 992px) {
+    .heroTitle { font-size: 3.5rem; }
+    .philosophyGrid, .sixGrid, .actionCards, .statCards, .portfolioGrid, 
+    .splitLayout2Col, .grid3x2, .grid3x1, .grid2x2, .cyberMetricsStrip {
+      grid-template-columns: 1fr;
+    }
+    .portfolioCard { border-radius: 40px; padding: 40px; }
+    .pageContainer { border-left: none; padding-left: 20px; }
+    
+    .deepDiveHeaderBar { flex-direction: column; }
+    .glanceTitle { font-size: 3.5rem; }
+  }
+
+  /* --- EXISTING CSS FROM PREVIOUS STEPS STAYS ABOVE THIS --- */
+
+/* Architecture Section */
+.archContainer {
+    display: flex;
+    gap: 50px;
+    align-items: stretch;
+    margin-top: 40px;
+  }
+  .archFlowWrapper {
+    flex: 2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 20px;
+  }
+  .archVerticalLine {
+    position: absolute;
+    left: 20px;
+    top: 40px;
+    bottom: 40px;
+    width: 2px;
+    background-color: #333;
+    z-index: 1;
+  }
+  .archStep {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+  .archPill {
+    width: 300px;
+    padding: 20px 30px;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
+  .archDesc {
+    flex: 1;
+    font-size: 0.95rem;
+    color: #444;
+  }
+  
+  .bgMidGrey { background: #b0b0b0; color: black; }
+  .bgLightBlue { background: #c0caff; color: black; }
+  .bgLightestGrey { background: #f0f0f0; color: black; }
+  .bgWhiteBorder { background: white; border: 2px solid #eaeaea; color: black; }
+  
+  .archPrinciplesBox {
+    flex: 1;
+    background: #2b4cff;
+    color: white;
+    border-radius: 30px;
+    padding: 40px;
+  }
+  .archPrinciplesBox h4 {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  /* Competitive Positioning Grid (2 Column version) */
+  .compareGrid2Col {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    margin-bottom: 30px;
+    margin-top: 40px;
+  }
+  .comparePill {
+    padding: 25px 30px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  .compareFooterBox {
+    background: #333;
+    color: white;
+    padding: 25px 40px;
+    border-radius: 40px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+  
+  /* What We Do Full Section */
+  .fullBlueSection {
+    background-color: #2551e7;
+    color: white;
+    padding: 100px 5%;
+    margin: 80px 0;
+  }
+  .wwdContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .wwdHeader {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 80px;
+  }
+  .wwdHeader h2 { font-size: 3rem; font-weight: 400; }
+  .circleArrowBtn {
+    width: 50px;
+    height: 50px;
+    background: white;
+    color: #0d21e8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  .wwdGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    gap: 50px;
+  }
+  .wwdColTitle {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid white;
+  }
+  .wwdList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .wwdList li {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    opacity: 0.9;
+  }
+  .wwdSplitList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  .span2Cols { grid-column: span 1; } /* Adjusted based on split layout */
+  
+  /* Industries Section */
+  .industryGrid3Col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 50px;
+  }
+  .industryColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .industryHeaderPill {
+    padding: 20px 30px;
+    border-radius: 40px;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  .industryHeaderText {
+    font-size: 1.5rem;
+    padding: 20px 30px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  .industryItemPill {
+    padding: 20px 30px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1rem;
+    color: white;
+  }
+  .bgLightGrey.industryItemPill { color: #333; }
+  .dotWhite { width: 12px; height: 12px; background: white; border-radius: 50%; display: inline-block; }
+  .dotBlack { width: 12px; height: 12px; background: #333; border-radius: 50%; display: inline-block; }
+  .industryFooterBar {
+    background: #f0f0f0;
+    color: #888;
+    text-align: center;
+    padding: 15px;
+    border-radius: 30px;
+    margin-top: 40px;
+    font-size: 0.85rem;
+  }
+  
+  /* Delivery Model Section */
+  .deliveryCard {
+    border-radius: 30px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+  }
+  .deliveryCardHeader {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .deliveryCardHeader h3 { font-size: 1.5rem; font-weight: 400; }
+  .durationPill {
+    align-self: flex-start;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+  }
+  .bgDarkGreyText { background: #ccc; color: #333; }
+  .deliveryList {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1;
+    margin-bottom: 40px;
+  }
+  .deliveryList li {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+  .deliveryList li span { margin-top: 5px; flex-shrink: 0; }
+  .textBlack { color: #333; }
+  .deliveryFooter {
+    padding: 20px;
+    border-radius: 30px;
+    text-align: center;
+    font-weight: 500;
+  }
+  .textWhite { color: white; }
+  
+  /* Why Choose Us Section */
+  .hugeTitle {
+    font-size: 6rem;
+    font-weight: 400;
+    letter-spacing: -2px;
+    margin-bottom: 10px;
+    line-height: 1;
+  }
+  .hugeSubtitle {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 60px;
+  }
+  .whyCard {
+    border-radius: 30px;
+    padding: 50px;
+  }
+  .whyHeader {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 80px;
+  }
+  .whyHeader h3 { font-size: 1.5rem; font-weight: 400; }
+  .whyCard p { font-size: 1.1rem; line-height: 1.6; opacity: 0.9; }
+  
+  .ctaBlock {
+    background: black;
+    color: white;
+    border-radius: 40px;
+    padding: 50px 60px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .ctaContent h3 { font-size: 1.8rem; font-weight: 400; margin-bottom: 15px; }
+  .ctaContent p { opacity: 0.8; line-height: 1.5; font-size: 1.1rem; max-width: 600px; }
+  .ctaButton {
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 40px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  /* Footer Contact Section */
+  .footerContactSection {
+    margin-top: 100px;
+    border-top: 1px solid #eaeaea;
+  }
+  .footerGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    min-height: 500px;
+  }
+  .footerColWhite, .footerColDark, .footerColGrey, .footerColBlue {
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+  }
+  .footerColWhite { background: white; color: black; }
+  .footerColDark { background: black; color: white; justify-content: center; }
+  .footerColGrey { background: #eaeaea; color: black; justify-content: center; }
+  .footerColBlue { background: #2551e7; color: white; position: relative; justify-content: center; }
+  
+  .footerLogoTitle { font-size: 2.5rem; font-weight: 400; margin-bottom: 5px; }
+  .footerLogoSub { font-size: 1.1rem; margin-bottom: 50px; color: #555; }
+  
+  .contactItem {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .contactLine { width: 4px; border-radius: 2px; }
+  .lineDark { background: black; }
+  .lineBlue { background: #2b4cff; }
+  .lineLight { background: #ccc; }
+  .contactItem strong { display: block; font-size: 1.1rem; margin-bottom: 5px; font-weight: 400; }
+  .contactItem p { color: #555; font-size: 0.95rem; line-height: 1.5; margin: 0; }
+  
+  .footerColDark h3, .footerColGrey h3, .footerColBlue h3 {
+    font-size: 2.5rem; font-weight: 400; margin-bottom: 30px; line-height: 1.2;
+  }
+  .footerColDark p, .footerColGrey p, .footerColBlue p {
+    font-size: 1.1rem; line-height: 1.6; opacity: 0.9;
+  }
+  .footerConfidentialMark {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    font-size: 0.8rem;
+    opacity: 0.6;
+  }
+  
+  /* Responsive updates for new elements */
+  @media (max-width: 1200px) {
+    .wwdGrid { grid-template-columns: 1fr 1fr; }
+    .wwdSplitList { grid-template-columns: 1fr; }
+    .span2Cols { grid-column: span 1; }
+    .footerGrid { grid-template-columns: 1fr 1fr; }
+  }
+  
+  @media (max-width: 992px) {
+    .archContainer { flex-direction: column; }
+    .archVerticalLine { display: none; }
+    .compareGrid2Col { grid-template-columns: 1fr; }
+    .industryGrid3Col { grid-template-columns: 1fr; }
+    .hugeTitle { font-size: 4rem; }
+    .ctaBlock { flex-direction: column; text-align: center; }
+    .footerGrid { grid-template-columns: 1fr; }
+  }

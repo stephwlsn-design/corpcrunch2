@@ -222,6 +222,28 @@ export default function Sidebar({ handleSidebarClose }) {
                   <span style={{ fontSize: '13px', fontWeight: '600', color: '#444' }}>Events</span>
                 </Link>
               )}
+              {(!categories || !categories.some(c => c.name?.toLowerCase() === 'intelligent')) && (
+                <Link
+                  href="/intelligent"
+                  onClick={(e) => {
+                    if (!requireAuth('/intelligent')) {
+                      e.preventDefault();
+                      return;
+                    }
+                    handleSidebarClose();
+                  }}
+                  className="category-item-clean"
+                  style={{
+                    display: 'flex', gap: '10px', alignItems: 'center',
+                    padding: '9px 12px', borderRadius: '8px',
+                    backgroundColor: '#fcfcfc', border: '1px solid #f0f0f0',
+                    textDecoration: 'none', transition: 'all 0.2s ease'
+                  }}
+                >
+                  <i className="fas fa-brain" style={{ color: '#2551e7', fontSize: '13px', flexShrink: 0 }} />
+                  <span style={{ fontSize: '13px', fontWeight: '600', color: '#444' }}>Intelligent</span>
+                </Link>
+              )}
             </div>
           </div>
 

@@ -92,6 +92,9 @@ const MobileMenu = ({ handleMobileMenuClose }) => {
               <li className={router.pathname === '/contact' ? 'active' : ''}>
                 <Link href="/contact" scroll={true} onClick={handleMobileMenuClose}>{t('header.contact')}</Link>
               </li>
+              <li className={router.pathname === '/intelligent' ? 'active' : ''}>
+                <Link href="/intelligent" scroll={true} onClick={handleMobileMenuClose}>{t('header.intelligent')}</Link>
+              </li>
               <li className={router.pathname === '/signin' ? 'active' : ''}>
                 <Link href="/signin" scroll={true} onClick={handleMobileMenuClose}>{t('header.signIn')}</Link>
               </li>
