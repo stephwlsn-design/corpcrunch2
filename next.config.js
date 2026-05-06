@@ -114,6 +114,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'drive.google.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'intelligent.corpcrunch.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'intelligent.corpcrunch.ai',
+      },
     ],
     // Legacy domains support (deprecated but still works)
     domains: [

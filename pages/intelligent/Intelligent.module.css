@@ -1135,3 +1135,392 @@
     .ctaBlock { flex-direction: column; text-align: center; }
     .footerGrid { grid-template-columns: 1fr; }
   }
+
+  /* =========================================
+   NEW SINGLE-PAGE UI STYLES 
+   (Append to bottom of Intelligent.module.css)
+========================================= */
+
+/* Sticky Tab Navigation Bar */
+.stickyNavBar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #eaeaea;
+  padding: 15px 0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.darkMode .stickyNavBar {
+  background: rgba(10, 10, 10, 0.95);
+  border-bottom: 1px solid #333;
+}
+
+.navContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 15px;
+  padding: 0 5%;
+  overflow-x: auto;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  justify-content: center;
+}
+
+.navContainer::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
+}
+
+/* Navigation Buttons */
+.tabBtn, .activeTabBtn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  color: #555;
+  font-family: inherit;
+}
+
+.darkMode .tabBtn {
+  color: #aaa;
+}
+
+.tabBtn:hover {
+  background: #f0f2f5;
+  color: #111;
+}
+
+.darkMode .tabBtn:hover {
+  background: #222;
+  color: #fff;
+}
+
+.activeTabBtn {
+  background: #2b4cff;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(43, 76, 255, 0.3);
+}
+
+/* Fade in animation for tab content */
+.tabFadeIn {
+  animation: tabFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Service Deep-Dive Dropdown Option */
+.dropdownSection {
+  background: #f4f5f7;
+  padding: 30px 40px;
+  border-radius: 20px;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.darkMode .dropdownSection {
+  background: #1a1a1a;
+}
+
+.dropdownSection label {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.darkMode .dropdownSection label {
+  color: #ddd;
+}
+
+.selectWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.customSelect {
+  width: 100%;
+  padding: 18px 25px;
+  font-size: 1.1rem;
+  border: 2px solid #2b4cff;
+  border-radius: 15px;
+  background-color: white;
+  color: #111;
+  appearance: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: border-color 0.2s;
+}
+
+.darkMode .customSelect {
+  background-color: #0a0a0a;
+  color: white;
+}
+
+.customSelect:focus {
+  outline: none;
+  border-color: #0d21e8;
+}
+
+/* Custom dropdown arrow */
+.selectWrapper::after {
+  content: '▼';
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #2b4cff;
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+.dynamicContentArea {
+  min-height: 500px;
+}
+
+/* Horizontal Swipe / Carousel Section */
+.swipeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 30px;
+}
+
+.swipeControls {
+  display: flex;
+  gap: 15px;
+}
+
+.swipeBtn {
+  background: #f0f2f5;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.darkMode .swipeBtn {
+  background: #222;
+  color: white;
+}
+
+.swipeBtn:hover {
+  background: #2b4cff;
+  color: white;
+}
+
+.carouselContainer {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+  padding-bottom: 20px;
+  /* Allow bleeding out of the container bounds for nice swiping */
+  margin-right: -5vw; 
+  padding-right: 5vw;
+}
+
+.carouselContainer::-webkit-scrollbar {
+  display: none; /* Hide scrollbar Chrome/Safari */
+}
+
+.carouselWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.roundSwipeBtnLeft, .roundSwipeBtnRight {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: white;
+  color: #2b4cff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.roundSwipeBtnLeft { left: -25px; }
+.roundSwipeBtnRight { right: -25px; }
+
+.roundSwipeBtnLeft:hover, .roundSwipeBtnRight:hover {
+  background: #2b4cff;
+  color: white;
+}
+
+.darkMode .roundSwipeBtnLeft, .darkMode .roundSwipeBtnRight {
+  background: #222;
+  border-color: #333;
+}
+
+.darkMode .roundSwipeBtnLeft:hover, .darkMode .roundSwipeBtnRight:hover {
+  background: #2b4cff;
+  color: white;
+}
+
+.carouselCard {
+  min-width: calc(50% - 15px);
+  max-width: calc(50% - 15px);
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Adjust Swipe Carousel for Mobile */
+@media (max-width: 768px) {
+  .carouselCard {
+    min-width: 85vw;
+    max-width: 85vw;
+  }
+  .swipeHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+  }
+  .swipeControls {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Number Badges for Engagement & Why Choose sections */
+.deliveryCardHeader, .whyHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.numBadge, .numBadgeDark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.numBadge {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.numBadgeDark {
+  background: rgba(0, 0, 0, 0.1);
+  color: #111;
+}
+
+.darkMode .numBadgeDark {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+/* Capability Selector Grid */
+.capabilityGrid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 15px;
+  margin-bottom: 40px;
+  justify-content: flex-start;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 10px;
+}
+
+.capabilityGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.capabilitySmallCard {
+  background: white;
+  border: 1px solid #eaeaea;
+  padding: 15px 25px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  color: #555;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.capabilitySmallCard h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.capabilitySmallCard:hover {
+  border-color: #2b4cff;
+  color: #2b4cff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.activeCapability {
+  background: #2b4cff;
+  color: white;
+  border-color: #2b4cff;
+}
+
+.activeCapability h4 {
+  color: white;
+}
+
+.darkMode .capabilitySmallCard {
+  background: #1a1a1a;
+  border-color: #333;
+  color: #ccc;
+}
+
+.darkMode .capabilitySmallCard:hover {
+  border-color: #2b4cff;
+  color: white;
+}
+
+.darkMode .activeCapability {
+  background: #2b4cff;
+  color: white;
+  border-color: #2b4cff;
+}
