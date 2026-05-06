@@ -1071,7 +1071,7 @@
   
   /* Footer Contact Section */
   .footerContactSection {
-    margin-top: 100px;
+    margin-top: 0;
     border-top: 1px solid #eaeaea;
   }
   .footerGrid {
@@ -1110,14 +1110,7 @@
   .footerColDark p, .footerColGrey p, .footerColBlue p {
     font-size: 1.1rem; line-height: 1.6; opacity: 0.9;
   }
-  .footerConfidentialMark {
-    position: absolute;
-    bottom: 30px;
-    right: 40px;
-    font-size: 0.8rem;
-    opacity: 0.6;
-  }
-  
+
   /* Responsive updates for new elements */
   @media (max-width: 1200px) {
     .wwdGrid { grid-template-columns: 1fr 1fr; }

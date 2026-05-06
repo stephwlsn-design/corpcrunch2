@@ -622,7 +622,6 @@ export default function IntelligentPage() {
                 <div className={styles.footerColBlue}>
                   <h3>We are tech<br/>and AI First.</h3>
                   <p>Technology isn't an add-on for us. It's the foundation. We leverage AI-first architectures to create scalable, intelligent, and future-ready solutions.</p>
-                  <p className={styles.footerConfidentialMark}>Confidential not to be circulated</p>
                 </div>
               </div>
             </section>
