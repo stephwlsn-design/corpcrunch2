@@ -24,6 +24,7 @@ const PORTFOLIO_CAROUSEL_AUTO_MS = 5000;
 export default function IntelligentPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [visibleSections, setVisibleSections] = useState({});
+  const [heroScrollPush, setHeroScrollPush] = useState(0);
 
   // New States for App-Like Navigation
   const [activeTab, setActiveTab] = useState('overview');
@@ -38,6 +39,7 @@ export default function IntelligentPage() {
   // Reference for Swipeable Carousel
   const portfolioScrollRef = useRef(null);
   const servicesScrollRef = useRef(null);
+  const heroSectionRef = useRef(null);
 
   const scrollToService = (id) => {
     setActiveService(id);
@@ -182,6 +184,29 @@ export default function IntelligentPage() {
     }
   }, [isDarkMode]);
 
+  useEffect(() => {
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const hero = heroSectionRef.current;
+        if (!hero) return;
+        const rect = hero.getBoundingClientRect();
+        const progress = Math.max(0, Math.min(1, (0 - rect.top) / window.innerHeight));
+        setHeroScrollPush(progress * 280);
+      });
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
   // Re-run observer when tabs change to trigger animations
   useEffect(() => {
     let observer;
@@ -278,14 +303,19 @@ export default function IntelligentPage() {
           <SocialShareRibbon />
 
           {/* --- 3D CIRCULAR PETAL HERO SECTION --- */}
-          <section className={styles.heroSection} id="hero">
+          <section
+            className={styles.heroSection}
+            id="hero"
+            ref={heroSectionRef}
+            style={{ '--hero-scroll-push': `${heroScrollPush}px` }}
+          >
 
             {/* Background tint */}
             <div className={styles.heroBg}></div>
 
             {/* Circular petals radiating from center with gap */}
             <div className={styles.petalHub}>
-              {[0, 1, 2, 3, 4, 5].map((i) => (
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
                 <div
                   key={i}
                   className={styles.petal}

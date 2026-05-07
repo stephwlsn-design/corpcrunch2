@@ -100,7 +100,7 @@
   width: 100vw;
   height: 100vh;
   margin-left: calc(-50vw + 50%);
-  background: radial-gradient(ellipse at 62% 50%, #4831D4 0%, #3b23a8 55%, #1a0e4a 100%);
+  background: #4831D4;
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -110,7 +110,7 @@
 .heroBg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 30% 70%, rgba(20, 5, 45, 0.4) 0%, transparent 70%);
+  background: rgba(72, 49, 212, 0.08);
   z-index: 2;
   pointer-events: none;
 }
@@ -124,7 +124,7 @@
   right: 15%;
   top: 50%;
   /* 3D perspective tilt so we see it from a diagonal angle */
-  transform: translateY(-50%) perspective(1000px) rotateX(30deg) rotateY(-5deg);
+  transform: translateY(-50%) perspective(1000px) rotateX(52deg) rotateY(-14deg);
   transform-style: preserve-3d;
   width: 0;
   height: 0;
@@ -136,23 +136,23 @@
 
 @keyframes hubFloat {
   from {
-    transform: translateY(-50%) perspective(1000px) rotateX(30deg) rotateY(-5deg) translate3d(0px, 0px, 0px);
+    transform: translateY(-50%) perspective(1000px) rotateX(52deg) rotateY(-14deg) translate3d(0px, 0px, 0px);
   }
 
   25% {
-    transform: translateY(-50%) perspective(1000px) rotateX(30deg) rotateY(-5deg) translate3d(16px, -12px, 0px);
+    transform: translateY(-50%) perspective(1000px) rotateX(52deg) rotateY(-14deg) translate3d(16px, -12px, 0px);
   }
 
   50% {
-    transform: translateY(-50%) perspective(1000px) rotateX(30deg) rotateY(-5deg) translate3d(0px, -22px, 0px);
+    transform: translateY(-50%) perspective(1000px) rotateX(52deg) rotateY(-14deg) translate3d(0px, -22px, 0px);
   }
 
   75% {
-    transform: translateY(-50%) perspective(1000px) rotateX(30deg) rotateY(-5deg) translate3d(-14px, -10px, 0px);
+    transform: translateY(-50%) perspective(1000px) rotateX(52deg) rotateY(-14deg) translate3d(-14px, -10px, 0px);
   }
 
   to {
-    transform: translateY(-50%) perspective(1000px) rotateX(30deg) rotateY(-5deg) translate3d(0px, 0px, 0px);
+    transform: translateY(-50%) perspective(1000px) rotateX(52deg) rotateY(-14deg) translate3d(0px, 0px, 0px);
   }
 }
 
@@ -164,19 +164,15 @@
 .petal {
   position: absolute;
   /* Perfect circle */
-  width: 240px;
-  height: 240px;
+  width: 250px;
+  height: 250px;
   /* Center on the hub */
-  margin-top: -120px;
-  margin-left: -120px;
+  margin-top: -125px;
+  margin-left: -125px;
   border-radius: 50%;
 
-  /* Rich purple gradient — brighter highlight on upper-left using the Green accent */
-  background: radial-gradient(circle at 30% 25%,
-      rgba(204, 243, 129, 0.95) 0%,
-      rgba(72, 49, 212, 0.95) 30%,
-      rgba(59, 35, 168, 0.97) 60%,
-      rgba(26, 14, 74, 1) 100%);
+  /* Solid fill only (no gradient) */
+  background: #2458db;
 
   /* 3D thickness illusion via layered shadows */
   box-shadow:
@@ -195,8 +191,8 @@
     2) expands outward then returns (radial spread),
     3) keeps subtle lighting pulse.
   */
-  --base-angle: calc((var(--i) * 60deg) - 110deg);
-  --base-radius: 320px;
+  --base-angle: calc((var(--i) * 45deg) - 112deg);
+  --base-radius: 190px;
   --petal-scale: 1;
   animation:
     petalFlow 9.5s linear infinite,
@@ -206,39 +202,47 @@
   will-change: transform, filter;
 }
 
+.petal:nth-child(2n) {
+  background: #1f4fd1;
+}
+
+.petal:nth-child(3n) {
+  background: #3a78ee;
+}
+
 @keyframes petalFlow {
   0% {
     transform:
       rotateZ(var(--base-angle))
-      translateY(calc(var(--base-radius) * -1))
+      translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1))
       scale(var(--petal-scale));
   }
 
   25% {
     transform:
       rotateZ(calc(var(--base-angle) - 90deg))
-      translateY(calc(var(--base-radius) * -1))
+      translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1))
       scale(var(--petal-scale));
   }
 
   50% {
     transform:
       rotateZ(calc(var(--base-angle) - 180deg))
-      translateY(calc(var(--base-radius) * -1))
+      translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1))
       scale(var(--petal-scale));
   }
 
   75% {
     transform:
       rotateZ(calc(var(--base-angle) - 270deg))
-      translateY(calc(var(--base-radius) * -1))
+      translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1))
       scale(var(--petal-scale));
   }
 
   100% {
     transform:
       rotateZ(calc(var(--base-angle) - 360deg))
-      translateY(calc(var(--base-radius) * -1))
+      translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1))
       scale(var(--petal-scale));
   }
 }
@@ -276,6 +280,7 @@
   line-height: 1.1;
   margin: 0 0 32px;
   letter-spacing: -1px;
+  color: #fff;
 }
 
 .heroTitle span {
@@ -284,6 +289,7 @@
   margin-top: 8px;
   opacity: 0.85;
   font-weight: 300;
+  color: #fff;
 }
 
 .heroBadges {
@@ -319,15 +325,15 @@
 @media (max-width: 768px) {
   .petalHub {
     right: -6%;
-    transform: translateY(-50%) perspective(1000px) rotateX(30deg) rotateY(-5deg) scale(0.55);
+    transform: translateY(-50%) perspective(1000px) rotateX(52deg) rotateY(-14deg) scale(0.55);
   }
 
   .petal {
-    width: 210px;
-    height: 210px;
-    margin-top: -105px;
-    margin-left: -105px;
-    --base-radius: 250px;
+    width: 190px;
+    height: 190px;
+    margin-top: -95px;
+    margin-left: -95px;
+    --base-radius: 140px;
   }
 
   .heroTitle {
