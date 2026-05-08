@@ -44,6 +44,23 @@ const Header1 = ({
     router.pathname === "/signin" ||
     router.pathname === "/subscribe" ||
     router.pathname === "/payment";
+  const isIntelligentPage = router.pathname?.startsWith("/intelligent");
+
+  const logoConfig = isIntelligentPage
+    ? {
+        srcDark: "/assets/img/logo/Intelligent_Technology_Solutions_Header.png",
+        srcLight: "/assets/img/logo/Intelligent_Technology_Solutions_Header.png",
+        alt: "Intelligent Technology Solutions",
+        width: 660,
+        height: 292,
+      }
+    : {
+        srcDark: "/assets/img/logo/Corp Crunch Black Logo.png",
+        srcLight: "/assets/img/logo/Corp Crunch White Logo.png",
+        alt: "CorpCrunch",
+        width: 380,
+        height: 124,
+      };
 
   return (
     <>
@@ -56,35 +73,39 @@ const Header1 = ({
           <div className="container">
             <div className="header__content">
               {/* Left: Hamburger Menu Button */}
-              <HamburgerIcon
-                onClick={handleSidebarOpen}
-                ariaLabel="Open sidebar menu"
-                className="header__sidebar-toggle"
-              />
+              {!isIntelligentPage && (
+                <HamburgerIcon
+                  onClick={handleSidebarOpen}
+                  ariaLabel="Open sidebar menu"
+                  className="header__sidebar-toggle"
+                />
+              )}
 
               {/* Center: Logo and Brand Name (centered) */}
               <div className="header__logo header__logo-centered">
                 <Link
-                  href="/"
+                  href={isIntelligentPage ? "/intelligent" : "/"}
                   scroll={true}
                   className="corp-crunch-logo"
-                  aria-label="Go to homepage"
+                  aria-label={isIntelligentPage ? "Go to Intelligent Technology Solutions page" : "Go to homepage"}
                 >
                   <Image
-                    src="/assets/img/logo/Corp Crunch Black Logo.png"
-                    alt="CorpCrunch"
-                    width={380}
-                    height={124}
-                    className="logo-image logo-dark"
+                    src={logoConfig.srcDark}
+                    alt={logoConfig.alt}
+                    width={logoConfig.width}
+                    height={logoConfig.height}
+                    className={`logo-image logo-dark ${isIntelligentPage ? "intelligent-header-logo" : ""}`}
+                    style={isIntelligentPage ? { height: '140px', width: 'auto', maxHeight: 'none', maxWidth: 'none' } : {}}
                     priority
                     unoptimized
                   />
                   <Image
-                    src="/assets/img/logo/Corp Crunch White Logo.png"
-                    alt="CorpCrunch"
-                    width={380}
-                    height={124}
-                    className="logo-image logo-light"
+                    src={logoConfig.srcLight}
+                    alt={logoConfig.alt}
+                    width={logoConfig.width}
+                    height={logoConfig.height}
+                    className={`logo-image logo-light ${isIntelligentPage ? "intelligent-header-logo" : ""}`}
+                    style={isIntelligentPage ? { height: '140px', width: 'auto', maxHeight: 'none', maxWidth: 'none' } : {}}
                     priority
                     unoptimized
                   />
@@ -146,12 +167,14 @@ const Header1 = ({
                     )}
 
                     {/* Mobile Navigation Hamburger (Right Side) - Only on Mobile */}
-                    <div className="header__mobile-nav-toggle">
-                      <HamburgerIcon
-                        onClick={handleMobileMenuOpen}
-                        ariaLabel="Open navigation menu"
-                      />
-                    </div>
+                    {!isIntelligentPage && (
+                      <div className="header__mobile-nav-toggle">
+                        <HamburgerIcon
+                          onClick={handleMobileMenuOpen}
+                          ariaLabel="Open navigation menu"
+                        />
+                      </div>
+                    )}
                   </>
                 )}
               </div>
@@ -166,7 +189,7 @@ const Header1 = ({
         <MobileMenu handleMobileMenuClose={handleMobileMenuClose} />
 
         {/* Sidebar */}
-        <Sidebar handleSidebarClose={handleSidebarClose} />
+        {!isIntelligentPage && <Sidebar handleSidebarClose={handleSidebarClose} />}
       </header>
 
       {/* Sticky Header Spacer */}

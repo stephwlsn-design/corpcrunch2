@@ -1249,6 +1249,10 @@ input[type=color] {
 .modern-header .header__main {
   padding: 16px 60px 12px 60px;
 }
+.intelligent-page .modern-header .header__main,
+body:has(.intelligent-page-root) .modern-header .header__main {
+  padding: 10px 60px 8px 60px;
+}
 @media (max-width: 1199.98px) {
   .modern-header .header__main {
     padding: 14px 50px 10px 50px;
@@ -1295,10 +1299,18 @@ input[type=color] {
   object-fit: contain;
   display: block;
 }
+.modern-header .header__logo .corp-crunch-logo .intelligent-header-logo {
+  max-height: 240px;
+  max-width: 780px;
+}
 @media (max-width: 1199.98px) {
   .modern-header .header__logo .corp-crunch-logo .logo-image {
     max-height: 100px;
     max-width: 300px;
+  }
+  .modern-header .header__logo .corp-crunch-logo .intelligent-header-logo {
+    max-height: 190px;
+    max-width: 640px;
   }
 }
 @media (max-width: 991.98px) {
@@ -1306,11 +1318,19 @@ input[type=color] {
     max-height: 90px;
     max-width: 260px;
   }
+  .modern-header .header__logo .corp-crunch-logo .intelligent-header-logo {
+    max-height: 160px;
+    max-width: 520px;
+  }
 }
 @media (max-width: 767.98px) {
   .modern-header .header__logo .corp-crunch-logo .logo-image {
     max-height: 80px;
     max-width: 220px;
+  }
+  .modern-header .header__logo .corp-crunch-logo .intelligent-header-logo {
+    max-height: 120px;
+    max-width: 360px;
   }
 }
 .modern-header .header__logo .corp-crunch-logo .logo-light {
