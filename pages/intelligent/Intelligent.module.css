@@ -1,11 +1,11 @@
 .intelligentPage {
   font-family: 'Inter', system-ui, sans-serif;
   color: #111;
-  overflow-x: hidden;
+  overflow-x: visible;
   position: relative;
 }
 
-/* Force white text on purple/dark backgrounds */
+/* Force white text on blue/dark backgrounds */
 .bgPurple,
 .bgDark,
 .glanceSection,
@@ -72,7 +72,7 @@
 
 /* Fix for extra scrollbars */
 .intelligentPage {
-  overflow-x: hidden;
+  overflow-x: visible;
   position: relative;
 }
 
@@ -94,13 +94,63 @@
   transform: translateY(0);
 }
 
+/* Intelligent-only section tabs (replaces global category navbar) */
+.sectionTabs {
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 6px 5%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 255, 0.12);
+}
+
+.darkMode .sectionTabs {
+  background: rgba(10, 10, 10, 0.88);
+  border-bottom: 1px solid rgba(161, 248, 27, 0.14);
+}
+
+.sectionTabBtn {
+  border: 1px solid rgba(0, 0, 255, 0.25);
+  background: rgba(0, 0, 255, 0.05);
+  color: #0000ff;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.sectionTabBtn:hover {
+  transform: translateY(-1px);
+  background: rgba(0, 0, 255, 0.09);
+  border-color: rgba(0, 0, 255, 0.45);
+}
+
+.darkMode .sectionTabBtn {
+  background: rgba(161, 248, 27, 0.08);
+  border-color: rgba(161, 248, 27, 0.35);
+  color: #a1f81b;
+}
+
+.darkMode .sectionTabBtn:hover {
+  background: rgba(161, 248, 27, 0.14);
+  border-color: rgba(161, 248, 27, 0.55);
+}
+
 /* --- HERO SECTION --- */
 .heroSection {
   position: relative;
   width: 100vw;
   height: 100vh;
   margin-left: calc(-50vw + 50%);
-  background: #4831D4;
+  background: #0000ff;
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -110,7 +160,7 @@
 .heroBg {
   position: absolute;
   inset: 0;
-  background: rgba(72, 49, 212, 0.08);
+  background: rgba(0, 0, 255, 0.08);
   z-index: 2;
   pointer-events: none;
 }
@@ -179,11 +229,11 @@
     -4px 8px 0 rgba(20, 5, 80, 0.58),
     -8px 15px 0 rgba(15, 4, 60, 0.42),
     -12px 22px 0 rgba(10, 3, 45, 0.28),
-    inset 12px 0 34px rgba(204, 243, 129, 0.16),
+    inset 12px 0 34px rgba(161, 248, 27, 0.16),
     inset -12px 0 34px rgba(20, 0, 80, 0.34),
     0 12px 28px rgba(0, 0, 0, 0.35);
 
-  border: 1.5px solid rgba(204, 243, 129, 0.3);
+  border: 1.5px solid rgba(161, 248, 27, 0.3);
 
   /*
     Each disc now:
@@ -263,7 +313,8 @@
   z-index: 10;
   padding: 0 5% 80px;
   color: white;
-  max-width: 700px;
+  max-width: 1200px;
+  width: 100%;
 }
 
 .arrowIcon {
@@ -275,12 +326,13 @@
 }
 
 .heroTitle {
-  font-size: 4.2rem;
+  font-size: 3.2rem;
   font-weight: 400;
   line-height: 1.1;
   margin: 0 0 32px;
   letter-spacing: -1px;
   color: #fff;
+  white-space: nowrap;
 }
 
 .heroTitle span {
@@ -292,33 +344,82 @@
   color: #fff;
 }
 
+.heroLogoLockup {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 16px;
+  opacity: 1;
+}
+
+.heroLogoLockup img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 .heroBadges {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  align-items: center;
+  gap: 28px;
+  margin-top: 8px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
 }
 
 .heroBadges span {
-  padding: 9px 22px;
-  border-radius: 30px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 1.2px;
+  position: relative;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 2.4px;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1;
 }
 
-.badgeDark {
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
+/* Small accent dot before each label */
+.heroBadges span::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a1f81b;
+  flex-shrink: 0;
 }
 
+.badgeDark,
 .badgeLight {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(8px);
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: none;
+}
+
+.badgeDark::before {
+  background: #a1f81b;
+}
+
+.badgeLight::before {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 768px) {
+  .heroBadges {
+    gap: 18px;
+  }
+
+  .heroBadges span {
+    letter-spacing: 1.6px;
+    font-size: 0.66rem;
+  }
 }
 
 /* Responsive */
@@ -337,7 +438,8 @@
   }
 
   .heroTitle {
-    font-size: 3rem;
+    font-size: 2.2rem;
+    white-space: normal;
   }
 
   .heroTitle span {
@@ -354,7 +456,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 80px 5%;
-  border-left: 2px solid #4831D4;
+  border-left: none;
 }
 
 /* Common Typography */
@@ -363,7 +465,7 @@
 }
 
 .sectionKicker {
-  color: #4831D4;
+  color: #0000ff;
   font-size: 0.85rem;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -387,7 +489,7 @@
 
 /* Overview Section */
 .quoteBox {
-  background-color: #4831D4;
+  background-color: #0000ff;
   color: white;
   border-radius: 20px;
   padding: 40px;
@@ -436,7 +538,7 @@
 }
 
 .imagePlaceholder {
-  background: rgba(72, 49, 212, 0.09);
+  background: rgba(0, 0, 255, 0.09);
   min-height: 400px;
   height: auto;
   aspect-ratio: 16 / 10;
@@ -444,7 +546,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4831D4;
+  color: #0000ff;
   border: 4px solid #111;
   overflow: hidden;
 }
@@ -459,7 +561,7 @@
 
 .gridItem .gridArrow {
   font-size: 2.5rem;
-  color: #4831D4;
+  color: #0000ff;
   margin-bottom: 20px;
 }
 
@@ -491,7 +593,7 @@
 }
 
 .actionCard {
-  background: #4831D4;
+  background: #0000ff;
   color: white;
   padding: 40px 30px;
   border-radius: 20px;
@@ -533,25 +635,57 @@
 }
 
 /* Solution Portfolio */
+.portfolioSection {
+  min-height: auto;
+
+  margin-bottom: 24px;
+}
+
+.portfolioStickyStage {
+  position: static;
+  top: auto;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 28px;
+}
+
 .portfolioGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  margin-top: 50px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.portfolioCardsArea {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0;
+  margin-top: 32px;
+  overflow: visible;
 }
 
 .portfolioCard {
-  border-radius: 120px;
-  padding: 60px;
+  border-radius: 28px;
+  padding: 38px 30px;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: 350px;
+  justify-content: flex-start;
+  min-height: 360px;
+  height: auto;
+  transition: transform 0.16s linear;
+  transform: translateZ(0);
+}
+
+.swipeHeader {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .bgPurple {
-  background: #4831D4;
+  background: #0000ff;
   color: white;
 }
 
@@ -574,13 +708,14 @@
 }
 
 .cardContent h3 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin-bottom: 15px;
 }
 
 .cardContent p {
+  font-size: 1rem;
   line-height: 1.5;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
   opacity: 0.9;
 }
 
@@ -591,21 +726,22 @@
 }
 
 .cardTags span {
-  padding: 8px 20px;
+  padding: 8px 15px;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   background: rgba(255, 255, 255, 0.2);
 }
 
 .bgGrey .cardTags span {
-  background: rgba(72, 49, 212, 0.12);
-  color: #4831D4;
+  background: rgba(0, 0, 255, 0.12);
+  color: #0000ff;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 992px) {
   .heroTitle {
-    font-size: 3.5rem;
+    font-size: 2.6rem;
+    white-space: normal;
   }
 
   .philosophyGrid,
@@ -676,7 +812,7 @@
 }
 
 .glanceSection {
-  background-color: #4831D4;
+  background-color: #0000ff;
   color: white;
   padding: 150px 5%;
   position: relative;
@@ -733,7 +869,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 3px;
-  color: #4831D4;
+  color: #0000ff;
 }
 
 .pillRight {
@@ -756,7 +892,7 @@
   bottom: 0;
   width: 100%;
   height: 6px;
-  background-color: #CCF381;
+  background-color: #a1f81b;
   border-radius: 10px;
 }
 
@@ -946,7 +1082,7 @@
 
 /* Large Presentation Blocks */
 .largePurpleCard {
-  background: #4831D4;
+  background: #0000ff;
   color: white;
   border-radius: 30px;
   padding: 50px;
@@ -982,7 +1118,7 @@
 
 .metricBoxWhite {
   background: white;
-  color: #4831D4;
+  color: #0000ff;
   padding: 25px 20px;
   border-radius: 20px;
   text-align: center;
@@ -1008,7 +1144,7 @@
 
 .metricBoxWhiteWide {
   background: white;
-  color: #4831D4;
+  color: #0000ff;
   padding: 30px;
   border-radius: 20px;
   text-align: center;
@@ -1191,7 +1327,7 @@
 }
 
 .bgLightPurple {
-  background: rgba(72, 49, 212, 0.18);
+  background: rgba(0, 0, 255, 0.18);
   color: black;
 }
 
@@ -1208,8 +1344,8 @@
 
 .archPrinciplesBox {
   flex: 1;
-  background: #4831D4;
-  color: white;
+  background: #fff;
+  color: #111;
   border-radius: 30px;
   padding: 40px;
 }
@@ -1220,6 +1356,10 @@
   text-transform: uppercase;
   margin-bottom: 30px;
   text-align: center;
+}
+
+.archPrinciplesBox .useCaseList li::before {
+  background-color: #0000ff;
 }
 
 /* Competitive Positioning Grid (2 Column version) */
@@ -1254,7 +1394,7 @@
 
 /* What We Do Full Section */
 .fullPurpleSection {
-  background-color: #4831D4;
+  background-color: #0000ff;
   color: white;
   padding: 100px 5%;
   margin: 80px 0;
@@ -1280,8 +1420,8 @@
 .circleArrowBtn {
   width: 50px;
   height: 50px;
-  background: #4831D4;
-  color: #CCF381;
+  background: #0000ff;
+  color: #a1f81b;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1367,6 +1507,152 @@
 .bgLightGrey.industryItemPill {
   color: #333;
 }
+/*/ INSERT_YOUR_CODE */
+
+/* Define page-scoped colors (Intelligent page only) */
+.intelligentPage {
+  --primary-blue: #0000ff;
+  --primary-lime: #a1f81b;
+}
+
+.industryHeaderPill,
+.industryItemPill {
+  background: var(--primary-blue);
+}
+
+.bgLightGrey.industryItemPill {
+  color: #333;
+  background: #e5e5ff;
+}
+
+.industryHeaderPill {
+  color: white;
+  background: var(--primary-lime);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.industryHeaderText,
+.industryFooterBar {
+  color: var(--primary-blue);
+}
+
+/* Make all dotWhite and dotBlack adapt to new primary colors for consistency */
+.dotWhite {
+  background: var(--primary-lime);
+  border: 2px solid var(--primary-blue);
+}
+
+.dotBlack {
+  background: var(--primary-blue);
+}
+
+/* General buttons, pills, feature tags, and focus states in the page */
+.intelligentPage button,
+.pillLeft,
+.pillRight,
+.pill,
+.archPill,
+.comparePill,
+.durationPill {
+  background: var(--primary-blue) !important;
+  color: #fff !important;
+  border-radius: 30px !important;
+}
+
+.bgPurple {
+  background: var(--primary-blue) !important;
+  color: #fff !important;
+}
+
+.bgLightPurple {
+  background: #d9d9ff !important;
+  color: var(--primary-blue) !important;
+}
+
+.bgMidGrey {
+  background: #e5e5ff !important;
+  color: var(--primary-blue) !important;
+}
+
+.bgLightestGrey {
+  background: #f6f7ff !important;
+  color: var(--primary-blue) !important;
+}
+
+.bgWhiteBorder {
+  background: #fff !important;
+  border: 2px solid var(--primary-blue) !important;
+  color: var(--primary-blue) !important;
+}
+
+.bgDark {
+  background: var(--primary-blue) !important;
+  color: #fff !important;
+}
+
+/* Compare Footer Box styling for positioning section */
+.compareFooterBox {
+  border: 2px solid var(--primary-blue);
+  color: var(--primary-blue);
+  background: #fff;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 1.05rem;
+  padding: 20px;
+  margin-top: 28px;
+}
+
+/* Key Principles Box highlight style */
+.archPrinciplesBox {
+  background: #fff !important;
+  border: 2px solid var(--primary-blue) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 2px 12px #0000ff15 !important;
+}
+
+/* Section titles and important text use the primary blue */
+.sectionTitle,
+.scribbleUnderline,
+.serviceSubtitle {
+  color: var(--primary-blue) !important;
+}
+
+.intelligentPage h4,
+.intelligentPage li[style*="#0000ff"] {
+  color: var(--primary-blue) !important;
+}
+
+/* Give focus states high visibility using primary lime */
+.intelligentPage *:focus {
+  outline: 2px solid var(--primary-lime) !important;
+  outline-offset: 2px;
+}
+
+/*/ End color override insert */
+/* Define primary colors as CSS variables for easy, consistent theming.
+   Note: In Next.js CSS modules, :root selectors should be placed in global CSS 
+   files like styles/globals.css. If you need global variables, move these there.
+   Local usage here is not supported and causes a compilation error. */
+/* 
+  In Next.js CSS modules, the ":root" selector is not allowed and will cause a compilation error.
+  To scope CSS variables to just this page, use the name of the local wrapper class for this module.
+  For example, if the top-level wrapper in your React page uses `className={styles.page}` or a similar local class,
+  define the variables on that class, e.g.:
+
+  .page {
+    --primary-blue: #0000ff;
+    --primary-lime: #a1f81b;
+  }
+
+  Replace ".page" below with the actual top-level wrapper class you use in this page if it's different.
+
+  Example fix:
+*/
+.page {
+  --primary-blue: #0000ff;
+  --primary-lime: #a1f81b;
+}
 
 .dotWhite {
   width: 12px;
@@ -1382,6 +1668,20 @@
   background: #333;
   border-radius: 50%;
   display: inline-block;
+}
+
+/* Fix for non-pure selector error: 
+   To locally style h4 and li elements with color, 
+   target only those inside this module via a local class.
+   For example, if your page's root wrapper uses '.page',
+   nest the selectors:
+
+   Replace '.page' with the actual top-level wrapper class
+   for this module if it's different.
+*/
+.page :global(h4),
+.page :global(li[style*="#0000ff"]) {
+  color: var(--primary-blue) !important;
 }
 
 .industryFooterBar {
@@ -1578,7 +1878,7 @@
 }
 
 .footerColPurple {
-  background: #4831D4;
+  background: #0000ff;
   color: white;
   position: relative;
   justify-content: center;
@@ -1612,7 +1912,7 @@
 }
 
 .linePurple {
-  background: #4831D4;
+  background: #0000ff;
 }
 
 .lineLight {
@@ -1767,14 +2067,40 @@
 }
 
 .activeTabBtn {
-  background: #4831D4;
+  background: #0000ff;
   color: white !important;
-  box-shadow: 0 4px 15px rgba(72, 49, 212, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
 }
 
 /* Fade in animation for tab content */
 .tabFadeIn {
   animation: tabFadeIn 0.5s ease-out forwards;
+}
+
+/* Scroll-driven swipe reveal for former tab sections */
+.scrollSwipeSection {
+  --entry-x: 0px;
+  --swipe-x: 0px;
+  --swipe-y: 0px;
+  --swipe-scale: 1;
+  opacity: 0;
+  transform: translate3d(calc(var(--entry-x) + var(--swipe-x)), var(--swipe-y), 0) scale(var(--swipe-scale));
+  transform-origin: center center;
+  transition: opacity 0.5s ease;
+  will-change: transform, opacity;
+}
+
+.scrollSwipeSection.swipeFromLeft {
+  --entry-x: -180px;
+}
+
+.scrollSwipeSection.swipeFromRight {
+  --entry-x: 180px;
+}
+
+.scrollSwipeSection.isVisible {
+  opacity: 1;
+  --entry-x: 0px;
 }
 
 @keyframes tabFadeIn {
@@ -1824,7 +2150,7 @@
   width: 100%;
   padding: 18px 25px;
   font-size: 1.1rem;
-  border: 2px solid #4831D4;
+  border: 2px solid #0000ff;
   border-radius: 15px;
   background-color: white;
   color: #111;
@@ -1843,7 +2169,7 @@
 
 .customSelect:focus {
   outline: none;
-  border-color: #4831D4;
+  border-color: #0000ff;
 }
 
 .selectWrapper::after {
@@ -1852,7 +2178,7 @@
   right: 25px;
   top: 50%;
   transform: translateY(-50%);
-  color: #4831D4;
+  color: #0000ff;
   pointer-events: none;
   font-size: 1rem;
 }
@@ -1891,11 +2217,14 @@
   display: none;
 }
 
+.servicesStack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .serviceSlide {
-  flex: 0 0 100%;
-  min-width: 100%;
-  max-width: 100%;
-  scroll-snap-align: center;
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -1906,9 +2235,9 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid #4831d4;
+  border: 2px solid #0000ff;
   background: #fff;
-  color: #4831d4;
+  color: #0000ff;
   font-size: 1.2rem;
   cursor: pointer;
   z-index: 2;
@@ -1922,8 +2251,8 @@
 
 .serviceNavArrowLeft:hover,
 .serviceNavArrowRight:hover {
-  background-color: #ccf381;
-  border-color: #4831d4;
+  background-color: #a1f81b;
+  border-color: #0000ff;
 }
 
 .carouselPagination {
@@ -1948,7 +2277,7 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: rgba(72, 49, 212, 0.22);
+  background: rgba(0, 0, 255, 0.22);
   cursor: pointer;
   transition: transform 0.3s, background 0.3s;
   border: none;
@@ -1957,33 +2286,33 @@
 }
 
 .carouselDot:hover {
-  background: rgba(72, 49, 212, 0.4);
+  background: rgba(0, 0, 255, 0.4);
 }
 
 .carouselDotActive {
   transform: scale(1.3);
-  background: #ccf381;
+  background: #a1f81b;
 }
 
 .darkMode .carouselDot {
-  background: rgba(72, 49, 212, 0.35);
+  background: rgba(0, 0, 255, 0.35);
 }
 
 .darkMode .carouselDotActive {
-  background: #ccf381;
+  background: #a1f81b;
 }
 
 .darkMode .serviceNavArrowLeft,
 .darkMode .serviceNavArrowRight {
   background: #1a1a1a;
-  color: #ccf381;
-  border-color: #ccf381;
+  color: #a1f81b;
+  border-color: #a1f81b;
 }
 
 .darkMode .serviceNavArrowLeft:hover,
 .darkMode .serviceNavArrowRight:hover {
-  background: #ccf381;
-  color: #4831d4;
+  background: #a1f81b;
+  color: #0000ff;
 }
 
 @media (max-width: 1100px) {
@@ -2024,7 +2353,7 @@
 }
 
 .swipeBtn:hover {
-  background: #4831D4;
+  background: #0000ff;
   color: white;
 }
 
@@ -2059,7 +2388,7 @@
   height: 50px;
   border-radius: 50%;
   background: white;
-  color: #4831D4;
+  color: #0000ff;
   border: 1px solid #eaeaea;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -2081,8 +2410,8 @@
 
 .roundSwipeBtnLeft:hover,
 .roundSwipeBtnRight:hover {
-  background: #4831D4;
-  color: #CCF381;
+  background: #0000ff;
+  color: #a1f81b;
 }
 
 .darkMode .roundSwipeBtnLeft,
@@ -2093,8 +2422,8 @@
 
 .darkMode .roundSwipeBtnLeft:hover,
 .darkMode .roundSwipeBtnRight:hover {
-  background: #CCF381;
-  color: #4831D4;
+  background: #a1f81b;
+  color: #0000ff;
 }
 
 .carouselCard {
@@ -2200,16 +2529,16 @@
 }
 
 .capabilitySmallCard:hover {
-  border-color: #4831D4;
-  color: #4831D4;
+  border-color: #0000ff;
+  color: #0000ff;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 .activeCapability {
-  background: #4831D4;
+  background: #0000ff;
   color: white;
-  border-color: #4831D4;
+  border-color: #0000ff;
 }
 
 .activeCapability h4 {
@@ -2223,14 +2552,14 @@
 }
 
 .darkMode .capabilitySmallCard:hover {
-  border-color: #4831D4;
+  border-color: #0000ff;
   color: white;
 }
 
 .darkMode .activeCapability {
-  background: #4831D4;
+  background: #0000ff;
   color: white;
-  border-color: #4831D4;
+  border-color: #0000ff;
 }
 
 /* =========================================
@@ -2262,13 +2591,13 @@
 .radialTitle {
   font-size: 3.5rem;
   font-weight: 400;
-  color: #4831D4;
+  color: #0000ff;
   margin-bottom: 15px;
   letter-spacing: -1px;
 }
 
 .darkMode .radialTitle {
-  color: #CCF381;
+  color: #a1f81b;
 }
 
 .radialSubtitle {
@@ -2300,12 +2629,12 @@
   width: 90%;
   height: 90%;
   border-radius: 50%;
-  border: 1px solid rgba(72, 49, 212, 0.15);
+  border: 1px solid rgba(0, 0, 255, 0.15);
   z-index: 1;
 }
 
 .darkMode .radialRings {
-  border-color: rgba(204, 243, 129, 0.1);
+  border-color: rgba(161, 248, 27, 0.1);
 }
 
 .radialRings::before {
@@ -2316,11 +2645,11 @@
   right: 20%;
   bottom: 20%;
   border-radius: 50%;
-  border: 1px dashed rgba(72, 49, 212, 0.2);
+  border: 1px dashed rgba(0, 0, 255, 0.2);
 }
 
 .darkMode .radialRings::before {
-  border-color: rgba(204, 243, 129, 0.15);
+  border-color: rgba(161, 248, 27, 0.15);
 }
 
 /* Core central logo sphere */
@@ -2329,19 +2658,19 @@
   z-index: 10;
   width: 320px;
   height: 320px;
-  background-color: #4831D4;
+  background-color: #0000ff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 20px 60px rgba(72, 49, 212, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 255, 0.3);
   padding: 40px;
   border: 8px solid rgba(255, 255, 255, 0.5);
 }
 
 .darkMode .radialCenter {
-  border-color: rgba(204, 243, 129, 0.2);
-  box-shadow: 0 20px 60px rgba(204, 243, 129, 0.1);
+  border-color: rgba(161, 248, 27, 0.2);
+  box-shadow: 0 20px 60px rgba(161, 248, 27, 0.1);
 }
 
 /* 4 Rotating Content Nodes */
@@ -2361,13 +2690,13 @@
   height: 60px;
   border-radius: 50%;
   background-color: white;
-  border: 3px solid #CCF381;
+  border: 3px solid #a1f81b;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 1.1rem;
-  color: #4831D4;
+  color: #0000ff;
   flex-shrink: 0;
   position: relative;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
@@ -2375,14 +2704,14 @@
 
 .darkMode .nodeCircle {
   background-color: #1a1a1a;
-  color: #CCF381;
+  color: #a1f81b;
 }
 
 /* Connector Lines targeting the central circle */
 .nodeCircle::after {
   content: '';
   position: absolute;
-  background-color: rgba(204, 243, 129, 0.6);
+  background-color: rgba(161, 248, 27, 0.6);
   z-index: -1;
 }
 
@@ -2495,9 +2824,9 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 2px solid #4831D4;
+  border: 2px solid #0000ff;
   background: transparent;
-  color: #4831D4;
+  color: #0000ff;
   font-size: 1.5rem;
   cursor: pointer;
   display: flex;
@@ -2507,19 +2836,19 @@
 }
 
 .darkMode .radialBtn {
-  border-color: #CCF381;
-  color: #CCF381;
+  border-color: #a1f81b;
+  color: #a1f81b;
 }
 
 .radialBtn:hover {
-  background: #4831D4;
-  color: #CCF381;
-  border-color: #4831D4;
+  background: #0000ff;
+  color: #a1f81b;
+  border-color: #0000ff;
 }
 
 .darkMode .radialBtn:hover {
-  background: #CCF381;
-  color: #4831D4;
+  background: #a1f81b;
+  color: #0000ff;
 }
 
 .radialIndicators {
@@ -2531,22 +2860,22 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: rgba(72, 49, 212, 0.2);
+  background: rgba(0, 0, 255, 0.2);
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .darkMode .indicator {
-  background: rgba(204, 243, 129, 0.2);
+  background: rgba(161, 248, 27, 0.2);
 }
 
 .activeIndicator {
-  background: #4831D4;
+  background: #0000ff;
   transform: scale(1.4);
 }
 
 .darkMode .activeIndicator {
-  background: #CCF381;
+  background: #a1f81b;
 }
 
 /* Radial UI Mobile Responsiveness */
@@ -2621,13 +2950,13 @@
   height: 45px;
   border-radius: 50%;
   background-color: white;
-  border: 2px solid #CCF381;
+  border: 2px solid #a1f81b;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 0.9rem;
-  color: #4831D4;
+  color: #0000ff;
   flex-shrink: 0;
   position: relative;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
@@ -2635,7 +2964,7 @@
 
 .darkMode .nodeCircle12 {
   background-color: #1a1a1a;
-  color: #CCF381;
+  color: #a1f81b;
 }
 
 .nodeText12 {
@@ -2691,13 +3020,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1px dashed rgba(72, 49, 212, 0.2);
+  border: 1px dashed rgba(0, 0, 255, 0.2);
   z-index: 1;
   pointer-events: none;
 }
 
 .darkMode .radialRing {
-  border-color: rgba(204, 243, 129, 0.15);
+  border-color: rgba(161, 248, 27, 0.15);
 }
 
 .nodeText12 p {
@@ -2727,23 +3056,23 @@
 
 /* =========================================
    AESTHETIC REFRESH (Overview / Architecture / Services / Engagement)
-   Palette lock: #4831D4 + #CCF381 only
+   Palette lock: #0000ff + #a1f81b only
 ========================================= */
 
 /* Section title accent (green underline keyword) */
 .titleAccent {
   position: relative;
   display: inline-block;
-  color: #4831D4;
-  background: linear-gradient(180deg, transparent 65%, rgba(204, 243, 129, 0.55) 65%);
+  color: #0000ff;
   padding: 0 6px;
+  box-shadow: inset 0 -0.35em 0 rgba(161, 248, 27, 0.55);
 }
 
 /* Sticky tab bar — refined, full-width pill rail */
 .stickyNavBar {
   background: rgba(255, 255, 255, 0.85);
   border-bottom: none;
-  box-shadow: 0 6px 24px rgba(72, 49, 212, 0.06);
+  box-shadow: 0 6px 24px rgba(0, 0, 255, 0.06);
   padding: 18px 0;
 }
 
@@ -2752,19 +3081,19 @@
 }
 
 .navContainer {
-  background: rgba(72, 49, 212, 0.05);
+  background: rgba(0, 0, 255, 0.05);
   border-radius: 999px;
   padding: 6px;
   width: max-content;
   max-width: calc(100% - 40px);
   gap: 4px;
   justify-content: flex-start;
-  border: 1px solid rgba(72, 49, 212, 0.08);
+  border: 1px solid rgba(0, 0, 255, 0.08);
 }
 
 .darkMode .navContainer {
-  background: rgba(204, 243, 129, 0.05);
-  border-color: rgba(204, 243, 129, 0.1);
+  background: rgba(161, 248, 27, 0.05);
+  border-color: rgba(161, 248, 27, 0.1);
 }
 
 .tabBtn,
@@ -2778,14 +3107,14 @@
 }
 
 .tabBtn:hover {
-  background: rgba(72, 49, 212, 0.08);
-  color: #4831D4;
+  background: rgba(0, 0, 255, 0.08);
+  color: #0000ff;
 }
 
 .activeTabBtn {
-  background: #4831D4;
+  background: #0000ff;
   color: #fff !important;
-  box-shadow: 0 8px 22px rgba(72, 49, 212, 0.28);
+  box-shadow: 0 8px 22px rgba(0, 0, 255, 0.28);
 }
 
 .activeTabBtn::after {
@@ -2795,7 +3124,7 @@
   right: 18%;
   bottom: 4px;
   height: 2px;
-  background: #CCF381;
+  background: #a1f81b;
   border-radius: 2px;
   opacity: 0.95;
 }
@@ -2817,7 +3146,7 @@
   content: "";
   width: 26px;
   height: 2px;
-  background: #CCF381;
+  background: #a1f81b;
   border-radius: 2px;
 }
 
@@ -2856,7 +3185,7 @@
 
 /* Quote box — softer, no Comic Sans */
 .quoteBox {
-  background: linear-gradient(135deg, #4831D4 0%, #3b23a8 100%);
+  background: #0000ff;
   border-radius: 24px;
   padding: 36px 40px;
   font-family: inherit;
@@ -2867,7 +3196,7 @@
   text-align: left;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 18px 50px rgba(72, 49, 212, 0.22);
+  box-shadow: 0 18px 50px rgba(0, 0, 255, 0.22);
 }
 
 .quoteBox::before {
@@ -2877,7 +3206,7 @@
   left: 18px;
   font-size: 7rem;
   line-height: 1;
-  color: rgba(204, 243, 129, 0.45);
+  color: rgba(161, 248, 27, 0.45);
   font-family: Georgia, serif;
   pointer-events: none;
 }
@@ -2902,7 +3231,7 @@
   align-items: center;
   justify-content: center;
   gap: 0;
-  filter: drop-shadow(0 14px 40px rgba(72, 49, 212, 0.18));
+  filter: drop-shadow(0 14px 40px rgba(0, 0, 255, 0.18));
 }
 
 .lineSphere {
@@ -2923,7 +3252,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 1.4px solid #CCF381;
+  border: 1.4px solid #a1f81b;
   box-sizing: border-box;
   transform-origin: 50% 50%;
   transform: rotateX(8deg) rotateY(calc(var(--i) * 7.5deg));
@@ -2931,7 +3260,7 @@
 }
 
 .lineMeridian:nth-child(odd) {
-  border-color: rgba(204, 243, 129, 0.6);
+  border-color: rgba(161, 248, 27, 0.6);
 }
 
 @keyframes lineSphereSpinRight {
@@ -2983,9 +3312,9 @@
   min-height: 520px;
   width: 100%;
   max-width: 440px;
-  border: 2px solid #4831D4;
+  border: 2px solid #0000ff;
   border-radius: 32px;
-  background: linear-gradient(160deg, rgba(72, 49, 212, 0.08), rgba(204, 243, 129, 0.12));
+  background: rgba(0, 0, 255, 0.08);
   position: relative;
   overflow: hidden;
 }
@@ -2995,7 +3324,7 @@
   position: absolute;
   inset: 0;
   border-radius: 32px;
-  border: 1px solid rgba(204, 243, 129, 0.45);
+  border: 1px solid rgba(161, 248, 27, 0.45);
   pointer-events: none;
 }
 
@@ -3027,7 +3356,7 @@
   padding: 28px;
   border-radius: 22px;
   background: #fff;
-  border: 1px solid rgba(72, 49, 212, 0.1);
+  border: 1px solid rgba(0, 0, 255, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   position: relative;
 }
@@ -3039,7 +3368,7 @@
   right: 28px;
   bottom: 0;
   height: 3px;
-  background: #CCF381;
+  background: #a1f81b;
   border-radius: 3px;
   transform: scaleX(0);
   transform-origin: left center;
@@ -3048,8 +3377,8 @@
 
 .gridItem:hover {
   transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(72, 49, 212, 0.12);
-  border-color: rgba(72, 49, 212, 0.25);
+  box-shadow: 0 18px 40px rgba(0, 0, 255, 0.12);
+  border-color: rgba(0, 0, 255, 0.25);
 }
 
 .gridItem:hover::before {
@@ -3058,7 +3387,7 @@
 
 .darkMode .gridItem {
   background: #141414;
-  border-color: rgba(204, 243, 129, 0.12);
+  border-color: rgba(161, 248, 27, 0.12);
 }
 
 .gridItem .gridArrow {
@@ -3070,15 +3399,15 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(72, 49, 212, 0.1);
-  color: #4831D4;
+  background: rgba(0, 0, 255, 0.1);
+  color: #0000ff;
 }
 
 /* Action cards (Predict / Orchestrate / Evolve) — refined */
 .actionCard {
   border-radius: 24px;
   padding: 36px 28px;
-  background: linear-gradient(160deg, #4831D4 0%, #3b23a8 100%);
+  background: #0000ff;
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -3092,14 +3421,14 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: rgba(204, 243, 129, 0.15);
+  background: rgba(161, 248, 27, 0.15);
   pointer-events: none;
   transition: transform 0.4s ease;
 }
 
 .actionCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 45px rgba(72, 49, 212, 0.3);
+  box-shadow: 0 20px 45px rgba(0, 0, 255, 0.3);
 }
 
 .actionCard:hover::after {
@@ -3119,13 +3448,13 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #CCF381;
+  background: #a1f81b;
 }
 
 /* Stat cards refined */
 .statCard {
   background: #fff;
-  border: 1px solid rgba(72, 49, 212, 0.1);
+  border: 1px solid rgba(0, 0, 255, 0.1);
   border-radius: 22px;
   position: relative;
   overflow: hidden;
@@ -3139,7 +3468,7 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background: #CCF381;
+  background: #a1f81b;
   transform: scaleY(0.4);
   transform-origin: top;
   transition: transform 0.35s ease;
@@ -3147,8 +3476,8 @@
 
 .statCard:hover {
   transform: translateY(-4px);
-  border-color: rgba(72, 49, 212, 0.3);
-  box-shadow: 0 14px 36px rgba(72, 49, 212, 0.1);
+  border-color: rgba(0, 0, 255, 0.3);
+  box-shadow: 0 14px 36px rgba(0, 0, 255, 0.1);
 }
 
 .statCard:hover::before {
@@ -3156,13 +3485,13 @@
 }
 
 .statCard h4 {
-  color: #4831D4;
+  color: #0000ff;
   font-weight: 500;
 }
 
 .darkMode .statCard {
   background: #141414;
-  border-color: rgba(204, 243, 129, 0.12);
+  border-color: rgba(161, 248, 27, 0.12);
 }
 
 /* Header pill bar — softer */
@@ -3172,15 +3501,15 @@
 
 .pillLeft,
 .pillRight {
-  border: 1px solid rgba(72, 49, 212, 0.25);
-  background: rgba(72, 49, 212, 0.04);
+  border: 1px solid rgba(0, 0, 255, 0.25);
+  background: rgba(0, 0, 255, 0.04);
   padding: 13px 28px;
   font-size: 0.78rem;
   letter-spacing: 2.5px;
 }
 
 .pillLeft {
-  color: #4831D4;
+  color: #0000ff;
   font-weight: 600;
 }
 
@@ -3193,7 +3522,7 @@
 .darkMode .pillRight {
   background: #141414;
   color: #fff;
-  border-color: rgba(204, 243, 129, 0.2);
+  border-color: rgba(161, 248, 27, 0.2);
 }
 
 /* Service / generic card lift */
@@ -3207,18 +3536,18 @@
 .serviceCardTall:hover,
 .serviceCardComplex:hover {
   transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(72, 49, 212, 0.16);
+  box-shadow: 0 18px 40px rgba(0, 0, 255, 0.16);
 }
 
 .listPill {
-  background: rgba(72, 49, 212, 0.04);
-  border: 1px solid rgba(72, 49, 212, 0.08);
+  background: rgba(0, 0, 255, 0.04);
+  border: 1px solid rgba(0, 0, 255, 0.08);
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .listPill:hover {
-  background: rgba(72, 49, 212, 0.08);
-  border-color: rgba(72, 49, 212, 0.18);
+  background: rgba(0, 0, 255, 0.08);
+  border-color: rgba(0, 0, 255, 0.18);
 }
 
 /* Engagement: delivery & why cards */
@@ -3233,12 +3562,12 @@
 .deliveryCard:hover,
 .whyCard:hover {
   transform: translateY(-6px);
-  box-shadow: 0 22px 50px rgba(72, 49, 212, 0.18);
+  box-shadow: 0 22px 50px rgba(0, 0, 255, 0.18);
 }
 
 /* CTA block */
 .ctaBlock {
-  background: linear-gradient(135deg, #4831D4 0%, #2a1980 100%);
+  background: #0000ff;
   border-radius: 28px;
   padding: 50px;
   display: flex;
@@ -3258,7 +3587,7 @@
   width: 280px;
   height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(204, 243, 129, 0.18) 0%, transparent 70%);
+  background: rgba(161, 248, 27, 0.18);
   pointer-events: none;
 }
 
@@ -3276,8 +3605,8 @@
 }
 
 .ctaButton {
-  background: #CCF381;
-  color: #4831D4;
+  background: #a1f81b;
+  color: #0000ff;
   border: none;
   padding: 16px 32px;
   border-radius: 999px;
@@ -3291,7 +3620,7 @@
 
 .ctaButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 26px rgba(204, 243, 129, 0.45);
+  box-shadow: 0 12px 26px rgba(161, 248, 27, 0.45);
 }
 
 @media (max-width: 768px) {
@@ -3304,4 +3633,40 @@
   .sectionTitle {
     font-size: 2.4rem;
   }
+}
+
+/* =========================================
+   NEW HORIZONTAL "WIPE" SWIPE-OUT CSS
+========================================= */
+
+.swipeOutSection {
+  /* Break out of standard constraints so backgrounds look clean */
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  padding-left: max(5%, calc(50vw - 600px));
+  padding-right: max(5%, calc(50vw - 600px));
+  
+  /* Adjusted padding so there is no gap */
+  padding-top: 80px;
+  padding-bottom: 80px;
+  margin-bottom: 0 !important;
+  
+  box-sizing: border-box;
+  position: relative;
+  
+  /* Optimize layer transforms */
+  will-change: transform, box-shadow;
+  
+  /* Fallback solid backgrounds to mask what slides underneath */
+  background-color: var(--section-bg, #ffffff);
+}
+
+.darkMode .swipeOutSection {
+  background-color: var(--section-bg, #0a0a0a);
+}
+
+/* Specific explicitly colored sections needing background definition */
+.fullPurpleSection.swipeOutSection {
+  background-color: var(--section-bg, #0000ff) !important;
+  color: white;
 }

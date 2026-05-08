@@ -1,176 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Layout from '@/components/layout/Layout';
-import AuthAndSubscriptionProtected from '@/components/providers/AuthAndSubscriptionProtected';
 import styles from './Intelligent.module.css';
 import SocialShareRibbon from '@/components/elements/SocialShareRibbon';
-
-const SERVICES = [
-  { id: 'ai-data', label: 'AI & DATA INTELLIGENCE' },
-  { id: 'cloud-infra', label: 'CLOUD & INFRASTRUCTURE' },
-  { id: 'cybersecurity', label: 'CYBERSECURITY' },
-  { id: 'finance-risk', label: 'FINANCE & RISK MANAGEMENT' },
-  { id: 'digital-eng', label: 'DIGITAL ENGINEERING & CUSTOMER OPERATIONS' },
-  { id: 'emerging-tech', label: 'EMERGING TECHNOLOGY' },
-  { id: 'talent-strategy', label: 'TALENT, STRATEGY & SUSTAINABILITY' }
-];
-
-/** Auto-advance interval for the service deep-dive carousel (ms). */
-const SERVICE_CAROUSEL_AUTO_MS = 9000;
-
-/** Auto-advance interval for the Solution Portfolio (Four Pillars) carousel (ms). */
-const PORTFOLIO_CAROUSEL_AUTO_MS = 5000;
 
 export default function IntelligentPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [visibleSections, setVisibleSections] = useState({});
   const [heroScrollPush, setHeroScrollPush] = useState(0);
-
-  // New States for App-Like Navigation
-  const [activeTab, setActiveTab] = useState('overview');
-  const [activeService, setActiveService] = useState('ai-data');
+  const showAllTabs = true;
 
   // Radial Wheel State for "Inside This Deck" section
   const [radialIndex, setRadialIndex] = useState(0);
 
-  // Active card index for Solution Portfolio (Four Pillars) carousel
-  const [activePortfolio, setActivePortfolio] = useState(0);
-
-  // Reference for Swipeable Carousel
-  const portfolioScrollRef = useRef(null);
-  const servicesScrollRef = useRef(null);
   const heroSectionRef = useRef(null);
-
-  const scrollToService = (id) => {
-    setActiveService(id);
-    requestAnimationFrame(() => {
-      const el = document.getElementById(`service-${id}`);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      }
-    });
-  };
-
-  // Sync active dot when user swipes the service carousel
-  useEffect(() => {
-    if (activeTab !== 'services') return undefined;
-    let cancelled = false;
-    const obsRef = { current: null };
-    const timer = setTimeout(() => {
-      if (cancelled) return;
-      const root = servicesScrollRef.current;
-      if (!root) return;
-      const o = new IntersectionObserver(
-        (entries) => {
-          const best = entries
-            .filter((e) => e.isIntersecting && e.target.id.startsWith('service-'))
-            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-          if (best) {
-            const raw = best.target.id.replace(/^service-/, '');
-            setActiveService((prev) => (prev === raw ? prev : raw));
-          }
-        },
-        { root, rootMargin: '-20% 0px -20% 0px', threshold: [0.25, 0.5, 0.75] }
-      );
-      obsRef.current = o;
-      SERVICES.forEach((s) => {
-        const slide = document.getElementById(`service-${s.id}`);
-        if (slide) o.observe(slide);
-      });
-    }, 200);
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-      obsRef.current?.disconnect();
-      obsRef.current = null;
-    };
-  }, [activeTab]);
-
-  // Auto-advance service carousel (loops; dots stay in sync via activeService)
-  useEffect(() => {
-    if (activeTab !== 'services') return undefined;
-
-    const id = setInterval(() => {
-      if (typeof document !== 'undefined' && document.hidden) return;
-      setActiveService((prev) => {
-        const idx = SERVICES.findIndex((s) => s.id === prev);
-        const nextId =
-          idx >= 0 && idx < SERVICES.length - 1 ? SERVICES[idx + 1].id : SERVICES[0].id;
-        requestAnimationFrame(() => {
-          const el = document.getElementById(`service-${nextId}`);
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-          }
-        });
-        return nextId;
-      });
-    }, SERVICE_CAROUSEL_AUTO_MS);
-
-    return () => clearInterval(id);
-  }, [activeTab]);
-
-  // Auto-advance Solution Portfolio carousel on the Overview tab
-  useEffect(() => {
-    if (activeTab !== 'overview') return undefined;
-
-    const id = setInterval(() => {
-      if (typeof document !== 'undefined' && document.hidden) return;
-      const el = portfolioScrollRef.current;
-      if (!el) return;
-      setActivePortfolio((prev) => {
-        const next = prev >= 3 ? 0 : prev + 1;
-        const card = el.children[next];
-        if (card) {
-          el.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
-        }
-        return next;
-      });
-    }, PORTFOLIO_CAROUSEL_AUTO_MS);
-
-    return () => clearInterval(id);
-  }, [activeTab]);
-
-  // Sync active dot when user manually scrolls the portfolio carousel
-  useEffect(() => {
-    if (activeTab !== 'overview') return undefined;
-    const el = portfolioScrollRef.current;
-    if (!el) return undefined;
-
-    let frame = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const center = el.scrollLeft + el.clientWidth / 2;
-        let bestIdx = 0;
-        let bestDist = Infinity;
-        Array.from(el.children).forEach((child, idx) => {
-          const childCenter = child.offsetLeft + child.clientWidth / 2;
-          const dist = Math.abs(childCenter - center);
-          if (dist < bestDist) {
-            bestDist = dist;
-            bestIdx = idx;
-          }
-        });
-        setActivePortfolio((prev) => (prev === bestIdx ? prev : bestIdx));
-      });
-    };
-
-    el.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      el.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(frame);
-    };
-  }, [activeTab]);
-
-  const scrollToPortfolio = (idx) => {
-    const el = portfolioScrollRef.current;
-    if (!el) return;
-    const card = el.children[idx];
-    if (card) {
-      el.scrollTo({ left: card.offsetLeft, behavior: 'smooth' });
-      setActivePortfolio(idx);
-    }
-  };
 
   useEffect(() => {
     if (isDarkMode) {
@@ -186,14 +29,71 @@ export default function IntelligentPage() {
 
   useEffect(() => {
     let frame = 0;
+    let lastScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
+    let isScrollingDown = false;
+    
     const onScroll = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY || 0;
+        if (currentScrollY > lastScrollY + 1) isScrollingDown = true;
+        else if (currentScrollY < lastScrollY - 1) isScrollingDown = false;
+        lastScrollY = currentScrollY;
+
+        // 1. Hero Parallax Push
         const hero = heroSectionRef.current;
-        if (!hero) return;
-        const rect = hero.getBoundingClientRect();
-        const progress = Math.max(0, Math.min(1, (0 - rect.top) / window.innerHeight));
-        setHeroScrollPush(progress * 280);
+        if (hero) {
+          const rect = hero.getBoundingClientRect();
+          const progress = Math.max(0, Math.min(1, (0 - rect.top) / window.innerHeight));
+          setHeroScrollPush(progress * 280);
+        }
+
+        // 2. Horizontal "Wipe" Slide-out for Middle Sections
+        const swipeSections = document.querySelectorAll(`.${styles.swipeOutSection}`);
+        const viewportHeight = window.innerHeight || 1;
+        const stickyTop = 100; // Leave buffer for the nav bar
+
+        swipeSections.forEach((node, idx) => {
+          const rect = node.getBoundingClientRect();
+          let startExitScroll = 0;
+          
+          // Determine when the section is "done" reading
+          if (rect.height <= viewportHeight - stickyTop) {
+            // Short section: trigger when its top reaches the nav bar
+            if (rect.top < stickyTop) {
+              startExitScroll = stickyTop - rect.top;
+            }
+          } else {
+            // Tall section: trigger when its bottom reaches the viewport bottom
+            if (rect.bottom < viewportHeight) {
+              startExitScroll = viewportHeight - rect.bottom;
+            }
+          }
+
+          if (startExitScroll > 0) {
+            // Drive a pure horizontal wipe-to-left and ensure full off-screen exit.
+            // exitWindow is calibrated to the scroll-distance the section is still
+            // visible for (so the swipe is fully visible) and then scaled by a
+            // factor < 1 to slow it down gently. Smaller divisor = slower swipe.
+            const exitTravel = rect.width + window.innerWidth;
+            const visibleScroll = rect.height <= viewportHeight - stickyTop
+              ? stickyTop + rect.height            // short section: top reaches stickyTop -> section gone
+              : viewportHeight;                    // tall section: bottom reaches viewport top
+            const slowFactor = 0.6;                // 1.0 = original speed, lower = slower (still visible)
+            const exitWindow = Math.max(500, visibleScroll / slowFactor);
+            const exitProgress = Math.max(0, Math.min(1, startExitScroll / exitWindow));
+            const x = -(exitTravel * exitProgress);
+
+            node.style.transform = `translate3d(${x}px, 0, 0)`;
+            node.style.zIndex = 100 - idx; // Earlier sections stay on top
+            node.style.boxShadow = 'none';
+          } else {
+            node.style.transform = `translate3d(0, 0, 0)`;
+            node.style.zIndex = 100 - idx;
+            node.style.boxShadow = 'none';
+          }
+        });
+
       });
     };
 
@@ -207,7 +107,7 @@ export default function IntelligentPage() {
     };
   }, []);
 
-  // Re-run observer when tabs change to trigger animations
+  // Re-run observer when visible blocks change
   useEffect(() => {
     let observer;
     const setupObserver = () => {
@@ -216,9 +116,7 @@ export default function IntelligentPage() {
         observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                setVisibleSections((prev) => ({ ...prev, [entry.target.id]: true }));
-              }
+              setVisibleSections((prev) => ({ ...prev, [entry.target.id]: entry.isIntersecting }));
             });
           },
           { threshold: 0.1 }
@@ -233,20 +131,7 @@ export default function IntelligentPage() {
       clearTimeout(timeoutId);
       if (observer) observer.disconnect();
     };
-  }, [activeTab, activeService, radialIndex]);
-
-  // Carousel Swipe Handlers
-  const scrollLeft = () => {
-    if (portfolioScrollRef.current) {
-      portfolioScrollRef.current.scrollBy({ left: -portfolioScrollRef.current.clientWidth, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (portfolioScrollRef.current) {
-      portfolioScrollRef.current.scrollBy({ left: portfolioScrollRef.current.clientWidth, behavior: 'smooth' });
-    }
-  };
+  }, [radialIndex]);
 
   // Content for Radial UI derived from Image 2
   const deckContents = [
@@ -279,17 +164,17 @@ export default function IntelligentPage() {
           z-index: 9999 !important;
         }
         /* === INTELLIGENT PAGE COLOUR LOCK ===
-            Primary palette: #4831D4 (purple) + #CCF381 (green) only — no global blues */
+            Primary palette: #0000ff (blue) + #a1f81b (green) */
         .intelligent-page-root,
         .intelligent-page-root * {
-          --primary: #4831D4;
-          --primary-light: #4831D4;
-          --accent: #CCF381;
-          --link-color: #4831D4;
-          --tg-theme-primary: #4831D4;
+          --primary: #0000ff;
+          --primary-light: #0000ff;
+          --accent: #a1f81b;
+          --link-color: #0000ff;
+          --tg-theme-primary: #0000ff;
         }
         .intelligent-page-root .home-social-ribbon .social-share-btn:hover {
-          background: #4831D4 !important;
+          background: #0000ff !important;
           color: #ffffff !important;
         }
         .intelligent-page-root .home-social-ribbon .social-share-btn:hover i,
@@ -298,9 +183,32 @@ export default function IntelligentPage() {
         }
       `}</style>
 
-      <Layout headTitle="Intelligent Technology Solutions - Corp Crunch">
+      <Layout headTitle="Intelligent Technology Solutions - Corp Crunch" hideCategoryNavigation>
         <div className={`${styles.intelligentPage} ${isDarkMode ? styles.darkMode : styles.lightMode} intelligent-page-root`}>
           <SocialShareRibbon />
+
+          {/* Intelligent page section navigation (replaces global category nav) */}
+          <nav className={styles.sectionTabs} aria-label="Intelligent page sections">
+            {[
+              { label: 'Overview', id: 'overview' },
+              { label: 'Architecture', id: 'architecture' },
+              { label: 'Service Deep-Dives', id: 'ai-data' },
+              { label: 'Capabilities & Industries', id: 'what-we-do' },
+              { label: 'Engagement', id: 'delivery' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                className={styles.sectionTabBtn}
+                onClick={() => {
+                  const el = document.getElementById(item.id);
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
 
           {/* --- 3D CIRCULAR PETAL HERO SECTION --- */}
           <section
@@ -313,26 +221,19 @@ export default function IntelligentPage() {
             {/* Background tint */}
             <div className={styles.heroBg}></div>
 
-            {/* Circular petals radiating from center with gap */}
-            <div className={styles.petalHub}>
-              {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-                <div
-                  key={i}
-                  className={styles.petal}
-                  style={{
-                    '--i': i
-                  }}
-                ></div>
-              ))}
-            </div>
-
             {/* Hero Text Content */}
             <div className={styles.heroContent}>
               <div className={styles.arrowIcon}>↗</div>
-              <h1 className={styles.heroTitle}>
-                Corp Crunch™<br />
-                <span>Intelligent Technology Solutions</span>
-              </h1>
+              <div className={styles.heroLogoLockup}>
+                <Image
+                  src="/assets/img/logo/Intelligent_Technology_Solutions.png"
+                  alt="Intelligent Technology Solutions"
+                  width={260}
+                  height={90}
+                  priority
+                />
+              </div>
+              <h1 className={styles.heroTitle}>Intelligent Technology Solutions</h1>
               <div className={styles.heroBadges}>
                 <span className={styles.badgeDark}>TECHNOLOGY</span>
                 <span className={styles.badgeLight}>AI-POWERED</span>
@@ -343,7 +244,7 @@ export default function IntelligentPage() {
           </section>
 
           {/* --- RADIAL DECK CONTENTS SECTION --- */}
-          <section className={`${styles.radialSection} ${styles.observeTrigger} ${visibleSections['radial-deck'] ? styles.isVisible : ''}`} id="radial-deck">
+          <section className={`${styles.radialSection} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['radial-deck'] ? styles.isVisible : ''}`} id="radial-deck">
             <div className={styles.radialWrapper}>
               {/* 3 Concentric Rings */}
               <div className={styles.radialRing} style={{ width: '440px', height: '440px' }}></div>
@@ -424,25 +325,14 @@ export default function IntelligentPage() {
             </div>
           </section>
 
-          {/* --- APP NAVIGATION TABS --- */}
-          <div className={styles.stickyNavBar}>
-            <div className={styles.navContainer}>
-              <button className={activeTab === 'overview' ? styles.activeTabBtn : styles.tabBtn} onClick={() => setActiveTab('overview')}>Overview</button>
-              <button className={activeTab === 'architecture' ? styles.activeTabBtn : styles.tabBtn} onClick={() => setActiveTab('architecture')}>Architecture</button>
-              <button className={activeTab === 'services' ? styles.activeTabBtn : styles.tabBtn} onClick={() => setActiveTab('services')}>Service Deep-Dives</button>
-              <button className={activeTab === 'capabilities' ? styles.activeTabBtn : styles.tabBtn} onClick={() => setActiveTab('capabilities')}>Capabilities & Industries</button>
-              <button className={activeTab === 'engagement' ? styles.activeTabBtn : styles.tabBtn} onClick={() => setActiveTab('engagement')}>Engagement</button>
-            </div>
-          </div>
-
           <div className={styles.pageContainer}>
 
             {/* =========================================
                  TAB 1: OVERVIEW 
               ========================================= */}
-            {activeTab === 'overview' && (
-              <div className={styles.tabFadeIn}>
-                <section id="overview" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['overview'] ? styles.isVisible : ''}`}>
+            {showAllTabs && (
+              <div id="tab-overview" className={`${styles.tabFadeIn} ${styles.observeTrigger} ${visibleSections['tab-overview'] ? styles.isVisible : ''}`}>
+                <section id="overview" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['overview'] ? styles.isVisible : ''}`}>
                   <p className={styles.sectionKicker}>COMPANY OVERVIEW</p>
                   <h2 className={styles.sectionTitle}>Systems That Think.<br /><span className={styles.titleAccent}>Intelligence Embedded.</span></h2>
                   <p className={styles.sectionSubtitle}>ITS — Intelligence Embedded at Every Layer</p>
@@ -472,8 +362,9 @@ export default function IntelligentPage() {
                     </div>
                   </div>
                 </section>
+          
 
-                <section id="philosophy" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['philosophy'] ? styles.isVisible : ''}`}>
+                <section id="philosophy" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['philosophy'] ? styles.isVisible : ''}`}>
                   <div className={styles.philosophyGrid}>
                     <div className={styles.philosophyContent}>
                       <h2 className={styles.sectionTitle}>Our Core<br />Philosophy</h2>
@@ -492,7 +383,7 @@ export default function IntelligentPage() {
                   </div>
                 </section>
 
-                <section id="summary" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['summary'] ? styles.isVisible : ''}`}>
+                <section id="summary" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['summary'] ? styles.isVisible : ''}`}>
                   <p className={styles.sectionKicker}>EXECUTIVE SUMMARY</p>
                   <h2 className={`${styles.sectionTitle} ${styles.scribbleUnderline}`}>The Intelligence Imperative</h2>
                   <p className={styles.summaryText}>
@@ -512,63 +403,46 @@ export default function IntelligentPage() {
                 </section>
 
                 {/* CAROUSEL / SWIPE SECTION */}
-                <section id="portfolio" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['portfolio'] ? styles.isVisible : ''}`}>
-                  <div className={styles.swipeHeader}>
-                    <div>
-                      <p className={styles.sectionKicker}>SOLUTION PORTFOLIO</p>
-                      <h2 className={`${styles.sectionTitle} ${styles.scribbleUnderline}`}>Four Pillars of Intelligent Operations</h2>
-                    </div>
-                  </div>
-
-                  <div className={styles.carouselWrapper}>
-                    <button onClick={scrollLeft} className={styles.roundSwipeBtnLeft}>←</button>
-                    <div className={styles.carouselContainer} ref={portfolioScrollRef}>
-                      <div className={`${styles.portfolioCard} ${styles.bgPurple} ${styles.carouselCard}`}>
-                        <div className={styles.cardNumber}>01</div>
-                        <div className={styles.cardContent}>
-                          <h3>Predictive Monitoring Systems</h3>
-                          <p>Continuous surveillance of operational and financial signals with ML-driven anomaly detection, threshold alerting, and predictive failure modeling.</p>
-                          <div className={styles.cardTags}><span>Anomaly Detection</span><span>Threshold Alerts</span><span>Failure Prediction</span></div>
+                <section id="portfolio" className={`${styles.section} ${styles.portfolioSection} ${styles.observeTrigger} ${visibleSections['portfolio'] ? styles.isVisible : ''}`}>
+                  <p className={styles.sectionKicker}>SOLUTION PORTFOLIO</p>
+                  <h2 className={`${styles.sectionTitle} ${styles.scribbleUnderline}`}>Four Pillars of Intelligent Operations</h2>
+                  <div className={styles.portfolioStickyStage}>
+                    <div className={styles.portfolioCardsArea}>
+                      <div className={styles.portfolioGrid}>
+                        <div id="portfolio-1" className={`${styles.portfolioCard} ${styles.bgPurple}`}>
+                          <div className={styles.cardNumber}>01</div>
+                          <div className={styles.cardContent}>
+                            <h3>Predictive Monitoring Systems</h3>
+                            <p>Continuous surveillance of operational and financial signals with ML-driven anomaly detection, threshold alerting, and predictive failure modeling.</p>
+                            <div className={styles.cardTags}><span>Anomaly Detection</span><span>Threshold Alerts</span><span>Failure Prediction</span></div>
+                          </div>
                         </div>
-                      </div>
-                      <div className={`${styles.portfolioCard} ${styles.bgGrey} ${styles.carouselCard}`}>
-                        <div className={styles.cardNumber}>02</div>
-                        <div className={styles.cardContent}>
-                          <h3>AI-Native Architecture Intelligence</h3>
-                          <p>Infrastructure designed from the ground up for AI workloads — every workflow learns and adapts in real time, not retrofitted onto legacy stacks.</p>
-                          <div className={styles.cardTags}><span>Embedded AI</span><span>Adaptive Workflows</span><span>Real-Time Learning</span></div>
+                        <div id="portfolio-2" className={`${styles.portfolioCard} ${styles.bgGrey}`}>
+                          <div className={styles.cardNumber}>02</div>
+                          <div className={styles.cardContent}>
+                            <h3>AI-Native Architecture Intelligence</h3>
+                            <p>Infrastructure designed from the ground up for AI workloads — every workflow learns and adapts in real time, not retrofitted onto legacy stacks.</p>
+                            <div className={styles.cardTags}><span>Embedded AI</span><span>Adaptive Workflows</span><span>Real-Time Learning</span></div>
+                          </div>
                         </div>
-                      </div>
-                      <div className={`${styles.portfolioCard} ${styles.bgGrey} ${styles.carouselCard}`}>
-                        <div className={styles.cardNumber}>03</div>
-                        <div className={styles.cardContent}>
-                          <h3>Unified Intelligence Layer</h3>
-                          <p>A single coherent intelligence fabric spanning data ingestion, model serving, and decision delivery across the entire enterprise technology ecosystem.</p>
-                          <div className={styles.cardTags}><span>Single Fabric</span><span>Cross-System</span><span>Unified Data</span></div>
+                        <div id="portfolio-3" className={`${styles.portfolioCard} ${styles.bgGrey}`}>
+                          <div className={styles.cardNumber}>03</div>
+                          <div className={styles.cardContent}>
+                            <h3>Unified Intelligence Layer</h3>
+                            <p>A single coherent intelligence fabric spanning data ingestion, model serving, and decision delivery across the entire enterprise technology ecosystem.</p>
+                            <div className={styles.cardTags}><span>Single Fabric</span><span>Cross-System</span><span>Unified Data</span></div>
+                          </div>
                         </div>
-                      </div>
-                      <div className={`${styles.portfolioCard} ${styles.bgPurple} ${styles.carouselCard}`}>
-                        <div className={styles.cardNumber}>04</div>
-                        <div className={styles.cardContent}>
-                          <h3>Continuous Learning ML Pipelines</h3>
-                          <p>Self-improving pipelines with feedback loops that evolve with new data, continuously enhancing performance, precision, and predictive execution.</p>
-                          <div className={styles.cardTags}><span>Feedback Loops</span><span>Auto-Retraining</span><span>Self-Improving</span></div>
+                        <div id="portfolio-4" className={`${styles.portfolioCard} ${styles.bgPurple}`}>
+                          <div className={styles.cardNumber}>04</div>
+                          <div className={styles.cardContent}>
+                            <h3>Continuous Learning ML Pipelines</h3>
+                            <p>Self-improving pipelines with feedback loops that evolve with new data, continuously enhancing performance, precision, and predictive execution.</p>
+                            <div className={styles.cardTags}><span>Feedback Loops</span><span>Auto-Retraining</span><span>Self-Improving</span></div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <button onClick={scrollRight} className={styles.roundSwipeBtnRight}>→</button>
-                  </div>
-
-                  <div className={styles.portfolioPagination}>
-                    {[0, 1, 2, 3].map((idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        className={`${styles.carouselDot} ${activePortfolio === idx ? styles.carouselDotActive : ''}`}
-                        onClick={() => scrollToPortfolio(idx)}
-                        aria-label={`Show pillar ${idx + 1}`}
-                      />
-                    ))}
                   </div>
                 </section>
               </div>
@@ -577,9 +451,9 @@ export default function IntelligentPage() {
             {/* =========================================
                  TAB 2: ARCHITECTURE 
               ========================================= */}
-            {activeTab === 'architecture' && (
-              <div className={styles.tabFadeIn}>
-                <section id="architecture" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['architecture'] ? styles.isVisible : ''}`}>
+            {showAllTabs && (
+              <div id="tab-architecture" className={`${styles.tabFadeIn} ${styles.observeTrigger} ${visibleSections['tab-architecture'] ? styles.isVisible : ''}`}>
+                <section id="architecture" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['architecture'] ? styles.isVisible : ''}`}>
                   <h2 className={styles.sectionTitle}>Architecture Pillars</h2>
                   <div className={styles.sixGrid}>
                     <div className={styles.gridItem}><div className={styles.gridArrow}>↗</div><h3>AI-Native Architecture Intelligence</h3><p>Embedded at the infrastructure level — not bolted on. Every workflow is designed to learn and adapt in real time.</p></div>
@@ -591,7 +465,7 @@ export default function IntelligentPage() {
                   </div>
                 </section>
 
-                <section id="arch-deep" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['arch-deep'] ? styles.isVisible : ''}`}>
+                <section id="arch-deep" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['arch-deep'] ? styles.isVisible : ''}`}>
                   <div className={styles.deepDiveHeaderBar}>
                     <div className={styles.pillLeft}>ARCHITECTURE</div>
                     <div className={styles.pillRight}>Corp Crunch™</div>
@@ -605,7 +479,7 @@ export default function IntelligentPage() {
                       <div className={styles.archStep}><div className={`${styles.archPill} ${styles.bgMidGrey}`}>DATA INGESTION</div><div className={styles.archDesc}>Multi-source real-time streaming | Structured & unstructured | IoT, APIs, DBs, SaaS</div></div>
                       <div className={styles.archStep}><div className={`${styles.archPill} ${styles.bgLightPurple}`}>ORCHESTRATION ENGINE</div><div className={styles.archDesc}>Zero-loss routing | Cross-system synchronisation | Event-driven architecture</div></div>
                       <div className={styles.archStep}><div className={`${styles.archPill} ${styles.bgLightestGrey}`}>INTELLIGENCE FABRIC (AI/ML)</div><div className={styles.archDesc}>Risk models | Predictive analytics | Continuous learning pipelines | LLM layer</div></div>
-                      <div className={styles.archStep}><div className={`${styles.archPill} ${styles.bgPurple}`}>UNIFIED INTELLIGENCE LAYER</div><div className={styles.archDesc} style={{ color: '#4831D4', fontWeight: '500' }}>Single coherent interface | Adaptive workflows | Real-time decision support</div></div>
+                      <div className={styles.archStep}><div className={`${styles.archPill} ${styles.bgPurple}`}>UNIFIED INTELLIGENCE LAYER</div><div className={styles.archDesc} style={{ color: '#0000ff', fontWeight: '500' }}>Single coherent interface | Adaptive workflows | Real-time decision support</div></div>
                       <div className={styles.archStep}><div className={`${styles.archPill} ${styles.bgWhiteBorder}`}>ENTERPRISE APPLICATIONS</div><div className={styles.archDesc}>Finance | Operations | Supply Chain | Risk | Customer | Strategy</div></div>
                     </div>
                     <div className={styles.archPrinciplesBox}>
@@ -617,7 +491,7 @@ export default function IntelligentPage() {
                   </div>
                 </section>
 
-                <section id="positioning" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['positioning'] ? styles.isVisible : ''}`}>
+                <section id="positioning" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['positioning'] ? styles.isVisible : ''}`}>
                   <div className={styles.deepDiveHeaderBar}>
                     <div className={styles.pillLeft}>COMPETITIVE POSITIONING</div>
                     <div className={styles.pillRight}>Corp Crunch™</div>
@@ -643,33 +517,17 @@ export default function IntelligentPage() {
             {/* =========================================
                  TAB 3: SERVICE DEEP-DIVES (DROPDOWN)
               ========================================= */}
-            {activeTab === 'services' && (
-              <div className={styles.tabFadeIn}>
+            {showAllTabs && (
+              <div id="tab-services" className={`${styles.tabFadeIn} ${styles.observeTrigger} ${visibleSections['tab-services'] ? styles.isVisible : ''}`}>
 
-                {/* PREMIUM CARD SELECTOR INSTEAD OF DROPDOWN */}
                 <div className={styles.deepDiveHeaderBar}>
-                  <div className={styles.pillLeft}>
-                    SERVICE DEEP-DIVE &middot; {SERVICES.find((s) => s.id === activeService)?.label}
-                  </div>
+                  <div className={styles.pillLeft}>SERVICE DEEP-DIVE</div>
                   <div className={styles.pillRight}>Corp Crunch™</div>
                 </div>
 
-                <div className={styles.servicesCarouselWrapper}>
-                  <button
-                    type="button"
-                    className={styles.serviceNavArrowLeft}
-                    aria-label="Previous service"
-                    onClick={() => {
-                      const idx = SERVICES.findIndex((s) => s.id === activeService);
-                      if (idx > 0) scrollToService(SERVICES[idx - 1].id);
-                    }}
-                  >
-                    ←
-                  </button>
-                  <div className={styles.servicesCarouselTrack}>
-                  <div className={styles.servicesCarouselContainer} ref={servicesScrollRef}>
-                    <div className={styles.serviceSlide} id="service-ai-data">
-                    <section id="ai-data" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['ai-data'] ? styles.isVisible : ''}`}>
+                <div className={styles.servicesStack}>
+                    <div className={`${styles.serviceSlide} ${styles.observeTrigger} ${visibleSections['service-ai-data'] ? styles.isVisible : ''}`} id="service-ai-data">
+                    <section id="ai-data" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['ai-data'] ? styles.isVisible : ''}`}>
                       <h2 className={`${styles.sectionTitle} ${styles.scribbleUnderline}`}>AI & Data Intelligence</h2>
                       <p className={styles.serviceSubtitle}>From raw signals to strategic foresight — in real time.</p>
                       <div className={styles.splitLayout2Col}>
@@ -703,8 +561,8 @@ export default function IntelligentPage() {
                     </section>
                     </div>
 
-                    <div className={styles.serviceSlide} id="service-cloud-infra">
-                    <section id="cloud-infra" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['cloud-infra'] ? styles.isVisible : ''}`}>
+                    <div className={`${styles.serviceSlide} ${styles.observeTrigger} ${visibleSections['service-cloud-infra'] ? styles.isVisible : ''}`} id="service-cloud-infra">
+                    <section id="cloud-infra" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['cloud-infra'] ? styles.isVisible : ''}`}>
                       <h2 className={`${styles.sectionTitle} ${styles.scribbleUnderline}`}>Cloud & Infrastructure</h2>
                       <p className={styles.serviceSubtitle}>AI-native cloud architecture built for scale, resilience, and intelligence.</p>
                       <p className={styles.serviceDesc}>Corp Crunch™ designs and operates cloud environments purpose-built for AI workloads — not generic lift-and-shift migrations. Every deployment is engineered for elastic scale, intelligent cost optimisation, and embedded observability that learns and self-heals.</p>
@@ -719,8 +577,8 @@ export default function IntelligentPage() {
                     </section>
                     </div>
 
-                    <div className={styles.serviceSlide} id="service-cybersecurity">
-                    <section id="cybersecurity" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['cybersecurity'] ? styles.isVisible : ''}`}>
+                    <div className={`${styles.serviceSlide} ${styles.observeTrigger} ${visibleSections['service-cybersecurity'] ? styles.isVisible : ''}`} id="service-cybersecurity">
+                    <section id="cybersecurity" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['cybersecurity'] ? styles.isVisible : ''}`}>
                       <h2 className={`${styles.sectionTitle} ${styles.scribbleUnderline}`}>Cybersecurity</h2>
                       <p className={styles.serviceSubtitle}>Intelligent threat defence — proactive, adaptive, always-on.</p>
                       <p className={styles.serviceDesc}>Corp Crunch™'s cybersecurity practice deploys AI-driven defence architectures that detect, contain, and remediate threats faster than any human-only SOC. Our zero-trust frameworks and continuous compliance automation protect enterprises across cloud, on-premise, and hybrid estates.</p>
@@ -738,8 +596,8 @@ export default function IntelligentPage() {
                     </section>
                     </div>
 
-                    <div className={styles.serviceSlide} id="service-finance-risk">
-                    <section id="finance-risk" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['finance-risk'] ? styles.isVisible : ''}`}>
+                    <div className={`${styles.serviceSlide} ${styles.observeTrigger} ${visibleSections['service-finance-risk'] ? styles.isVisible : ''}`} id="service-finance-risk">
+                    <section id="finance-risk" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['finance-risk'] ? styles.isVisible : ''}`}>
                       <h2 className={`${styles.sectionTitle} ${styles.scribbleUnderline}`}>Finance & Risk Management</h2>
                       <p className={styles.serviceSubtitle}>Real-time financial intelligence for resilient, data-driven operations.</p>
                       <p className={styles.serviceDesc}>Our Finance & Risk practice embeds AI directly into financial operations — from treasury and regulatory reporting to trading risk and credit decisioning. We replace manual spreadsheet workflows with self-improving models that deliver precision at the speed of the market.</p>
@@ -765,8 +623,8 @@ export default function IntelligentPage() {
                     </section>
                     </div>
 
-                    <div className={styles.serviceSlide} id="service-digital-eng">
-                    <section id="digital-eng" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['digital-eng'] ? styles.isVisible : ''}`}>
+                    <div className={`${styles.serviceSlide} ${styles.observeTrigger} ${visibleSections['service-digital-eng'] ? styles.isVisible : ''}`} id="service-digital-eng">
+                    <section id="digital-eng" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['digital-eng'] ? styles.isVisible : ''}`}>
                       <h2 className={`${styles.sectionTitle} ${styles.scribbleUnderline}`}>Digital Engineering & Customer Operations</h2>
                       <p className={styles.serviceSubtitle}>Precision-engineered products. Intelligent customer experiences.</p>
                       <div className={styles.grid2x2}>
@@ -778,8 +636,8 @@ export default function IntelligentPage() {
                     </section>
                     </div>
 
-                    <div className={styles.serviceSlide} id="service-emerging-tech">
-                    <section id="emerging-tech" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['emerging-tech'] ? styles.isVisible : ''}`}>
+                    <div className={`${styles.serviceSlide} ${styles.observeTrigger} ${visibleSections['service-emerging-tech'] ? styles.isVisible : ''}`} id="service-emerging-tech">
+                    <section id="emerging-tech" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['emerging-tech'] ? styles.isVisible : ''}`}>
                       <h2 className={`${styles.sectionTitle} ${styles.scribbleUnderline}`}>Emerging Technology</h2>
                       <p className={styles.serviceSubtitle}>Deploying tomorrow's capabilities in today's enterprise.</p>
                       <p className={styles.serviceDesc}>Corp Crunch™'s Emerging Technology practice moves beyond proof-of-concept to full-scale enterprise deployment. We de-risk frontier technology adoption through proprietary frameworks that embed governance, security, and ROI measurement from day one.</p>
@@ -792,8 +650,8 @@ export default function IntelligentPage() {
                     </section>
                     </div>
 
-                    <div className={styles.serviceSlide} id="service-talent-strategy">
-                    <section id="talent-strategy" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['talent-strategy'] ? styles.isVisible : ''}`}>
+                    <div className={`${styles.serviceSlide} ${styles.observeTrigger} ${visibleSections['service-talent-strategy'] ? styles.isVisible : ''}`} id="service-talent-strategy">
+                    <section id="talent-strategy" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['talent-strategy'] ? styles.isVisible : ''}`}>
                       <h2 className={`${styles.sectionTitle} ${styles.scribbleUnderline}`}>Talent, Strategy & Sustainability</h2>
                       <p className={styles.serviceSubtitle}>Enabling the human and strategic layer of enterprise intelligence.</p>
                       <div className={styles.grid2x2}>
@@ -804,31 +662,6 @@ export default function IntelligentPage() {
                       </div>
                     </section>
                     </div>
-                  </div>
-                  </div>
-                  <button
-                    type="button"
-                    className={styles.serviceNavArrowRight}
-                    aria-label="Next service"
-                    onClick={() => {
-                      const idx = SERVICES.findIndex((s) => s.id === activeService);
-                      if (idx < SERVICES.length - 1) scrollToService(SERVICES[idx + 1].id);
-                    }}
-                  >
-                    →
-                  </button>
-                </div>
-
-                <div className={styles.carouselPagination}>
-                  {SERVICES.map((svc) => (
-                    <button
-                      key={svc.id}
-                      type="button"
-                      className={`${styles.carouselDot} ${activeService === svc.id ? styles.carouselDotActive : ''}`}
-                      onClick={() => scrollToService(svc.id)}
-                      aria-label={`View ${svc.label}`}
-                    />
-                  ))}
                 </div>
               </div>
             )}
@@ -836,9 +669,9 @@ export default function IntelligentPage() {
             {/* =========================================
                  TAB 4: CAPABILITIES & INDUSTRIES 
               ========================================= */}
-            {activeTab === 'capabilities' && (
-              <div className={styles.tabFadeIn}>
-                <section id="what-we-do" className={`${styles.fullPurpleSection} ${styles.observeTrigger} ${visibleSections['what-we-do'] ? styles.isVisible : ''}`}>
+            {showAllTabs && (
+              <div id="tab-capabilities" className={`${styles.tabFadeIn} ${styles.observeTrigger} ${visibleSections['tab-capabilities'] ? styles.isVisible : ''}`}>
+                <section id="what-we-do" className={`${styles.fullPurpleSection} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['what-we-do'] ? styles.isVisible : ''}`} style={{ '--section-bg': '#0000ff' }}>
                   <div className={styles.wwdContainer}>
                     <div className={styles.wwdHeader}>
                       <h2>What We Do</h2>
@@ -864,7 +697,7 @@ export default function IntelligentPage() {
                   </div>
                 </section>
 
-                <section id="industries" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['industries'] ? styles.isVisible : ''}`}>
+                <section id="industries" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['industries'] ? styles.isVisible : ''}`}>
                   <div className={styles.deepDiveHeaderBar}>
                     <div className={styles.pillLeft}>INDUSTRIES & SECTORS</div>
                     <div className={styles.pillRight}>Corp Crunch™</div>
@@ -909,9 +742,9 @@ export default function IntelligentPage() {
             {/* =========================================
                  TAB 5: ENGAGEMENT 
               ========================================= */}
-            {activeTab === 'engagement' && (
-              <div className={styles.tabFadeIn}>
-                <section id="delivery" className={`${styles.section} ${styles.observeTrigger} ${visibleSections['delivery'] ? styles.isVisible : ''}`}>
+            {showAllTabs && (
+              <div id="tab-engagement" className={`${styles.tabFadeIn} ${styles.observeTrigger} ${visibleSections['tab-engagement'] ? styles.isVisible : ''}`}>
+                <section id="delivery" className={`${styles.section} ${styles.swipeOutSection} ${styles.observeTrigger} ${visibleSections['delivery'] ? styles.isVisible : ''}`}>
                   <div className={styles.deepDiveHeaderBar}>
                     <div className={styles.pillLeft}>DELIVERY MODEL</div>
                     <div className={styles.pillRight}>Corp Crunch™</div>
@@ -991,3 +824,5 @@ export default function IntelligentPage() {
     </>
   );
 }
+
+/* CSS BELOW: Please ensure you append this cleanly into Intelligent.module.css */

@@ -14,6 +14,7 @@ const Layout = ({
   headTitle,
   seo = {},
   categories = null, // Accept categories as prop to avoid duplicate fetches
+  hideCategoryNavigation = false,
 }) => {
   const handleMobileMenuOpen = () => {
     if (typeof window !== 'undefined') {
@@ -76,7 +77,7 @@ const Layout = ({
       />
 
       {/* Category Navigation Bar - Below Header */}
-      <CategoryNavigation categories={categories} />
+      {!hideCategoryNavigation && <CategoryNavigation categories={categories} />}
 
       <main className="main modern-layout">
         <div className="container">
