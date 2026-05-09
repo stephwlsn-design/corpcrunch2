@@ -318,7 +318,7 @@ export default function IntelligentPage() {
         }
       `}</style>
 
-      <Layout headTitle="Intelligent Technology Solutions - Corp Crunch" hideCategoryNavigation hideFooter>
+      <Layout headTitle="Intelligent Technology Solutions - Corp Crunch" hideCategoryNavigation hideFooter hideChatbot={true}>
         <div className={`${styles.intelligentPage} ${isDarkMode ? styles.darkMode : ''} intelligent-page-root`}>
           {/* ─── In-page sticky subnav ─── */}
           {/* Inline styles are used here because the global "all buttons = blue"
@@ -357,8 +357,8 @@ export default function IntelligentPage() {
                       data-intelligent-nav="true"
                       className={`${styles.tabBtn} ${isActive ? styles.activeTabBtn : ''} ${isActive ? 'intelligent-page-top-nav-active cc-intelligent-subnav-active' : ''}`}
                       style={{
-                        background: 'transparent',
-                        backgroundColor: 'transparent',
+                        background: '#ffffff',
+                        backgroundColor: '#ffffff',
                         color: '#111111',
                         border: 'none',
                         borderRadius: '0',
@@ -411,8 +411,8 @@ export default function IntelligentPage() {
                                   data-intelligent-nav="true"
                                   className={`${styles.megaLink} ${activeSlide === getSlideIndex(s.id) ? styles.megaLinkActive : ''} ${activeSlide === getSlideIndex(s.id) ? 'intelligent-page-top-nav-mega-active cc-intelligent-subnav-mega-active' : ''}`}
                                   style={{
-                                    background: 'transparent',
-                                    backgroundColor: 'transparent',
+                                    background: '#ffffff',
+                                    backgroundColor: '#ffffff',
                                     color: activeSlide === getSlideIndex(s.id) ? '#000000' : '#333333',
                                     border: 'none',
                                     boxShadow: 'none',

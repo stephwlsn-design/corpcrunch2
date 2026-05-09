@@ -16,6 +16,7 @@ const Layout = ({
   categories = null, // Accept categories as prop to avoid duplicate fetches
   hideCategoryNavigation = false,
   hideFooter = false,
+  hideChatbot = false,
 }) => {
   const handleMobileMenuOpen = () => {
     if (typeof window !== 'undefined') {
@@ -95,7 +96,7 @@ const Layout = ({
 
       {!hideFooter && <Footer />}
       <ToastContainer />
-      <ChatBot />
+      {!hideChatbot && <ChatBot />}
     </>
   );
 };

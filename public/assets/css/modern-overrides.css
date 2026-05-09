@@ -933,40 +933,48 @@ button[data-custom-button="true"]:hover {
 }
 
 .dark-theme .modern-header.modern-header--intelligent-page .language-selector-btn {
-  color: #e2e8f0 !important;
+  color: #111111 !important;
 }
 
 .dark-theme .modern-header.modern-header--intelligent-page {
-  background-color: #0f172a !important;
-  color: #e2e8f0 !important;
+  background-color: #ffffff !important;
+  color: #111111 !important;
 }
 
 .dark-theme .modern-header.modern-header--intelligent-page .header__main {
-  background-color: #0f172a !important;
+  background-color: #ffffff !important;
 }
 
 .dark-theme .modern-header.modern-header--intelligent-page .header__border-top,
 .dark-theme .modern-header.modern-header--intelligent-page .header__border-bottom {
-  background: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(0, 0, 0, 0.08) !important;
 }
 
 .dark-theme .modern-header.modern-header--intelligent-page .header__actions,
 .dark-theme .modern-header.modern-header--intelligent-page .header__actions a,
 .dark-theme .modern-header.modern-header--intelligent-page .header__actions button,
 .dark-theme .modern-header.modern-header--intelligent-page .header__cta-btn {
-  color: #e2e8f0 !important;
+  color: #111111 !important;
 }
 
 .dark-theme .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]) {
   background: transparent !important;
   background-color: transparent !important;
-  border-color: rgba(226, 232, 240, 0.25) !important;
-  color: #e2e8f0 !important;
+  border-color: rgba(17, 17, 17, 0.2) !important;
+  color: #111111 !important;
 }
 
 .dark-theme .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]):hover {
-  background: rgba(255, 255, 255, 0.06) !important;
-  color: #f8fafc !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #000000 !important;
+}
+
+.dark-theme .modern-header.modern-header--intelligent-page .header__logo img.logo-light {
+  display: none !important;
+}
+
+.dark-theme .modern-header.modern-header--intelligent-page .header__logo img.logo-dark {
+  display: block !important;
 }
 
 /*
