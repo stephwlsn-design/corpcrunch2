@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Layout from '@/components/layout/Layout';
 import styles from './Intelligent.module.css';
+import RingsSpacer from './RingsSpacer';
+import CylinderSpacer from './CylinderSpacer';
 
 /* ─────────────────────────────────────────────
    Slide wrapper — each section gets its own
@@ -58,6 +60,7 @@ export default function IntelligentPage() {
   const [isHovered, setIsHovered] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [isClient, setIsClient] = useState(false);
   const heroRef = useRef(null);
 
   const navItems = [
@@ -131,6 +134,13 @@ export default function IntelligentPage() {
   ];
   const totalSlides = slides.length;
   const getSlideIndex = (id) => slides.findIndex((slide) => slide.id === id);
+
+  useEffect(() => {
+    setIsClient(true);
+    // Sync local state with actual DOM on mount to prevent hydration mismatch
+    const isDark = document.body.classList.contains('dark-theme');
+    setIsDarkMode(isDark);
+  }, []);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -231,111 +241,185 @@ export default function IntelligentPage() {
           color: #111 !important;
         }
         /* In-page sticky nav — white bar, black type */
-        .intelligent-page-top-nav.cc-intelligent-subnav,
-        nav.cc-intelligent-subnav[data-cc-intelligent-subnav] {
+        .intelligent-page-root .intelligent-v4-navbar {
           background: #ffffff !important;
           background-color: #ffffff !important;
-          color: #111111 !important;
+          background-image: none !important;
+          color: #000000 !important;
           border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
           box-shadow: none !important;
           backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          z-index: 5000 !important;
         }
-        .dark-theme .intelligent-page-top-nav.cc-intelligent-subnav,
-        .dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] {
+        .intelligent-page-root .intelligent-v4-navbar::before,
+        .intelligent-page-root .intelligent-v4-navbar::after {
+          display: none !important;
+          content: none !important;
+        }
+        .intelligent-page-root .intelligent-v4-navbar * {
+          color: #000000 !important;
+        }
+        .intelligent-page-root [data-intelligent-v4-nav="true"] {
           background: #ffffff !important;
           background-color: #ffffff !important;
-          color: #111111 !important;
-          border-bottom-color: rgba(0, 0, 0, 0.1) !important;
-        }
-        .intelligent-page-top-nav [class*="navContainer"] {
-          background: transparent !important;
-        }
-        .intelligent-page-top-nav button[data-intelligent-nav] {
-          background: transparent !important;
-          background-color: transparent !important;
-          color: #111111 !important;
+          background-image: none !important;
+          color: #000000 !important;
           border: none !important;
           border-radius: 0 !important;
           box-shadow: none !important;
+          text-transform: none !important;
+          font-family: 'Inter', system-ui, sans-serif !important;
+          padding: 18px 20px !important;
+          cursor: pointer !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 5px !important;
+          font-size: 0.9rem !important;
+          transition: background 0.2s ease, color 0.1s ease !important;
         }
-        .intelligent-page-top-nav button[data-intelligent-nav]:hover {
-          background: rgba(0, 0, 0, 0.06) !important;
+        .intelligent-page-root [data-intelligent-v4-nav="true"]::before,
+        .intelligent-page-root [data-intelligent-v4-nav="true"]::after {
+          display: none !important;
+          content: none !important;
+        }
+        .intelligent-page-root [data-intelligent-v4-nav="true"]:hover {
+          background: #f5f5f5 !important;
           color: #000000 !important;
         }
-        .dark-theme .intelligent-page-top-nav button[data-intelligent-nav] {
-          color: #111111 !important;
-        }
-        .dark-theme .intelligent-page-top-nav button[data-intelligent-nav]:hover {
-          background: rgba(0, 0, 0, 0.06) !important;
-          color: #000000 !important;
-        }
-        .intelligent-page-top-nav button[data-intelligent-nav].intelligent-page-top-nav-active {
+        .intelligent-page-root .intelligent-v4-tab-active {
           font-weight: 700 !important;
           color: #000000 !important;
-          background: transparent !important;
-          border-bottom: 2px solid #111111 !important;
+          border-bottom: 2px solid #000000 !important;
+          margin-bottom: -1px !important;
         }
-        .dark-theme .intelligent-page-top-nav button[data-intelligent-nav].intelligent-page-top-nav-active {
-          color: #000000 !important;
-          border-bottom-color: #111111 !important;
-          background: transparent !important;
-        }
-        .intelligent-page-top-nav .cc-intelligent-subnav-chevron {
-          color: #111111 !important;
-        }
-        .dark-theme .intelligent-page-top-nav .cc-intelligent-subnav-chevron {
-          color: #111111 !important;
-        }
-        .intelligent-page-top-nav .megaDropdown,
-        .intelligent-page-top-nav [class*="megaDropdown"] {
+        .intelligent-page-root .intelligent-v4-dropdown {
           background: #ffffff !important;
           background-color: #ffffff !important;
+          border: 1px solid #e0e0e0 !important;
+          border-radius: 12px !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+          z-index: 6000 !important;
+          position: absolute !important;
+          top: 100% !important;
+          left: 0 !important;
+          min-width: 180px !important;
+          overflow: hidden !important;
         }
-        .dark-theme .intelligent-page-top-nav .megaDropdown,
-        .dark-theme .intelligent-page-top-nav [class*="megaDropdown"] {
-          background: #ffffff !important;
-          background-color: #ffffff !important;
+        .intelligent-page-root .intelligent-v4-mega-link {
+          color: #000000 !important;
+          padding: 10px 16px !important;
+          display: block !important;
+          width: 100% !important;
+          text-align: left !important;
+          transition: all 0.2s ease !important;
+          font-size: 0.85rem !important;
+          font-weight: 400 !important;
         }
-        .intelligent-page-top-nav [class*="megaSectionTitle"] {
-          color: #111111 !important;
-        }
-        .dark-theme .intelligent-page-top-nav [class*="megaSectionTitle"] {
-          color: #f2f2f2 !important;
-        }
-        .intelligent-page-top-nav button[data-intelligent-nav][class*="megaLink"] {
-          color: #333333 !important;
-          background: transparent !important;
-        }
-        .intelligent-page-top-nav button[data-intelligent-nav][class*="megaLink"]:hover {
+        .intelligent-page-root .intelligent-v4-mega-link:hover {
+          background: rgba(0, 0, 0, 0.05) !important;
           color: #000000 !important;
         }
-        .intelligent-page-top-nav button[data-intelligent-nav].intelligent-page-top-nav-mega-active {
+        .intelligent-page-root .intelligent-v4-mega-active {
+          background: rgba(0, 0, 0, 0.08) !important;
           color: #000000 !important;
           font-weight: 600 !important;
         }
-        .dark-theme .intelligent-page-top-nav button[data-intelligent-nav][class*="megaLink"] {
-          color: #dddddd !important;
+        .dark-theme .intelligent-page-root .intelligent-v4-navbar,
+        .intelligent-page-root.dark-theme .intelligent-v4-navbar {
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+          background-image: none !important;
+          color: #111111 !important;
+        }
+        .dark-theme .intelligent-page-root .intelligent-v4-navbar *,
+        .intelligent-page-root.dark-theme .intelligent-v4-navbar * {
+          color: #111111 !important;
+        }
+        /* dark-theme body/page background bleeds through transparent nav — lock it */
+        .dark-theme .intelligent-page-root,
+        .dark-theme nav[data-intelligent-v4-nav-root="true"],
+        .dark-theme .intelligent-v4-navbar {
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+        }
+        /* Carousel rail: blue shape is on ::before (many globals force button background: transparent) */
+        .intelligent-page-root .intelligent-carousel-dots-nav button.intelligent-carousel-dot-exempt[data-intelligent-nav="true"] {
+          background: transparent !important;
+          background-color: transparent !important;
+        }
+        .intelligent-page-root .intelligent-carousel-dots-nav button.intelligent-carousel-dot-exempt[data-intelligent-nav="true"]::before {
+          content: '' !important;
+          display: block !important;
+          width: 12px !important;
+          height: 12px !important;
+          border-radius: 50% !important;
+          background: #2551e7 !important;
+          background-color: #2551e7 !important;
+        }
+        .intelligent-page-root .intelligent-carousel-dots-nav button.intelligent-carousel-dot-exempt.intelligent-carousel-dot-active[data-intelligent-nav="true"]::before,
+        .intelligent-page-root .intelligent-carousel-dots-nav button.intelligent-carousel-dot-exempt[data-intelligent-nav="true"][class*="dotActive"]::before {
+          width: 11px !important;
+          height: 32px !important;
+          border-radius: 8px !important;
+          box-shadow: 0 2px 10px rgba(37, 81, 231, 0.5) !important;
+        }
+        /* Do not target carousel dots: they use data-intelligent-nav and need non-transparent fills */
+        .dark-theme .intelligent-page-root button:not([data-intelligent-nav="true"]),
+        .dark-theme nav[data-intelligent-v4-nav-root="true"] button {
+          background: transparent !important;
+          color: #111111 !important;
+        }
+        /* Stable global class — beats theme button rules if CSS-module hashes omit tabBtn substring */
+        html body .intelligent-page-root .intelligent-v4-navbar button.intelligent-subnav-exempt,
+        html body.dark-theme .intelligent-page-root .intelligent-v4-navbar button.intelligent-subnav-exempt,
+        html body nav[data-intelligent-v4-nav-root="true"] button.intelligent-subnav-exempt {
+          color: #111111 !important;
+          -webkit-text-fill-color: #111111 !important;
+          background: transparent !important;
+          background-color: transparent !important;
+        }
+        html body .intelligent-page-root .intelligent-v4-navbar button.intelligent-subnav-exempt:hover,
+        html body.dark-theme .intelligent-page-root .intelligent-v4-navbar button.intelligent-subnav-exempt:hover {
+          color: #000000 !important;
+          -webkit-text-fill-color: #000000 !important;
+        }
+        /* header border-bottom: stop var(--tg-theme-secondary) blue bar */
+        .modern-header.modern-header--intelligent-page .header__border-bottom {
+          background: rgba(0, 0, 0, 0.08) !important;
+          height: 1px !important;
+        }
+        /* Override global button rules for nav — maximum specificity beats external stylesheets */
+        html body button[data-intelligent-v4-nav="true"],
+        html body [data-intelligent-v4-nav="true"] {
+          background-color: transparent !important;
+          background: transparent !important;
+          color: #000000 !important;
+          border-color: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+        }
+        html body button[data-intelligent-v4-nav="true"]:hover {
+          background-color: rgba(0, 0, 0, 0.05) !important;
+          color: #000000 !important;
+        }
+        /* Dark theme: override span color rule that makes nav text gray */
+        .dark-theme .intelligent-v4-navbar span,
+        .dark-theme nav[data-intelligent-v4-nav-root="true"] span,
+        .dark-theme .intelligent-page-root .intelligent-v4-navbar span {
+          color: #000000 !important;
         }
       `}</style>
 
       <Layout headTitle="Intelligent Technology Solutions - Corp Crunch" hideCategoryNavigation hideFooter hideChatbot={true}>
+        {isClient && (
         <div className={`${styles.intelligentPage} ${isDarkMode ? styles.darkMode : ''} intelligent-page-root`}>
-          {/* ─── In-page sticky subnav ─── */}
-          {/* Inline styles are used here because the global "all buttons = blue"
-              rule in modern-overrides.css uses !important. Inline styles on the
-              nav and buttons win over every external stylesheet rule. */}
+          {/* ─── Version 4 Sticky Subnav ─── */}
           <nav
-            className={`${styles.stickyNavBar} intelligent-page-top-nav cc-intelligent-subnav`}
-            data-cc-intelligent-subnav="true"
+            className={`${styles.stickyNavBar} intelligent-v4-navbar`}
+            data-intelligent-v4-nav-root="true"
             aria-label="Intelligent page navigation"
-            style={{
-              background: '#ffffff',
-              backgroundColor: '#ffffff',
-              color: '#111111',
-              boxShadow: 'none',
-              borderBottom: '1px solid rgba(0,0,0,0.1)',
-              backdropFilter: 'none',
-            }}
+            style={{ background: '#ffffff', backgroundColor: '#ffffff', color: '#111111' }}
           >
             {/* ── Nav items row ── */}
             <div className={styles.navContainer}>
@@ -354,28 +438,9 @@ export default function IntelligentPage() {
                   >
                     <button
                       type="button"
-                      data-intelligent-nav="true"
-                      className={`${styles.tabBtn} ${isActive ? styles.activeTabBtn : ''} ${isActive ? 'intelligent-page-top-nav-active cc-intelligent-subnav-active' : ''}`}
-                      style={{
-                        background: '#ffffff',
-                        backgroundColor: '#ffffff',
-                        color: '#111111',
-                        border: 'none',
-                        borderRadius: '0',
-                        boxShadow: 'none',
-                        fontFamily: 'Inter, system-ui, sans-serif',
-                        fontSize: '0.9rem',
-                        fontWeight: isActive ? '700' : '500',
-                        padding: '18px 20px',
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '5px',
-                        borderBottom: isActive ? '2px solid #111111' : 'none',
-                        marginBottom: isActive ? '-1px' : '0',
-                        transition: 'color 0.15s ease',
-                      }}
+                      data-intelligent-v4-nav="true"
+                      className={`intelligent-subnav-exempt ${styles.tabBtn} ${isActive ? 'intelligent-v4-tab-active' : ''}`}
+                      style={{ background: 'transparent', backgroundColor: 'transparent', color: '#000000' }}
                       onClick={(e) => {
                         e.stopPropagation();
                         setActiveSlide(slideIndex);
@@ -385,8 +450,8 @@ export default function IntelligentPage() {
                       {item.label}
                       {hasSub && (
                         <span
-                          className={`${styles.dropChevron} cc-intelligent-subnav-chevron`}
-                          style={{ color: '#111111', opacity: 0.55, fontSize: '0.52rem' }}
+                          className="intelligent-v4-chevron"
+                          style={{ opacity: 0.55, fontSize: '0.52rem', marginLeft: '5px' }}
                         >
                           {isOpen ? '▴' : '▾'}
                         </span>
@@ -395,30 +460,21 @@ export default function IntelligentPage() {
 
                     {hasSub && isOpen && (
                       <div
-                        className={styles.megaDropdown}
+                        className={`${styles.megaDropdown} intelligent-v4-dropdown`}
+                        style={{ background: '#ffffff', backgroundColor: '#ffffff' }}
                         onMouseEnter={() => setOpenDropdown(item.id)}
                         onMouseLeave={() => setOpenDropdown(null)}
                       >
                         <div className={styles.megaInner}>
                           <div className={styles.megaSection}>
-                            <p className={styles.megaSectionTitle}>{item.label}</p>
-                            <div className={styles.megaDivider} />
-                            <div className={styles.megaGrid}>
+                            <div className={styles.megaGrid} style={{ display: 'flex', flexDirection: 'column', padding: '5px 0' }}>
                               {item.sub.map((s) => (
                                 <button
                                   key={s.id}
                                   type="button"
-                                  data-intelligent-nav="true"
-                                  className={`${styles.megaLink} ${activeSlide === getSlideIndex(s.id) ? styles.megaLinkActive : ''} ${activeSlide === getSlideIndex(s.id) ? 'intelligent-page-top-nav-mega-active cc-intelligent-subnav-mega-active' : ''}`}
-                                  style={{
-                                    background: '#ffffff',
-                                    backgroundColor: '#ffffff',
-                                    color: activeSlide === getSlideIndex(s.id) ? '#000000' : '#333333',
-                                    border: 'none',
-                                    boxShadow: 'none',
-                                    fontWeight: activeSlide === getSlideIndex(s.id) ? '600' : '400',
-                                    cursor: 'pointer',
-                                  }}
+                                  data-intelligent-v4-nav="true"
+                                  className={`intelligent-subnav-exempt ${styles.megaLink} intelligent-v4-mega-link ${activeSlide === getSlideIndex(s.id) ? 'intelligent-v4-mega-active' : ''}`}
+                                  style={{ background: 'transparent', backgroundColor: 'transparent', color: '#000000' }}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     setActiveSlide(getSlideIndex(s.id));
@@ -461,7 +517,7 @@ export default function IntelligentPage() {
                           <Image
                             src="/assets/img/logo/Intelligent_Technology_Solutions.png"
                             alt="Intelligent Technology Solutions"
-                            width={420} height={150} priority
+                            width={480} height={200} priority
                           />
                         </div>
                         <h1 className={styles.heroTitle}>Intelligent Technology Solutions</h1>
@@ -474,9 +530,20 @@ export default function IntelligentPage() {
                     </div>
                   </div>
                 </section>
-                {/* ── SPHERES GAP ── */}
-                <div className={styles.slideSpheres}>
-                  <TwinSpheres size={210} gap={-5} orientation="vertical" />
+                {/* ── HERO LINES GAP ── */}
+                <div className={styles.heroLinesGap} aria-hidden="true">
+                  <div className={styles.heroLinesWrap}>
+                    <div className={`${styles.heroCone} ${styles.heroConeLeft}`}>
+                      {Array.from({ length: 18 }).map((_, i) => (
+                        <span key={`left-${i}`} className={styles.heroConeLine} style={{ '--i': i }}></span>
+                      ))}
+                    </div>
+                    <div className={`${styles.heroCone} ${styles.heroConeRight}`}>
+                      {Array.from({ length: 18 }).map((_, i) => (
+                        <span key={`right-${i}`} className={styles.heroConeLine} style={{ '--i': i }}></span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </Slide>
 
@@ -512,9 +579,7 @@ export default function IntelligentPage() {
                   </div>
                 </section>
                 {/* ── SPHERES GAP ── */}
-                <div className={styles.slideSpheres}>
-                  <TwinSpheres size={190} gap={-15} orientation="vertical" />
-                </div>
+                <RingsSpacer />
               </Slide>
 
               {/* ── 2: CORE PHILOSOPHY ── */}
@@ -538,10 +603,8 @@ export default function IntelligentPage() {
                     </div>
                   </div>
                 </section>
-                {/* ── SPHERES GAP ── */}
-                <div className={styles.slideSpheres}>
-                  <TwinSpheres size={220} gap={-5} orientation="vertical" />
-                </div>
+                {/* ── CYLINDER SPACER ── */}
+                <CylinderSpacer />
               </Slide>
 
               {/* ── 3: EXECUTIVE SUMMARY ── */}
@@ -565,9 +628,7 @@ export default function IntelligentPage() {
                   </div>
                 </section>
                 {/* ── SPHERES GAP ── */}
-                <div className={styles.slideSpheres}>
-                  <TwinSpheres size={210} gap={-5} orientation="vertical" />
-                </div>
+                <RingsSpacer />
               </Slide>
 
               {/* ── 4: SOLUTION PORTFOLIO ── */}
@@ -629,10 +690,7 @@ export default function IntelligentPage() {
                     <div className={styles.gridItem}><div className={styles.gridArrow} style={{ color: '#ccc' }}>↗</div><h3>Continuous Learning ML Pipelines</h3><p>Implements self-improving machine learning workflows that evolve with new data, continuously enhancing performance and predictive accuracy.</p></div>
                   </div>
                 </section>
-                {/* ── SPHERES GAP ── */}
-                <div className={styles.slideSpheres}>
-                  <TwinSpheres size={210} gap={-5} orientation="vertical" />
-                </div>
+                <CylinderSpacer />
               </Slide>
 
               {/* ── 6: UNIFIED INTELLIGENCE LAYER ── */}
@@ -661,10 +719,7 @@ export default function IntelligentPage() {
                     </div>
                   </div>
                 </section>
-                {/* ── SPHERES GAP ── */}
-                <div className={styles.slideSpheres}>
-                  <TwinSpheres size={210} gap={-5} orientation="vertical" />
-                </div>
+                <RingsSpacer />
               </Slide>
 
               {/* ── 7: COMPETITIVE POSITIONING ── */}
@@ -994,7 +1049,7 @@ export default function IntelligentPage() {
             </div>{/* end carouselTrack */}
 
             {/* ── DOTS NAVIGATION (19 slides) ── */}
-            <div className={styles.carouselDots}>
+            <div className={`intelligent-carousel-dots-nav ${styles.carouselDots}`}>
               {slides.map((slide, idx) => (
                 <button
                   key={slide.id}
@@ -1002,7 +1057,26 @@ export default function IntelligentPage() {
                   data-intelligent-nav="true"
                   aria-label={`Go to ${slide.label}`}
                   title={slide.label}
-                  className={`${styles.dot} ${activeSlide === idx ? styles.dotActive : ''}`}
+                  className={`intelligent-carousel-dot-exempt ${styles.dot} ${activeSlide === idx ? `${styles.dotActive} intelligent-carousel-dot-active` : ''}`}
+                  style={activeSlide === idx ? {
+                    background: 'transparent',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    boxShadow: 'none',
+                    width: '11px',
+                    height: '32px',
+                    minWidth: '11px',
+                    minHeight: '32px',
+                    borderRadius: '8px',
+                  } : {
+                    background: 'transparent',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    boxShadow: 'none',
+                    width: '12px',
+                    height: '12px',
+                    borderRadius: '50%',
+                  }}
                   onClick={() => { setActiveSlide(idx); setIsPaused(true); }}
                 />
               ))}
@@ -1044,6 +1118,7 @@ export default function IntelligentPage() {
           </section>
 
         </div>
+        )}
       </Layout>
     </>
   );

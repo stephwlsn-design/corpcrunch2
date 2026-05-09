@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { isIntelligentSubdomainHostname } from './lib/intelligentSubdomain';
 
 /**
  * Subdomain-based routing middleware.
@@ -15,17 +16,16 @@ export function middleware(request) {
   // Strip port in development (e.g. "intelligent.localhost:3000" → "intelligent.localhost")
   const hostWithoutPort = hostname.split(':')[0];
 
-  // Define the intelligent subdomain patterns
-  const intelligentSubdomains = [
-    'intelligent.corpcrunch.io',
-    'intelligent.corpcrunch.ai',
-    // Allow local development testing via: intelligent.localhost
-    'intelligent.localhost',
-  ];
-
-  const isIntelligentSubdomain = intelligentSubdomains.includes(hostWithoutPort);
+  const isIntelligentSubdomain = isIntelligentSubdomainHostname(hostWithoutPort);
 
   if (isIntelligentSubdomain) {
+    // Normalize /intelligent → / in the address bar (sub-routes like /intelligent/CylinderSpacer stay as-is)
+    if (url.pathname === '/intelligent' || url.pathname === '/intelligent/') {
+      const next = new URL('/', request.url);
+      next.search = url.search;
+      return NextResponse.redirect(next, 308);
+    }
+
     // Rewrite root "/" → "/intelligent" internally (URL bar stays clean)
     if (url.pathname === '/') {
       url.pathname = '/intelligent';

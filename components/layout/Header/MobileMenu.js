@@ -7,9 +7,11 @@ import LanguageSelector from "@/components/elements/LanguageSelector";
 import RegionSelector from "@/components/elements/RegionSelector";
 import ThemeToggle from "@/components/elements/ThemeToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useIntelligentProductHomeHref } from "@/hooks/useIntelligentProductHomeHref";
 
 const MobileMenu = ({ handleMobileMenuClose }) => {
   const { t } = useLanguage();
+  const intelligentHomeHref = useIntelligentProductHomeHref();
   const {
     refetch: fetchCategories,
     data: categories,
@@ -93,7 +95,7 @@ const MobileMenu = ({ handleMobileMenuClose }) => {
                 <Link href="/contact" scroll={true} onClick={handleMobileMenuClose}>{t('header.contact')}</Link>
               </li>
               <li className={router.pathname === '/intelligent' ? 'active' : ''}>
-                <Link href="/intelligent" scroll={true} onClick={handleMobileMenuClose}>{t('header.intelligent')}</Link>
+                <Link href={intelligentHomeHref} scroll={true} onClick={handleMobileMenuClose}>{t('header.intelligent')}</Link>
               </li>
               <li className={router.pathname === '/signin' ? 'active' : ''}>
                 <Link href="/signin" scroll={true} onClick={handleMobileMenuClose}>{t('header.signIn')}</Link>

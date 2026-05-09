@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import "react-multi-carousel/lib/styles.css";
 import { getCategoryUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { useIntelligentProductHomeHref } from "@/hooks/useIntelligentProductHomeHref";
 
 const ThemeSwitch = dynamic(() => import("@/components/elements/ThemeSwitch"), {
   ssr: false,
@@ -18,6 +19,7 @@ export default function Sidebar({ handleSidebarClose }) {
   const { data: categories, refetch: fetchCategories } = useCategory({ enabled: false });
   const [isUserLogin, setIsUserLogin] = useState(false);
   const { requireAuth } = useAuth();
+  const intelligentHomeHref = useIntelligentProductHomeHref();
 
   useEffect(() => {
     fetchCategories();
@@ -224,9 +226,9 @@ export default function Sidebar({ handleSidebarClose }) {
               )}
               {(!categories || !categories.some(c => c.name?.toLowerCase() === 'intelligent')) && (
                 <Link
-                  href="/intelligent"
+                  href={intelligentHomeHref}
                   onClick={(e) => {
-                    if (!requireAuth('/intelligent')) {
+                    if (!requireAuth(intelligentHomeHref)) {
                       e.preventDefault();
                       return;
                     }

@@ -1,0 +1,105 @@
+/* CylinderSpacer.module.css */
+
+.cylinderHero {
+  /* Ring Dimensions */
+  --ring-width: 200px;
+  --ring-height: 56px; /* Shorter height creates the 3D perspective / ellipse shape */
+
+  /* Stacking & Animation Math */
+  --ring-overlap: 40px; /* How much the rings slide over each other */
+  --effective-row-height: calc(var(--ring-height) - var(--ring-overlap));
+
+  --ring-stack-count: 20; /* Must match the numRingsPerStack in the React file */
+  --looping-stack-height: calc(var(--effective-row-height) * var(--ring-stack-count));
+
+  --animation-duration: 6s; /* Speed of the upward flow */
+
+  /* Green color matching the TwinSpheres meridians */
+  --ring-color: #a1f81b;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+/* The masking container that fades out the top */
+.cylinderWrap {
+  position: relative;
+  width: var(--ring-width);
+  height: 340px; /* Visible height of the whole tube */
+  overflow: hidden;
+
+  /* Fades out the top to transparent, keeps bottom fully opaque */
+  mask-image: linear-gradient(to bottom, transparent 0%, white 35%, white 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 35%, white 100%);
+}
+
+/* The track that actually moves upwards */
+.cylinderScrolling {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* Start positioned slightly lower so the loop math lines up perfectly */
+  padding-top: var(--effective-row-height);
+
+  animation: cylinderScrollUp var(--animation-duration) linear infinite;
+}
+
+/* Individual Elliptical Ring */
+.ellipseRing {
+  flex-shrink: 0;
+  width: var(--ring-width);
+  height: var(--ring-height);
+
+  /* Bright green border matching the TwinSpheres meridian lines */
+  border: 1.5px solid var(--ring-color);
+  border-radius: 50%; /* Creates the perfect ellipse */
+  box-sizing: border-box;
+
+  /* Negative margin pulls the next ring up to overlap */
+  margin-top: calc(-1 * var(--ring-overlap));
+}
+
+/* Soften every other ring for a richer layered look (matches TwinSpheres) */
+.ellipseRing:nth-child(even) {
+  border-color: rgba(161, 248, 27, 0.45);
+}
+
+.ellipseRing:first-child {
+  margin-top: 0;
+}
+
+/* Seamless Looping Keyframes */
+@keyframes cylinderScrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    /* Move exactly one stack height upwards */
+    transform: translateY(calc(-1 * var(--looping-stack-height)));
+  }
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .cylinderHero {
+    --ring-width: 150px;
+    --ring-height: 42px;
+    --ring-overlap: 30px;
+  }
+  .cylinderWrap {
+    height: 260px;
+  }
+}
+
+/* Accessibility for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .cylinderScrolling {
+    animation: none;
+  }
+}

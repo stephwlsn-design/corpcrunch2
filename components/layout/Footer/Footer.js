@@ -2,9 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Newsletter from "@/components/elements/Newsletter";
+import { useIntelligentProductHomeHref } from "@/hooks/useIntelligentProductHomeHref";
 
 export default function Footer1() {
   const { t } = useLanguage();
+  const intelligentHomeHref = useIntelligentProductHomeHref();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -30,7 +32,7 @@ export default function Footer1() {
             <Link href="/contact" className="footer__nav-btn">
               {t('header.contact')}
             </Link>
-            <Link href="/intelligent" className="footer__nav-btn">
+            <Link href={intelligentHomeHref} className="footer__nav-btn">
               {t('header.intelligent')}
             </Link>
           </div>

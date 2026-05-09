@@ -7,9 +7,11 @@ import "react-loading-skeleton/dist/skeleton.css";
 import styles from "./CategoryNavigation.module.css";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useIntelligentProductHomeHref } from "@/hooks/useIntelligentProductHomeHref";
 
 const CategoryNavigation = ({ categories: serverCategories = null }) => {
   const router = useRouter();
+  const intelligentHomeHref = useIntelligentProductHomeHref();
   const { t } = useLanguage();
   const { requireAuth } = useAuth();
 
@@ -49,7 +51,7 @@ const CategoryNavigation = ({ categories: serverCategories = null }) => {
     telecom: { name: t('navigation.telecom'), href: "/telecom", isPage: true },
     // Moved from header
     events: { name: t('header.events') || 'Events', href: "/events", isPage: true },
-    intelligent: { name: t('header.intelligent') || 'Intelligent', href: "/intelligent", isPage: true },
+    intelligent: { name: t('header.intelligent') || 'Intelligent', href: intelligentHomeHref, isPage: true },
     // 'e-magazine': { name: 'E magazine', href: "/e-magazine", isPage: true },
     // New categories - These will use ID-based URLs
     'market-analysis': { name: 'Market Analysis', href: null, isPage: false, useIdBased: true },

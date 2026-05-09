@@ -1,0 +1,100 @@
+.ringsHero {
+  --ring-size: 60px;
+  --ring-overlap: 10px;
+  --rings-visible-width: 960px;
+  --central-icon-size: 120px;
+  --ring-track-gap: 10px;
+  --ring-track-count: 16;
+  --animation-duration: 15s;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 30px 0;
+  background-color: #ffffff;
+  overflow: hidden;
+  position: relative;
+}
+
+.ringsWrap {
+  position: relative;
+  width: min(100%, var(--rings-visible-width));
+  height: calc((var(--ring-size) * 3) + (var(--ring-track-gap) * 2));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--ring-track-gap);
+}
+
+.ringsColumnContainer {
+  position: relative;
+  width: 100%;
+  height: var(--ring-size);
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, white 12%, white 88%, transparent);
+}
+
+.ringsColumnScrolling {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  --effective-column-width: calc(var(--ring-size) - var(--ring-overlap));
+  --looping-track-width: calc(var(--effective-column-width) * var(--ring-track-count));
+  animation: scrollRingsHorizontal var(--animation-duration) linear infinite;
+}
+
+.ring {
+  flex-shrink: 0;
+  width: var(--ring-size);
+  height: var(--ring-size);
+  border: 1.5px solid #a1f81b;
+  border-radius: 999px;
+  margin-left: calc(-1 * var(--ring-overlap));
+  box-sizing: border-box;
+}
+
+.ring:first-child {
+  margin-left: 0;
+}
+
+.centralPlayIcon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--central-icon-size);
+  height: var(--central-icon-size);
+  background-color: rgba(255, 255, 255, 0.65);
+  clip-path: polygon(30% 15%, 85% 50%, 30% 85%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+@keyframes scrollRingsHorizontal {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-1 * var(--looping-track-width)));
+  }
+}
+
+@media (max-width: 768px) {
+  .ringsHero {
+    --ring-size: 50px;
+    --ring-overlap: 8px;
+    --rings-visible-width: 720px;
+    --central-icon-size: 100px;
+    --ring-track-gap: 8px;
+    --animation-duration: 12s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ringsColumnScrolling {
+    animation: none;
+  }
+}

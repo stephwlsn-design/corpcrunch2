@@ -79,7 +79,7 @@
 .pageContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 80px 5%;
+  padding: 80px 5% 0;
 }
 
 /* ══ STICKY TOP NAV BAR ══ */
@@ -108,7 +108,9 @@
   scrollbar-width: none;
 }
 
-.navContainer::-webkit-scrollbar { display: none; }
+.navContainer::-webkit-scrollbar {
+  display: none;
+}
 
 .navItemWrap {
   position: relative;
@@ -191,47 +193,37 @@
 /* ══ COMPACT VERTICAL-LIST DROPDOWN PANEL ══ */
 .megaDropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);
   left: 0;
   width: 260px;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-top: none;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  z-index: 200;
-  animation: megaFadeIn 0.14s ease;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: megaFadeIn 0.2s ease;
   pointer-events: auto;
+  overflow: hidden;
 }
 
 @keyframes megaFadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .megaInner {
-  padding: 16px 20px 20px;
+  padding: 8px 0;
 }
 
 .megaSection {
   display: block;
-}
-
-/* Section title — black label */
-.megaSectionTitle {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #111;
-  margin: 0 0 10px;
-  padding: 0;
-}
-
-/* Thin horizontal rule below title */
-.megaDivider {
-  height: 1px;
-  background: rgba(0, 0, 0, 0.1);
-  margin-bottom: 18px;
 }
 
 /* Grid of items — vertical list layout */
@@ -245,38 +237,39 @@
 .megaLink {
   all: unset !important;
   display: block !important;
-  padding: 9px 0 9px 12px !important;
+  padding: 10px 16px !important;
   font-size: 0.88rem !important;
   font-weight: 400 !important;
   font-family: 'Inter', system-ui, sans-serif !important;
-  color: #333 !important;
+  color: #333333 !important;
+  background: transparent !important;
   cursor: pointer !important;
   text-align: left !important;
   white-space: nowrap !important;
   line-height: 1.5 !important;
   width: 100% !important;
-  border-left: 2px solid transparent !important;
-  transition: color 0.12s ease, border-color 0.12s ease !important;
-  text-transform: none !important;
-  background: none !important;
+  border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s ease !important;
+  text-transform: none !important;
 }
 
 .megaLink:hover {
-  color: #000 !important;
-  border-left-color: #111 !important;
-  background: none !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #111111 !important;
 }
 
 .megaLinkActive {
-  color: #000 !important;
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: #111111 !important;
   font-weight: 600 !important;
-  border-left-color: #111 !important;
 }
 
 .megaLinkActive:hover {
-  color: #000 !important;
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: #111111 !important;
 }
 
 
@@ -303,7 +296,9 @@
   scrollbar-width: none;
 }
 
-.sectionNavInner::-webkit-scrollbar { display: none; }
+.sectionNavInner::-webkit-scrollbar {
+  display: none;
+}
 
 .sectionNavBtn {
   padding: 10px 18px;
@@ -360,45 +355,124 @@
   background: #ffffff;
 }
 
-/* ===== DOTS NAVIGATION (scales for up to 19 slides) ===== */
+/* ===== DOTS NAVIGATION (scales for up to 19 slides) — left rail, vertical stack ===== */
 .carouselDots {
   position: absolute;
-  top: 35%;
-  left: 18px;
+  top: 25%;
+  left: 20px;
+  right: auto;
+  bottom: auto;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 7px;
-  z-index: 200;
-  padding: 12px 9px;
-  background: rgba(0, 0, 0, 0.45);
+  gap: 10px;
+  z-index: 2500;
+  padding: 16px 12px;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(10px);
-  border-radius: 18px;
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 22px;
 }
 
-.dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
+/* Paint on ::before so global `button { background: transparent !important }` cannot erase dots */
+.carouselDots button {
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.carouselDots .dot {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
   cursor: pointer;
-  padding: 0;
   flex-shrink: 0;
-  transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease;
+  color: transparent !important;
+  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.dot:hover {
-  background: rgba(255, 255, 255, 0.75);
+.carouselDots .dot::before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #2551e7;
+  background-color: #2551e7;
+  flex-shrink: 0;
+  pointer-events: none;
+  transition: background-color 0.2s ease, transform 0.2s ease,
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s ease;
 }
 
-.dotActive {
-  width: 9px;
-  height: 26px;
-  border-radius: 6px;
-  background: #a1f81b;
-  border-color: #a1f81b;
+.carouselDots .dot:hover::before {
+  background: #1a3fc4;
+  background-color: #1a3fc4;
+  transform: scale(1.12);
+}
+
+/* Vertical pill — visual on ::before */
+.carouselDots .dotActive {
+  width: 11px !important;
+  height: 32px !important;
+  min-width: 11px !important;
+  min-height: 32px !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.carouselDots .dotActive::before {
+  width: 11px;
+  height: 32px;
+  border-radius: 8px;
+  background: #2551e7;
+  background-color: #2551e7;
+  box-shadow: 0 2px 10px rgba(37, 81, 231, 0.5);
+  transform: none;
+}
+
+.carouselDots .dotActive:hover::before {
+  background: #1a3fc4;
+  background-color: #1a3fc4;
+}
+
+.intelligentPage .carouselDots .dotActive {
+  width: 11px !important;
+  height: 32px !important;
+  min-width: 11px !important;
+  min-height: 32px !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.intelligentPage .carouselDots .dotActive::before {
+  box-shadow: 0 2px 10px rgba(37, 81, 231, 0.5) !important;
 }
 
 /* Slide counter — top-right corner of the carousel */
@@ -609,37 +683,27 @@
 @keyframes petalFlow {
   0% {
     transform:
-      rotateZ(var(--base-angle))
-      translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1))
-      scale(var(--petal-scale));
+      rotateZ(var(--base-angle)) translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1)) scale(var(--petal-scale));
   }
 
   25% {
     transform:
-      rotateZ(calc(var(--base-angle) - 90deg))
-      translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1))
-      scale(var(--petal-scale));
+      rotateZ(calc(var(--base-angle) - 90deg)) translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1)) scale(var(--petal-scale));
   }
 
   50% {
     transform:
-      rotateZ(calc(var(--base-angle) - 180deg))
-      translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1))
-      scale(var(--petal-scale));
+      rotateZ(calc(var(--base-angle) - 180deg)) translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1)) scale(var(--petal-scale));
   }
 
   75% {
     transform:
-      rotateZ(calc(var(--base-angle) - 270deg))
-      translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1))
-      scale(var(--petal-scale));
+      rotateZ(calc(var(--base-angle) - 270deg)) translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1)) scale(var(--petal-scale));
   }
 
   100% {
     transform:
-      rotateZ(calc(var(--base-angle) - 360deg))
-      translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1))
-      scale(var(--petal-scale));
+      rotateZ(calc(var(--base-angle) - 360deg)) translateY(calc((var(--base-radius) + var(--hero-scroll-push, 0px)) * -1)) scale(var(--petal-scale));
   }
 }
 
@@ -926,7 +990,7 @@
 .pageContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 80px 5%;
+  padding: 80px 5% 0;
   border-left: none;
 }
 
@@ -937,6 +1001,11 @@
 
 #why-choose.section {
   margin-bottom: 0;
+}
+
+#philosophy.section {
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .sectionKicker {
@@ -1987,6 +2056,7 @@
 .bgLightGrey.industryItemPill {
   color: #333;
 }
+
 /*/ INSERT_YOUR_CODE */
 
 /* Define page-scoped colors (Intelligent page only) */
@@ -2798,6 +2868,7 @@
 }
 
 @media (max-width: 1100px) {
+
   .serviceNavArrowLeft,
   .serviceNavArrowRight {
     display: none;
@@ -3749,17 +3820,31 @@
 }
 
 @keyframes twinSpinA {
-  from { transform: rotateX(6deg) rotateY(0deg); }
-  to   { transform: rotateX(6deg) rotateY(360deg); }
+  from {
+    transform: rotateX(6deg) rotateY(0deg);
+  }
+
+  to {
+    transform: rotateX(6deg) rotateY(360deg);
+  }
 }
 
 @keyframes twinSpinB {
-  from { transform: rotateX(6deg) rotateY(0deg); }
-  to   { transform: rotateX(6deg) rotateY(-360deg); }
+  from {
+    transform: rotateX(6deg) rotateY(0deg);
+  }
+
+  to {
+    transform: rotateX(6deg) rotateY(-360deg);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .twinSphere, .twinSphereB { animation: none; }
+
+  .twinSphere,
+  .twinSphereB {
+    animation: none;
+  }
 }
 
 /* ── Common class for specific slide twin spheres (zero margin/padding) ── */
@@ -3773,6 +3858,134 @@
   background-color: #ffffff;
 }
 
+/* Hero spacer with horizontal green line UI */
+.heroLinesGap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 60px 0;
+  background-color: #ffffff; /* Consider a darker background like #0a0b10 for better visibility */
+  overflow: hidden;
+}
+
+.heroLinesWrap {
+  position: relative;
+  width: 100vw;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.heroCone {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 50vw;
+  height: 400px;
+  transform-style: preserve-3d;
+}
+
+/* Positioned exactly at center, pointing Left */
+.heroConeLeft {
+  --dir: -1;
+  --facing: -72deg;
+  transform: translate(-50%, -50%) rotateY(var(--facing));
+}
+
+/* Positioned exactly at center, pointing Right */
+.heroConeRight {
+  --dir: 1;
+  --facing: 72deg;
+  transform: translate(-50%, -50%) rotateY(var(--facing));
+}
+
+.heroConeLine {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  --ring-size: calc(26px + (var(--i) * 40px));
+  width: var(--ring-size);
+  height: var(--ring-size);
+  border: 3px solid #a1f81b;
+  border-radius: 999px;
+  transform:
+    translate(-50%, -50%)
+    translateX(calc(var(--dir) * (var(--i) * 22px)))
+    rotateY(var(--facing))
+    scale(0.84);
+  box-sizing: border-box;
+  opacity: calc(1 - (var(--i) * 0.025));
+  /* Only horizontal flow animation */
+  animation: heroConeLineFlowHorizontal 2.8s linear infinite;
+  animation-delay: calc(var(--i) * -0.2s);
+}
+
+/* Strictly horizontal movement keyframes */
+@keyframes heroConeLineFlowHorizontal {
+  0% {
+    transform:
+      translate(-50%, -50%)
+      translateX(calc(var(--dir) * ((var(--i) * 22px) - 20px)))
+      rotateY(var(--facing))
+      scale(0.72);
+    opacity: calc(0.5 - (var(--i) * 0.015));
+  }
+
+  35% {
+    transform:
+      translate(-50%, -50%)
+      translateX(calc(var(--dir) * ((var(--i) * 22px) + 8px)))
+      rotateY(var(--facing))
+      scale(0.9);
+    opacity: calc(1 - (var(--i) * 0.025));
+  }
+
+  100% {
+    transform:
+      translate(-50%, -50%)
+      translateX(calc(var(--dir) * ((var(--i) * 22px) + 36px)))
+      rotateY(var(--facing))
+      scale(1.12);
+    opacity: calc(0.1 - (var(--i) * 0.005));
+  }
+}
+
+@media (max-width: 768px) {
+  .heroLinesGap {
+    padding: 30px 0;
+  }
+
+  .heroLinesWrap {
+    width: 100vw;
+    height: 280px;
+  }
+
+  .heroCone {
+    width: 50vw;
+    height: 280px;
+  }
+
+  .heroConeLine {
+    --ring-size: calc(20px + (var(--i) * 30px));
+    width: var(--ring-size);
+    height: var(--ring-size);
+    border-width: 2px;
+    transform:
+      translate(-50%, -50%)
+      translateX(calc(var(--dir) * (var(--i) * 14px)))
+      rotateY(var(--facing))
+      scale(0.86);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroConeLine {
+    animation: none;
+  }
+}
 /* ── Arch Deep (Unified Intelligence Layer) section wrapper ── */
 .archDeepSection {
   position: relative;
@@ -3856,13 +4069,23 @@
 }
 
 @keyframes lineSphereSpinRight {
-  from { transform: rotateX(8deg) rotateY(0deg); }
-  to   { transform: rotateX(8deg) rotateY(360deg); }
+  from {
+    transform: rotateX(8deg) rotateY(0deg);
+  }
+
+  to {
+    transform: rotateX(8deg) rotateY(360deg);
+  }
 }
 
 @keyframes lineSphereSpinLeft {
-  from { transform: rotateX(8deg) rotateY(0deg); }
-  to   { transform: rotateX(8deg) rotateY(-360deg); }
+  from {
+    transform: rotateX(8deg) rotateY(0deg);
+  }
+
+  to {
+    transform: rotateX(8deg) rotateY(-360deg);
+  }
 }
 
 @media (max-width: 992px) {
@@ -3879,6 +4102,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .lineSphere,
   .lineSphereTwin {
     animation: none;
@@ -4237,18 +4461,18 @@
   margin-left: calc(-50vw + 50%);
   padding-left: max(5%, calc(50vw - 600px));
   padding-right: max(5%, calc(50vw - 600px));
-  
+
   /* Adjusted padding so there is no gap */
   padding-top: 80px;
   padding-bottom: 80px;
   margin-bottom: 0 !important;
-  
+
   box-sizing: border-box;
   position: relative;
-  
+
   /* Optimize layer transforms */
   will-change: transform, box-shadow;
-  
+
   /* Fallback solid backgrounds to mask what slides underneath */
   background-color: var(--section-bg, #ffffff);
 }
@@ -4535,4 +4759,100 @@
 .intelligentPage.darkMode .megaMenuLink:hover {
   background: rgba(0, 0, 0, 0.04) !important;
   color: #000000 !important;
+}
+
+/* ── NAV DROPDOWN: force white bg, black text — overrides all blue !important blocks ── */
+.stickyNavBar .megaDropdown,
+.navItemWrap .megaDropdown {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+.stickyNavBar .megaLink,
+.navItemWrap .megaLink {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #333333 !important;
+}
+
+.stickyNavBar .megaLink:hover,
+.navItemWrap .megaLink:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #111111 !important;
+}
+
+.stickyNavBar .tabBtn,
+.navContainer .tabBtn {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #111111 !important;
+}
+
+/* ── Neutralise root theme variables inside the intelligent page ── */
+/* This stops var(--tg-theme-secondary) resolving to #2551e7 for every
+   child element including the nav background and button rules          */
+.intelligentPage {
+  --tg-theme-secondary: transparent;
+  --tg-theme-secondary-dark: transparent;
+  --tg-theme-primary: #111111;
+}
+
+/* ── Data-attribute anchored nav overrides — scoped under local class (CSS Modules requirement) ── */
+.intelligentPage [data-intelligent-v4-nav-root="true"],
+.intelligentPage nav[data-intelligent-v4-nav-root="true"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #111111 !important;
+}
+
+.intelligentPage [data-intelligent-v4-nav-root="true"] button,
+.intelligentPage nav[data-intelligent-v4-nav-root="true"] button {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #111111 !important;
+  border-color: transparent !important;
+}
+
+/* FIX 1: Nav text — force black on all nav elements */
+.intelligentPage .stickyNavBar,
+.intelligentPage .stickyNavBar button,
+.intelligentPage .stickyNavBar span,
+.intelligentPage .stickyNavBar .tabBtn,
+.intelligentPage .stickyNavBar .megaLink {
+  color: #111111 !important;
+}
+
+/* Explicit button overrides for nav — beat global rules */
+.tabBtn,
+.megaLink {
+  color: #000000 !important;
+  background-color: transparent !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  border: none !important;
+}
+
+/* FIX 2: Carousel rail — button fill stays transparent; ::before carries blue (see .carouselDots rules) */
+.intelligentPage .carouselDots .dot {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: transparent !important;
+}
+
+.intelligentPage .carouselDots .dot::before {
+  background: #2551e7 !important;
+  background-color: #2551e7 !important;
+}
+
+.intelligentPage .carouselDots .dot:hover::before {
+  background: #1a3fc4 !important;
+  background-color: #1a3fc4 !important;
+}
+
+.intelligentPage .carouselDots .dotActive::before {
+  background: #2551e7 !important;
+  background-color: #2551e7 !important;
 }
