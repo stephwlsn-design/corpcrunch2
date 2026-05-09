@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-const RegionSelector = () => {
+const RegionSelector = ({ intelligentPage = false }) => {
   const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState('Asia');
@@ -47,7 +47,8 @@ const RegionSelector = () => {
   return (
     <div className="region-selector" ref={dropdownRef}>
       <button
-        className="region-selector__toggle"
+        type="button"
+        className={`region-selector__toggle${intelligentPage ? " region-selector__toggle--neutral" : ""}`}
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Select region"
         aria-expanded={isOpen}
@@ -56,7 +57,10 @@ const RegionSelector = () => {
       </button>
 
       {isOpen && (
-        <div className="region-selector__dropdown">
+        <div
+          className="region-selector__dropdown"
+          style={intelligentPage ? { zIndex: 5000 } : undefined}
+        >
           <ul className="region-selector__list">
             {regions.map((region) => (
               <li
@@ -101,6 +105,21 @@ const RegionSelector = () => {
 
         .region-selector__toggle i {
           color: #ffffff;
+        }
+
+        .region-selector__toggle--neutral {
+          background: #f3f4f6 !important;
+          border: 1px solid rgba(0, 0, 0, 0.12) !important;
+          color: #111 !important;
+        }
+
+        .region-selector__toggle--neutral:hover {
+          background: #e8eaed !important;
+          border-color: rgba(0, 0, 0, 0.18) !important;
+        }
+
+        .region-selector__toggle--neutral i {
+          color: #111 !important;
         }
 
         .region-selector__current {

@@ -82,6 +82,204 @@
   padding: 80px 5%;
 }
 
+/* ══ STICKY TOP NAV BAR ══ */
+.stickyNavBar {
+  position: sticky;
+  top: 0;
+  z-index: 1200;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  /* overflow MUST be visible so mega-menu can extend below */
+  overflow: visible;
+}
+
+.navContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  /* visible: mega-menus extend past the row; clip was hiding them behind siblings */
+  overflow-x: visible;
+  overflow-y: visible;
+  scrollbar-width: none;
+}
+
+.navContainer::-webkit-scrollbar { display: none; }
+
+.navItemWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  /* Ensure dropdown overflows visibly */
+  overflow: visible;
+}
+
+/* ── Plain text nav button ── override global button styles with !important ──
+   Using the module selector alone is not always enough since global main.css
+   uses `button { color: hotpink; background: blue; border-radius: 999px }`.
+   We beat it here via !important on every property that global CSS sets.    */
+.tabBtn {
+  /* Reset everything global CSS might set */
+  all: unset !important;
+  /* Then apply our own styles */
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 18px 20px !important;
+  font-size: 0.9rem !important;
+  font-weight: 400 !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  color: #111 !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  outline: none !important;
+  transition: color 0.15s ease !important;
+}
+
+.tabBtn:hover {
+  color: #000 !important;
+  background: none !important;
+}
+
+.activeTabBtn {
+  all: unset !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 18px 20px !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  color: #000 !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  outline: none !important;
+  border-bottom: 2px solid #111 !important;
+  transition: color 0.15s ease !important;
+}
+
+.activeTabBtn:hover {
+  color: #000 !important;
+  background: none !important;
+}
+
+.dropChevron {
+  font-size: 0.52rem;
+  opacity: 0.45;
+  margin-left: 2px;
+}
+
+/* ══ COMPACT VERTICAL-LIST DROPDOWN PANEL ══ */
+.megaDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 260px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+  animation: megaFadeIn 0.14s ease;
+  pointer-events: auto;
+}
+
+@keyframes megaFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.megaInner {
+  padding: 16px 20px 20px;
+}
+
+.megaSection {
+  display: block;
+}
+
+/* Section title — black label */
+.megaSectionTitle {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #111;
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+/* Thin horizontal rule below title */
+.megaDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  margin-bottom: 18px;
+}
+
+/* Grid of items — vertical list layout */
+.megaGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Plain text clickable item — override global button styles */
+.megaLink {
+  all: unset !important;
+  display: block !important;
+  padding: 9px 0 9px 12px !important;
+  font-size: 0.88rem !important;
+  font-weight: 400 !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  color: #333 !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+  line-height: 1.5 !important;
+  width: 100% !important;
+  border-left: 2px solid transparent !important;
+  transition: color 0.12s ease, border-color 0.12s ease !important;
+  text-transform: none !important;
+  background: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.megaLink:hover {
+  color: #000 !important;
+  border-left-color: #111 !important;
+  background: none !important;
+}
+
+.megaLinkActive {
+  color: #000 !important;
+  font-weight: 600 !important;
+  border-left-color: #111 !important;
+}
+
+.megaLinkActive:hover {
+  color: #000 !important;
+}
+
+
 /* ══ SECTION NAVBAR ══ */
 .sectionNav {
   position: sticky;
@@ -133,6 +331,7 @@
 /* ═══ CAROUSEL LAYOUT ═══ */
 .carouselOuter {
   position: relative;
+  z-index: 0;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
   min-height: 100vh;
@@ -146,6 +345,7 @@
   align-items: flex-start;
   transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
+  z-index: 0;
 }
 
 .carouselSlide {
@@ -163,40 +363,40 @@
 /* ===== DOTS NAVIGATION (scales for up to 19 slides) ===== */
 .carouselDots {
   position: absolute;
-  top: 50%;
+  top: 35%;
   left: 18px;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   z-index: 200;
-  padding: 10px 8px;
-  background: rgba(0, 0, 0, 0.42);
+  padding: 12px 9px;
+  background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(10px);
-  border-radius: 16px;
+  border-radius: 18px;
 }
 
 .dot {
-  width: 7px;
-  height: 7px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.38);
-  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.4);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
   cursor: pointer;
   padding: 0;
   flex-shrink: 0;
-  transition: width 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease;
+  transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease;
 }
 
 .dot:hover {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.75);
 }
 
 .dotActive {
-  width: 7px;
-  height: 22px;
-  border-radius: 5px;
+  width: 9px;
+  height: 26px;
+  border-radius: 6px;
   background: #a1f81b;
   border-color: #a1f81b;
 }
@@ -1827,8 +2027,8 @@
   background: var(--primary-blue);
 }
 
-/* General buttons, pills, feature tags, and focus states in the page */
-.intelligentPage button,
+/* Pills / feature chrome — do NOT use `.intelligentPage button` here: it overrides
+   the top nav and mega-menu controls (higher specificity than `.tabBtn` alone). */
 .pillLeft,
 .pillRight,
 .pill,
@@ -2121,7 +2321,7 @@
 
 /* Footer Contact Section */
 .footerContactSection {
-  margin-top: 72px;
+  margin-top: 16px;
   padding-top: 0;
   border-top: 1px solid #eaeaea;
 }
@@ -2290,15 +2490,15 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
+  background: #ffffff;
+  backdrop-filter: none;
   border-bottom: 1px solid #eaeaea;
   padding: 15px 0;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
 }
 
 .darkMode .stickyNavBar {
-  background: rgba(10, 10, 10, 0.95);
+  background: #141414;
   border-bottom: 1px solid #333;
 }
 
@@ -2348,9 +2548,10 @@
 }
 
 .activeTabBtn {
-  background: #0000ff;
-  color: white !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
+  background: transparent;
+  color: #000 !important;
+  box-shadow: none;
+  border-bottom: 2px solid #111;
 }
 
 /* Fade in animation for tab content */
@@ -3349,32 +3550,33 @@
   box-shadow: inset 0 -0.35em 0 rgba(161, 248, 27, 0.55);
 }
 
-/* Sticky tab bar — refined, full-width pill rail */
+/* Sticky tab bar — white bar, black labels */
 .stickyNavBar {
-  background: rgba(255, 255, 255, 0.85);
-  border-bottom: none;
-  box-shadow: 0 6px 24px rgba(0, 0, 255, 0.06);
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: none;
   padding: 8px 0;
 }
 
 .darkMode .stickyNavBar {
-  background: rgba(10, 10, 10, 0.92);
+  background: #141414;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 .navContainer {
-  background: rgba(0, 0, 255, 0.05);
-  border-radius: 999px;
-  padding: 3px;
-  width: max-content;
-  max-width: calc(100% - 40px);
-  gap: 4px;
-  justify-content: flex-start;
-  border: 1px solid rgba(0, 0, 255, 0.08);
+  background: transparent;
+  border-radius: 0;
+  padding: 0 24px;
+  width: 100%;
+  max-width: 1200px;
+  gap: 0;
+  justify-content: center;
+  border: none;
 }
 
 .darkMode .navContainer {
-  background: rgba(161, 248, 27, 0.05);
-  border-color: rgba(161, 248, 27, 0.1);
+  background: transparent;
+  border: none;
 }
 
 .tabBtn,
@@ -3383,20 +3585,20 @@
   font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.2px;
-  border-radius: 999px;
+  border-radius: 0;
   position: relative;
   line-height: 1.1;
 }
 
 .tabBtn:hover {
-  background: rgba(0, 0, 255, 0.08);
-  color: #0000ff;
+  background: rgba(0, 0, 0, 0.04);
+  color: #111;
 }
 
 .activeTabBtn {
-  background: #0000ff;
-  color: #fff !important;
-  box-shadow: 0 8px 22px rgba(0, 0, 255, 0.28);
+  background: transparent;
+  color: #000 !important;
+  box-shadow: none;
 }
 
 .activeTabBtn::after {
@@ -3406,7 +3608,7 @@
   right: 18%;
   bottom: 4px;
   height: 2px;
-  background: #a1f81b;
+  background: #111;
   border-radius: 2px;
   opacity: 0.95;
 }
@@ -3496,6 +3698,114 @@
 .overviewText {
   text-align: left;
   margin: 0;
+}
+
+/* =========================================
+   REUSABLE TWIN-SPHERE WIDGET
+   Used across Hero, Philosophy, Summary, Arch Pillars, Arch Deep
+========================================= */
+
+/* Wrapper: flex row (horizontal) or column (vertical) */
+.twinSpheresWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sphere-gap, -20px);
+  perspective: 1000px;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 255, 0.15));
+}
+
+/* Each sphere shell */
+.twinSphere {
+  position: relative;
+  width: var(--sphere-size, 180px);
+  height: var(--sphere-size, 180px);
+  transform-style: preserve-3d;
+  animation: twinSpinA 20s linear infinite;
+  flex-shrink: 0;
+}
+
+/* Second sphere spins counter-clockwise */
+.twinSphereB {
+  animation-name: twinSpinB;
+  animation-duration: 26s;
+}
+
+/* Meridian lines */
+.twinMeridian {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.2px solid #a1f81b;
+  box-sizing: border-box;
+  transform: rotateX(6deg) rotateY(calc(var(--i) * 9deg));
+  pointer-events: none;
+}
+
+.twinMeridian:nth-child(even) {
+  border-color: rgba(161, 248, 27, 0.45);
+}
+
+@keyframes twinSpinA {
+  from { transform: rotateX(6deg) rotateY(0deg); }
+  to   { transform: rotateX(6deg) rotateY(360deg); }
+}
+
+@keyframes twinSpinB {
+  from { transform: rotateX(6deg) rotateY(0deg); }
+  to   { transform: rotateX(6deg) rotateY(-360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .twinSphere, .twinSphereB { animation: none; }
+}
+
+/* ── Common class for specific slide twin spheres (zero margin/padding) ── */
+.slideSpheres {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 40px 0;
+  opacity: 0.88;
+  background-color: #ffffff;
+}
+
+/* ── Arch Deep (Unified Intelligence Layer) section wrapper ── */
+.archDeepSection {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left background sphere — behind the flow column, shifted down */
+.archDeepSpheresLeft {
+  position: absolute;
+  left: -80px;
+  top: 55%;
+  z-index: 0;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* Right background sphere — behind the principles box, shifted down */
+.archDeepSpheresRight {
+  position: absolute;
+  right: -50px;
+  top: 58%;
+  z-index: 0;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+/* Ensure arch content sits above the background spheres */
+.archDeepSection .deepDiveHeaderBar,
+.archDeepSection .sectionTitle,
+.archDeepSection .serviceSubtitle,
+.archDeepSection .archContainer {
+  position: relative;
+  z-index: 1;
 }
 
 /* =========================================
@@ -3951,4 +4261,278 @@
 .fullPurpleSection.swipeOutSection {
   background-color: var(--section-bg, #0000ff) !important;
   color: white;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOP NAV + MEGA MENU — final overrides (wins over duplicate .tabBtn / .navContainer
+   blocks elsewhere in this file and over theme button styles via data-intelligent-nav)
+   Plain white bar, black text, select-style list panels.
+═══════════════════════════════════════════════════════════════════════════ */
+
+.navItemWrapMega {
+  position: relative;
+}
+
+.megaDropdownWide {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(960px, calc(100vw - 24px));
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: none;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  z-index: 200;
+  animation: megaFadeIn 0.14s ease;
+}
+
+.megaWideInner {
+  padding: 22px 28px 26px;
+}
+
+.megaThreeCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.35fr;
+  gap: 28px 32px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .megaThreeCol {
+    grid-template-columns: 1fr;
+  }
+
+  .megaDropdownWide {
+    width: min(420px, calc(100vw - 24px));
+    left: 0;
+    transform: none;
+  }
+}
+
+.megaMenuCol {
+  min-width: 0;
+}
+
+.megaMenuHeading {
+  margin: 0 0 10px;
+  padding: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0a0a0a;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.megaMenuRule {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.18);
+  margin-bottom: 14px;
+}
+
+.megaMenuSplit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+}
+
+@media (max-width: 900px) {
+  .megaMenuSplit {
+    grid-template-columns: 1fr;
+  }
+}
+
+.megaMenuList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.megaMenuLink {
+  all: unset !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  padding: 8px 10px 8px 12px !important;
+  margin: 0 !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 0.88rem !important;
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+  color: #1a1a1a !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  border-radius: 4px !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: background-color 0.12s ease, color 0.12s ease !important;
+}
+
+.megaMenuLink:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #000 !important;
+}
+
+.megaMenuLinkActive {
+  font-weight: 600 !important;
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #000 !important;
+}
+
+.intelligentPage .stickyNavBar {
+  position: sticky !important;
+  top: 0 !important;
+  /* Below site header (z-index ~999–2000) so language/region popovers aren’t covered */
+  z-index: 150 !important;
+  isolation: isolate !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.darkMode.intelligentPage .stickyNavBar,
+.intelligentPage.darkMode .stickyNavBar {
+  background: #ffffff !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.intelligentPage .navContainer {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 24px !important;
+  gap: 0 !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-shadow: none !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+/* Lift the hovered item above sibling tabs (narrow dropdowns only) */
+.intelligentPage .navItemWrap:hover,
+.intelligentPage .navItemWrap:focus-within {
+  z-index: 50;
+}
+
+.intelligentPage .carouselOuter {
+  position: relative !important;
+  z-index: 0 !important;
+}
+
+.darkMode.intelligentPage .navContainer,
+.intelligentPage.darkMode .navContainer {
+  background: transparent !important;
+}
+
+/* Tab triggers: white field, black label — beats pill-rail rules above */
+.intelligentPage .stickyNavBar .tabBtn {
+  all: unset !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 16px 18px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  color: #111 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  transition: color 0.15s ease, background-color 0.15s ease !important;
+}
+
+.intelligentPage .stickyNavBar .tabBtn:hover {
+  color: #000 !important;
+  background: rgba(0, 0, 0, 0.06) !important;
+}
+
+.darkMode.intelligentPage .stickyNavBar .tabBtn,
+.intelligentPage.darkMode .stickyNavBar .tabBtn {
+  color: #111111 !important;
+  background: transparent !important;
+}
+
+.darkMode.intelligentPage .stickyNavBar .tabBtn:hover,
+.intelligentPage.darkMode .stickyNavBar .tabBtn:hover {
+  color: #000000 !important;
+  background: rgba(0, 0, 0, 0.06) !important;
+}
+
+.intelligentPage .stickyNavBar .activeTabBtn {
+  all: unset !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 16px 18px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  color: #000 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  line-height: 1.2 !important;
+  border-bottom: 2px solid #111 !important;
+  margin-bottom: -1px !important;
+}
+
+.darkMode.intelligentPage .stickyNavBar .activeTabBtn,
+.intelligentPage.darkMode .stickyNavBar .activeTabBtn {
+  color: #000000 !important;
+  border-bottom-color: #111111 !important;
+  background: transparent !important;
+}
+
+.intelligentPage .megaDropdown,
+.intelligentPage .megaDropdownWide {
+  background: #fff !important;
+}
+
+.darkMode.intelligentPage .megaDropdown,
+.darkMode.intelligentPage .megaDropdownWide,
+.intelligentPage.darkMode .megaDropdown,
+.intelligentPage.darkMode .megaDropdownWide {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.darkMode.intelligentPage .megaSectionTitle,
+.darkMode.intelligentPage .megaMenuHeading,
+.intelligentPage.darkMode .megaSectionTitle,
+.intelligentPage.darkMode .megaMenuHeading {
+  color: #111111 !important;
+}
+
+.darkMode.intelligentPage .megaLink,
+.darkMode.intelligentPage .megaMenuLink,
+.intelligentPage.darkMode .megaLink,
+.intelligentPage.darkMode .megaMenuLink {
+  color: #222222 !important;
+}
+
+.darkMode.intelligentPage .megaLink:hover,
+.darkMode.intelligentPage .megaMenuLink:hover,
+.intelligentPage.darkMode .megaLink:hover,
+.intelligentPage.darkMode .megaMenuLink:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #000000 !important;
 }

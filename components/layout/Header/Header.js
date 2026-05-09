@@ -64,7 +64,9 @@ const Header1 = ({
 
   return (
     <>
-      <header className="modern-header">
+      <header
+        className={`modern-header${isIntelligentPage ? " modern-header--intelligent-page" : ""}`}
+      >
         {/* Decorative Top Border */}
         <div className="header__border-top"></div>
 
@@ -125,12 +127,12 @@ const Header1 = ({
                   <>
                     {/* Region Selector */}
                     <div className="header__region-toggle d-none d-md-flex">
-                      <RegionSelector />
+                      <RegionSelector intelligentPage={isIntelligentPage} />
                     </div>
 
                     {/* Language Selector */}
                     <div className="header__language-toggle d-none d-md-flex">
-                      <LanguageSelector />
+                      <LanguageSelector intelligentPage={isIntelligentPage} />
                     </div>
 
                     {/* Theme Toggle */}

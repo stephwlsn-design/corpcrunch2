@@ -735,7 +735,7 @@ a:hover {
 
 /* Global Button Override */
 /* Global Button Override - Updated with better exclusions */
-button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):not([class*="learnMore"]):not([class*="Learn"]):not([class*="actionBtn"]):not([class*="ticketModal"]):not([class*="stripe"]),
+button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):not([class*="learnMore"]):not([class*="Learn"]):not([class*="actionBtn"]):not([class*="ticketModal"]):not([class*="stripe"]):not([data-intelligent-nav]),
 .btn:not(.btn-secondary):not(.btn-outline):not([class*="learnMore"]):not([class*="Learn"]),
 [type="submit"]:not([class*="secondary"]):not([class*="learnMore"]),
 .tg-btn:not([class*="learnMore"]),
@@ -745,7 +745,7 @@ button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not(
   border-color: var(--tg-theme-secondary, #2551e7) !important;
 }
 
-button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):not([class*="learnMore"]):not([class*="Learn"]):not([class*="actionBtn"]):not([class*="ticketModal"]):not([class*="stripe"]):hover,
+button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):not([class*="learnMore"]):not([class*="Learn"]):not([class*="actionBtn"]):not([class*="ticketModal"]):not([class*="stripe"]):not([data-intelligent-nav]):hover,
 .btn:not(.btn-secondary):not(.btn-outline):not([class*="learnMore"]):not([class*="Learn"]):hover,
 [type="submit"]:not([class*="secondary"]):not([class*="learnMore"]):hover,
 .tg-btn:not([class*="learnMore"]):hover,
@@ -874,4 +874,207 @@ button[data-custom-button="true"]:hover {
   background: #ffffff !important;
   color: #000000 !important;
   border-color: #000000 !important;
+}
+
+/* Intelligent Technology page: site header — white bar, dark text (beats main.css borders / theme vars) */
+.modern-header.modern-header--intelligent-page {
+  background-color: #ffffff !important;
+  color: #111111 !important;
+}
+
+.modern-header.modern-header--intelligent-page .header__main {
+  background-color: #ffffff !important;
+}
+
+.modern-header.modern-header--intelligent-page .header__border-top,
+.modern-header.modern-header--intelligent-page .header__border-bottom {
+  background: rgba(0, 0, 0, 0.08) !important;
+  height: 1px !important;
+}
+
+.modern-header.modern-header--intelligent-page .header__actions,
+.modern-header.modern-header--intelligent-page .header__actions a,
+.modern-header.modern-header--intelligent-page .header__actions button,
+.modern-header.modern-header--intelligent-page .header__cta-btn {
+  color: #111111 !important;
+}
+
+/* Undo global “all buttons are blue” rule for header chrome on this page */
+.modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]) {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: rgba(17, 17, 17, 0.2) !important;
+  color: #111111 !important;
+}
+
+.modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]):hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  color: #000000 !important;
+}
+
+.modern-header.modern-header--intelligent-page .header__cta-btn:hover {
+  color: #000000 !important;
+}
+
+/* Language control: header sits outside .intelligent-page-root; match plain text treatment */
+.modern-header.modern-header--intelligent-page .language-selector-btn {
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  color: #111111 !important;
+  box-shadow: none !important;
+}
+
+.modern-header.modern-header--intelligent-page .language-selector-btn:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #000000 !important;
+}
+
+.dark-theme .modern-header.modern-header--intelligent-page .language-selector-btn {
+  color: #e2e8f0 !important;
+}
+
+.dark-theme .modern-header.modern-header--intelligent-page {
+  background-color: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-theme .modern-header.modern-header--intelligent-page .header__main {
+  background-color: #0f172a !important;
+}
+
+.dark-theme .modern-header.modern-header--intelligent-page .header__border-top,
+.dark-theme .modern-header.modern-header--intelligent-page .header__border-bottom {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark-theme .modern-header.modern-header--intelligent-page .header__actions,
+.dark-theme .modern-header.modern-header--intelligent-page .header__actions a,
+.dark-theme .modern-header.modern-header--intelligent-page .header__actions button,
+.dark-theme .modern-header.modern-header--intelligent-page .header__cta-btn {
+  color: #e2e8f0 !important;
+}
+
+.dark-theme .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]) {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: rgba(226, 232, 240, 0.25) !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-theme .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]):hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #f8fafc !important;
+}
+
+/*
+ * Intelligent page — in-page sticky subnav only.
+ * Dedicated hook: nav.cc-intelligent-subnav[data-cc-intelligent-subnav]
+ * Loaded last in _document so this wins over bootstrap/main/theme and CSS-module noise.
+ */
+nav.cc-intelligent-subnav[data-cc-intelligent-subnav] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #111111 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+nav.cc-intelligent-subnav[data-cc-intelligent-subnav] [class*="navContainer"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+nav.cc-intelligent-subnav[data-cc-intelligent-subnav] button[data-intelligent-nav] {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #111111 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+nav.cc-intelligent-subnav[data-cc-intelligent-subnav] button[data-intelligent-nav]:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  color: #000000 !important;
+}
+
+nav.cc-intelligent-subnav[data-cc-intelligent-subnav] button[data-intelligent-nav].cc-intelligent-subnav-active {
+  font-weight: 700 !important;
+  color: #000000 !important;
+  background: transparent !important;
+  border-bottom: 2px solid #111111 !important;
+}
+
+nav.cc-intelligent-subnav[data-cc-intelligent-subnav] .cc-intelligent-subnav-chevron {
+  color: #111111 !important;
+  opacity: 0.55;
+}
+
+nav.cc-intelligent-subnav[data-cc-intelligent-subnav] [class*="megaDropdown"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+nav.cc-intelligent-subnav[data-cc-intelligent-subnav] [class*="megaSectionTitle"] {
+  color: #111111 !important;
+}
+
+nav.cc-intelligent-subnav[data-cc-intelligent-subnav] button[data-intelligent-nav][class*="megaLink"] {
+  color: #222222 !important;
+  background: transparent !important;
+}
+
+nav.cc-intelligent-subnav[data-cc-intelligent-subnav] button[data-intelligent-nav].cc-intelligent-subnav-mega-active {
+  font-weight: 600 !important;
+  color: #000000 !important;
+}
+
+.dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #111111 !important;
+  border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] button[data-intelligent-nav] {
+  color: #111111 !important;
+}
+
+.dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] button[data-intelligent-nav]:hover {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #000000 !important;
+}
+
+.dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] button[data-intelligent-nav].cc-intelligent-subnav-active {
+  color: #000000 !important;
+  border-bottom-color: #111111 !important;
+}
+
+.dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] .cc-intelligent-subnav-chevron {
+  color: #111111 !important;
+}
+
+.dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] [class*="megaDropdown"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] [class*="megaSectionTitle"] {
+  color: #111111 !important;
+}
+
+.dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] button[data-intelligent-nav][class*="megaLink"] {
+  color: #222222 !important;
+}
+
+.dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] button[data-intelligent-nav].cc-intelligent-subnav-mega-active {
+  color: #000000 !important;
 }

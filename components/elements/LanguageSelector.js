@@ -8,7 +8,7 @@ const languages = [
   { code: 'ar', name: 'العربية' },
 ];
 
-export default function LanguageSelector() {
+export default function LanguageSelector({ intelligentPage = false }) {
   const { language, changeLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -53,7 +53,10 @@ export default function LanguageSelector() {
       </button>
 
       {isOpen && (
-        <div className="language-dropdown">
+        <div
+          className="language-dropdown"
+          style={intelligentPage ? { zIndex: 5000 } : undefined}
+        >
           <ul className="language-list">
             {languages.map((lang) => (
               <li key={lang.code}>

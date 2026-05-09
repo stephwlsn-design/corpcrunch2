@@ -21,39 +21,113 @@ function Slide({ children, isHero = false }) {
   );
 }
 
+/* ─────────────────────────────────────────────
+   Reusable twin‑sphere decorative widget
+   orientation: 'vertical' (default) | 'horizontal'
+───────────────────────────────────────────── */
+function TwinSpheres({ className = '', size = 200, gap = -30, orientation = 'vertical', single = false }) {
+  return (
+    <div
+      className={`${styles.twinSpheresWrap} ${className}`}
+      style={{
+        '--sphere-size': `${size}px`,
+        '--sphere-gap': single ? '0px' : `${gap}px`,
+        flexDirection: orientation === 'horizontal' ? 'row' : 'column',
+      }}
+      aria-hidden="true"
+    >
+      <div className={styles.twinSphere}>
+        {Array.from({ length: 20 }).map((_, i) => (
+          <span key={i} className={styles.twinMeridian} style={{ '--i': i }} />
+        ))}
+      </div>
+      {!single && (
+        <div className={`${styles.twinSphere} ${styles.twinSphereB}`}>
+          {Array.from({ length: 20 }).map((_, i) => (
+            <span key={i} className={styles.twinMeridian} style={{ '--i': i }} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function IntelligentPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
   const heroRef = useRef(null);
+
   const navItems = [
-    { id: 'overview', label: 'Overview' },
-    { id: 'arch-pillars', label: 'Architecture' },
-    { id: 'ai-data', label: 'Service Deep-Dives' },
-    { id: 'what-we-do', label: 'Capabilities & Industries' },
-    { id: 'delivery', label: 'Engagement' },
+    { id: 'hero', label: 'Home', sub: [] },
+    {
+      id: 'overview', label: 'Overview',
+      sub: [
+        { id: 'overview', label: 'Company Overview' },
+        { id: 'philosophy', label: 'Core Philosophy' },
+        { id: 'summary', label: 'Executive Summary' },
+        { id: 'portfolio', label: 'Solution Portfolio' },
+      ],
+    },
+    {
+      id: 'arch-pillars', label: 'Architecture',
+      sub: [
+        { id: 'arch-pillars', label: 'Architecture Pillars' },
+        { id: 'arch-deep', label: 'Intelligence Layer' },
+        { id: 'positioning', label: 'Competitive Positioning' },
+      ],
+    },
+    {
+      id: 'ai-data', label: 'Service Deep-Dives',
+      sub: [
+        { id: 'ai-data', label: 'AI & Data Intelligence' },
+        { id: 'cloud-infra', label: 'Cloud & Infrastructure' },
+        { id: 'cybersecurity', label: 'Cybersecurity' },
+        { id: 'finance-risk', label: 'Finance & Risk' },
+        { id: 'digital-eng', label: 'Digital Engineering' },
+        { id: 'emerging-tech', label: 'Emerging Technology' },
+        { id: 'talent', label: 'Talent & Strategy' },
+      ],
+    },
+    {
+      id: 'what-we-do', label: 'Capabilities & Industries',
+      sub: [
+        { id: 'what-we-do', label: 'What We Do' },
+        { id: 'industries', label: 'INDUSTRIES & SECTORS' },
+      ],
+    },
+    {
+      id: 'delivery', label: 'Engagement',
+      sub: [
+        { id: 'delivery', label: 'How We Engage' },
+        { id: 'why-choose', label: 'Why Corp Crunch' },
+      ],
+    },
   ];
 
   /* Slide index → label mapping (19 slides) */
   const slides = [
-    { id: 'hero',           label: 'Hero' },
-    { id: 'overview',       label: 'Overview' },
-    { id: 'philosophy',     label: 'Philosophy' },
-    { id: 'summary',        label: 'Executive Summary' },
-    { id: 'portfolio',      label: 'Portfolio' },
-    { id: 'arch-pillars',   label: 'Architecture Pillars' },
-    { id: 'arch-deep',      label: 'Intelligence Layer' },
-    { id: 'positioning',    label: 'Positioning' },
-    { id: 'ai-data',        label: 'AI & Data' },
-    { id: 'cloud-infra',    label: 'Cloud & Infra' },
-    { id: 'cybersecurity',  label: 'Cybersecurity' },
-    { id: 'finance-risk',   label: 'Finance & Risk' },
-    { id: 'digital-eng',    label: 'Digital Eng.' },
-    { id: 'emerging-tech',  label: 'Emerging Tech' },
-    { id: 'talent',         label: 'Talent & Strategy' },
-    { id: 'what-we-do',     label: 'Capabilities' },
-    { id: 'industries',     label: 'Industries' },
-    { id: 'delivery',       label: 'Engagement' },
-    { id: 'why-choose',     label: 'Why Corp Crunch' },
+    { id: 'hero', label: 'Hero' },
+    { id: 'overview', label: 'Overview' },
+    { id: 'philosophy', label: 'Philosophy' },
+    { id: 'summary', label: 'Executive Summary' },
+    { id: 'portfolio', label: 'Portfolio' },
+    { id: 'arch-pillars', label: 'Architecture Pillars' },
+    { id: 'arch-deep', label: 'Intelligence Layer' },
+    { id: 'positioning', label: 'Positioning' },
+    { id: 'ai-data', label: 'AI & Data' },
+    { id: 'cloud-infra', label: 'Cloud & Infra' },
+    { id: 'cybersecurity', label: 'Cybersecurity' },
+    { id: 'finance-risk', label: 'Finance & Risk' },
+    { id: 'digital-eng', label: 'Digital Eng.' },
+    { id: 'emerging-tech', label: 'Emerging Tech' },
+    { id: 'talent', label: 'Talent & Strategy' },
+    { id: 'what-we-do', label: 'Capabilities' },
+    { id: 'industries', label: 'Industries' },
+    { id: 'delivery', label: 'Engagement' },
+    { id: 'why-choose', label: 'Why Corp Crunch' },
   ];
   const totalSlides = slides.length;
   const getSlideIndex = (id) => slides.findIndex((slide) => slide.id === id);
@@ -71,18 +145,48 @@ export default function IntelligentPage() {
   }, [isDarkMode]);
 
   useEffect(() => {
+    if (isHovered || isPaused) return;
     const autoSlide = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % totalSlides);
     }, 5000);
     return () => clearInterval(autoSlide);
-  }, [totalSlides]);
+  }, [totalSlides, isHovered, isPaused]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => setOpenDropdown(null);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   return (
     <>
       <style jsx global>{`
         .modern-layout { overflow: visible !important; }
-        .modern-layout > .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+        .modern-layout > .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; overflow: visible !important; }
+        .intelligent-page-root { overflow: visible !important; }
         .home-social-ribbon { z-index: 9999 !important; }
+        /* Header sits above in-page sticky nav; neutral chrome (no blue bars) */
+        .modern-header.modern-header--intelligent-page {
+          z-index: 2000 !important;
+          background: #ffffff !important;
+          color: #111 !important;
+        }
+        .modern-header.modern-header--intelligent-page .header__main {
+          background: #ffffff !important;
+        }
+        .modern-header.modern-header--intelligent-page .header__border-top,
+        .modern-header.modern-header--intelligent-page .header__border-bottom {
+          background: rgba(0, 0, 0, 0.08) !important;
+          height: 1px !important;
+        }
+        .modern-header.modern-header--intelligent-page .header__actions {
+          color: #111 !important;
+        }
+        .modern-header.modern-header--intelligent-page .header__actions button,
+        .modern-header.modern-header--intelligent-page .header__actions a {
+          color: #111 !important;
+        }
         /* Force intelligent header logo to be large — overrides all CSS class rules */
         .modern-header .header__logo-centered .corp-crunch-logo .intelligent-header-logo {
           height: 140px !important;
@@ -92,34 +196,244 @@ export default function IntelligentPage() {
         }
         .intelligent-page-root,
         .intelligent-page-root * {
-          --primary: #0000ff; --primary-light: #0000ff; --accent: #a1f81b;
-          --link-color: #0000ff; --tg-theme-primary: #0000ff;
+          --primary: #111111;
+          --primary-light: #333333;
+          --accent: #a1f81b;
+          --link-color: #111111;
+          --tg-theme-primary: #111111;
         }
         .intelligent-page-root .home-social-ribbon .social-share-btn:hover {
-          background: #0000ff !important; color: #ffffff !important;
+          background: #111 !important;
+          color: #ffffff !important;
         }
         .intelligent-page-root .home-social-ribbon .social-share-btn:hover i,
         .intelligent-page-root .home-social-ribbon .social-share-btn:hover span {
           color: #ffffff !important;
         }
+        /* On the intelligent page: make the Language Selector a plain text button (no pink pill) */
+        .intelligent-page-root .language-selector-btn {
+          background: none !important;
+          border: none !important;
+          border-radius: 0 !important;
+          color: #111 !important;
+          padding: 4px 8px !important;
+          font-size: 0.85rem !important;
+          font-weight: 500 !important;
+          box-shadow: none !important;
+          cursor: pointer !important;
+          transition: color 0.15s ease !important;
+        }
+        .intelligent-page-root .language-selector-btn:hover {
+          background: rgba(0, 0, 0, 0.04) !important;
+          color: #000 !important;
+        }
+        .intelligent-page-root .language-selector-btn i {
+          color: #111 !important;
+        }
+        /* In-page sticky nav — white bar, black type */
+        .intelligent-page-top-nav.cc-intelligent-subnav,
+        nav.cc-intelligent-subnav[data-cc-intelligent-subnav] {
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+          color: #111111 !important;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+          box-shadow: none !important;
+          backdrop-filter: none !important;
+        }
+        .dark-theme .intelligent-page-top-nav.cc-intelligent-subnav,
+        .dark-theme nav.cc-intelligent-subnav[data-cc-intelligent-subnav] {
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+          color: #111111 !important;
+          border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+        }
+        .intelligent-page-top-nav [class*="navContainer"] {
+          background: transparent !important;
+        }
+        .intelligent-page-top-nav button[data-intelligent-nav] {
+          background: transparent !important;
+          background-color: transparent !important;
+          color: #111111 !important;
+          border: none !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+        }
+        .intelligent-page-top-nav button[data-intelligent-nav]:hover {
+          background: rgba(0, 0, 0, 0.06) !important;
+          color: #000000 !important;
+        }
+        .dark-theme .intelligent-page-top-nav button[data-intelligent-nav] {
+          color: #111111 !important;
+        }
+        .dark-theme .intelligent-page-top-nav button[data-intelligent-nav]:hover {
+          background: rgba(0, 0, 0, 0.06) !important;
+          color: #000000 !important;
+        }
+        .intelligent-page-top-nav button[data-intelligent-nav].intelligent-page-top-nav-active {
+          font-weight: 700 !important;
+          color: #000000 !important;
+          background: transparent !important;
+          border-bottom: 2px solid #111111 !important;
+        }
+        .dark-theme .intelligent-page-top-nav button[data-intelligent-nav].intelligent-page-top-nav-active {
+          color: #000000 !important;
+          border-bottom-color: #111111 !important;
+          background: transparent !important;
+        }
+        .intelligent-page-top-nav .cc-intelligent-subnav-chevron {
+          color: #111111 !important;
+        }
+        .dark-theme .intelligent-page-top-nav .cc-intelligent-subnav-chevron {
+          color: #111111 !important;
+        }
+        .intelligent-page-top-nav .megaDropdown,
+        .intelligent-page-top-nav [class*="megaDropdown"] {
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+        }
+        .dark-theme .intelligent-page-top-nav .megaDropdown,
+        .dark-theme .intelligent-page-top-nav [class*="megaDropdown"] {
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+        }
+        .intelligent-page-top-nav [class*="megaSectionTitle"] {
+          color: #111111 !important;
+        }
+        .dark-theme .intelligent-page-top-nav [class*="megaSectionTitle"] {
+          color: #f2f2f2 !important;
+        }
+        .intelligent-page-top-nav button[data-intelligent-nav][class*="megaLink"] {
+          color: #333333 !important;
+          background: transparent !important;
+        }
+        .intelligent-page-top-nav button[data-intelligent-nav][class*="megaLink"]:hover {
+          color: #000000 !important;
+        }
+        .intelligent-page-top-nav button[data-intelligent-nav].intelligent-page-top-nav-mega-active {
+          color: #000000 !important;
+          font-weight: 600 !important;
+        }
+        .dark-theme .intelligent-page-top-nav button[data-intelligent-nav][class*="megaLink"] {
+          color: #dddddd !important;
+        }
       `}</style>
 
       <Layout headTitle="Intelligent Technology Solutions - Corp Crunch" hideCategoryNavigation hideFooter>
-        <div className={`${styles.intelligentPage} ${isDarkMode ? styles.darkMode : styles.lightMode} intelligent-page-root`}>
-          <nav className={styles.stickyNavBar} aria-label="Intelligent page navigation">
+        <div className={`${styles.intelligentPage} ${isDarkMode ? styles.darkMode : ''} intelligent-page-root`}>
+          {/* ─── In-page sticky subnav ─── */}
+          {/* Inline styles are used here because the global "all buttons = blue"
+              rule in modern-overrides.css uses !important. Inline styles on the
+              nav and buttons win over every external stylesheet rule. */}
+          <nav
+            className={`${styles.stickyNavBar} intelligent-page-top-nav cc-intelligent-subnav`}
+            data-cc-intelligent-subnav="true"
+            aria-label="Intelligent page navigation"
+            style={{
+              background: '#ffffff',
+              backgroundColor: '#ffffff',
+              color: '#111111',
+              boxShadow: 'none',
+              borderBottom: '1px solid rgba(0,0,0,0.1)',
+              backdropFilter: 'none',
+            }}
+          >
+            {/* ── Nav items row ── */}
             <div className={styles.navContainer}>
               {navItems.map((item) => {
                 const slideIndex = getSlideIndex(item.id);
-                const isActive = activeSlide === slideIndex;
+                const isActive = activeSlide === slideIndex ||
+                  (item.sub && item.sub.some(s => activeSlide === getSlideIndex(s.id)));
+                const hasSub = item.sub && item.sub.length > 0;
+                const isOpen = openDropdown === item.id;
                 return (
-                  <button
+                  <div
                     key={item.id}
-                    type="button"
-                    className={isActive ? styles.activeTabBtn : styles.tabBtn}
-                    onClick={() => setActiveSlide(slideIndex)}
+                    className={styles.navItemWrap}
+                    onMouseEnter={() => hasSub && setOpenDropdown(item.id)}
+                    onMouseLeave={() => setOpenDropdown(null)}
                   >
-                    {item.label}
-                  </button>
+                    <button
+                      type="button"
+                      data-intelligent-nav="true"
+                      className={`${styles.tabBtn} ${isActive ? styles.activeTabBtn : ''} ${isActive ? 'intelligent-page-top-nav-active cc-intelligent-subnav-active' : ''}`}
+                      style={{
+                        background: 'transparent',
+                        backgroundColor: 'transparent',
+                        color: '#111111',
+                        border: 'none',
+                        borderRadius: '0',
+                        boxShadow: 'none',
+                        fontFamily: 'Inter, system-ui, sans-serif',
+                        fontSize: '0.9rem',
+                        fontWeight: isActive ? '700' : '500',
+                        padding: '18px 20px',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        borderBottom: isActive ? '2px solid #111111' : 'none',
+                        marginBottom: isActive ? '-1px' : '0',
+                        transition: 'color 0.15s ease',
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveSlide(slideIndex);
+                        setOpenDropdown(null);
+                      }}
+                    >
+                      {item.label}
+                      {hasSub && (
+                        <span
+                          className={`${styles.dropChevron} cc-intelligent-subnav-chevron`}
+                          style={{ color: '#111111', opacity: 0.55, fontSize: '0.52rem' }}
+                        >
+                          {isOpen ? '▴' : '▾'}
+                        </span>
+                      )}
+                    </button>
+
+                    {hasSub && isOpen && (
+                      <div
+                        className={styles.megaDropdown}
+                        onMouseEnter={() => setOpenDropdown(item.id)}
+                        onMouseLeave={() => setOpenDropdown(null)}
+                      >
+                        <div className={styles.megaInner}>
+                          <div className={styles.megaSection}>
+                            <p className={styles.megaSectionTitle}>{item.label}</p>
+                            <div className={styles.megaDivider} />
+                            <div className={styles.megaGrid}>
+                              {item.sub.map((s) => (
+                                <button
+                                  key={s.id}
+                                  type="button"
+                                  data-intelligent-nav="true"
+                                  className={`${styles.megaLink} ${activeSlide === getSlideIndex(s.id) ? styles.megaLinkActive : ''} ${activeSlide === getSlideIndex(s.id) ? 'intelligent-page-top-nav-mega-active cc-intelligent-subnav-mega-active' : ''}`}
+                                  style={{
+                                    background: 'transparent',
+                                    backgroundColor: 'transparent',
+                                    color: activeSlide === getSlideIndex(s.id) ? '#000000' : '#333333',
+                                    border: 'none',
+                                    boxShadow: 'none',
+                                    fontWeight: activeSlide === getSlideIndex(s.id) ? '600' : '400',
+                                    cursor: 'pointer',
+                                  }}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveSlide(getSlideIndex(s.id));
+                                    setOpenDropdown(null);
+                                  }}
+                                >
+                                  {s.label}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
@@ -131,6 +445,8 @@ export default function IntelligentPage() {
             <div
               className={styles.carouselTrack}
               style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
             >
 
               {/* ── 0: HERO ── */}
@@ -158,6 +474,10 @@ export default function IntelligentPage() {
                     </div>
                   </div>
                 </section>
+                {/* ── SPHERES GAP ── */}
+                <div className={styles.slideSpheres}>
+                  <TwinSpheres size={210} gap={-5} orientation="vertical" />
+                </div>
               </Slide>
 
               {/* ── 1: COMPANY OVERVIEW ── */}
@@ -191,6 +511,10 @@ export default function IntelligentPage() {
                     </div>
                   </div>
                 </section>
+                {/* ── SPHERES GAP ── */}
+                <div className={styles.slideSpheres}>
+                  <TwinSpheres size={190} gap={-15} orientation="vertical" />
+                </div>
               </Slide>
 
               {/* ── 2: CORE PHILOSOPHY ── */}
@@ -214,6 +538,10 @@ export default function IntelligentPage() {
                     </div>
                   </div>
                 </section>
+                {/* ── SPHERES GAP ── */}
+                <div className={styles.slideSpheres}>
+                  <TwinSpheres size={220} gap={-5} orientation="vertical" />
+                </div>
               </Slide>
 
               {/* ── 3: EXECUTIVE SUMMARY ── */}
@@ -236,6 +564,10 @@ export default function IntelligentPage() {
                     <div className={styles.statCard}><h4>&lt;1ms</h4><p>Real-time pipeline latency</p></div>
                   </div>
                 </section>
+                {/* ── SPHERES GAP ── */}
+                <div className={styles.slideSpheres}>
+                  <TwinSpheres size={210} gap={-5} orientation="vertical" />
+                </div>
               </Slide>
 
               {/* ── 4: SOLUTION PORTFOLIO ── */}
@@ -278,6 +610,10 @@ export default function IntelligentPage() {
                     </div>
                   </div>
                 </section>
+                {/* ── SPHERES GAP ── */}
+                <div className={styles.slideSpheres}>
+                  <TwinSpheres size={210} gap={-5} orientation="vertical" />
+                </div>
               </Slide>
 
               {/* ── 5: ARCHITECTURE PILLARS ── */}
@@ -293,11 +629,15 @@ export default function IntelligentPage() {
                     <div className={styles.gridItem}><div className={styles.gridArrow} style={{ color: '#ccc' }}>↗</div><h3>Continuous Learning ML Pipelines</h3><p>Implements self-improving machine learning workflows that evolve with new data, continuously enhancing performance and predictive accuracy.</p></div>
                   </div>
                 </section>
+                {/* ── SPHERES GAP ── */}
+                <div className={styles.slideSpheres}>
+                  <TwinSpheres size={210} gap={-5} orientation="vertical" />
+                </div>
               </Slide>
 
               {/* ── 6: UNIFIED INTELLIGENCE LAYER ── */}
               <Slide>
-                <section id="arch-deep" className={styles.section}>
+                <section id="arch-deep" className={`${styles.section} ${styles.archDeepSection}`}>
                   <div className={styles.deepDiveHeaderBar}>
                     <div className={styles.pillLeft}>ARCHITECTURE</div>
                     <div className={styles.pillRight}>Corp Crunch™</div>
@@ -321,6 +661,10 @@ export default function IntelligentPage() {
                     </div>
                   </div>
                 </section>
+                {/* ── SPHERES GAP ── */}
+                <div className={styles.slideSpheres}>
+                  <TwinSpheres size={210} gap={-5} orientation="vertical" />
+                </div>
               </Slide>
 
               {/* ── 7: COMPETITIVE POSITIONING ── */}
@@ -641,6 +985,10 @@ export default function IntelligentPage() {
                     <button className={styles.ctaButton}>Request a Briefing →</button>
                   </div>
                 </section>
+                {/* ── SPHERES GAP ── */}
+                <div className={styles.slideSpheres}>
+                  <TwinSpheres size={210} gap={-5} orientation="vertical" />
+                </div>
               </Slide>
 
             </div>{/* end carouselTrack */}
@@ -651,10 +999,11 @@ export default function IntelligentPage() {
                 <button
                   key={slide.id}
                   type="button"
+                  data-intelligent-nav="true"
                   aria-label={`Go to ${slide.label}`}
                   title={slide.label}
                   className={`${styles.dot} ${activeSlide === idx ? styles.dotActive : ''}`}
-                  onClick={() => setActiveSlide(idx)}
+                  onClick={() => { setActiveSlide(idx); setIsPaused(true); }}
                 />
               ))}
             </div>
@@ -666,6 +1015,8 @@ export default function IntelligentPage() {
             </div>
 
           </div>{/* end carouselOuter */}
+
+
 
           {/* ── FOOTER ── */}
           <section id="footer-contact" className={styles.footerContactSection}>
