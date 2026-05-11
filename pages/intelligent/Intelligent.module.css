@@ -119,6 +119,9 @@
   flex-shrink: 0;
   /* Ensure dropdown overflows visibly */
   overflow: visible;
+  /* Creates a small hover bridge to the dropdown */
+  padding-bottom: 8px;
+  margin-bottom: -8px;
 }
 
 /* ── Plain text nav button ── override global button styles with !important ──
@@ -193,7 +196,7 @@
 /* ══ COMPACT VERTICAL-LIST DROPDOWN PANEL ══ */
 .megaDropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   left: 0;
   width: 260px;
   background: #ffffff;
@@ -569,11 +572,12 @@
 .heroSection {
   position: relative;
   width: 100%;
-  min-height: 112vh;
+  min-height: 95vh;
   background: #0000ff;
   overflow: hidden;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Subtle vignette overlay */
@@ -721,10 +725,11 @@
 .heroContent {
   position: relative;
   z-index: 10;
-  padding: 0 5% 80px;
+  padding: 0 40px 80px;
   color: white;
   max-width: 1200px;
   width: 100%;
+  margin: 0 auto;
 }
 
 .heroMainGrid {
@@ -741,7 +746,7 @@
 .arrowIcon {
   font-size: 3.5rem;
   font-weight: 300;
-  margin-bottom: 16px;
+  margin-bottom: 0px;
   opacity: 0.9;
   line-height: 1;
 }
@@ -754,6 +759,8 @@
   letter-spacing: -1px;
   color: #fff;
   white-space: nowrap;
+  position: relative;
+  z-index: 10;
 }
 
 .heroTitle span {
@@ -768,14 +775,16 @@
 .heroLogoLockup {
   display: inline-flex;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: -120px;
   opacity: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .heroLogoLockup img {
   display: block;
   max-width: 100%;
-  width: min(900px, 85vw);
+  width: 1120px;
   height: auto;
 }
 
@@ -787,6 +796,8 @@
   margin-top: 8px;
   padding-top: 18px;
   border-top: 1px solid rgba(255, 255, 255, 0.22);
+  position: relative;
+  z-index: 10;
 }
 
 .heroSwipeControls {
@@ -2322,13 +2333,34 @@
   font-size: 6rem;
   font-weight: 400;
   letter-spacing: -2px;
-  margin-bottom: 10px;
+  margin-bottom: 0;
   line-height: 1;
+}
+
+.brandTitleWithLogo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  line-height: 0;
+  font-size: 0;
+  margin-top: 0;
+}
+
+.inlineIntelligentLogo {
+  width: clamp(170px, 22vw, 340px);
+  height: auto;
+  object-fit: contain;
+}
+
+.footerLogoTitle .inlineIntelligentLogo {
+  width: clamp(160px, 18vw, 260px);
 }
 
 .hugeSubtitle {
   font-size: 1.5rem;
   color: #333;
+  margin-top: 0;
   margin-bottom: 60px;
 }
 
@@ -2441,11 +2473,12 @@
 .footerLogoTitle {
   font-size: 2.5rem;
   font-weight: 400;
-  margin-bottom: 5px;
+  margin-bottom: 0;
 }
 
 .footerLogoSub {
   font-size: 1.1rem;
+  margin-top: 0;
   margin-bottom: 50px;
   color: #555;
 }

@@ -62,6 +62,7 @@ export default function IntelligentPage() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isClient, setIsClient] = useState(false);
   const heroRef = useRef(null);
+  const dropdownCloseTimerRef = useRef(null);
 
   const navItems = [
     { id: 'hero', label: 'Home', sub: [] },
@@ -98,7 +99,7 @@ export default function IntelligentPage() {
       id: 'what-we-do', label: 'Capabilities & Industries',
       sub: [
         { id: 'what-we-do', label: 'What We Do' },
-        { id: 'industries', label: 'INDUSTRIES & SECTORS' },
+        { id: 'industries', label: 'Industries & Sectors' },
       ],
     },
     {
@@ -166,8 +167,32 @@ export default function IntelligentPage() {
   useEffect(() => {
     const handleClickOutside = () => setOpenDropdown(null);
     document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      if (dropdownCloseTimerRef.current) {
+        clearTimeout(dropdownCloseTimerRef.current);
+      }
+    };
   }, []);
+
+  const openDropdownMenu = (menuId, hasSubmenu) => {
+    if (!hasSubmenu) return;
+    if (dropdownCloseTimerRef.current) {
+      clearTimeout(dropdownCloseTimerRef.current);
+      dropdownCloseTimerRef.current = null;
+    }
+    setOpenDropdown(menuId);
+  };
+
+  const closeDropdownMenu = () => {
+    if (dropdownCloseTimerRef.current) {
+      clearTimeout(dropdownCloseTimerRef.current);
+    }
+    dropdownCloseTimerRef.current = setTimeout(() => {
+      setOpenDropdown(null);
+      dropdownCloseTimerRef.current = null;
+    }, 160);
+  };
 
   return (
     <>
@@ -433,8 +458,8 @@ export default function IntelligentPage() {
                     <div
                       key={item.id}
                       className={styles.navItemWrap}
-                      onMouseEnter={() => hasSub && setOpenDropdown(item.id)}
-                      onMouseLeave={() => setOpenDropdown(null)}
+                      onMouseEnter={() => openDropdownMenu(item.id, hasSub)}
+                      onMouseLeave={closeDropdownMenu}
                     >
                       <button
                         type="button"
@@ -462,8 +487,8 @@ export default function IntelligentPage() {
                         <div
                           className={`${styles.megaDropdown} intelligent-v4-dropdown`}
                           style={{ background: '#ffffff', backgroundColor: '#ffffff' }}
-                          onMouseEnter={() => setOpenDropdown(item.id)}
-                          onMouseLeave={() => setOpenDropdown(null)}
+                          onMouseEnter={() => openDropdownMenu(item.id, true)}
+                          onMouseLeave={closeDropdownMenu}
                         >
                           <div className={styles.megaInner}>
                             <div className={styles.megaSection}>
@@ -517,7 +542,7 @@ export default function IntelligentPage() {
                             <Image
                               src="/assets/img/logo/Intelligent_Technology_Solutions.png"
                               alt="Intelligent Technology Solutions"
-                              width={900} height={300} priority
+                              width={1120} height={215} priority
                             />
                           </div>
                           <h1 className={styles.heroTitle}>Intelligent Technology Solutions</h1>
@@ -1087,7 +1112,15 @@ export default function IntelligentPage() {
                 {/* ── 18: WHY CORP CRUNCH ── */}
                 <Slide>
                   <section id="why-choose" className={styles.section}>
-                    <h2 className={styles.hugeTitle}>Corp Crunch™</h2>
+                    <h2 className={`${styles.hugeTitle} ${styles.brandTitleWithLogo}`}>
+                      <Image
+                        src="/assets/img/logo/Intelligent_Technology_Solutions_Header.png"
+                        alt="Intelligent Technology Solutions logo"
+                        width={340}
+                        height={65}
+                        className={styles.inlineIntelligentLogo}
+                      />
+                    </h2>
                     <p className={styles.hugeSubtitle}>Why the World&apos;s Most Demanding Enterprises Choose Intelligent Technology</p>
                     <div className={styles.grid3x1}>
                       <div className={`${styles.whyCard} ${styles.bgPurple}`}><div className={styles.whyHeader}><span className={styles.numBadge}>1</span><h3>Faster Decisions</h3></div><p>Real-time data orchestration and predictive analytics compress decision cycles from days to milliseconds.</p></div>
@@ -1158,7 +1191,15 @@ export default function IntelligentPage() {
             <section id="footer-contact" className={styles.footerContactSection}>
               <div className={styles.footerGrid}>
                 <div className={styles.footerColWhite}>
-                  <h2 className={styles.footerLogoTitle}>Corp Crunch™</h2>
+                  <h2 className={`${styles.footerLogoTitle} ${styles.brandTitleWithLogo}`}>
+                    <Image
+                      src="/assets/img/logo/Intelligent_Technology_Solutions_Header.png"
+                      alt="Intelligent Technology Solutions logo"
+                      width={260}
+                      height={50}
+                      className={styles.inlineIntelligentLogo}
+                    />
+                  </h2>
                   <p className={styles.footerLogoSub}>Intelligent Tech Solutions</p>
                   <div className={styles.contactItem}><div className={`${styles.contactLine} ${styles.lineDark}`}></div><div><strong>Phone</strong><p>+971 589 452 396 /<br />+91 7769 892 323</p></div></div>
                   <div className={styles.contactItem}><div className={`${styles.contactLine} ${styles.linePurple}`}></div><div><strong>Email</strong><p>founder@corpcrunch.io<br />scoop@corpcrunch.io</p></div></div>
