@@ -775,7 +775,7 @@
 .heroLogoLockup img {
   display: block;
   max-width: 100%;
-  width: min(560px, 90vw);
+  width: min(900px, 85vw);
   height: auto;
 }
 
@@ -1959,11 +1959,13 @@
   align-items: center;
   gap: 30px;
   margin-bottom: 80px;
+  color: white;
 }
 
 .wwdHeader h2 {
   font-size: 3rem;
   font-weight: 400;
+  color: #ffffff !important;
 }
 
 .circleArrowBtn {
@@ -1991,6 +1993,7 @@
   margin-bottom: 30px;
   padding-bottom: 20px;
   border-bottom: 2px solid white;
+  color: #ffffff !important;
 }
 
 .wwdList {
@@ -3865,7 +3868,8 @@
   align-items: center;
   margin: 0;
   padding: 60px 0;
-  background-color: #ffffff; /* Consider a darker background like #0a0b10 for better visibility */
+  background-color: #ffffff;
+  /* Consider a darker background like #0a0b10 for better visibility */
   overflow: hidden;
 }
 
@@ -3912,10 +3916,7 @@
   border: 3px solid #a1f81b;
   border-radius: 999px;
   transform:
-    translate(-50%, -50%)
-    translateX(calc(var(--dir) * (var(--i) * 22px)))
-    rotateY(var(--facing))
-    scale(0.84);
+    translate(-50%, -50%) translateX(calc(var(--dir) * (var(--i) * 22px))) rotateY(var(--facing)) scale(0.84);
   box-sizing: border-box;
   opacity: calc(1 - (var(--i) * 0.025));
   /* Only horizontal flow animation */
@@ -3927,28 +3928,19 @@
 @keyframes heroConeLineFlowHorizontal {
   0% {
     transform:
-      translate(-50%, -50%)
-      translateX(calc(var(--dir) * ((var(--i) * 22px) - 20px)))
-      rotateY(var(--facing))
-      scale(0.72);
+      translate(-50%, -50%) translateX(calc(var(--dir) * ((var(--i) * 22px) - 20px))) rotateY(var(--facing)) scale(0.72);
     opacity: calc(0.5 - (var(--i) * 0.015));
   }
 
   35% {
     transform:
-      translate(-50%, -50%)
-      translateX(calc(var(--dir) * ((var(--i) * 22px) + 8px)))
-      rotateY(var(--facing))
-      scale(0.9);
+      translate(-50%, -50%) translateX(calc(var(--dir) * ((var(--i) * 22px) + 8px))) rotateY(var(--facing)) scale(0.9);
     opacity: calc(1 - (var(--i) * 0.025));
   }
 
   100% {
     transform:
-      translate(-50%, -50%)
-      translateX(calc(var(--dir) * ((var(--i) * 22px) + 36px)))
-      rotateY(var(--facing))
-      scale(1.12);
+      translate(-50%, -50%) translateX(calc(var(--dir) * ((var(--i) * 22px) + 36px))) rotateY(var(--facing)) scale(1.12);
     opacity: calc(0.1 - (var(--i) * 0.005));
   }
 }
@@ -3974,10 +3966,7 @@
     height: var(--ring-size);
     border-width: 2px;
     transform:
-      translate(-50%, -50%)
-      translateX(calc(var(--dir) * (var(--i) * 14px)))
-      rotateY(var(--facing))
-      scale(0.86);
+      translate(-50%, -50%) translateX(calc(var(--dir) * (var(--i) * 14px))) rotateY(var(--facing)) scale(0.86);
   }
 }
 
@@ -3986,6 +3975,7 @@
     animation: none;
   }
 }
+
 /* ── Arch Deep (Unified Intelligence Layer) section wrapper ── */
 .archDeepSection {
   position: relative;
