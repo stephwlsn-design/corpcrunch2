@@ -389,6 +389,35 @@ export default function IntelligentPage() {
           border-radius: 8px !important;
           box-shadow: 0 2px 10px rgba(37, 81, 231, 0.5) !important;
         }
+        /* Hero slide only: white dots on blue background */
+        .intelligent-page-root .intelligent-carousel-dots-nav.carousel-dots-hero-mode button.intelligent-carousel-dot-exempt[data-intelligent-nav="true"]::before {
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+        }
+        .intelligent-page-root .intelligent-carousel-dots-nav.carousel-dots-hero-mode button.intelligent-carousel-dot-exempt[data-intelligent-nav="true"]:hover::before {
+          background: rgba(255, 255, 255, 0.88) !important;
+          background-color: rgba(255, 255, 255, 0.88) !important;
+        }
+        .intelligent-page-root .intelligent-carousel-dots-nav.carousel-dots-hero-mode button.intelligent-carousel-dot-exempt.intelligent-carousel-dot-active[data-intelligent-nav="true"]::before,
+        .intelligent-page-root .intelligent-carousel-dots-nav.carousel-dots-hero-mode button.intelligent-carousel-dot-exempt[data-intelligent-nav="true"][class*="dotActive"]::before {
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+          box-shadow: 0 2px 12px rgba(255, 255, 255, 0.45) !important;
+        }
+        html body.dark-theme .intelligent-page-root .intelligent-carousel-dots-nav.carousel-dots-hero-mode button.intelligent-carousel-dot-exempt[data-intelligent-nav="true"]::before {
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+        }
+        html body.dark-theme .intelligent-page-root .intelligent-carousel-dots-nav.carousel-dots-hero-mode button.intelligent-carousel-dot-exempt[data-intelligent-nav="true"]:hover::before {
+          background: rgba(255, 255, 255, 0.88) !important;
+          background-color: rgba(255, 255, 255, 0.88) !important;
+        }
+        html body.dark-theme .intelligent-page-root .intelligent-carousel-dots-nav.carousel-dots-hero-mode button.intelligent-carousel-dot-exempt.intelligent-carousel-dot-active[data-intelligent-nav="true"]::before,
+        html body.dark-theme .intelligent-page-root .intelligent-carousel-dots-nav.carousel-dots-hero-mode button.intelligent-carousel-dot-exempt[data-intelligent-nav="true"][class*="dotActive"]::before {
+          background: #ffffff !important;
+          background-color: #ffffff !important;
+          box-shadow: 0 2px 12px rgba(255, 255, 255, 0.45) !important;
+        }
         /* Do not target carousel dots: they use data-intelligent-nav and need non-transparent fills */
         .dark-theme .intelligent-page-root button:not([data-intelligent-nav="true"]),
         .dark-theme nav[data-intelligent-v4-nav-root="true"] button {
@@ -1144,7 +1173,9 @@ export default function IntelligentPage() {
               </div>{/* end carouselTrack */}
 
               {/* ── DOTS NAVIGATION (19 slides) ── */}
-              <div className={`intelligent-carousel-dots-nav ${styles.carouselDots}`}>
+              <div
+                className={`intelligent-carousel-dots-nav ${styles.carouselDots} ${activeSlide === 0 ? `${styles.carouselDotsHero} carousel-dots-hero-mode` : ''}`}
+              >
                 {slides.map((slide, idx) => (
                   <button
                     key={slide.id}

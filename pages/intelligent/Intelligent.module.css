@@ -744,11 +744,14 @@
 }
 
 .arrowIcon {
-  font-size: 3.5rem;
+  font-size: clamp(4.5rem, 10vw, 8rem);
   font-weight: 300;
-  margin-bottom: 0px;
+  margin-top: 18px;
+  margin-bottom: -48px;
   opacity: 0.9;
-  line-height: 1;
+  line-height: 0.9;
+  position: relative;
+  z-index: 4;
 }
 
 .heroTitle {
@@ -773,19 +776,23 @@
 }
 
 .heroLogoLockup {
-  display: inline-flex;
-  align-items: center;
+  display: block;
+  margin-top: -28px;
   margin-bottom: -120px;
+  margin-left: -18px;
   opacity: 1;
   position: relative;
-  z-index: 1;
+  z-index: 3;
+  width: 100%;
+  max-width: calc(100% + 18px);
 }
 
+/* Full hero column width (1200px rail − 80px padding = 1120px) so logo runs to ~“Engagement” end */
 .heroLogoLockup img {
   display: block;
-  max-width: 100%;
-  width: 1120px;
+  width: 100%;
   height: auto;
+  max-width: min(1120px, 100%);
 }
 
 .heroBadges {
@@ -994,6 +1001,16 @@
 
   .heroContent {
     padding: 0 6% 60px;
+  }
+
+  .heroLogoLockup {
+    margin-top: -16px;
+  }
+
+  .arrowIcon {
+    font-size: clamp(3.75rem, 12vw, 5.5rem);
+    margin-top: 12px;
+    margin-bottom: -28px;
   }
 }
 
@@ -4878,4 +4895,30 @@
 .intelligentPage .carouselDots .dotActive::before {
   background: #2551e7 !important;
   background-color: #2551e7 !important;
+}
+
+/* Hero slide: light rail behind white dots */
+.carouselDotsHero {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.intelligentPage .carouselDotsHero .dot::before {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+.intelligentPage .carouselDotsHero .dot:hover::before {
+  background: rgba(255, 255, 255, 0.88) !important;
+  background-color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.intelligentPage .carouselDotsHero .dotActive::before {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.45) !important;
+}
+
+.intelligentPage .carouselDotsHero .dotActive:hover::before {
+  background: rgba(255, 255, 255, 0.92) !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
 }

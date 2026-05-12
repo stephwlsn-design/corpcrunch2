@@ -30,7 +30,7 @@
 .cylinderWrap {
   position: relative;
   width: var(--ring-width);
-  height: 340px; /* Visible height of the whole tube */
+  height: 420px; /* Visible height of the whole tube */
   overflow: hidden;
 
   /* Fades out the top to transparent, keeps bottom fully opaque */
@@ -93,7 +93,7 @@
     --ring-overlap: 30px;
   }
   .cylinderWrap {
-    height: 260px;
+    height: 340px;
   }
 }
 
