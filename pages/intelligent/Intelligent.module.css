@@ -4922,3 +4922,419 @@
   background: rgba(255, 255, 255, 0.92) !important;
   background-color: rgba(255, 255, 255, 0.92) !important;
 }
+
+/* ── Tech Products (Sustainability + FinTech) ── */
+.techProductsSection {
+  padding-top: 0;
+}
+
+.techProductsHero {
+  position: relative;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  width: 100vw;
+  max-width: 100vw;
+  min-height: 520px;
+  padding: 56px calc(50vw - 50% + 40px) 64px;
+  margin-bottom: 64px;
+  overflow: hidden;
+}
+
+.techProductsHeroBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.techProductsHeroBgLayer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.1s ease-in-out;
+  will-change: opacity;
+}
+
+.techProductsHeroBgLayerActive {
+  opacity: 1;
+}
+
+.techProductsHeroBgImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.techProductsHeroOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(8, 12, 28, 0.42) 0%, rgba(8, 12, 28, 0.58) 55%, rgba(255, 255, 255, 0.92) 100%);
+  pointer-events: none;
+}
+
+.techProductsHeroContent {
+  position: relative;
+  z-index: 2;
+}
+
+.techProductsGlobe {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.techProductsGlobe .lineSphereWrap {
+  transform: scale(1.05);
+  filter: drop-shadow(0 18px 48px rgba(161, 248, 27, 0.22));
+}
+
+.techProductsGlobe .lineMeridian {
+  border-color: #a1f81b;
+}
+
+.techProductsStatsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  text-align: left;
+  position: relative;
+  z-index: 2;
+}
+
+.techProductsHero .techStatItem h4 {
+  font-size: 3rem;
+  font-weight: 500;
+  margin: 0 0 8px;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.techProductsHero .techStatItem strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.techProductsHero .techStatItem p {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.techStatItem h4 {
+  font-size: 3rem;
+  font-weight: 500;
+  margin: 0 0 8px;
+  line-height: 1;
+  color: #111;
+}
+
+.techStatItem strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.techStatItem p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.sustainabilityFeature {
+  margin-bottom: 72px;
+}
+
+.sustainabilitySplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 0;
+  align-items: stretch;
+  margin-top: 28px;
+}
+
+.sustainabilityVisual {
+  min-height: 420px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #e8edf2;
+}
+
+.sustainabilityStoryBox {
+  background: #111;
+  color: #fff;
+  padding: 48px 44px;
+  margin-left: -48px;
+  align-self: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+}
+
+.sustainabilityKicker {
+  color: #0000ff;
+  font-size: 0.8rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+.sustainabilityTitle {
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0 0 20px;
+  color: #fff !important;
+}
+
+.sustainabilityDesc {
+  color: rgba(255, 255, 255, 0.82) !important;
+  line-height: 1.65;
+  margin: 0 0 20px;
+  font-size: 0.98rem;
+}
+
+.sustainabilityList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+}
+
+.sustainabilityList li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.sustainabilityList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0000ff;
+}
+
+.sustainabilityCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0000ff;
+  color: #fff !important;
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sustainabilityCta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 255, 0.28);
+  color: #fff !important;
+}
+
+.sustainabilityCtaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.sustainabilityInquiryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #0000ff;
+  background: transparent;
+  color: #fff !important;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.sustainabilityInquiryBtn:hover {
+  transform: translateY(-2px);
+  background: rgba(0, 0, 255, 0.06);
+  box-shadow: 0 8px 20px rgba(0, 0, 255, 0.12);
+  color: #fff !important;
+}
+
+.fintechProductsBlock {
+  background: #f4f5f7;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 64px calc(50vw - 50% + 40px) 72px;
+}
+
+.techProductsHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: end;
+  margin-bottom: 40px;
+}
+
+.techProductsIntro {
+  color: #555;
+  line-height: 1.65;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.techProductsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.techProductCard {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 4px;
+  padding: 32px 28px 28px;
+  color: #111;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  min-height: 260px;
+}
+
+.techProductCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
+  border-color: rgba(0, 0, 255, 0.25);
+}
+
+.techProductIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 1.25rem;
+  color: #0000ff;
+  margin-bottom: 18px;
+}
+
+.techProductCard h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+  line-height: 1.3;
+}
+
+.techProductTagline {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #0000ff !important;
+  margin: 0 0 14px;
+}
+
+.techProductDesc {
+  flex: 1;
+  color: #666 !important;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+
+.techProductLink {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0000ff !important;
+  text-decoration: none;
+}
+
+.techProductLink:hover {
+  text-decoration: underline;
+}
+
+.techProductActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: center;
+  margin-top: auto;
+}
+
+.techProductInquiryBtn {
+  border: 1px solid #0000ff;
+  background: transparent;
+  color: #0000ff !important;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.techProductInquiryBtn:hover {
+  transform: translateY(-1px);
+  background: rgba(0, 0, 255, 0.06);
+  box-shadow: 0 6px 16px rgba(0, 0, 255, 0.1);
+}
+
+@media (max-width: 1024px) {
+  .techProductsStatsGrid,
+  .techProductsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .techProductsHeader,
+  .sustainabilitySplit {
+    grid-template-columns: 1fr;
+  }
+
+  .sustainabilityStoryBox {
+    margin-left: 0;
+    margin-top: -32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .techProductsStatsGrid,
+  .techProductsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .techProductsHero {
+    padding-left: 24px;
+    padding-right: 24px;
+    min-height: 460px;
+  }
+
+  .fintechProductsBlock {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .sustainabilityStoryBox {
+    padding: 32px 24px;
+  }
+
+  .techStatItem h4 {
+    font-size: 2.4rem;
+  }
+}

@@ -23,6 +23,13 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { LocationProvider } from "@/contexts/LocationContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { SiteUrlProvider } from "@/contexts/SiteUrlContext";
+import { CookieConsentProvider, useCookieConsent } from "@/contexts/CookieConsentContext";
+import CookieConsentBanner from "@/components/elements/CookieConsentBanner";
+import { resolveSiteBaseUrl } from "@/lib/siteUrl";
+import { trackPageView } from "@/lib/clientVisitorTracking";
+import { trackOttoPageView } from "@/lib/ottoVisitorTracking";
+import { enableGoogleAnalytics } from "@/lib/cookieConsent";
 
 // Create QueryClient with proper configuration
 const queryClient = new QueryClient({
@@ -39,10 +46,18 @@ const queryClient = new QueryClient({
   },
 });
 
-function MyApp({ Component, pageProps }) {
+function AppContent({ Component, pageProps }) {
   const router = useRouter();
+  const { hasConsented, isReady } = useCookieConsent();
+  const isAdminRoute = router.pathname.startsWith('/admin');
+  const canAccessSite = isAdminRoute || !isReady || hasConsented;
 
-  // Admin auth guard: redirect to login if session invalid (2hr or new day)
+  useEffect(() => {
+    if (hasConsented || isAdminRoute) {
+      enableGoogleAnalytics();
+    }
+  }, [hasConsented, isAdminRoute]);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     const pathname = router.pathname;
@@ -55,7 +70,7 @@ function MyApp({ Component, pageProps }) {
   }, [router.pathname]);
 
   useEffect(() => {
-    const trackPageView = (url) => {
+    const trackPageViewEvent = (url) => {
       if (typeof window !== "undefined" && !url.startsWith("/admin")) {
         const token = localStorage.getItem("token");
         if (token) {
@@ -72,20 +87,46 @@ function MyApp({ Component, pageProps }) {
       }
     };
 
-    // Google Analytics - track client-side route changes (SPA navigation)
     const handleRouteChange = (url) => {
-      if (typeof window.gtag === "function") {
+      if (!url.startsWith("/admin") && !hasConsented) {
+        trackOttoPageView({ url });
+      }
+      if (typeof window.gtag === "function" && hasConsented) {
         window.gtag("config", "G-8MJ7BXCFYK", { page_path: url });
       }
-      trackPageView(url);
+      if (hasConsented) {
+        trackPageView();
+      }
+      trackPageViewEvent(url);
     };
 
-    // Track initial page load (once on mount)
-    trackPageView(router.asPath);
+    if (!router.asPath.startsWith("/admin") && !hasConsented) {
+      trackOttoPageView({ url: router.asPath });
+    }
+    if (hasConsented) {
+      trackPageView();
+    }
+    trackPageViewEvent(router.asPath);
 
     router.events.on("routeChangeComplete", handleRouteChange);
     return () => router.events.off("routeChangeComplete", handleRouteChange);
-  }, [router.events]);
+  }, [router.events, router.asPath, hasConsented]);
+
+  return (
+    <>
+      <div
+        style={canAccessSite ? undefined : { pointerEvents: 'none', userSelect: 'none' }}
+        aria-hidden={!canAccessSite}
+      >
+        <Component {...pageProps} />
+      </div>
+      {!isAdminRoute && <CookieConsentBanner />}
+    </>
+  );
+}
+
+function MyApp({ Component, pageProps, siteBaseUrl }) {
+  // Admin auth guard moved into AppContent
 
   useEffect(() => {
     // Load non-critical CSS asynchronously
@@ -180,19 +221,36 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <LanguageProvider>
-          <LocationProvider>
-            <AuthProvider>
-              <QueryClientProvider client={queryClient}>
-                <Component {...pageProps} />
-              </QueryClientProvider>
-            </AuthProvider>
-          </LocationProvider>
-        </LanguageProvider>
-      </ThemeProvider>
+      <SiteUrlProvider siteBaseUrl={siteBaseUrl}>
+        <CookieConsentProvider>
+          <ThemeProvider>
+            <LanguageProvider>
+              <LocationProvider>
+                <AuthProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <AppContent Component={Component} pageProps={pageProps} />
+                  </QueryClientProvider>
+                </AuthProvider>
+              </LocationProvider>
+            </LanguageProvider>
+          </ThemeProvider>
+        </CookieConsentProvider>
+      </SiteUrlProvider>
     </ErrorBoundary>
   );
 }
+
+MyApp.getInitialProps = async (appContext) => {
+  const { ctx, Component } = appContext;
+  let pageProps = {};
+
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+
+  const siteBaseUrl = resolveSiteBaseUrl(ctx.req?.headers?.host || '');
+
+  return { pageProps, siteBaseUrl };
+};
 
 export default MyApp;

@@ -14,6 +14,7 @@
     "verify:db": "node scripts/verify-database.js",
     "publish:posts": "node scripts/publish-all-posts.js",
     "create:admin": "node scripts/create-admin.js",
+    "backfill:seo": "node scripts/backfill-post-seo.js",
     "add:categories": "node scripts/add-new-categories.js"
   },
   "dependencies": {

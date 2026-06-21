@@ -4,6 +4,10 @@ import Layout from '@/components/layout/Layout';
 import styles from './Intelligent.module.css';
 import RingsSpacer from './RingsSpacer';
 import CylinderSpacer from './CylinderSpacer';
+import { buildIntelligentSeo } from '@/lib/seoHelpers';
+import ProductInquiryModal from '@/components/elements/ProductInquiryModal';
+
+const intelligentSeo = buildIntelligentSeo();
 
 /* ─────────────────────────────────────────────
    Slide wrapper — each section gets its own
@@ -54,18 +58,128 @@ function TwinSpheres({ className = '', size = 200, gap = -30, orientation = 'ver
   );
 }
 
+const FINTECH_PRODUCTS = [
+  {
+    name: 'Finx OnboardIQ',
+    tagline: 'Secure KYC/KYB Onboarding',
+    description: 'Orchestrate compliance dossiers, automate watchlist screening, and centralize audit vaults for institutional-grade onboarding.',
+    url: 'https://finx-onboardiq.corpcrunch.io/finx-onboardiq',
+    icon: '◈',
+    inquiryTopic: 'finx-onboardiq',
+  },
+  {
+    name: 'Finx AML',
+    tagline: 'Anti-Money Laundering',
+    description: 'Scenario detection, cross-institution laundering chains, watchlist screening, risk scoring, and STR automation.',
+    url: 'https://finx-aml.corpcrunch.io/',
+    icon: '◎',
+    inquiryTopic: 'finx-aml',
+  },
+  {
+    name: 'Finx FraudIQ',
+    tagline: 'Fraud Prevention',
+    description: 'Real-time velocity tracking, device fingerprinting, circular transfer detection, and behavioural analytics.',
+    url: 'https://finx-fraudiq.corpcrunch.io/',
+    icon: '◉',
+    inquiryTopic: 'finx-fraudiq',
+  },
+  {
+    name: 'Finx Onboard-Verify',
+    tagline: 'CRA & Tier Controls',
+    description: 'End-to-end retail KYC and business KYB onboarding with CRA scoring, screening, and wallet limits.',
+    url: 'https://finx-onboard-verify.corpcrunch.io/',
+    icon: '◇',
+    inquiryTopic: 'finx-onboard-verify',
+  },
+  {
+    name: 'Finx ClearComply',
+    tagline: 'Regulatory Compliance',
+    description: 'Document lifecycle, monitored regulatory sources, AI-assisted impact analysis, and auditable workflows.',
+    url: 'https://finx-clearcomply.corpcrunch.io/',
+    icon: '▣',
+    inquiryTopic: 'finx-clearcomply',
+  },
+  {
+    name: 'Finx Moneyday',
+    tagline: 'Digital Wallet & Payments',
+    description: 'Send, receive, and exchange across 50+ currencies with transparent rates, instant transfers, and bank-level security.',
+    url: 'https://finx-moneyday.corpcrunch.io/',
+    icon: '◆',
+    inquiryTopic: 'finx-moneyday',
+  },
+];
+
+const SUSTAINABILITY_PRODUCT = {
+  name: 'Solvterra',
+  tagline: 'Sustainability Intelligence Platform',
+  description:
+    'End-to-end ESG intelligence — from real-time emissions monitoring and supply chain scope 3 reporting to AI-driven decarbonisation roadmaps and climate risk modelling.',
+  url: 'https://solvterra.corpcrunch.io/',
+  inquiryTopic: 'solvterra',
+  highlights: [
+    'Real-time carbon & ESG data platforms',
+    'Scope 1, 2 & 3 reporting automation',
+    'Climate risk scenario modelling',
+  ],
+};
+
+const TECH_STATS = [
+  {
+    value: '6',
+    label: 'FinTech products',
+    description: 'Compliance, fraud, onboarding, payments, and regulatory intelligence — built for regulated institutions.',
+  },
+  {
+    value: '1',
+    label: 'Sustainability platform',
+    description: 'Solvterra unifies ESG data, emissions tracking, and decarbonisation planning in one intelligence layer.',
+  },
+  {
+    value: '100%',
+    label: 'Enterprise grade',
+    description: 'Bank-grade security, supervisory alignment, and audit-ready workflows across every product in our portfolio.',
+  },
+];
+
+const TECH_PRODUCTS_HERO_BACKGROUNDS = [
+  '/assets/img/intelligent/products-hero/green-glass.png',
+  '/assets/img/intelligent/products-hero/blue-mesh.png',
+  '/assets/img/intelligent/products-hero/green-ribbed.png',
+];
+
 export default function IntelligentPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [isClient, setIsClient] = useState(false);
+  const [productsHeroBgIndex, setProductsHeroBgIndex] = useState(0);
+  const [productsHeroPaused, setProductsHeroPaused] = useState(false);
+  const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
+  const [selectedInquiryTopic, setSelectedInquiryTopic] = useState('general');
+  const [selectedProductName, setSelectedProductName] = useState('');
   const heroRef = useRef(null);
   const dropdownCloseTimerRef = useRef(null);
 
+  const openProductInquiry = (inquiryTopic, productName = '') => {
+    setSelectedInquiryTopic(inquiryTopic || 'intelligent-its');
+    setSelectedProductName(productName);
+    setInquiryModalOpen(true);
+  };
+
+  const closeProductInquiry = () => {
+    setInquiryModalOpen(false);
+  };
+
   const navItems = [
     { id: 'hero', label: 'Home', sub: [] },
+    {
+      id: 'tech-products', label: 'Products',
+      sub: [
+        { id: 'tech-products', label: 'Sustainability Tech' },
+        { id: 'tech-products', label: 'FinTech Portfolio' },
+      ],
+    },
     {
       id: 'overview', label: 'Overview',
       sub: [
@@ -111,9 +225,10 @@ export default function IntelligentPage() {
     },
   ];
 
-  /* Slide index → label mapping (19 slides) */
+  /* Slide index → label mapping (20 slides) */
   const slides = [
     { id: 'hero', label: 'Hero' },
+    { id: 'tech-products', label: 'Tech Products' },
     { id: 'overview', label: 'Overview' },
     { id: 'philosophy', label: 'Philosophy' },
     { id: 'summary', label: 'Executive Summary' },
@@ -135,9 +250,26 @@ export default function IntelligentPage() {
   ];
   const totalSlides = slides.length;
   const getSlideIndex = (id) => slides.findIndex((slide) => slide.id === id);
+  const techProductsSlideIndex = getSlideIndex('tech-products');
 
   useEffect(() => {
-    setIsClient(true);
+    if (isHovered || isPaused) return;
+    if (activeSlide === techProductsSlideIndex) return;
+    const autoSlide = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % totalSlides);
+    }, 5000);
+    return () => clearInterval(autoSlide);
+  }, [totalSlides, isHovered, isPaused, activeSlide, techProductsSlideIndex]);
+
+  useEffect(() => {
+    if (activeSlide !== techProductsSlideIndex || productsHeroPaused) return undefined;
+    const timer = setInterval(() => {
+      setProductsHeroBgIndex((prev) => (prev + 1) % TECH_PRODUCTS_HERO_BACKGROUNDS.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [activeSlide, productsHeroPaused, techProductsSlideIndex]);
+
+  useEffect(() => {
     // Sync local state with actual DOM on mount to prevent hydration mismatch
     const isDark = document.body.classList.contains('dark-theme');
     setIsDarkMode(isDark);
@@ -154,14 +286,6 @@ export default function IntelligentPage() {
       document.body.style.backgroundColor = '#ffffff';
     }
   }, [isDarkMode]);
-
-  useEffect(() => {
-    if (isHovered || isPaused) return;
-    const autoSlide = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % totalSlides);
-    }, 5000);
-    return () => clearInterval(autoSlide);
-  }, [totalSlides, isHovered, isPaused]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -245,27 +369,75 @@ export default function IntelligentPage() {
         .intelligent-page-root .home-social-ribbon .social-share-btn:hover span {
           color: #ffffff !important;
         }
-        /* On the intelligent page: make the Language Selector a plain text button (no pink pill) */
+        /* Language selector in header — rounded pill (header is outside .intelligent-page-root) */
+        .modern-header.modern-header--intelligent-page .language-selector-btn,
         .intelligent-page-root .language-selector-btn {
-          background: none !important;
-          border: none !important;
-          border-radius: 0 !important;
-          color: #111 !important;
-          padding: 4px 8px !important;
+          background: #2551e7 !important;
+          border: 1px solid #2551e7 !important;
+          border-radius: 50px !important;
+          -webkit-border-radius: 50px !important;
+          color: #ffffff !important;
+          padding: 8px 16px !important;
           font-size: 0.85rem !important;
           font-weight: 500 !important;
           box-shadow: none !important;
           cursor: pointer !important;
-          transition: color 0.15s ease !important;
+          transition: background-color 0.15s ease !important;
+          overflow: hidden;
         }
+        .modern-header.modern-header--intelligent-page .language-selector-btn:hover,
         .intelligent-page-root .language-selector-btn:hover {
-          background: rgba(0, 0, 0, 0.04) !important;
-          color: #000 !important;
+          background: #1a3fc4 !important;
+          border-color: #1a3fc4 !important;
+          color: #ffffff !important;
         }
+        .modern-header.modern-header--intelligent-page .language-selector-btn i,
         .intelligent-page-root .language-selector-btn i {
-          color: #111 !important;
+          color: #ffffff !important;
         }
-        /* In-page sticky nav — white bar, black type */
+        /* Language dropdown must paint above in-page sticky nav */
+        .modern-header.modern-header--intelligent-page {
+          overflow: visible !important;
+        }
+        .modern-header.modern-header--intelligent-page .header__main,
+        .modern-header.modern-header--intelligent-page .header__content,
+        .modern-header.modern-header--intelligent-page .header__actions,
+        .modern-header.modern-header--intelligent-page .header__language-toggle {
+          overflow: visible !important;
+        }
+        .modern-header.modern-header--intelligent-page .header__language-toggle,
+        .modern-header.modern-header--intelligent-page .header__region-toggle,
+        .modern-header.modern-header--intelligent-page .language-selector,
+        .modern-header.modern-header--intelligent-page .region-selector {
+          position: relative !important;
+          z-index: 100 !important;
+        }
+        .modern-header.modern-header--intelligent-page .language-dropdown,
+        .modern-header.modern-header--intelligent-page .region-selector__dropdown {
+          z-index: 10000 !important;
+          border-radius: 12px !important;
+          -webkit-border-radius: 12px !important;
+          overflow: hidden !important;
+          background: #ffffff !important;
+          border: 1px solid #e0e0e0 !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        }
+        .modern-header.modern-header--intelligent-page button.language-option {
+          background: transparent !important;
+          background-color: transparent !important;
+          color: #333333 !important;
+          border: none !important;
+          border-radius: 0 !important;
+        }
+        .modern-header.modern-header--intelligent-page button.language-option:hover {
+          background: #f5f5f5 !important;
+          color: #333333 !important;
+        }
+        .modern-header.modern-header--intelligent-page button.language-option.active {
+          background: #f0f7ff !important;
+          color: #2551e7 !important;
+        }
+        /* In-page sticky nav — white bar, black type; below header so language/region menus stack on top */
         .intelligent-page-root .intelligent-v4-navbar {
           background: #ffffff !important;
           background-color: #ffffff !important;
@@ -275,7 +447,7 @@ export default function IntelligentPage() {
           box-shadow: none !important;
           backdrop-filter: none !important;
           -webkit-backdrop-filter: none !important;
-          z-index: 5000 !important;
+          z-index: 150 !important;
         }
         .intelligent-page-root .intelligent-v4-navbar::before,
         .intelligent-page-root .intelligent-v4-navbar::after {
@@ -465,9 +637,8 @@ export default function IntelligentPage() {
         }
       `}</style>
 
-      <Layout headTitle="Intelligent Technology Solutions - Corp Crunch" hideCategoryNavigation hideFooter hideChatbot={true}>
-        {isClient && (
-          <div className={`${styles.intelligentPage} ${isDarkMode ? styles.darkMode : ''} intelligent-page-root`}>
+      <Layout seo={intelligentSeo} hideCategoryNavigation hideFooter hideChatbot={true}>
+        <div className={`${styles.intelligentPage} ${isDarkMode ? styles.darkMode : ''} intelligent-page-root`}>
             {/* ─── Version 4 Sticky Subnav ─── */}
             <nav
               className={`${styles.stickyNavBar} intelligent-v4-navbar`}
@@ -601,7 +772,152 @@ export default function IntelligentPage() {
                   </div>
                 </Slide>
 
-                {/* ── 1: COMPANY OVERVIEW ── */}
+                {/* ── 1: TECH PRODUCTS (Sustainability + FinTech) ── */}
+                <Slide>
+                  <section id="tech-products" className={`${styles.section} ${styles.techProductsSection}`}>
+                    <div
+                      className={styles.techProductsHero}
+                      onMouseEnter={() => setProductsHeroPaused(true)}
+                      onMouseLeave={() => setProductsHeroPaused(false)}
+                    >
+                      <div className={styles.techProductsHeroBg} aria-hidden="true">
+                        {TECH_PRODUCTS_HERO_BACKGROUNDS.map((src, idx) => (
+                          <div
+                            key={src}
+                            className={`${styles.techProductsHeroBgLayer} ${productsHeroBgIndex === idx ? styles.techProductsHeroBgLayerActive : ''}`}
+                          >
+                            <Image
+                              src={src}
+                              alt=""
+                              fill
+                              sizes="100vw"
+                              className={styles.techProductsHeroBgImage}
+                              priority={idx === 0}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <div className={styles.techProductsHeroOverlay} aria-hidden="true" />
+                      <div className={styles.techProductsHeroContent}>
+                        <div className={styles.techProductsGlobe} aria-hidden="true">
+                          <div className={styles.lineSphereWrap}>
+                            <div className={styles.lineSphere}>
+                              {Array.from({ length: 24 }).map((_, i) => (
+                                <span key={i} className={styles.lineMeridian} style={{ '--i': i }}></span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className={styles.techProductsStatsGrid}>
+                          {TECH_STATS.map((stat) => (
+                            <div key={stat.label} className={styles.techStatItem}>
+                              <h4>{stat.value}</h4>
+                              <strong>{stat.label}</strong>
+                              <p>{stat.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.sustainabilityFeature}>
+                      <p className={styles.sectionKicker}>Sustainability Tech</p>
+                      <div className={styles.sustainabilitySplit}>
+                        <div className={styles.sustainabilityVisual}>
+                          <Image
+                            src="/assets/img/HeroEvent/12.png"
+                            alt="Solvterra sustainability intelligence"
+                            width={600}
+                            height={800}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                        </div>
+                        <div className={styles.sustainabilityStoryBox}>
+                          <p className={styles.sustainabilityKicker}>Our Platform</p>
+                          <h2 className={styles.sustainabilityTitle}>
+                            {SUSTAINABILITY_PRODUCT.name} — {SUSTAINABILITY_PRODUCT.tagline}
+                          </h2>
+                          <p className={styles.sustainabilityDesc}>{SUSTAINABILITY_PRODUCT.description}</p>
+                          <ul className={styles.sustainabilityList}>
+                            {SUSTAINABILITY_PRODUCT.highlights.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ul>
+                          <div className={styles.sustainabilityCtaRow}>
+                            <a
+                              href={SUSTAINABILITY_PRODUCT.url}
+                              className={styles.sustainabilityCta}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Explore Solvterra →
+                            </a>
+                            <button
+                              type="button"
+                              className={`${styles.sustainabilityInquiryBtn} intelligent-subnav-exempt`}
+                              onClick={() =>
+                                openProductInquiry(
+                                  SUSTAINABILITY_PRODUCT.inquiryTopic,
+                                  SUSTAINABILITY_PRODUCT.name
+                                )
+                              }
+                            >
+                              Get in Touch
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.fintechProductsBlock}>
+                      <div className={styles.techProductsHeader}>
+                        <div>
+                          <p className={styles.sectionKicker}>FinTech</p>
+                          <h2 className={styles.sectionTitle}>
+                            The products that power<br />
+                            <span className={styles.titleAccent}>regulated finance.</span>
+                          </h2>
+                        </div>
+                        <p className={styles.techProductsIntro}>
+                          From onboarding and AML to fraud prevention, compliance libraries, and global payments — our FINX suite delivers supervisory-grade intelligence for the digital economy.
+                        </p>
+                      </div>
+                      <div className={styles.techProductsGrid}>
+                        {FINTECH_PRODUCTS.map((product) => (
+                          <article key={product.name} className={styles.techProductCard}>
+                            <span className={styles.techProductIcon} aria-hidden="true">{product.icon}</span>
+                            <h3>{product.name}</h3>
+                            <p className={styles.techProductTagline}>{product.tagline}</p>
+                            <p className={styles.techProductDesc}>{product.description}</p>
+                            <div className={styles.techProductActions}>
+                              <a
+                                href={product.url}
+                                className={styles.techProductLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Visit product →
+                              </a>
+                              <button
+                                type="button"
+                                className={`${styles.techProductInquiryBtn} intelligent-subnav-exempt`}
+                                onClick={() =>
+                                  openProductInquiry(product.inquiryTopic, product.name)
+                                }
+                              >
+                                Get in Touch
+                              </button>
+                            </div>
+                          </article>
+                        ))}
+                      </div>
+                    </div>
+                  </section>
+                  <RingsSpacer />
+                </Slide>
+
+                {/* ── 2: COMPANY OVERVIEW ── */}
                 <Slide>
                   <section id="overview" className={styles.section}>
                     <p className={styles.sectionKicker}>COMPANY OVERVIEW</p>
@@ -1252,8 +1568,14 @@ export default function IntelligentPage() {
             </section>
 
           </div>
-        )}
       </Layout>
+
+      <ProductInquiryModal
+        isOpen={inquiryModalOpen}
+        onClose={closeProductInquiry}
+        initialInquiryTopic={selectedInquiryTopic}
+        productName={selectedProductName}
+      />
     </>
   );
 }

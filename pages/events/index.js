@@ -1,7 +1,8 @@
 import Layout from "@/components/layout/Layout";
 import { getCategories } from "@/lib/categoryService";
 import { getEvents } from "@/lib/eventService";
-import Head from "next/head";
+import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
+import { buildEventsSeo } from "@/lib/seoHelpers";
 import Link from "next/link";
 import { formatDate } from "@/util";
 import Image from "next/image";
@@ -10,9 +11,9 @@ import { Autoplay, EffectFade, Pagination } from "swiper";
 import { useState, useEffect } from "react";
 import "swiper/css";
 import styles from "@/components/events/EventsPage.module.css";
-import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
 import { useTheme } from "@/contexts/ThemeContext";
-import AuthAndSubscriptionProtected from '@/components/providers/AuthAndSubscriptionProtected';
+
+const eventsSeo = buildEventsSeo();
 
 export default function EventsPage({ events, eventsPosts, categories = [] }) {
   const allEvents = events || [];
@@ -312,14 +313,8 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
   };
 
   return (
-    <Layout categories={categories}>
-      <Head>
-        <title>Events | Corp Crunch</title>
-        <meta name="description" content="Corp Crunch Events and Intellectual Properties" />
-      </Head>
-
-      <AuthAndSubscriptionProtected>
-        <SocialShareRibbon />
+    <Layout categories={categories} seo={eventsSeo}>
+      <SocialShareRibbon />
       
       <div className={styles.eventsPage}>
         {/* Year Cards Section - Instagram Story Style */}
@@ -1270,7 +1265,6 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
           </div>
         )}
       </div>
-      </AuthAndSubscriptionProtected>
     </Layout >
   );
 }

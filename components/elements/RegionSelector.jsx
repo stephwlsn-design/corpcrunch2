@@ -59,7 +59,7 @@ const RegionSelector = ({ intelligentPage = false }) => {
       {isOpen && (
         <div
           className="region-selector__dropdown"
-          style={intelligentPage ? { zIndex: 5000 } : undefined}
+          style={intelligentPage ? { zIndex: 10000 } : undefined}
         >
           <ul className="region-selector__list">
             {regions.map((region) => (

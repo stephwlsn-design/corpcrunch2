@@ -6,6 +6,13 @@ import { notifyError, notifySuccess } from "@/util/notification";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import Skeleton from "react-loading-skeleton";
+import { buildNoIndexPageSeo } from "@/lib/seoHelpers";
+
+const profileSeo = buildNoIndexPageSeo({
+  title: "Profile",
+  description: "Manage your Corp Crunch account profile.",
+  path: "/profile",
+});
 
 const ProfilePage = () => {
   const [isEditingProfileLoading, setIsEditingProfileLoading] = useState(false);
@@ -139,7 +146,7 @@ const ProfilePage = () => {
   if (!userData && isLoading) {
     return (
       <AuthAndSubscriptionProtected needSubscription={false}>
-        <Layout>
+        <Layout seo={profileSeo}>
           <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
             <Spinner />
           </div>
@@ -153,7 +160,7 @@ const ProfilePage = () => {
   }
   return (
     <AuthAndSubscriptionProtected needSubscription={false}>
-      <Layout>
+      <Layout seo={profileSeo}>
         <style jsx>{`
           .profile-container {
             padding: 2rem 0;

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { setClientPreferenceCookie } from '@/lib/cookieConsent';
 
 const LanguageContext = createContext();
 
@@ -176,7 +177,7 @@ export const LanguageProvider = ({ children }) => {
         loadTranslations(savedLang);
         
         // Set cookie for server-side access
-        document.cookie = `language=${savedLang}; path=/; max-age=31536000; SameSite=Lax`;
+        setClientPreferenceCookie('language', savedLang);
         
         // Set HTML attributes
         if (document && document.documentElement) {
@@ -200,7 +201,7 @@ export const LanguageProvider = ({ children }) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('language', lang);
       // Set cookie for server-side access
-      document.cookie = `language=${lang}; path=/; max-age=31536000; SameSite=Lax`;
+      setClientPreferenceCookie('language', lang);
       document.documentElement.lang = lang;
       if (lang === 'ar') {
         document.documentElement.dir = 'rtl';

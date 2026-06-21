@@ -2,6 +2,7 @@ import connectDB from '@/lib/mongoose';
 import NewsletterSubscription from '@/models/NewsletterSubscription';
 import { publicRateLimiter } from '@/lib/rateLimiter';
 import { hsCreateContact } from '@/lib/hubspot';
+import { recordVisitorFromRequest } from '@/lib/recordVisitorFromRequest';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -51,6 +52,12 @@ export default async function handler(req, res) {
       firstName: 'Newsletter',
       lastName: 'Subscriber',
     }).catch((e) => console.error('[API /newsletter-subscriptions] HubSpot:', e));
+
+    recordVisitorFromRequest(req, {
+      email: normalized,
+      name: 'Newsletter Subscriber',
+      source: 'newsletter',
+    }).catch((e) => console.error('[API /newsletter-subscriptions] Visitor:', e));
 
     return res.status(200).json({ success: true, message: 'Successfully subscribed' });
   } catch (error) {

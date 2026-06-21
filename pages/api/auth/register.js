@@ -3,6 +3,7 @@ import User from '@/models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { hsCreateContact } from '@/lib/hubspot';
+import { recordVisitorFromRequest } from '@/lib/recordVisitorFromRequest';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -53,6 +54,16 @@ export default async function handler(req, res) {
         hsCreateContact({ email: user.email, firstName: user.firstName, lastName: user.lastName, companyName: user.companyName, location: user.location }).catch((err) =>
             console.error('[HubSpot] createContact failed:', err)
         );
+
+        recordVisitorFromRequest(req, {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            location: user.location,
+            source: 'register',
+            userId: user._id,
+        }).catch((err) => console.error('[Visitor] register tracking failed:', err));
 
         // Create token
         const token = jwt.sign(

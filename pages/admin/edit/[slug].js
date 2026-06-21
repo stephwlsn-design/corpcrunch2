@@ -6,6 +6,7 @@ import { notifyError, notifySuccess } from "@/util/toast";
 import useCategory from "@/hooks/useCategory";
 import ToastContainer from "@/components/ToastContainer/ToastContainer";
 import AdminLayout from "@/components/admin/AdminLayout";
+import AdminSeoFields from "@/components/admin/AdminSeoFields";
 import { isAdminSessionValid, clearAdminSession } from "@/lib/adminSession";
 
 export default function AdminEditPost() {
@@ -194,6 +195,20 @@ export default function AdminEditPost() {
     if (!title.trim() || !postSlug.trim() || !content.trim() || !bannerImageUrl.trim() || !categoryId) {
       notifyError("Please fill in all required fields");
       return;
+    }
+
+    if (canonicalUrl.trim() && !/^https?:\/\/.+/.test(canonicalUrl.trim())) {
+      notifyError("Canonical URL must be a valid http:// or https:// URL");
+      return;
+    }
+
+    if (structuredData.trim()) {
+      try {
+        JSON.parse(structuredData.trim());
+      } catch {
+        notifyError("Structured Data must be valid JSON");
+        return;
+      }
     }
 
     setIsUpdating(true);
@@ -464,6 +479,46 @@ export default function AdminEditPost() {
                       />
                     </div>
                   )}
+
+                  <AdminSeoFields
+                    title={title}
+                    content={content}
+                    postSlug={postSlug}
+                    categoryId={categoryId}
+                    categories={categories}
+                    metaTitle={metaTitle}
+                    setMetaTitle={setMetaTitle}
+                    metaDescription={metaDescription}
+                    setMetaDescription={setMetaDescription}
+                    imageAltText={imageAltText}
+                    setImageAltText={setImageAltText}
+                    canonicalUrl={canonicalUrl}
+                    setCanonicalUrl={setCanonicalUrl}
+                    allowIndexing={allowIndexing}
+                    setAllowIndexing={setAllowIndexing}
+                    allowFollowing={allowFollowing}
+                    setAllowFollowing={setAllowFollowing}
+                    schemaMarkupType={schemaMarkupType}
+                    setSchemaMarkupType={setSchemaMarkupType}
+                    ogTitle={ogTitle}
+                    setOgTitle={setOgTitle}
+                    ogDescription={ogDescription}
+                    setOgDescription={setOgDescription}
+                    ogImage={ogImage}
+                    setOgImage={setOgImage}
+                    secondaryKeywords={secondaryKeywords}
+                    setSecondaryKeywords={setSecondaryKeywords}
+                    redirectFrom={redirectFrom}
+                    setRedirectFrom={setRedirectFrom}
+                    language={language}
+                    setLanguage={setLanguage}
+                    region={region}
+                    setRegion={setRegion}
+                    structuredData={structuredData}
+                    setStructuredData={setStructuredData}
+                    inlineImageAltText={inlineImageAltText}
+                    setInlineImageAltText={setInlineImageAltText}
+                  />
 
                   <div className="d-flex gap-2 justify-content-end mt-4">
                     <button

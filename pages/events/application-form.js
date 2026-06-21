@@ -1,8 +1,16 @@
 import { useState } from 'react';
-import Head from 'next/head';
 import Link from 'next/link';
 import Layout from '@/components/layout/Layout';
 import styles from '@/components/events/PartnershipModal.module.css';
+import { buildEventsSubpageSeo } from '@/lib/seoHelpers';
+
+const applicationFormSeo = buildEventsSubpageSeo({
+  title: 'Event Partnership Application',
+  description:
+    'Apply for speaker, exhibitor, or strategic partnership opportunities at the Corp Crunch C3 AIX Summit and events program.',
+  path: '/events/application-form',
+  keywords: ['event partnership', 'speaker application', 'exhibitor application'],
+});
 
 export default function PartnershipApplication() {
     const [formData, setFormData] = useState({
@@ -66,12 +74,7 @@ export default function PartnershipApplication() {
     };
 
     return (
-        <Layout>
-            <Head>
-                <title>Application Form | Corp Crunch Events</title>
-                <meta name="description" content="Apply for speaker, exhibitor, or strategic partnership opportunities at Corp Crunch AIX Summit." />
-            </Head>
-
+        <Layout seo={applicationFormSeo}>
             <div style={{ backgroundColor: '#f8fafc', minHeight: '100vh', padding: '100px 20px 60px', display: 'flex', justifyContent: 'center' }}>
                 <div className={styles.modalContent} style={{ width: '100%', maxWidth: '800px', boxShadow: '0 10px 30px rgba(0,0,0,0.08)', borderRadius: '16px' }}>
 

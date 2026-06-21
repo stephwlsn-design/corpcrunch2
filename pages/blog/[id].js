@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import Head from "next/head";
 import Layout from "@/components/layout/Layout";
 import { formatDate, formatNumber } from "@/util";
 import Link from "next/link";
@@ -17,7 +18,8 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
-import Head from "next/head";
+import { buildArticleSeo } from "@/lib/seoHelpers";
+import { useSiteBaseUrl } from "@/contexts/SiteUrlContext";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 
@@ -88,8 +90,22 @@ function AnimatedCounter({ end, duration = 2000, formatFn = (n) => n }) {
 }
 
 export default function BlogDetails({ postsDetails }) {
+  const siteBaseUrl = useSiteBaseUrl();
   const { t } = useLanguage();
   const { translatedPost, isTranslating } = usePostTranslation(postsDetails);
+  const router = useRouter();
+  const [tagMouseOffset, setTagMouseOffset] = useState({ x: 0, y: 0 });
+  const { mutateAsync: sharePost } = useShares();
+  const { mutateAsync: trackView } = useViews();
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    if (postsDetails?.id) {
+      trackView({ postId: postsDetails.id }).catch(() => {
+        // Silently fail if view tracking fails
+      });
+    }
+  }, [postsDetails?.id, trackView]);
 
   // Use translated post if available, otherwise use original
   const displayPost = translatedPost || postsDetails;
@@ -133,7 +149,6 @@ export default function BlogDetails({ postsDetails }) {
   // const { checkArticleAuthorizedAndSubscription, isValidating } =
   // useArticleValidation();
   // const [seeMore, setSeeMore] = useState(false);
-  let router = useRouter();
 
   // Extract a meaningful quote from the content
   const extractQuote = (content) => {
@@ -226,9 +241,6 @@ export default function BlogDetails({ postsDetails }) {
 
   const { before: contentBeforeQuote, after: contentAfterQuote } = splitContentForQuote(displayPost?.content);
 
-  // Cursor-driven motion for animated tags
-  const [tagMouseOffset, setTagMouseOffset] = useState({ x: 0, y: 0 });
-
   // Base layout positions for up to 5 tags inside the tag box
   const tagLayouts = [
     { left: 30, top: 30, rotate: -30 },
@@ -239,29 +251,10 @@ export default function BlogDetails({ postsDetails }) {
   ];
   // const { id } = router.query;
 
-  const { mutateAsync: sharePost } = useShares();
-  const { mutateAsync: trackView } = useViews();
-  // const { data: postsDetails, isLoading } = usePostDetail(id, {
-  //   enabled: !!id,
-  // });
-  // const loading = isLoading || !postsDetails;
-  // console.log("isLoading: ", isLoading);
-
-  const [imageLoaded, setImageLoaded] = useState(false);
-
   // Removed console.log for production
   const handleImageLoad = () => {
     setImageLoaded(true);
   };
-
-  // Track view when component mounts
-  useEffect(() => {
-    if (postsDetails?.id) {
-      trackView({ postId: postsDetails.id }).catch(() => {
-        // Silently fail if view tracking fails
-      });
-    }
-  }, [postsDetails?.id, trackView]);
 
   const handleShare = async () => {
     await sharePost({ postId: postsDetails?.id });
@@ -296,20 +289,14 @@ export default function BlogDetails({ postsDetails }) {
     return new Date().toISOString();
   };
 
+  const articleSeo = buildArticleSeo(displayPost, siteBaseUrl);
+
   return (
     // <AuthAndSubscriptionProtected needSubscription={true}>
     <Layout
       breadcrumbCategory={displayPost?.Category || displayPost?.category}
       breadcrumbPostTitle={displayPost?.title}
-      seo={{
-        title: displayPost?.title || '',
-        description: displayPost?.content?.slice(0, 160)?.replace(/\n/g, " ") || '',
-        url: `https://www.corpcrunch.io/blog/${displayPost?.slug || ''}`,
-        image: displayPost?.bannerImageUrl || '',
-        isArticle: true,
-        author: authorName,
-        publishedTime: getPublishedTime()
-      }}
+      seo={articleSeo}
     >
       <SocialShareRibbon />
       <ReadingProgressBar />

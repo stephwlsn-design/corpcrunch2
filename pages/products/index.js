@@ -1,13 +1,30 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Layout from '@/components/layout/Layout';
-import AuthAndSubscriptionProtected from '@/components/providers/AuthAndSubscriptionProtected';
 import SocialShareRibbon from '@/components/elements/SocialShareRibbon';
+import ProductInquiryModal from '@/components/elements/ProductInquiryModal';
 import styles from './Products.module.css';
+import { buildProductsSeo } from '@/lib/seoHelpers';
+import { PRODUCT_ID_TO_INQUIRY } from '@/lib/productInquiryOptions';
+
+const productsSeo = buildProductsSeo();
 
 export default function ProductsPage() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [visibleSections, setVisibleSections] = useState({});
+  const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
+  const [selectedInquiryTopic, setSelectedInquiryTopic] = useState('general');
+  const [selectedProductName, setSelectedProductName] = useState('');
+
+  const openProductInquiry = (product) => {
+    setSelectedInquiryTopic(PRODUCT_ID_TO_INQUIRY[product.id] || 'general');
+    setSelectedProductName(product.name);
+    setInquiryModalOpen(true);
+  };
+
+  const closeProductInquiry = () => {
+    setInquiryModalOpen(false);
+  };
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -49,7 +66,6 @@ export default function ProductsPage() {
       }
     };
 
-    // Retry checking for DOM elements since AuthAndSubscriptionProtected might defer rendering
     observerInterval = setInterval(setupObserver, 300);
     setupObserver();
 
@@ -61,12 +77,24 @@ export default function ProductsPage() {
 
   const products = [
     {
+      id: 'prod-curi',
+      name: 'curi',
+      tagline: 'Turn any URL into a complete marketing engine',
+      description:
+        'Curi discovers your brand, creates content for every platform, and launches full campaigns — all from a single website link. No agency. No guesswork.',
+      url: 'https://curi.corpcrunch.io/',
+      image: '/assets/img/others/curi-mascot.png',
+      theme: 'pink',
+      available: true,
+      useLogo: false,
+    },
+    {
       id: 'prod-1',
       name: 'Qrayt AI',
       tagline: 'Create Content That Converts',
       description: 'All in one content hyper-personalization platform that can create content on scale based on the brand voice, custom avatars and SEO keyword targeting.',
       url: 'https://qrayt.ai.corpcrunch.io',
-      image: '/assets/img/others/Qrayt web logo.gif',
+      image: '/assets/img/others/qrayt-logo.png',
       theme: 'blue',
       available: true,
       useLogo: false,
@@ -77,7 +105,7 @@ export default function ProductsPage() {
       tagline: 'Get PR on Demand',
       description: 'A Comprehensive PR-on-Demand Distribution platform that allows Instant access to Tier 1, 2, 3, and 4 publishing channels through a single unified platform, eliminating the need to manage multiple vendor relationships.',
       url: 'https://prowess.corpcrunch.io',
-      image: '/assets/img/others/Prowess Photo.png',
+      image: '/assets/img/others/Prowess.png',
       logo: '/assets/img/others/prowess-removebg.png',
       theme: 'orange',
       available: true,
@@ -106,9 +134,8 @@ export default function ProductsPage() {
         }
       `}</style>
 
-      <AuthAndSubscriptionProtected needSubscription={false}>
-        <Layout headTitle="Products - Corp Crunch">
-          <SocialShareRibbon />
+      <Layout seo={productsSeo}>
+        <SocialShareRibbon />
 
           <div className={`${styles.productsPage} ${isDarkMode ? styles.darkMode : styles.lightMode}`}>
 
@@ -127,8 +154,21 @@ export default function ProductsPage() {
                 <p className={styles.heroDesc}>
                   We are pioneering the integration of AI, machine learning, and advanced technologies into the heart of MarTech, MediaTech, and AdTech. We are committed to revolutionizing how brands interact with their audiences.
                 </p>
-                <div className={styles.heroCapsule}>
-                  <div className={styles.capsuleText}>Welcome To The World Of High Media Tech</div>
+                <div className={styles.heroCtaStack}>
+                  <div className={styles.heroCapsule}>
+                    <div className={styles.capsuleText}>Welcome To The World Of High Media Tech</div>
+                  </div>
+                  <button
+                    type="button"
+                    className={`${styles.btnPrimary} ${styles.heroCtaBtn}`}
+                    onClick={() => {
+                      setSelectedInquiryTopic('general');
+                      setSelectedProductName('');
+                      setInquiryModalOpen(true);
+                    }}
+                  >
+                    Get in Touch
+                  </button>
                 </div>
               </div>
 
@@ -171,23 +211,40 @@ export default function ProductsPage() {
                     <p className={styles.productTagline}>{product.tagline}</p>
                     <p className={styles.productDesc}>{product.description}</p>
 
-                    {product.available ? (
-                      <a href={product.url} target="_blank" rel="noopener noreferrer" className={styles.btnOutline}>
-                        Visit Website
-                      </a>
-                    ) : (
-                      <button className={`${styles.btnOutline} ${styles.btnDisabled}`} disabled>
-                        Coming Soon
+                    <div className={styles.productActions}>
+                      <button
+                        type="button"
+                        className={styles.btnPrimary}
+                        onClick={() => openProductInquiry(product)}
+                      >
+                        Get in Touch
                       </button>
-                    )}
+                      {product.available && (
+                        <a
+                          href={product.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.btnOutline}
+                        >
+                          Visit Website
+                        </a>
+                      )}
+                    </div>
                   </div>
 
-                  <div className={`${styles.productVisual} ${product.theme === 'pink'
-                    ? styles.bgPink
-                    : product.theme === 'blue'
-                      ? styles.bgBlue
-                      : styles.bgOrange
-                    }`}>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    className={`${styles.productVisual} ${styles.productVisualButton}`}
+                    onClick={() => openProductInquiry(product)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openProductInquiry(product);
+                      }
+                    }}
+                    aria-label={`Learn more about ${product.name}`}
+                  >
                     <div className={styles.visualWrapper}>
                       {product.image ? (
                         <Image
@@ -195,7 +252,9 @@ export default function ProductsPage() {
                           alt={product.name}
                           fill
                           sizes="(max-width: 768px) 100vw, 50vw"
-                          className={styles.centeredImage}
+                          className={`${styles.centeredImage} ${
+                            product.visualStyle === 'wordmark' ? styles.wordmarkImage : ''
+                          }`}
                           unoptimized={product.image.endsWith('.gif') || product.image.endsWith('.png')}
                         />
                       ) : (
@@ -207,8 +266,14 @@ export default function ProductsPage() {
               ))}
             </div>
           </div>
+
+          <ProductInquiryModal
+            isOpen={inquiryModalOpen}
+            onClose={closeProductInquiry}
+            initialInquiryTopic={selectedInquiryTopic}
+            productName={selectedProductName}
+          />
         </Layout>
-      </AuthAndSubscriptionProtected>
     </>
   );
 }

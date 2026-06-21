@@ -733,9 +733,25 @@
     background: #e00282;
   }
 
+  /* Blue scrollbar — contact page only */
+  html.contact-page-active::-webkit-scrollbar-thumb,
+  body.contact-page-active::-webkit-scrollbar-thumb {
+    background: #2551e7;
+  }
+
+  html.contact-page-active::-webkit-scrollbar-thumb:hover,
+  body.contact-page-active::-webkit-scrollbar-thumb:hover {
+    background: #1a3fc4;
+  }
+
+  html.contact-page-active,
+  body.contact-page-active {
+    scrollbar-color: #2551e7 #f3f4f6;
+  }
+
   /* Global Button Override */
   /* Global Button Override - Updated with better exclusions */
-  button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):not([class*="learnMore"]):not([class*="Learn"]):not([class*="actionBtn"]):not([class*="ticketModal"]):not([class*="stripe"]):not([data-intelligent-nav]):not([data-intelligent-v4-nav="true"]):not([class*="megaLink"]):not([class*="tabBtn"]):not([class*="mega-link"]):not([class*="intelligent-v4"]):not(.intelligent-subnav-exempt):not(.intelligent-carousel-dot-exempt),
+  button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):not([class*="learnMore"]):not([class*="Learn"]):not([class*="actionBtn"]):not([class*="ticketModal"]):not([class*="stripe"]):not([data-intelligent-nav]):not([data-intelligent-v4-nav="true"]):not([class*="megaLink"]):not([class*="tabBtn"]):not([class*="mega-link"]):not([class*="intelligent-v4"]):not(.intelligent-subnav-exempt):not(.intelligent-carousel-dot-exempt):not(.language-selector-btn):not(.language-option):not(.region-selector__toggle):not(.theme-toggle-btn):not(.product-visual-exempt),
   .btn:not(.btn-secondary):not(.btn-outline):not([class*="learnMore"]):not([class*="Learn"]),
   [type="submit"]:not([class*="secondary"]):not([class*="learnMore"]),
   .tg-btn:not([class*="learnMore"]),
@@ -745,7 +761,7 @@
     border-color: var(--tg-theme-secondary, #2551e7) !important;
   }
 
-  button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):not([class*="learnMore"]):not([class*="Learn"]):not([class*="actionBtn"]):not([class*="ticketModal"]):not([class*="stripe"]):not([data-intelligent-nav]):not([data-intelligent-v4-nav="true"]):not([class*="megaLink"]):not([class*="tabBtn"]):not([class*="mega-link"]):not([class*="intelligent-v4"]):not(.intelligent-subnav-exempt):not(.intelligent-carousel-dot-exempt):hover,
+  button:not(.chatbot-toggle):not(.social-share-btn):not([class*="flaticon"]):not([class*="fa-"]):not([class*="learnMore"]):not([class*="Learn"]):not([class*="actionBtn"]):not([class*="ticketModal"]):not([class*="stripe"]):not([data-intelligent-nav]):not([data-intelligent-v4-nav="true"]):not([class*="megaLink"]):not([class*="tabBtn"]):not([class*="mega-link"]):not([class*="intelligent-v4"]):not(.intelligent-subnav-exempt):not(.intelligent-carousel-dot-exempt):not(.language-selector-btn):not(.language-option):not(.region-selector__toggle):not(.theme-toggle-btn):not(.product-visual-exempt):hover,
   .btn:not(.btn-secondary):not(.btn-outline):not([class*="learnMore"]):not([class*="Learn"]):hover,
   [type="submit"]:not([class*="secondary"]):not([class*="learnMore"]):hover,
   .tg-btn:not([class*="learnMore"]):hover,
@@ -753,6 +769,68 @@
     background-color: var(--tg-theme-secondary-dark, #1a3fc4) !important;
     border-color: var(--tg-theme-secondary-dark, #1a3fc4) !important;
     color: #ffffff !important;
+  }
+
+  button.product-visual-exempt {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: inherit !important;
+  }
+
+  button.product-visual-exempt:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    color: inherit !important;
+  }
+
+  .language-selector-btn {
+    border-radius: 50px !important;
+    overflow: hidden;
+  }
+
+  .language-dropdown {
+    border-radius: 12px !important;
+    -webkit-border-radius: 12px !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  button.language-option {
+    border-radius: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #333333 !important;
+    border: none !important;
+  }
+
+  button.language-option:hover {
+    background: #f5f5f5 !important;
+    background-color: #f5f5f5 !important;
+    color: #333333 !important;
+    border: none !important;
+  }
+
+  button.language-option.active {
+    background: #f0f7ff !important;
+    background-color: #f0f7ff !important;
+    color: #2551e7 !important;
+    border: none !important;
+  }
+
+  .modern-header .header__language-toggle .language-selector-btn,
+  .modern-header.modern-header--intelligent-page .language-selector-btn,
+  button.language-selector-btn {
+    border-radius: 50px !important;
+    -webkit-border-radius: 50px !important;
+  }
+
+  .region-selector__toggle:not(.region-selector__toggle--neutral) {
+    border-radius: 50% !important;
   }
 
   /* Modern Gradient Text */
@@ -880,6 +958,51 @@
   .modern-header.modern-header--intelligent-page {
     background-color: #ffffff !important;
     color: #111111 !important;
+    z-index: 2000 !important;
+    overflow: visible !important;
+  }
+
+  .modern-header.modern-header--intelligent-page .header__main,
+  .modern-header.modern-header--intelligent-page .header__content,
+  .modern-header.modern-header--intelligent-page .header__actions {
+    overflow: visible !important;
+  }
+
+  .modern-header.modern-header--intelligent-page .header__language-toggle,
+  .modern-header.modern-header--intelligent-page .header__region-toggle,
+  .modern-header.modern-header--intelligent-page .language-selector,
+  .modern-header.modern-header--intelligent-page .region-selector {
+    position: relative;
+    z-index: 100;
+  }
+
+  .modern-header.modern-header--intelligent-page .language-dropdown,
+  .modern-header.modern-header--intelligent-page .region-selector__dropdown {
+    z-index: 10000 !important;
+    border-radius: 12px !important;
+    -webkit-border-radius: 12px !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .modern-header.modern-header--intelligent-page button.language-option {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #333333 !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  .modern-header.modern-header--intelligent-page button.language-option:hover {
+    background: #f5f5f5 !important;
+    color: #333333 !important;
+  }
+
+  .modern-header.modern-header--intelligent-page button.language-option.active {
+    background: #f0f7ff !important;
+    color: #2551e7 !important;
   }
 
   .modern-header.modern-header--intelligent-page .header__main {
@@ -900,14 +1023,14 @@
   }
 
   /* Undo global “all buttons are blue” rule for header chrome on this page */
-  .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]) {
+  .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]):not(.language-selector-btn) {
     background: transparent !important;
     background-color: transparent !important;
     border-color: rgba(17, 17, 17, 0.2) !important;
     color: #111111 !important;
   }
 
-  .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]):hover {
+  .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]):not(.language-selector-btn):hover {
     background: rgba(0, 0, 0, 0.04) !important;
     background-color: rgba(0, 0, 0, 0.04) !important;
     color: #000000 !important;
@@ -917,23 +1040,29 @@
     color: #000000 !important;
   }
 
-  /* Language control: header sits outside .intelligent-page-root; match plain text treatment */
+  /* Language control: rounded pill in header (header is outside .intelligent-page-root) */
   .modern-header.modern-header--intelligent-page .language-selector-btn {
-    background: none !important;
-    background-color: transparent !important;
-    border: none !important;
-    border-radius: 0 !important;
-    color: #111111 !important;
+    background: #2551e7 !important;
+    background-color: #2551e7 !important;
+    border: 1px solid #2551e7 !important;
+    border-radius: 50px !important;
+    -webkit-border-radius: 50px !important;
+    color: #ffffff !important;
     box-shadow: none !important;
+    padding: 8px 16px !important;
+    overflow: hidden;
   }
 
   .modern-header.modern-header--intelligent-page .language-selector-btn:hover {
-    background: rgba(0, 0, 0, 0.04) !important;
-    color: #000000 !important;
+    background: #1a3fc4 !important;
+    background-color: #1a3fc4 !important;
+    border-color: #1a3fc4 !important;
+    color: #ffffff !important;
   }
 
+  .modern-header.modern-header--intelligent-page .language-selector-btn i,
   .dark-theme .modern-header.modern-header--intelligent-page .language-selector-btn {
-    color: #111111 !important;
+    color: #ffffff !important;
   }
 
   .dark-theme .modern-header.modern-header--intelligent-page {
@@ -957,14 +1086,14 @@
     color: #111111 !important;
   }
 
-  .dark-theme .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]) {
+  .dark-theme .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]):not(.language-selector-btn) {
     background: transparent !important;
     background-color: transparent !important;
     border-color: rgba(17, 17, 17, 0.2) !important;
     color: #111111 !important;
   }
 
-  .dark-theme .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]):hover {
+  .dark-theme .modern-header.modern-header--intelligent-page .header__actions button:not([data-intelligent-nav]):not(.language-selector-btn):hover {
     background: rgba(0, 0, 0, 0.04) !important;
     color: #000000 !important;
   }
@@ -990,6 +1119,8 @@
     box-shadow: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+    /* Below site header (~2000) so language/region popovers aren't covered */
+    z-index: 150 !important;
   }
 
   .intelligent-v4-navbar::before,

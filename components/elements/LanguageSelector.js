@@ -41,9 +41,10 @@ export default function LanguageSelector({ intelligentPage = false }) {
   const currentLanguage = languages.find(lang => lang.code === language) || languages[0];
 
   return (
-    <div className="language-selector" ref={dropdownRef}>
+    <div className={`language-selector${intelligentPage ? ' language-selector--intelligent-page' : ''}`} ref={dropdownRef}>
       <button
         className="language-selector-btn"
+        style={{ borderRadius: '50px' }}
         onClick={() => setIsOpen(!isOpen)}
         type="button"
         aria-label="Select language"
@@ -55,7 +56,7 @@ export default function LanguageSelector({ intelligentPage = false }) {
       {isOpen && (
         <div
           className="language-dropdown"
-          style={intelligentPage ? { zIndex: 5000 } : undefined}
+          style={intelligentPage ? { zIndex: 10000, borderRadius: '12px' } : { borderRadius: '12px' }}
         >
           <ul className="language-list">
             {languages.map((lang) => (
@@ -82,23 +83,32 @@ export default function LanguageSelector({ intelligentPage = false }) {
           display: inline-block;
         }
 
+        .language-selector--intelligent-page {
+          z-index: 100;
+        }
+
+        .language-selector--intelligent-page .language-dropdown {
+          z-index: 10000;
+        }
+
         .language-selector-btn {
           display: flex;
           align-items: center;
           padding: 8px 16px;
-          background: #ff0292;
-          border: 1px solid #ff0292;
-          border-radius: 50px;
+          background: #2551e7;
+          border: 1px solid #2551e7;
+          border-radius: 50px !important;
           cursor: pointer;
           transition: all 0.3s ease;
           font-size: 14px;
           color: #ffffff;
           white-space: nowrap;
+          overflow: hidden;
         }
 
         .language-selector-btn:hover {
-          background: #e60282;
-          border-color: #e60282;
+          background: #1a3fc4;
+          border-color: #1a3fc4;
         }
 
         .language-name {
@@ -111,7 +121,7 @@ export default function LanguageSelector({ intelligentPage = false }) {
           right: 0;
           background: #ffffff;
           border: 1px solid #e0e0e0;
-          border-radius: 8px;
+          border-radius: 12px !important;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
           z-index: 1000;
           min-width: 180px;

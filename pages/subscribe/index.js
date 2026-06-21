@@ -8,6 +8,13 @@ import { notifyError, notifyMessage } from "@/util/toast";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
+import { buildNoIndexPageSeo } from "@/lib/seoHelpers";
+
+const subscribeSeo = buildNoIndexPageSeo({
+  title: "Subscribe",
+  description: "Subscribe to Corp Crunch premium content.",
+  path: "/subscribe",
+});
 
 const PaymentPlans = () => {
   const [showStatusModal, setShowStatusModal] = useState(false);
@@ -69,7 +76,7 @@ const PaymentPlans = () => {
   };
   return (
     <AuthAndSubscriptionProtected needSubscription={false}>
-      <Layout>
+      <Layout seo={subscribeSeo}>
         <div className="container py-4">
           <div className="row">
             <div className="col-md-4">

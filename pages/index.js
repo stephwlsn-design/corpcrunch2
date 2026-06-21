@@ -30,6 +30,8 @@ import {
 } from "react-share";
 import { getPosts } from "@/lib/postService";
 import { getCategories } from "@/lib/categoryService";
+import { buildHomeSeo } from "@/lib/seoHelpers";
+import { useSiteBaseUrl } from "@/contexts/SiteUrlContext";
 
 export const getServerSideProps = async ({ req }) => {
   try {
@@ -85,6 +87,7 @@ export const getServerSideProps = async ({ req }) => {
 // Removed _unused_getServerSideProps as part of cleanup
 
 export default function Home({ posts, categories = [] }) {
+  const siteBaseUrl = useSiteBaseUrl();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -194,7 +197,7 @@ export default function Home({ posts, categories = [] }) {
 
   return (
     // <AuthAndSubscriptionProtected needSubscription={true}>
-    <Layout headerStyle={1} headTitle={"Corp Crunch"} categories={categories}>
+    <Layout seo={buildHomeSeo(siteBaseUrl)} categories={categories}>
       <style jsx global>{`
         .featured-article-modern {
           position: relative;

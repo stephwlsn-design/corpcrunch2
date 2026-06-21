@@ -1,10 +1,19 @@
 import Layout from "@/components/layout/Layout";
-import Head from "next/head";
 import Link from "next/link";
 import axiosInstance from "@/util/axiosInstance";
 import { formatDate } from "@/util";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
+import { getBlogPostUrl } from "@/util/urlHelpers";
+import { buildEventsSubpageSeo } from "@/lib/seoHelpers";
+
+const c3Seo = buildEventsSubpageSeo({
+  title: "C3 Corp Crunch Connect",
+  description:
+    "C3 Corp Crunch Connect events and networking — partnership opportunities and summit programming from Corp Crunch.",
+  path: "/events/c3-corp-crunch-connect",
+  keywords: ["Corp Crunch Connect", "C3 summit", "networking"],
+});
 
 export default function C3Page({ posts }) {
   const c3Posts = posts || [];
@@ -17,12 +26,7 @@ export default function C3Page({ posts }) {
   };
 
   return (
-    <Layout>
-      <Head>
-        <title>C3 Corp Crunch Connect | Events | CorpCrunch</title>
-        <meta name="description" content="C3 Corp Crunch Connect events and content" />
-      </Head>
-
+    <Layout seo={c3Seo}>
       <section className="blog-details-area pt-80 pb-100">
         <div className="container">
           <div className="row justify-content-center">
@@ -49,7 +53,7 @@ export default function C3Page({ posts }) {
                     <div className="latest__post-item" key={item.id || index} style={{ marginBottom: '40px' }}>
                       <div className="latest__post-thumb tgImage__hover">
                         <a
-                          href={`/blog/${item.slug}`}
+                          href={getBlogPostUrl(item)}
                           onClick={(e) => {
                             e.preventDefault();
                             const url = `/blog/${item.slug}`;
@@ -100,7 +104,7 @@ export default function C3Page({ posts }) {
                         </ul>
                         <h3 className="title tgcommon__hover">
                           <a
-                            href={`/blog/${item.slug}`}
+                            href={getBlogPostUrl(item)}
                             onClick={(e) => {
                               e.preventDefault();
                               const url = `/blog/${item.slug}`;
@@ -114,7 +118,7 @@ export default function C3Page({ posts }) {
                         <p>{getExcerpt(item.content)}</p>
                         <div className="latest__post-read-more">
                           <a
-                            href={`/blog/${item.slug}`}
+                            href={getBlogPostUrl(item)}
                             onClick={(e) => {
                               e.preventDefault();
                               const url = `/blog/${item.slug}`;

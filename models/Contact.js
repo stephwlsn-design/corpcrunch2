@@ -25,8 +25,24 @@ const ContactSchema = new mongoose.Schema(
     },
     formType: {
       type: String,
-      enum: ['project', 'message'],
+      enum: ['project', 'message', 'product'],
       default: 'message',
+    },
+    inquiryTopic: {
+      type: String,
+      default: '',
+    },
+    companyName: {
+      type: String,
+      default: '',
+    },
+    phoneCountryCode: {
+      type: String,
+      default: '',
+    },
+    phoneNumber: {
+      type: String,
+      default: '',
     },
   },
   {

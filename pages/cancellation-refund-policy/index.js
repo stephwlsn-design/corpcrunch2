@@ -1,10 +1,17 @@
-import HeaderTop from "@/components/elements/HeaderTop";
-import React from "react";
+import Layout from "@/components/layout/Layout";
+import { buildLegalPageSeo } from "@/lib/seoHelpers";
+
+const cancellationSeo = buildLegalPageSeo({
+  title: "Cancellation and Refund Policy",
+  description:
+    "Corp Crunch cancellation and refund policy for subscriptions to our corporate news and intelligence services.",
+  path: "/cancellation-refund-policy",
+});
 
 const CancellationRefundPolicy = () => {
   return (
+    <Layout seo={cancellationSeo}>
     <div className="container d-flex flex-column min-vh-100 justify-content-between  align-items-center">
-      <HeaderTop />
 
       <div className="content w-75 mt-4">
         <h1 className="mb-4">Corp Crunch Cancellation and Refund Policy</h1>
@@ -99,6 +106,7 @@ const CancellationRefundPolicy = () => {
         </p>
       </div>
     </div>
+    </Layout>
   );
 };
 

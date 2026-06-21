@@ -2,6 +2,7 @@ import data from "@/util/blogData"
 import Isotope from "isotope-layout"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
+import { getBlogPostUrl } from "@/util/urlHelpers"
 
 export default function MinimalIsotope() {
     const isotope = useRef()
@@ -50,7 +51,7 @@ export default function MinimalIsotope() {
                                     <div className="minimal__post-tags">
                                         <Link href={`/category/${item.categoryId || 1}`}>{item.category}</Link>
                                     </div>
-                                    <Link href={`/blog/${item.id || item.slug || '1'}`}>
+                                    <Link href={getBlogPostUrl(item)}>
                                         <img src={`/assets/img/${item.group}/${item.img}`} alt="img" />
                                     </Link>
                                 </div>
@@ -60,7 +61,7 @@ export default function MinimalIsotope() {
                                         <li>nov 21, 2022</li>
                                     </ul>
                                     <h4 className="title tgcommon__hover">
-                                        <Link href={`/blog/${item.id || item.slug || '1'}`}>{item.title}</Link>
+                                        <Link href={getBlogPostUrl(item)}>{item.title}</Link>
                                     </h4>
                                 </div>
                             </div>

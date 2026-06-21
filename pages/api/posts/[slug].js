@@ -359,6 +359,18 @@ export default async function handler(req, res) {
       }
       if (postData.whatsExpectedNextMultimediaType !== undefined) updateData.whatsExpectedNextMultimediaType = postData.whatsExpectedNextMultimediaType;
 
+      const { buildPostSeoUpdates } = await import('@/lib/postSeoBackfill');
+      const mergedForSeo = {
+        ...existingPost.toObject(),
+        ...updateData,
+        categoryId: updateData.categoryId || existingPost.categoryId,
+      };
+      if (mergedForSeo.categoryId && !mergedForSeo.categoryId.name) {
+        await existingPost.populate('categoryId', 'name slug');
+        mergedForSeo.categoryId = existingPost.categoryId;
+      }
+      Object.assign(updateData, buildPostSeoUpdates(mergedForSeo));
+
       // Update the post
       Object.assign(existingPost, updateData);
       await existingPost.save();

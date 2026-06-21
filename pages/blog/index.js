@@ -2,6 +2,14 @@ import Layout from "@/components/layout/Layout";
 import BlogHero from "@/components/elements/BlogHero";
 import React from "react";
 import Head from "next/head";
+import { buildPageSeo } from "@/lib/seoHelpers";
+
+const blogSeo = buildPageSeo({
+  title: "Blog & Articles",
+  description:
+    "Read the latest business news, market analysis, and expert insights from Corp Crunch. In-depth articles on finance, technology, politics, and global markets.",
+  path: "/blog",
+});
 
 export default function BlogPage() {
   return (
@@ -18,8 +26,8 @@ export default function BlogPage() {
           rel="stylesheet"
         />
       </Head>
-      
-      <div className="blog-page-wrapper" style={{ margin: 0, padding: 0 }}>
+
+      <Layout seo={blogSeo} hideCategoryNavigation>
         <style jsx global>{`
           @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&display=swap');
           
@@ -68,7 +76,7 @@ export default function BlogPage() {
           journalistImage="/assets/img/others/about_me.png"
           showBuyButton={true}
         />
-      </div>
+      </Layout>
     </>
   );
 }

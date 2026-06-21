@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ToastContainer from "../ToastContainer/ToastContainer";
 import ChatBot from "../elements/ChatBot";
 import Breadcrumb from "./Breadcrumb";
@@ -6,6 +6,8 @@ import Footer from "./Footer/Footer";
 import Header from "./Header/Header";
 import CategoryNavigation from "./CategoryNavigation/CategoryNavigation";
 import PageHead from "./PageHead";
+import { useSiteBaseUrl } from "@/contexts/SiteUrlContext";
+import { localizeSeoForDomain } from "@/lib/siteUrl";
 
 const Layout = ({
   children,
@@ -46,6 +48,12 @@ const Layout = ({
   const handleLangToggle = () => setLangToggle(!langToggle);
 
   const [scroll, setScroll] = useState(0);
+  const siteBaseUrl = useSiteBaseUrl();
+
+  const resolvedSeo = useMemo(() => {
+    const baseSeo = Object.keys(seo).length > 0 ? seo : headTitle ? { title: headTitle } : {};
+    return localizeSeoForDomain(baseSeo, siteBaseUrl);
+  }, [seo, headTitle, siteBaseUrl]);
 
   // useEffect(() => {
   //   document.addEventListener("scroll", () => {
@@ -59,13 +67,24 @@ const Layout = ({
   return (
     <>
       <PageHead
-        title={seo.title || headTitle}
-        description={seo.description}
-        image={seo.image}
-        url={seo.url}
-        isArticle={seo.isArticle}
-        publishedTime={seo.publishedTime}
-        author={seo.author}
+        title={resolvedSeo.title || headTitle}
+        description={resolvedSeo.description}
+        image={resolvedSeo.image}
+        imageAlt={resolvedSeo.imageAlt}
+        url={resolvedSeo.url}
+        type={resolvedSeo.type}
+        isArticle={resolvedSeo.isArticle}
+        publishedTime={resolvedSeo.publishedTime}
+        modifiedTime={resolvedSeo.modifiedTime}
+        author={resolvedSeo.author}
+        articleSection={resolvedSeo.articleSection}
+        ogTitle={resolvedSeo.ogTitle}
+        ogDescription={resolvedSeo.ogDescription}
+        robots={resolvedSeo.robots}
+        keywords={resolvedSeo.keywords}
+        language={resolvedSeo.language}
+        jsonLd={resolvedSeo.jsonLd}
+        alternateUrls={resolvedSeo.alternateUrls}
       />
 
       <Header

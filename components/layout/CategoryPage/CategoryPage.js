@@ -1,5 +1,4 @@
 import Layout from "@/components/layout/Layout";
-import Head from "next/head";
 import Link from "next/link";
 import { formatDate, formatViews } from "@/util";
 import Image from "next/image";
@@ -11,8 +10,11 @@ import "swiper/css/pagination";
 import styles from "./CategoryPage.module.css";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
 import { isUnoptimizableImage } from "@/util/imageUtils";
+import { buildArticlePath, buildCategorySeo } from "@/lib/seoHelpers";
+import { useSiteBaseUrl } from "@/contexts/SiteUrlContext";
 
 export default function CategoryPage({ categoryDetails }) {
+  const siteBaseUrl = useSiteBaseUrl();
   const trendingPosts = categoryDetails?.trendingPosts || [];
   const newestPosts = categoryDetails?.newestPosts || [];
   const categoryName = categoryDetails?.name || "Category";
@@ -35,9 +37,11 @@ export default function CategoryPage({ categoryDetails }) {
   const totalViews = [...trendingPosts, ...mostViewedPosts, ...newestPosts].reduce((sum, p) => sum + (p.viewsCount || 0), 0);
   const trendingCount = trendingPosts.length;
 
+  const categorySeo = buildCategorySeo(categoryDetails, siteBaseUrl);
+
   const ArticleCard = ({ post, index, variant = "trending" }) => (
     <div className={`${styles.articleCard} ${styles[variant]}`}>
-      <Link href={`/blog/${post.slug || post._id}`} scroll={true}>
+      <Link href={buildArticlePath(post)} scroll={true}>
         <div className={styles.cardContent}>
           <div className={styles.cardBadge}>
             {variant === "viewed" ? (
@@ -94,12 +98,7 @@ export default function CategoryPage({ categoryDetails }) {
   );
 
   return (
-    <Layout categories={categoryDetails?.categories || null}>
-      <Head>
-        <title>{`${categoryName} | Corp Crunch`}</title>
-        <meta name="description" content={`${categoryName} news and insights`} />
-      </Head>
-
+    <Layout categories={categoryDetails?.categories || null} seo={categorySeo}>
       <SocialShareRibbon />
 
       <div className="category-page-wrapper">
@@ -121,7 +120,7 @@ export default function CategoryPage({ categoryDetails }) {
                   {trendingPosts.length > 0 ? (
                     trendingPosts.slice(0, 5).map((post, index) => (
                       <SwiperSlide key={post._id || index} className={styles.heroSlide}>
-                        <Link href={`/blog/${post.slug || post._id}`}>
+                        <Link href={buildArticlePath(post)}>
                           {post.bannerImageUrl && (
                             <Image
                               src={post.bannerImageUrl}

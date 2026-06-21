@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { setClientPreferenceCookie } from '@/lib/cookieConsent';
 
 const LocationContext = createContext();
 
@@ -24,7 +25,7 @@ export const LocationProvider = ({ children }) => {
         setLocation(savedLocation);
 
         // Set cookie for server-side access
-        document.cookie = `location=${savedLocation}; path=/; max-age=31536000; SameSite=Lax`;
+        setClientPreferenceCookie('location', savedLocation);
       } catch (error) {
         console.error('Error initializing location:', error);
         // Fallback to 'all'
@@ -38,7 +39,7 @@ export const LocationProvider = ({ children }) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('location', loc);
       // Set cookie for server-side access
-      document.cookie = `location=${loc}; path=/; max-age=31536000; SameSite=Lax`;
+      setClientPreferenceCookie('location', loc);
     }
   };
 

@@ -1,8 +1,17 @@
 import React from "react";
 import Layout from "@/components/layout/Layout";
+import { buildLegalPageSeo } from "@/lib/seoHelpers";
+
+const termsSeo = buildLegalPageSeo({
+  title: "Terms of Service",
+  description:
+    "Corp Crunch Terms of Service — rules and guidelines for accessing and using the Corp Crunch website, apps, and services.",
+  path: "/terms-of-service",
+});
+
 function TermsOfService() {
   return (
-    <Layout>
+    <Layout seo={termsSeo}>
       <div className="container d-flex flex-column min-vh-100 justify-content-between  align-items-center">
 
       <div className="content w-75 mt-4">

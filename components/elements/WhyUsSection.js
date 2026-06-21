@@ -5,6 +5,8 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './WhyUsSection.module.css';
 import { useAuth } from '@/contexts/AuthContext';
+import { buildArticlePath } from '@/lib/seoHelpers';
+import { getBlogPostUrl } from '@/util/urlHelpers';
 
 export default function WhyUsSection({ trendingPosts = [], isLoading = false }) {
   const [scrollIndex, setScrollIndex] = useState(0);
@@ -80,10 +82,10 @@ export default function WhyUsSection({ trendingPosts = [], isLoading = false }) 
           >
             {post1 ? (
               <Link 
-                href={`/blog/${post1.slug || post1._id}`} 
+                href={buildArticlePath(post1)} 
                 className={styles.newsLink}
                 onClick={(e) => {
-                  if (!requireAuth(`/blog/${post1.slug || post1._id}`)) {
+                  if (!requireAuth(getBlogPostUrl(post1))) {
                     e.preventDefault();
                   }
                 }}
@@ -129,10 +131,10 @@ export default function WhyUsSection({ trendingPosts = [], isLoading = false }) 
           >
             {post2 ? (
               <Link 
-                href={`/blog/${post2.slug || post2._id}`} 
+                href={buildArticlePath(post2)} 
                 className={styles.newsLink}
                 onClick={(e) => {
-                  if (!requireAuth(`/blog/${post2.slug || post2._id}`)) {
+                  if (!requireAuth(getBlogPostUrl(post2))) {
                     e.preventDefault();
                   }
                 }}
@@ -178,10 +180,10 @@ export default function WhyUsSection({ trendingPosts = [], isLoading = false }) 
           >
             {post3 ? (
               <Link 
-                href={`/blog/${post3.slug || post3._id}`} 
+                href={buildArticlePath(post3)} 
                 className={styles.newsLink}
                 onClick={(e) => {
-                  if (!requireAuth(`/blog/${post3.slug || post3._id}`)) {
+                  if (!requireAuth(getBlogPostUrl(post3))) {
                     e.preventDefault();
                   }
                 }}

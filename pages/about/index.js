@@ -7,7 +7,9 @@ import FAQs from '@/components/about/FAQs';
 import axiosInstance from '@/util/axiosInstance';
 import SocialShareRibbon from '@/components/elements/SocialShareRibbon';
 import TeamMembers from '@/components/about/TeamMembers';
-import AuthAndSubscriptionProtected from '@/components/providers/AuthAndSubscriptionProtected';
+import { buildAboutSeo } from '@/lib/seoHelpers';
+
+const aboutSeo = buildAboutSeo();
 
 export default function AboutPage() {
   const [aboutContent, setAboutContent] = useState(null);
@@ -66,7 +68,7 @@ export default function AboutPage() {
 
   if (loading) {
     return (
-      <Layout headTitle="About Us - Corp Crunch">
+      <Layout seo={aboutSeo}>
         <div style={{ 
           minHeight: '100vh', 
           display: 'flex', 
@@ -97,9 +99,8 @@ export default function AboutPage() {
   }
 
   return (
-    <Layout headTitle="About Us - Corp Crunch">
-      <AuthAndSubscriptionProtected>
-        <SocialShareRibbon />
+    <Layout seo={aboutSeo}>
+      <SocialShareRibbon />
       <style jsx global>{`
         .about-page-wrapper {
           margin-left: -15px;
@@ -153,7 +154,6 @@ export default function AboutPage() {
         {/* FAQs Section */}
         {/* <FAQs faqs={faqs} /> */}
       </div>
-      </AuthAndSubscriptionProtected>
     </Layout>
   );
 }

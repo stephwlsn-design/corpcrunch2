@@ -66,7 +66,7 @@ export default function TrendingCategories({ categories = [] }) {
                     <div className={styles.newsTrack}>
                       {[...trendingNews, ...trendingNews].map((news, nIdx) => {
                         // Ensure news has required properties
-                        const newsUrl = news?.slug ? getBlogPostUrl(news) : `/blog/${news?.slug || news?._id || ''}`;
+                        const newsUrl = getBlogPostUrl(news);
                         return (
                           <a
                             key={`${news._id || nIdx}-${nIdx}`}

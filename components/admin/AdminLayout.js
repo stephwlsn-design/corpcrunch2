@@ -6,6 +6,7 @@ import { clearAdminSession } from "@/lib/adminSession";
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Manage Posts" },
   { href: "/admin/posts/create", label: "Create Post" },
+  { href: "/admin/visitors", label: "Site Visitors" },
   { href: "/admin/users", label: "User Management" },
   { href: "/admin/analytics", label: "Analytics" },
 ];
@@ -22,6 +23,7 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
   const isActive = (href) => {
     if (href === "/admin/dashboard") return router.pathname === "/admin/dashboard";
     if (href === "/admin/posts/create") return router.pathname === "/admin/posts/create";
+    if (href === "/admin/visitors") return router.pathname.startsWith("/admin/visitors");
     if (href === "/admin/users") return router.pathname.startsWith("/admin/users");
     if (href === "/admin/analytics") return router.pathname.startsWith("/admin/analytics");
     return false;

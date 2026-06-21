@@ -8,9 +8,11 @@ export default function Document() {
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://ottoplatform-410578063330.us-central1.run.app" />
 
-        <script async src="http://localhost:8000/pixel.js?id=OTTO-PX-26CDE319"></script>
-        {/* <script async src="http://localhost:8000/pixel.js?id=OTTO-PX-5DAE1720"></script> */}
+        {process.env.NODE_ENV === 'development' && (
+          <script async src="http://localhost:8000/pixel.js?id=OTTO-PX-26CDE319"></script>
+        )}
         <script async src="https://ottoplatform-410578063330.us-central1.run.app/pixel.js?id=OTTO-PX-8C2138ED"></script>
         <script async src="https://ottoplatform-410578063330.us-central1.run.app/pixel.js?id=OTTO-PX-FE92E881"></script>
 
@@ -25,7 +27,14 @@ export default function Document() {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-8MJ7BXCFYK');
+              gtag('consent', 'default', {
+                analytics_storage: 'denied',
+                ad_storage: 'denied',
+                functionality_storage: 'granted',
+                security_storage: 'granted',
+                wait_for_update: 500
+              });
+              gtag('config', 'G-8MJ7BXCFYK', { anonymize_ip: true });
             `,
           }}
         />

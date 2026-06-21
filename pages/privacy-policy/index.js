@@ -1,8 +1,17 @@
 import React from "react";
 import Layout from "@/components/layout/Layout";
+import { buildLegalPageSeo } from "@/lib/seoHelpers";
+
+const privacySeo = buildLegalPageSeo({
+  title: "Privacy Policy",
+  description:
+    "Corp Crunch Privacy Policy — how we collect, use, and protect your personal information when you use our services.",
+  path: "/privacy-policy",
+});
+
 function PrivacyPolicy() {
   return (
-      <Layout>
+      <Layout seo={privacySeo}>
       <div className="container d-flex flex-column min-vh-100 justify-content-between  align-items-center">
         <div className="content w-75 mt-4">
           <h1 className="mb-4">Corp Crunch Privacy Policy</h1>

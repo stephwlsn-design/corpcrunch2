@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { formatNumber } from "@/util";
+import { getBlogPostUrl } from "@/util/urlHelpers";
+import { buildCompanySeo } from "@/lib/seoHelpers";
 
 export default function BlogDetails() {
   let Router = useRouter();
@@ -24,10 +26,12 @@ export default function BlogDetails() {
       setImageLoaded(true);
     }
   }, [companyDetails?.logoUrl]);
-  // console.log(companyDetails, 'det');
+
+  const companySeo = buildCompanySeo(companyDetails);
 
   return (
     <Layout
+      seo={companySeo}
       breadcrumbCategory={companyDetails?.name}
       breadcrumbPostTitle={companyDetails?.name}
     >
@@ -213,7 +217,7 @@ export default function BlogDetails() {
                     : companiesPosts?.map((item, i) => (
                       <div className="trending__post" key={i}>
                         <div className="trending__post-thumb tgImage__hover">
-                          <Link href={`/blog/${item?.id}`}>
+                          <Link href={getBlogPostUrl(item)}>
                             <img
                               src={
                                 item?.bannerImageUrl ??
@@ -242,7 +246,7 @@ export default function BlogDetails() {
                             </li>
                           </ul>
                           <h4 className="title tgcommon__hover">
-                            <Link href={`/blog/${item?.id}`}>
+                            <Link href={getBlogPostUrl(item)}>
                               {item?.content?.substring(0, 100) + "..."}
                             </Link>
                           </h4>

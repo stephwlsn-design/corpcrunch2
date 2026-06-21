@@ -1,10 +1,19 @@
 import Layout from "@/components/layout/Layout";
-import Head from "next/head";
 import Link from "next/link";
 import axiosInstance from "@/util/axiosInstance";
 import { formatDate } from "@/util";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
+import { getBlogPostUrl } from "@/util/urlHelpers";
+import { buildEventsSubpageSeo } from "@/lib/seoHelpers";
+
+const aixSeo = buildEventsSubpageSeo({
+  title: "AIX Events",
+  description:
+    "AIX events and summit content from Corp Crunch — coverage, insights, and programming from the C3 AIX Summit series.",
+  path: "/events/aix",
+  keywords: ["AIX summit", "AI events", "ethical AI"],
+});
 
 export default function AIXPage({ posts }) {
   const aixPosts = posts || [];
@@ -17,12 +26,7 @@ export default function AIXPage({ posts }) {
   };
 
   return (
-    <Layout>
-      <Head>
-        <title>AIX | Events | CorpCrunch</title>
-        <meta name="description" content="AIX events and content from Corp Crunch" />
-      </Head>
-
+    <Layout seo={aixSeo}>
       <section className="blog-details-area pt-80 pb-100">
         <div className="container">
           <div className="row justify-content-center">
@@ -49,7 +53,7 @@ export default function AIXPage({ posts }) {
                     <div className="latest__post-item" key={item.id || index} style={{ marginBottom: '40px' }}>
                       <div className="latest__post-thumb tgImage__hover">
                         <a
-                          href={`/blog/${item.slug}`}
+                          href={getBlogPostUrl(item)}
                           onClick={(e) => {
                             e.preventDefault();
                             const url = `/blog/${item.slug}`;
@@ -100,7 +104,7 @@ export default function AIXPage({ posts }) {
                         </ul>
                         <h3 className="title tgcommon__hover">
                           <a
-                            href={`/blog/${item.slug}`}
+                            href={getBlogPostUrl(item)}
                             onClick={(e) => {
                               e.preventDefault();
                               const url = `/blog/${item.slug}`;
@@ -114,7 +118,7 @@ export default function AIXPage({ posts }) {
                         <p>{getExcerpt(item.content)}</p>
                         <div className="latest__post-read-more">
                           <a
-                            href={`/blog/${item.slug}`}
+                            href={getBlogPostUrl(item)}
                             onClick={(e) => {
                               e.preventDefault();
                               const url = `/blog/${item.slug}`;

@@ -3,6 +3,7 @@ import User from '@/models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { hsTrackLogin } from '@/lib/hubspot';
+import { recordVisitorFromRequest } from '@/lib/recordVisitorFromRequest';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -45,6 +46,16 @@ export default async function handler(req, res) {
         hsTrackLogin(user.email).catch((err) =>
             console.error('[HubSpot] trackLogin failed:', err)
         );
+
+        recordVisitorFromRequest(req, {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            location: user.location,
+            source: 'login',
+            userId: user._id,
+        }).catch((err) => console.error('[Visitor] login tracking failed:', err));
 
         // Create token
         const token = jwt.sign(

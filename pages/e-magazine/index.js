@@ -39,6 +39,9 @@ import { Autoplay, Pagination } from 'swiper';
 import { useLanguage } from '@/contexts/LanguageContext';
 import styles from './E-Magazine.module.css';
 import SocialShareRibbon from '@/components/elements/SocialShareRibbon';
+import { buildEMagazineSeo } from '@/lib/seoHelpers';
+
+const eMagazineSeo = buildEMagazineSeo();
 
 export default function EMagazinePage() {
   const { t } = useLanguage();
@@ -53,7 +56,7 @@ export default function EMagazinePage() {
   const categories = ['all', 'business', 'technology', 'finance', 'real-estate'];
 
   return (
-    <Layout headTitle="E-Magazine Library - CorpCrunch">
+    <Layout seo={eMagazineSeo}>
       <SocialShareRibbon />
       <div className={styles.magazinePage}>
         {/* Hero Section */}

@@ -6,6 +6,13 @@ import Spinner from "@/components/elements/Spinner";
 import axiosInstance from "@/util/axiosInstance";
 import { notifyError, notifySuccess } from "@/util/toast";
 import Link from "next/link";
+import { buildNoIndexPageSeo } from "@/lib/seoHelpers";
+
+const registerSeo = buildNoIndexPageSeo({
+  title: "Register",
+  description: "Create a Corp Crunch account.",
+  path: "/register",
+});
 
 const Register = () => {
   const router = useRouter();
@@ -55,7 +62,7 @@ const Register = () => {
   };
 
   return (
-    <Layout>
+    <Layout seo={registerSeo}>
       <style jsx>{`
         .auth-container {
           position: relative;

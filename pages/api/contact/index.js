@@ -3,6 +3,8 @@ import connectDB from '@/lib/mongoose';
 import Contact from '@/models/Contact';
 import { publicRateLimiter } from '@/lib/rateLimiter';
 import { requireAdminAuth } from '@/lib/adminAuth';
+import { recordVisitorFromRequest } from '@/lib/recordVisitorFromRequest';
+import { formatPhoneNumber } from '@/lib/phoneCountryCodes';
 
 function escapeHtml(text) {
   return String(text)
@@ -33,15 +35,42 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
       await connectDB();
-      const { name, email, subject, message, formType } = req.body;
+      const {
+        name,
+        email,
+        subject,
+        message,
+        formType,
+        inquiryTopic,
+        companyName,
+        phoneCountryCode,
+        phoneNumber,
+      } = req.body;
 
       // Basic Validation
       if (!name || !email || !subject || !message) {
-        return res.status(400).json({ success: false, message: 'All fields are required' });
+        return res.status(400).json({ success: false, message: 'All required fields must be completed' });
       }
 
       const safeFormType =
-        formType === 'project' || formType === 'message' ? formType : 'message';
+        formType === 'project' || formType === 'message' || formType === 'product'
+          ? formType
+          : 'message';
+      const safeInquiryTopic =
+        typeof inquiryTopic === 'string' ? inquiryTopic.trim().slice(0, 120) : '';
+      const safeCompanyName =
+        typeof companyName === 'string' ? companyName.trim().slice(0, 200) : '';
+      const safePhoneCountryCode =
+        typeof phoneCountryCode === 'string' ? phoneCountryCode.trim().slice(0, 8) : '';
+      const safePhoneNumber =
+        typeof phoneNumber === 'string' ? phoneNumber.replace(/[^\d\s-]/g, '').trim().slice(0, 20) : '';
+
+      if (safePhoneNumber && !safePhoneCountryCode) {
+        return res.status(400).json({
+          success: false,
+          message: 'Please select a country code for your phone number',
+        });
+      }
 
       // Create Database Entry
       const contact = new Contact({
@@ -50,10 +79,21 @@ export default async function handler(req, res) {
         subject: subject.trim(),
         message: message.trim(),
         formType: safeFormType,
+        inquiryTopic: safeInquiryTopic,
+        companyName: safeCompanyName,
+        phoneCountryCode: safePhoneCountryCode,
+        phoneNumber: safePhoneNumber,
         status: 'new',
       });
 
       await contact.save();
+
+      recordVisitorFromRequest(req, {
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        phoneNumber: formatPhoneNumber(safePhoneCountryCode, safePhoneNumber),
+        source: 'contact',
+      }).catch((err) => console.error('[API /contact] Visitor tracking failed:', err));
 
       const smtpHost = process.env.SMTP_HOST;
       const smtpUser = process.env.SMTP_USER;
@@ -74,6 +114,11 @@ export default async function handler(req, res) {
           const safeEmail = escapeHtml(email);
           const safeSubject = escapeHtml(subject);
           const safeMessage = escapeHtml(message);
+          const safeInquiryTopicHtml = escapeHtml(safeInquiryTopic || 'Not specified');
+          const safeCompanyNameHtml = escapeHtml(safeCompanyName || 'Not provided');
+          const safePhoneHtml = escapeHtml(
+            formatPhoneNumber(safePhoneCountryCode, safePhoneNumber) || 'Not provided'
+          );
 
           await transporter.sendMail({
             from: `"CorpCrunch Contact" <${smtpUser}>`,
@@ -85,6 +130,10 @@ export default async function handler(req, res) {
             <h2>New Contact Form Submission</h2>
             <p><strong>Name:</strong> ${safeName}</p>
             <p><strong>Email:</strong> ${safeEmail}</p>
+            <p><strong>Company:</strong> ${safeCompanyNameHtml}</p>
+            <p><strong>Phone:</strong> ${safePhoneHtml}</p>
+            <p><strong>Form Type:</strong> ${escapeHtml(safeFormType)}</p>
+            <p><strong>Reaching out about:</strong> ${safeInquiryTopicHtml}</p>
             <p><strong>Subject:</strong> ${safeSubject}</p>
             <hr />
             <p><strong>Message:</strong></p>
