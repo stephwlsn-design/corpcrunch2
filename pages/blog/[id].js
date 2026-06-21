@@ -267,8 +267,6 @@ export default function BlogDetails({ postsDetails }) {
   //   }
   // };
 
-  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
-
   // Safely get published time with multiple fallbacks
   const getPublishedTime = () => {
     try {

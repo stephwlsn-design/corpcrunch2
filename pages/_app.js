@@ -50,7 +50,8 @@ function AppContent({ Component, pageProps }) {
   const router = useRouter();
   const { hasConsented, isReady } = useCookieConsent();
   const isAdminRoute = router.pathname.startsWith('/admin');
-  const canAccessSite = isAdminRoute || !isReady || hasConsented;
+  const showConsentGate = isReady && !hasConsented && !isAdminRoute;
+  const canAccessSite = isAdminRoute || !showConsentGate;
 
   useEffect(() => {
     if (hasConsented || isAdminRoute) {
@@ -115,8 +116,11 @@ function AppContent({ Component, pageProps }) {
   return (
     <>
       <div
-        style={canAccessSite ? undefined : { pointerEvents: 'none', userSelect: 'none' }}
-        aria-hidden={!canAccessSite}
+        style={
+          canAccessSite
+            ? undefined
+            : { pointerEvents: 'none', userSelect: 'none', opacity: 0.25 }
+        }
       >
         <Component {...pageProps} />
       </div>

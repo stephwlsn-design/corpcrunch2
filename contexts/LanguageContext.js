@@ -10,9 +10,7 @@ export const useLanguage = () => {
     // This can happen during SSR or if the provider is not mounted yet
     console.warn('useLanguage called outside LanguageProvider, using default values');
     return {
-      language: typeof window !== 'undefined' 
-        ? (localStorage.getItem('language') || 'en')
-        : 'en',
+      language: 'en',
       changeLanguage: () => {},
       t: (key) => key,
       translations: {}

@@ -1,7 +1,27 @@
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './MeetOurExperts.module.css';
 
+function formatGmt6Time() {
+  return new Date()
+    .toLocaleTimeString('en-US', {
+      timeZone: 'Asia/Dhaka',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    })
+    .replace(/(\d+):(\d+)\s(AM|PM)/, '(GMT+6) $1:$2 $3');
+}
+
 export default function MeetOurExperts({ teamMembers }) {
+  const [currentTime, setCurrentTime] = useState('');
+
+  useEffect(() => {
+    const updateTime = () => setCurrentTime(formatGmt6Time());
+    updateTime();
+    const interval = setInterval(updateTime, 60000);
+    return () => clearInterval(interval);
+  }, []);
   const defaultTeam = [
     {
       name: 'John Carter',
@@ -72,12 +92,7 @@ export default function MeetOurExperts({ teamMembers }) {
       {/* Vertical Text - Right */}
       <div className={styles.verticalTextRight}>
         <div className={styles.verticalTextTop}>
-          {new Date().toLocaleTimeString('en-US', { 
-            timeZone: 'Asia/Dhaka',
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true 
-          }).replace(/(\d+):(\d+)\s(AM|PM)/, '(GMT+6) $1:$2 $3')}
+          {currentTime}
         </div>
         <div className={styles.socialIcons}>
           <button className={styles.closeButton} aria-label="Close">X</button>

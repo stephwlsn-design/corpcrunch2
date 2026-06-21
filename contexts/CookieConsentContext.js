@@ -45,7 +45,17 @@ export function CookieConsentProvider({ children }) {
     let cancelled = false;
 
     async function initConsent() {
-      let status = await fetchConsentFromServer();
+      let status = null;
+      try {
+        status = await Promise.race([
+          fetchConsentFromServer(),
+          new Promise((resolve) => {
+            setTimeout(() => resolve(null), 8000);
+          }),
+        ]);
+      } catch {
+        status = null;
+      }
 
       if (!status) {
         status = await migrateLegacyClientCookies();

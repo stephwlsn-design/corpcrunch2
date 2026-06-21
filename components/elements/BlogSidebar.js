@@ -7,6 +7,14 @@ import { useLanguage } from '@/contexts/LanguageContext'
 import { getBlogPostUrl, getCategoryUrl } from '@/util/urlHelpers'
 import { useAuth } from '@/contexts/AuthContext'
 
+function inflateCategoryCount(baseCount, categoryId) {
+    const seed = String(categoryId || '')
+        .split('')
+        .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const pseudo = (seed * 17 + baseCount * 89) % 900;
+    return baseCount + pseudo + 100;
+}
+
 export default function BlogSidebar({ author }) {
     const { t } = useLanguage();
     const { requireAuth } = useAuth();
@@ -54,10 +62,9 @@ export default function BlogSidebar({ author }) {
             post.Category?.id === category.id || post.categoryId === category.id
         ).length;
 
-        // Inflate the count with a random number between 100 and 1000
-        // This ensures categories always show meaningful numbers
+        // Deterministic inflation so SSR and client render the same count
         const baseCount = postCount || 0;
-        const inflatedCount = baseCount + Math.floor(Math.random() * 900) + 100;
+        const inflatedCount = inflateCategoryCount(baseCount, category.id || category._id);
 
         // Get category image from mapping, prioritizing mapping over database imageUrl
         // This ensures correct images are shown for each industry type

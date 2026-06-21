@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./BlogStatsSection.module.css";
-import { formatViews } from "@/util";
+import { formatNumber, formatViews } from "@/util";
 
 export default function BlogStatsSection({
   quote,
@@ -81,7 +81,7 @@ export default function BlogStatsSection({
                 <span>Shares</span>
               </div>
               <div className={styles.statNumber}>
-                {shares.toLocaleString()}{shares > 0 ? '+' : ''}
+                {formatNumber(shares)}{shares > 0 ? '+' : ''}
               </div>
             </div>
           )}

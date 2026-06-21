@@ -8,24 +8,8 @@ const getCacheKey = (text, sourceLang, targetLang) => {
   return `${sourceLang}-${targetLang}-${text.substring(0, 100)}`;
 };
 
-// Safe hook to get language with fallback
-const useLanguageSafe = () => {
-  // Check if we're on the client side
-  if (typeof window === 'undefined') {
-    return { language: 'en', changeLanguage: () => {}, t: (key) => key, translations: {} };
-  }
-  
-  try {
-    return useLanguage();
-  } catch (error) {
-    // If LanguageProvider is not available, return default
-    console.warn('LanguageProvider not available, using default language:', error);
-    return { language: 'en', changeLanguage: () => {}, t: (key) => key, translations: {} };
-  }
-};
-
 export const usePostTranslation = (post) => {
-  const { language } = useLanguageSafe();
+  const { language } = useLanguage();
   const [translatedPost, setTranslatedPost] = useState(post);
   const [isTranslating, setIsTranslating] = useState(false);
 
@@ -118,7 +102,7 @@ export const usePostTranslation = (post) => {
 
 // Hook for translating multiple posts
 export const usePostsTranslation = (posts) => {
-  const { language } = useLanguageSafe();
+  const { language } = useLanguage();
   const [translatedPosts, setTranslatedPosts] = useState(posts || []);
   const [isTranslating, setIsTranslating] = useState(false);
 

@@ -1,29 +1,27 @@
-import { resolveSiteBaseUrl } from '@/lib/siteUrl';
-
-const DISALLOWED_PATHS = [
-  '/api/',
-  '/admin/',
-  '/_next/',
-  '/signin',
-  '/register',
-  '/profile',
-  '/payment',
-  '/make-article-request',
-];
+import { resolveSiteBaseUrl, SITE_BASE_URLS } from '@/lib/siteUrl';
+import { getRobotsDisallowedPaths } from '@/lib/sitemapConfig';
 
 function generateRobotsTxt(baseUrl) {
-  const sitemapUrl = `${baseUrl.replace(/\/$/, '')}/sitemap.xml`;
+  const normalizedBase = baseUrl.replace(/\/$/, '');
+  const sitemapUrl = `${normalizedBase}/sitemap.xml`;
+  const disallowed = getRobotsDisallowedPaths();
+
+  const disallowLines = disallowed.map((path) => `Disallow: ${path}`).join('\n');
+  const alternateSitemaps = SITE_BASE_URLS
+    .filter((url) => url.replace(/\/$/, '') !== normalizedBase)
+    .map((url) => `Sitemap: ${url.replace(/\/$/, '')}/sitemap.xml`)
+    .join('\n');
 
   return `User-agent: *
 Allow: /
-${DISALLOWED_PATHS.map((path) => `Disallow: ${path}`).join('\n')}
+${disallowLines}
 
 User-agent: Googlebot
 Allow: /
-${DISALLOWED_PATHS.map((path) => `Disallow: ${path}`).join('\n')}
+${disallowLines}
 
 Sitemap: ${sitemapUrl}
-`;
+${alternateSitemaps ? `${alternateSitemaps}\n` : ''}`;
 }
 
 export async function getServerSideProps({ req, res }) {

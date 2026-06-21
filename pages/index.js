@@ -165,9 +165,7 @@ export default function Home({ posts, categories = [] }) {
     }
   }, [posts, safePosts]);
 
-  const [currentUrl, setCurrentUrl] = useState(
-    typeof window !== "undefined" ? window.location.href : ""
-  );
+  const [currentUrl, setCurrentUrl] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {

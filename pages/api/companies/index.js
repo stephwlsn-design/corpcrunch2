@@ -1,37 +1,5 @@
 import connectDB from '@/lib/mongoose';
-import mongoose from 'mongoose';
-
-// Define Company schema if model doesn't exist
-const CompanySchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    slug: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    logoUrl: String,
-    description: String,
-    website: String,
-    industry: String,
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
-
-CompanySchema.index({ slug: 1 });
-CompanySchema.index({ isActive: 1 });
-
-const Company = mongoose.models.Company || mongoose.model('Company', CompanySchema);
+import Company from '@/models/Company';
 
 export default async function handler(req, res) {
   // Prevent multiple responses
