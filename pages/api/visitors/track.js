@@ -3,6 +3,7 @@ import { publicRateLimiter } from '@/lib/rateLimiter';
 import {
   getClientIp,
   getGeoFromRequest,
+  getHostFromRequest,
   upsertSiteVisitor,
   getVisitorIdFromCookies,
   hasConsentFromCookies,
@@ -53,6 +54,7 @@ export default async function handler(req, res) {
     await connectDB();
 
     const geo = getGeoFromRequest(req);
+    const { hostname, siteFamily } = getHostFromRequest(req);
     const ipAddress = getClientIp(req);
     const userAgent = req.headers['user-agent'] || null;
 
@@ -69,6 +71,8 @@ export default async function handler(req, res) {
       region: geo.region,
       ipAddress,
       userAgent,
+      hostname,
+      siteFamily,
       consentStatus: 'accepted',
       source: source || 'pageview',
       url,

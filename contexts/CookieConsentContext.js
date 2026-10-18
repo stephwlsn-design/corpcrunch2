@@ -27,7 +27,10 @@ async function migrateLegacyClientCookies() {
 
   const action = legacyConsent === 'accepted' ? 'accept' : 'decline';
   const legacyVisitorId = legacyConsent === 'accepted' ? getCookieValue(VISITOR_ID_KEY) : null;
-  const migrated = await persistConsentToServer(action, { visitorId: legacyVisitorId });
+  const migrated = await persistConsentToServer(action, {
+    visitorId: legacyVisitorId,
+    legacyMigration: action === 'accept',
+  });
   if (!migrated) {
     return null;
   }
@@ -79,8 +82,12 @@ export function CookieConsentProvider({ children }) {
     };
   }, []);
 
-  const acceptCookies = useCallback(async () => {
-    const status = await persistConsentToServer('accept');
+  const acceptCookies = useCallback(async (contact = {}) => {
+    const status = await persistConsentToServer('accept', {
+      name: contact.name,
+      email: contact.email,
+      phoneNumber: contact.phoneNumber,
+    });
     if (!status) return null;
 
     setCachedConsentStatus(status);

@@ -7,6 +7,8 @@ import useCategory from "@/hooks/useCategory";
 import ToastContainer from "@/components/ToastContainer/ToastContainer";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { isAdminSessionValid, clearAdminSession } from "@/lib/adminSession";
+import { autofillAdminSeoFormFields } from "@/lib/postSeoBackfill";
+import { calculateReadingTime as calcReadingTimeFromContent } from "@/lib/seoOptimizer";
 
 export default function AdminCreatePost() {
   // Core Required Fields
@@ -156,31 +158,82 @@ export default function AdminCreatePost() {
     }
   };
 
-  // Auto-generate meta description when content changes
+  // Auto-populate empty SEO/metadata/publishing fields from title + content
   useEffect(() => {
-    if (content && !metaDescription && content.length > 50) {
-      const generatedDesc = generateMetaDescription(content);
-      setMetaDescription(generatedDesc);
-    }
-  }, [content]);
+    if (!title?.trim() && !content?.trim()) return;
 
-  const calculateReadingTime = (text) => {
-    const wordsPerMinute = 200;
-    const words = text.split(/\s+/).filter(Boolean).length;
-    const minutes = Math.ceil(words / wordsPerMinute);
-    return minutes;
-  };
+    const filled = autofillAdminSeoFormFields({
+      title,
+      slug,
+      content,
+      bannerImageUrl,
+      metaTitle,
+      metaDescription,
+      imageAltText,
+      excerpt,
+      readingTime,
+      ogTitle,
+      ogDescription,
+      ogImage,
+      secondaryKeywords,
+      inlineImages,
+      inlineImageAltText,
+      allowIndexing,
+      allowFollowing,
+      schemaMarkupType,
+      language,
+      region,
+      canonicalUrl,
+      structuredData,
+      whyThisMatters,
+      whatsExpectedNext,
+      tags,
+      contentType,
+      categoryId,
+      authorFirstName,
+      authorLastName,
+    });
 
-  useEffect(() => {
-    // Auto-calculate reading time when content changes
-    if (content) {
-      const time = calculateReadingTime(content);
-      // Only update if readingTime is empty or if content changed significantly
-      if (!readingTime || Math.abs(Number(readingTime) - time) > 1) {
-        setReadingTime(time.toString());
+    if (filled.metaTitle && !metaTitle) setMetaTitle(filled.metaTitle);
+    if (filled.metaDescription && !metaDescription) setMetaDescription(filled.metaDescription);
+    if (filled.excerpt && !excerpt) setExcerpt(filled.excerpt);
+    if (filled.imageAltText && !imageAltText) setImageAltText(filled.imageAltText);
+    if (filled.ogTitle && !ogTitle) setOgTitle(filled.ogTitle);
+    if (filled.ogDescription && !ogDescription) setOgDescription(filled.ogDescription);
+    if (filled.ogImage && !ogImage) setOgImage(filled.ogImage);
+    if (filled.readingTime) {
+      const nextTime = filled.readingTime;
+      if (!readingTime || Math.abs(Number(readingTime) - Number(nextTime)) > 1) {
+        setReadingTime(nextTime);
       }
     }
-  }, [content]);
+    if (filled.secondaryKeywords && !secondaryKeywords) {
+      setSecondaryKeywords(filled.secondaryKeywords);
+    }
+    if (filled.inlineImages && !inlineImages) setInlineImages(filled.inlineImages);
+    if (filled.inlineImageAltText && !inlineImageAltText) {
+      setInlineImageAltText(filled.inlineImageAltText);
+    }
+    if (filled.schemaMarkupType && !schemaMarkupType) {
+      setSchemaMarkupType(filled.schemaMarkupType);
+    }
+    if (filled.language && !language) setLanguage(filled.language);
+    if (filled.region && !region) setRegion(filled.region);
+    if (filled.structuredData && !structuredData) setStructuredData(filled.structuredData);
+    if (filled.whyThisMatters && !whyThisMatters) setWhyThisMatters(filled.whyThisMatters);
+    if (filled.whatsExpectedNext && !whatsExpectedNext) {
+      setWhatsExpectedNext(filled.whatsExpectedNext);
+    }
+    if (filled.allowIndexing !== undefined) setAllowIndexing(filled.allowIndexing);
+    if (filled.allowFollowing !== undefined) setAllowFollowing(filled.allowFollowing);
+  }, [title, content, bannerImageUrl, categoryId]);
+
+  useEffect(() => {
+    // Keep OG image in sync with featured image when OG image is empty
+    if (bannerImageUrl && !ogImage) {
+      setOgImage(bannerImageUrl);
+    }
+  }, [bannerImageUrl]);
 
   const handleImageUrlChange = (e) => {
     let url = e.target.value;
@@ -2083,7 +2136,7 @@ export default function AdminCreatePost() {
                               <button
                                 type="button"
                                 onClick={() => {
-                                  const time = calculateReadingTime(content);
+                                  const time = calcReadingTimeFromContent(content);
                                   setReadingTime(time.toString());
                                 }}
                                 className="btn btn-sm"

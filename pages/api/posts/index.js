@@ -874,6 +874,27 @@ export default async function handler(req, res) {
         return;
       }
 
+      // Auto-populate empty SEO/metadata fields for max visibility before save
+      try {
+        const { buildPostSeoUpdates } = await import('@/lib/postSeoBackfill');
+        const Category = (await import('@/models/Category')).default;
+        let categoryDoc = null;
+        try {
+          categoryDoc = await Category.findById(sanitizedData.categoryId)
+            .select('name slug')
+            .lean();
+        } catch {
+          categoryDoc = null;
+        }
+        const seoUpdates = buildPostSeoUpdates({
+          ...sanitizedData,
+          categoryId: categoryDoc || sanitizedData.categoryId,
+        });
+        Object.assign(sanitizedData, seoUpdates);
+      } catch (seoError) {
+        console.warn('[API /posts POST] SEO autofill skipped:', seoError.message);
+      }
+
       // Create new post
       const post = new Post(sanitizedData);
       await post.save();

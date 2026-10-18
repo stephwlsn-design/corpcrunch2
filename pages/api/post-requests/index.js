@@ -1,6 +1,8 @@
 import connectDB from '@/lib/mongoose';
 import Post from '@/models/Post';
 import { publicRateLimiter } from '@/lib/rateLimiter';
+import { buildArticleRequestDraftFields } from '@/lib/postSeoBackfill';
+import { recordVisitorFromRequest } from '@/lib/recordVisitorFromRequest';
 
 export default async function handler(req, res) {
   // Apply rate limiting to all requests
@@ -121,11 +123,8 @@ export default async function handler(req, res) {
         return text.replace(/[&<>"']/g, m => map[m]);
       };
 
-      // Create a draft post with the submission details (with sanitized data)
-      const postData = {
-        title: (title?.trim() || `[Article Request] ${sanitizedData.companyName} - ${Date.now()}`).substring(0, 200),
-        slug: `article-request-${Date.now()}`,
-        content: `
+      // Create a draft post with SEO/metadata auto-populated from the PR submission
+      const contentHtml = `
           <h2>Article Request from ${escapeHtml(sanitizedData.companyName)}</h2>
           <p><strong>Submitted by:</strong> ${escapeHtml(sanitizedData.submitterName)}</p>
           <p><strong>Email:</strong> ${escapeHtml(sanitizedData.submitterEmail)}</p>
@@ -135,21 +134,27 @@ export default async function handler(req, res) {
           <hr/>
           <h3>Content Description</h3>
           <p>${escapeHtml(sanitizedData.description)}</p>
-        `,
-        bannerImageUrl: '/assets/img/default-banner.jpg', // Default placeholder
+        `;
+
+      const postData = buildArticleRequestDraftFields({
+        title: title?.trim(),
+        companyName: sanitizedData.companyName,
+        description: sanitizedData.description,
         categoryId: sanitizedData.categoryID,
-        publishStatus: 'draft',
-        visibility: 'private',
-        excerpt: sanitizedData.description.substring(0, 160),
-        // Store submitter information in additional fields
-        authorFirstName: sanitizedData.submitterName.split(' ')[0] || sanitizedData.submitterName,
-        authorLastName: sanitizedData.submitterName.split(' ').slice(1).join(' ') || '',
-        // Custom fields for article requests
-        tags: ['article-request', sanitizedData.companyName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').substring(0, 50)],
-        metaDescription: `Article request from ${sanitizedData.companyName}: ${sanitizedData.description.substring(0, 100)}...`,
-      };
+        submitterName: sanitizedData.submitterName,
+        contentHtml,
+        bannerImageUrl: '/assets/img/default-banner.jpg',
+      });
 
       const post = await Post.create(postData);
+
+      recordVisitorFromRequest(req, {
+        name: sanitizedData.submitterName,
+        email: sanitizedData.submitterEmail,
+        phoneNumber: sanitizedData.submitterPhone,
+        location: sanitizedData.submitterAddress,
+        source: 'contact',
+      }).catch((err) => console.error('[API /post-requests] Visitor tracking failed:', err));
 
       // Return the post ID for payment processing (don't expose sensitive data)
       return res.status(201).json({

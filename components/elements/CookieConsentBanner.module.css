@@ -49,11 +49,60 @@
 }
 
 .notice {
-  margin: 0 0 20px;
+  margin: 0 0 16px;
   font-size: 14px;
   font-weight: 600;
   line-height: 1.5;
   color: #1d4ed8;
+}
+
+.form {
+  text-align: left;
+  margin: 0 0 8px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.field input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 11px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #0f172a;
+  background: #fff;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.field input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.formError {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #c2410c;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 500;
 }
 
 .declinedAlert {
@@ -72,7 +121,7 @@
   gap: 10px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 16px;
+  margin: 4px 0 16px;
 }
 
 .acceptBtn,

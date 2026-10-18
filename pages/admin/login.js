@@ -114,6 +114,8 @@ export default function AdminLogin() {
                       type="email"
                       className="form-control"
                       id="email"
+                      name="email"
+                      autoComplete="username"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email"
@@ -129,6 +131,8 @@ export default function AdminLogin() {
                       type="password"
                       className="form-control"
                       id="password"
+                      name="password"
+                      autoComplete="current-password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter password"

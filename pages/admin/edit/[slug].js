@@ -8,6 +8,7 @@ import ToastContainer from "@/components/ToastContainer/ToastContainer";
 import AdminLayout from "@/components/admin/AdminLayout";
 import AdminSeoFields from "@/components/admin/AdminSeoFields";
 import { isAdminSessionValid, clearAdminSession } from "@/lib/adminSession";
+import { autofillAdminSeoFormFields } from "@/lib/postSeoBackfill";
 
 export default function AdminEditPost() {
   const router = useRouter();
@@ -121,10 +122,49 @@ export default function AdminEditPost() {
         setCategoryId(post.categoryId?._id?.toString() || post.categoryId?.toString() || post.Category?.id?.toString() || "");
         setTags(Array.isArray(post.tags) ? post.tags.join(", ") : post.tags || "");
         setContentType(post.contentType || "article");
-        setMetaTitle(post.metaTitle || "");
-        setMetaDescription(post.metaDescription || "");
+        // Auto-fill any empty SEO/metadata fields from the PR/post content
+        const autofilled = autofillAdminSeoFormFields({
+          title: post.title || "",
+          slug: post.slug || "",
+          content: post.content || "",
+          bannerImageUrl: post.bannerImageUrl || "",
+          metaTitle: post.metaTitle || "",
+          metaDescription: post.metaDescription || "",
+          imageAltText: post.imageAltText || "",
+          excerpt: post.excerpt || "",
+          readingTime: post.readingTime?.toString() || "",
+          ogTitle: post.ogTitle || "",
+          ogDescription: post.ogDescription || "",
+          ogImage: post.ogImage || "",
+          secondaryKeywords: Array.isArray(post.secondaryKeywords)
+            ? post.secondaryKeywords.join(", ")
+            : post.secondaryKeywords || "",
+          inlineImages: Array.isArray(post.inlineImages)
+            ? post.inlineImages.join("\n")
+            : post.inlineImages || "",
+          inlineImageAltText: post.inlineImageAltText || "",
+          allowIndexing: post.allowIndexing,
+          allowFollowing: post.allowFollowing,
+          schemaMarkupType: post.schemaMarkupType || "",
+          language: post.language || "",
+          region: post.region || "",
+          canonicalUrl: post.canonicalUrl || "",
+          structuredData: post.structuredData || "",
+          whyThisMatters: post.whyThisMatters || "",
+          whatsExpectedNext: post.whatsExpectedNext || "",
+          tags: Array.isArray(post.tags) ? post.tags.join(", ") : post.tags || "",
+          contentType: post.contentType || "article",
+          categoryId: post.categoryId?._id?.toString() || post.categoryId?.toString() || "",
+          categorySlug: post.categoryId?.slug || post.Category?.slug || "",
+          categoryName: post.categoryId?.name || post.Category?.name || "",
+          authorFirstName: post.authorFirstName || "",
+          authorLastName: post.authorLastName || "",
+        });
+
+        setMetaTitle(post.metaTitle || autofilled.metaTitle || "");
+        setMetaDescription(post.metaDescription || autofilled.metaDescription || "");
         setBannerImageUrl(post.bannerImageUrl || "");
-        setImageAltText(post.imageAltText || "");
+        setImageAltText(post.imageAltText || autofilled.imageAltText || "");
         setPublishStatus(post.publishStatus || "published");
 
         if (post.publishDate) {
@@ -138,34 +178,54 @@ export default function AdminEditPost() {
         }
 
         setVisibility(post.visibility || "public");
-        setExcerpt(post.excerpt || "");
-        setReadingTime(post.readingTime?.toString() || "");
-        setCanonicalUrl(post.canonicalUrl || "");
+        setExcerpt(post.excerpt || autofilled.excerpt || "");
+        setReadingTime(post.readingTime?.toString() || autofilled.readingTime || "");
+        setCanonicalUrl(post.canonicalUrl || autofilled.canonicalUrl || "");
         setRelatedArticles(Array.isArray(post.relatedArticles) ? post.relatedArticles.join(", ") : post.relatedArticles || "");
-        setInlineImages(Array.isArray(post.inlineImages) ? post.inlineImages.join("\n") : post.inlineImages || "");
+        setInlineImages(
+          Array.isArray(post.inlineImages) && post.inlineImages.length
+            ? post.inlineImages.join("\n")
+            : autofilled.inlineImages || ""
+        );
         setAttachments(Array.isArray(post.attachments) ? post.attachments.join("\n") : post.attachments || "");
-        setInlineImageAltText(post.inlineImageAltText || "");
+        setInlineImageAltText(post.inlineImageAltText || autofilled.inlineImageAltText || "");
         setVideoUrl(post.videoUrl || "");
         setQuoteText(post.quoteText || "");
         setQuoteAuthorName(post.quoteAuthorName || "");
         setQuoteAuthorTitle(post.quoteAuthorTitle || "");
-        setWhyThisMatters(post.whyThisMatters || "");
+        setWhyThisMatters(post.whyThisMatters || autofilled.whyThisMatters || "");
         setWhyThisMattersMultimediaUrl(post.whyThisMattersMultimediaUrl || "");
         setWhyThisMattersMultimediaType(post.whyThisMattersMultimediaType || "graphic");
-        setWhatsExpectedNext(post.whatsExpectedNext || "");
+        setWhatsExpectedNext(post.whatsExpectedNext || autofilled.whatsExpectedNext || "");
         setWhatsExpectedNextMultimediaUrl(post.whatsExpectedNextMultimediaUrl || "");
         setWhatsExpectedNextMultimediaType(post.whatsExpectedNextMultimediaType || "graphic");
-        setAllowIndexing(post.allowIndexing !== undefined ? post.allowIndexing : true);
-        setAllowFollowing(post.allowFollowing !== undefined ? post.allowFollowing : true);
-        setSchemaMarkupType(post.schemaMarkupType || "Article");
-        setOgTitle(post.ogTitle || "");
-        setOgDescription(post.ogDescription || "");
-        setOgImage(post.ogImage || "");
-        setSecondaryKeywords(Array.isArray(post.secondaryKeywords) ? post.secondaryKeywords.join(", ") : post.secondaryKeywords || "");
+        setAllowIndexing(
+          post.allowIndexing !== undefined
+            ? post.allowIndexing
+            : autofilled.allowIndexing !== undefined
+              ? autofilled.allowIndexing
+              : true
+        );
+        setAllowFollowing(
+          post.allowFollowing !== undefined
+            ? post.allowFollowing
+            : autofilled.allowFollowing !== undefined
+              ? autofilled.allowFollowing
+              : true
+        );
+        setSchemaMarkupType(post.schemaMarkupType || autofilled.schemaMarkupType || "Article");
+        setOgTitle(post.ogTitle || autofilled.ogTitle || "");
+        setOgDescription(post.ogDescription || autofilled.ogDescription || "");
+        setOgImage(post.ogImage || autofilled.ogImage || post.bannerImageUrl || "");
+        setSecondaryKeywords(
+          Array.isArray(post.secondaryKeywords) && post.secondaryKeywords.length
+            ? post.secondaryKeywords.join(", ")
+            : autofilled.secondaryKeywords || ""
+        );
         setRedirectFrom(post.redirectFrom || "");
-        setLanguage(post.language || "en");
-        setRegion(post.region || "");
-        setStructuredData(post.structuredData || "");
+        setLanguage(post.language || autofilled.language || "en");
+        setRegion(post.region || autofilled.region || "");
+        setStructuredData(post.structuredData || autofilled.structuredData || "");
       } else {
         console.error("Failed to load post - response:", response);
         notifyError("Failed to load post data");

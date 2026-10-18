@@ -5,6 +5,7 @@ import { buildVisitorCookie, appendSetCookie, OTTO_VISITOR_ID_KEY } from '@/lib/
 import {
   getClientIp,
   getGeoFromRequest,
+  getHostFromRequest,
   upsertSiteVisitor,
   getOttoVisitorIdFromCookies,
 } from '@/lib/visitorService';
@@ -39,6 +40,7 @@ export default async function handler(req, res) {
     await connectDB();
 
     const geo = getGeoFromRequest(req);
+    const { hostname, siteFamily } = getHostFromRequest(req);
     const ipAddress = getClientIp(req);
     const userAgent = req.headers['user-agent'] || null;
 
@@ -50,6 +52,8 @@ export default async function handler(req, res) {
       region: geo.region,
       ipAddress,
       userAgent,
+      hostname,
+      siteFamily,
       consentStatus: 'otto',
       source: 'otto',
       url,

@@ -5,6 +5,7 @@ const PageViewSchema = new mongoose.Schema(
     url: String,
     title: String,
     referrer: String,
+    hostname: String,
     viewedAt: { type: Date, default: Date.now },
   },
   { _id: false }
@@ -33,6 +34,23 @@ const SiteVisitorSchema = new mongoose.Schema(
     region: String,
     ipAddress: String,
     userAgent: String,
+    /** Last seen request hostname, e.g. www.corpcrunch.io */
+    hostname: {
+      type: String,
+      index: true,
+      sparse: true,
+    },
+    /** Registrable family: corpcrunch.io | corpcrunch.ai | other */
+    siteFamily: {
+      type: String,
+      index: true,
+      sparse: true,
+    },
+    /** All hostnames this visitor has been seen on */
+    domainsVisited: {
+      type: [String],
+      default: [],
+    },
     consentStatus: {
       type: String,
       enum: ['accepted', 'declined', 'otto'],
@@ -66,6 +84,8 @@ const SiteVisitorSchema = new mongoose.Schema(
 SiteVisitorSchema.index({ lastSeenAt: -1 });
 SiteVisitorSchema.index({ createdAt: -1 });
 SiteVisitorSchema.index({ country: 1 });
+SiteVisitorSchema.index({ hostname: 1, lastSeenAt: -1 });
+SiteVisitorSchema.index({ siteFamily: 1, lastSeenAt: -1 });
 
 export default mongoose.models.SiteVisitor ||
   mongoose.model('SiteVisitor', SiteVisitorSchema);

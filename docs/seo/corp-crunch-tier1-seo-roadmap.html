@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Corp Crunch — Tier 1 SEO Plan & Roadmap</title>
+  <style>
+    @page { size: A4; margin: 16mm 14mm; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.45;
+      color: #1a1a1a;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1 { font-size: 20pt; margin: 0 0 8px; line-height: 1.2; }
+    h2 { font-size: 13pt; margin: 28px 0 10px; border-bottom: 1px solid #ddd; padding-bottom: 4px; page-break-after: avoid; }
+    h3 { font-size: 11pt; margin: 16px 0 6px; page-break-after: avoid; }
+    p, li { margin: 0 0 8px; }
+    .meta { color: #555; font-size: 9.5pt; margin-bottom: 16px; }
+    .pills span {
+      display: inline-block;
+      background: #eef2ff;
+      color: #1e3a8a;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 8.5pt;
+      margin-right: 6px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 16px 0;
+    }
+    .stat {
+      border: 1px solid #e5e5e5;
+      padding: 10px;
+      text-align: center;
+    }
+    .stat strong { display: block; font-size: 14pt; }
+    .stat span { font-size: 8.5pt; color: #555; }
+    .callout {
+      border-left: 3px solid #2563eb;
+      background: #f8fafc;
+      padding: 10px 12px;
+      margin: 14px 0;
+    }
+    .callout.warn { border-left-color: #d97706; background: #fffbeb; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 16px;
+      font-size: 9pt;
+      page-break-inside: auto;
+    }
+    th, td {
+      border: 1px solid #e5e5e5;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f3f4f6; font-weight: 600; }
+    tr { page-break-inside: avoid; }
+    ul { margin: 6px 0 12px 18px; padding: 0; }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .box {
+      border: 1px solid #e5e5e5;
+      padding: 10px 12px;
+    }
+    .box h3 { margin-top: 0; }
+    .footer {
+      margin-top: 28px;
+      font-size: 8.5pt;
+      color: #777;
+      border-top: 1px solid #eee;
+      padding-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="pills">
+    <span>Corp Crunch</span>
+    <span>SEO Strategy</span>
+    <span>18-month roadmap</span>
+  </div>
+  <h1>Tier 1 Global Media Aggregator — SEO Plan &amp; Roadmap</h1>
+  <p class="meta">
+    Path for corpcrunch.io / corpcrunch.ai to compete with Tier 1 aggregators on discovery,
+    topical authority, crawl efficiency, and branded demand — without copying commodity newswire SEO.
+  </p>
+
+  <div class="stats">
+    <div class="stat"><strong>~300</strong><span>URLs in sitemap today</span></div>
+    <div class="stat"><strong>18 mo</strong><span>Target horizon to Tier 1 lane</span></div>
+    <div class="stat"><strong>2 domains</strong><span>.io + .ai dual-host strategy</span></div>
+    <div class="stat"><strong>6 pillars</strong><span>Workstreams in this plan</span></div>
+  </div>
+
+  <div class="callout">
+    <strong>North star:</strong> Become a default search destination for industry, fintech, AI, and
+    corporate intelligence — measured by indexed coverage, organic sessions from target topics,
+    brand SERP ownership, and referral loops from product surfaces (Intelligent / Finx / Solvterra).
+  </div>
+
+  <h2>What “Tier 1 aggregator” means here</h2>
+  <p>
+    Tier 1 is not “rank for every news keyword.” It is reliable discovery across category hubs,
+    original analysis, and syndication-ready packages that other properties cite.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>Examples (archetype)</th>
+        <th>SEO signature</th>
+        <th>Corp Crunch fit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tier 1</td>
+        <td>Google News / Yahoo / major wires</td>
+        <td>Massive crawl budget, entity graphs, real-time index, brand queries</td>
+        <td>Aspirational ceiling — own niches first</td>
+      </tr>
+      <tr>
+        <td>Tier 1.5</td>
+        <td>Industry vertical aggregators</td>
+        <td>Topic clusters, newsletter + search loop, high returning visitors</td>
+        <td>Primary 12–18 month target</td>
+      </tr>
+      <tr>
+        <td>Tier 2</td>
+        <td>Regional / category publishers</td>
+        <td>Strong clusters, uneven international, thin product SEO</td>
+        <td>Current competitive band to exit</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Current foundation (already shipped)</h2>
+  <div class="two-col">
+    <div class="box">
+      <h3>Technical &amp; indexation</h3>
+      <ul>
+        <li>Dual-domain sitemap + robots (.io / .ai)</li>
+        <li>~300 indexable URLs auto-discovered</li>
+        <li>Article JSON-LD / OG / canonical helpers</li>
+        <li>PR-draft SEO autofill in admin</li>
+        <li>Category landing pages + ISR hubs</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Gaps vs Tier 1.5</h3>
+      <ul>
+        <li>Thin content volume vs aggregator crawl demand</li>
+        <li>Limited entity / author E-E-A-T depth</li>
+        <li>No News sitemap / Google Publisher Center ops</li>
+        <li>Weak internal linking graph at scale</li>
+        <li>Brand SERP incomplete (Knowledge Panel, sitelinks)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Strategy pillars (investment mix)</h2>
+  <p>Relative emphasis for the next 18 months:</p>
+  <table>
+    <thead><tr><th>Pillar</th><th>Relative weight</th><th>Focus</th></tr></thead>
+    <tbody>
+      <tr><td>Content velocity</td><td>26</td><td>Topic clusters, daily brief + weekly deep analysis, PR→publish</td></tr>
+      <tr><td>Technical SEO</td><td>22</td><td>Crawl health, CWV, News/image/video sitemaps, canonical/hreflang</td></tr>
+      <tr><td>E-E-A-T / brand</td><td>18</td><td>Author pages, company entities, editorial standards</td></tr>
+      <tr><td>Distribution</td><td>16</td><td>Newsletter loops, syndication, partner feeds</td></tr>
+      <tr><td>Data products</td><td>12</td><td>Intelligent / Finx / Solvterra as money pages</td></tr>
+      <tr><td>Intl / multi-domain</td><td>6</td><td>EN priority markets; selective AR/ES later</td></tr>
+    </tbody>
+  </table>
+
+  <h2>18-month roadmap</h2>
+
+  <h3>Phase 0 — Stabilize &amp; measure (0–30 days)</h3>
+  <p><strong>Outcome:</strong> Accurate baseline in Search Console for both domains; no indexation debt blocking growth.</p>
+  <table>
+    <thead><tr><th>Workstream</th><th>Action</th><th>Owner cue</th><th>Done when</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>GSC</td>
+        <td>Verify .io + .ai; submit sitemaps; export Coverage</td>
+        <td>Growth / SEO</td>
+        <td>Both properties show Success + URL counts</td>
+      </tr>
+      <tr>
+        <td>CWV</td>
+        <td>Fix LCP on homepage/hero; lazy non-critical CSS</td>
+        <td>Eng</td>
+        <td>p75 LCP &lt; 2.5s on mobile for home + article</td>
+      </tr>
+      <tr>
+        <td>Index hygiene</td>
+        <td>Audit noindex/draft leaks; thin category pages</td>
+        <td>Eng + Editorial</td>
+        <td>Zero accidental noindex on public articles</td>
+      </tr>
+      <tr>
+        <td>Analytics</td>
+        <td>GA4 + Search Console + consent funnel aligned</td>
+        <td>Growth</td>
+        <td>Organic landing page report weekly</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Phase 1 — Indexation &amp; topical spine (Months 1–3)</h3>
+  <table>
+    <thead><tr><th>Initiative</th><th>Detail</th><th>KPI</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>News sitemap</td>
+        <td>Separate Google News sitemap for articles &lt; 48h; Publisher Center setup</td>
+        <td>News impressions &gt; 0 within 60 days</td>
+      </tr>
+      <tr>
+        <td>Hub architecture</td>
+        <td>Every category hub = editorial intro + top stories + entity links + FAQ schema</td>
+        <td>+40% hub organic clicks QoQ</td>
+      </tr>
+      <tr>
+        <td>Internal linking</td>
+        <td>Auto-related articles + company tags + “more in category” blocks</td>
+        <td>Avg crawl depth to article ≤ 3</td>
+      </tr>
+      <tr>
+        <td>PR → publish SLA</td>
+        <td>Use SEO autofill; editorial polish within 48h of paid/approved PR</td>
+        <td>≥ 70% drafts published with complete meta</td>
+      </tr>
+      <tr>
+        <td>Cadence</td>
+        <td>Min 5 original / curated analyses per week across priority verticals</td>
+        <td>Indexed articles +25% in 90 days</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Phase 2 — Authority &amp; entity graph (Months 4–9)</h3>
+  <table>
+    <thead><tr><th>Initiative</th><th>Detail</th><th>KPI</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Author system</td>
+        <td>Dedicated author pages, Organization + Person schema, LinkedIn sameAs</td>
+        <td>Author SERP impressions rising</td>
+      </tr>
+      <tr>
+        <td>Company graph</td>
+        <td>Scale /company pages; link from articles; sitemap already includes them</td>
+        <td>Company pages in top 20 for brand+news queries</td>
+      </tr>
+      <tr>
+        <td>Cluster content</td>
+        <td>Pillar pages: AI regulation, AML/KYC, ESG reporting, fintech rails</td>
+        <td>≥ 8 clusters with 8+ supporting URLs each</td>
+      </tr>
+      <tr>
+        <td>Digital PR</td>
+        <td>Original data briefs, event research (AIX / C3), quotable charts</td>
+        <td>Referring domains +30% in 6 months</td>
+      </tr>
+      <tr>
+        <td>International</td>
+        <td>hreflang / region strategy for EN priority markets; selective AR/ES later</td>
+        <td>Non-US organic ≥ 25% of sessions</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Phase 3 — Aggregator product SEO (Months 10–15)</h3>
+  <table>
+    <thead><tr><th>Initiative</th><th>Detail</th><th>KPI</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Live desks</td>
+        <td>Topic desks (AI, Finance, Sustainability) with always-on hubs</td>
+        <td>Desk hubs in top 10 for 3 head terms each</td>
+      </tr>
+      <tr>
+        <td>Structured feeds</td>
+        <td>RSS / Atom / JSON feeds per category for partners &amp; AI crawlers</td>
+        <td>Partner referral + feed subscribers tracked</td>
+      </tr>
+      <tr>
+        <td>Product bridge</td>
+        <td>Contextual CTAs from articles → Intelligent / Finx / Solvterra</td>
+        <td>Organic → product CTR baseline + lift</td>
+      </tr>
+      <tr>
+        <td>Events SEO</td>
+        <td>Year-round event entity pages, speaker schema, recap clusters</td>
+        <td>Events organic + branded lift during campaigns</td>
+      </tr>
+      <tr>
+        <td>Media kit SEO</td>
+        <td>About, team, methodology, advertising — trust URLs that convert PR</td>
+        <td>Brand query share of voice ↑</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Phase 4 — Tier 1 lane behaviors (Months 16–18)</h3>
+  <table>
+    <thead><tr><th>Initiative</th><th>Detail</th><th>KPI</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Real-time index</td>
+        <td>Sub-hour publish → crawl for breaking desks; ping Indexing API selectively</td>
+        <td>Median index latency &lt; 4h for news</td>
+      </tr>
+      <tr>
+        <td>Knowledge presence</td>
+        <td>Wikidata / consistent NAP / logo / social graph for Knowledge Panel</td>
+        <td>Brand Knowledge Panel / sitelinks present</td>
+      </tr>
+      <tr>
+        <td>Multi-format</td>
+        <td>VideoObject + e-magazine SEO; transcript pages for media</td>
+        <td>Non-HTML formats in top queries</td>
+      </tr>
+      <tr>
+        <td>AI Overviews readiness</td>
+        <td>Clear entities, citations, unique data tables Google can quote</td>
+        <td>Cited / featured in AI Overviews for priority topics</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Priority topic map (aggregator spine)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Cluster</th>
+        <th>Hub URL pattern</th>
+        <th>Supporting content</th>
+        <th>Commercial bridge</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>AI &amp; enterprise</td>
+        <td>/technology, /ai-innovation</td>
+        <td>Regulation, adoption, vendor moves</td>
+        <td>Intelligent / AIX</td>
+      </tr>
+      <tr>
+        <td>Fintech &amp; risk</td>
+        <td>/finance, /fintech-growth</td>
+        <td>AML, KYC, fraud, payments</td>
+        <td>Finx suite</td>
+      </tr>
+      <tr>
+        <td>ESG / climate</td>
+        <td>/sustainability</td>
+        <td>Reporting standards, supply chain</td>
+        <td>Solvterra</td>
+      </tr>
+      <tr>
+        <td>Corporate strategy</td>
+        <td>/market-analysis, /strategic-planning</td>
+        <td>M&amp;A, leadership, earnings angles</td>
+        <td>PR / article requests</td>
+      </tr>
+      <tr>
+        <td>Telecom &amp; retail</td>
+        <td>/telecom, /retail, /digital-retail</td>
+        <td>Infrastructure + consumer shifts</td>
+        <td>Events / sponsors</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Operating cadence</h2>
+  <div class="two-col">
+    <div class="box">
+      <h3>Daily</h3>
+      <ul>
+        <li>Publish / update priority desk</li>
+        <li>GSC anomaly scan</li>
+        <li>Internal link pass on new posts</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Weekly / Monthly</h3>
+      <ul>
+        <li>Cluster gap review; CWV + 404 sample</li>
+        <li>Top query → content brief</li>
+        <li>Index coverage deep dive; backlink/PR report</li>
+        <li>Hub rewrite for losers</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Scorecard — Tier 1.5 checkpoints</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Now (approx)</th>
+        <th>6 months</th>
+        <th>18 months</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Indexed public URLs</td><td>~300</td><td>800–1,200</td><td>3,000+</td></tr>
+      <tr><td>Organic sessions / mo</td><td>Baseline TBD</td><td>3× baseline</td><td>10× baseline</td></tr>
+      <tr><td>Category hubs in top 10 (EN)</td><td>Few / none</td><td>6 hubs</td><td>15 hubs</td></tr>
+      <tr><td>Referring domains</td><td>Baseline TBD</td><td>+30%</td><td>+100%</td></tr>
+      <tr><td>Brand query share</td><td>Emerging</td><td>Own brand SERP</td><td>Brand + category sitelinks</td></tr>
+      <tr><td>News / Discover eligibility</td><td>Partial</td><td>Active</td><td>Consistent Discover traffic</td></tr>
+    </tbody>
+  </table>
+  <p class="meta">Baselines should be locked in Phase 0 from Search Console + GA4.</p>
+
+  <div class="callout warn">
+    <strong>Do not chase:</strong> Ranking for generic “breaking news” against Tier 1 wires burns crawl budget.
+    Win as the <strong>industry intelligence aggregator</strong> with product-backed authority
+    (Intelligent, Finx, Solvterra, events), then expand adjacency.
+  </div>
+
+  <div class="footer">
+    Corp Crunch · SEO + product + editorial · October 2026 · Document 1 of 2 (Strategy)
+  </div>
+</body>
+</html>
