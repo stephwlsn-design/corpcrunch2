@@ -152,9 +152,8 @@
     align-items: center;
   }
 
-  .acceptBtn,
-  .declineBtn {
-    width: auto;
+  .acceptBtn {
+    width: 100%;
     min-width: 0;
   }
 }
