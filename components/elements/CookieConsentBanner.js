@@ -54,8 +54,8 @@ export default function CookieConsentBanner() {
     if (!EMAIL_REGEX.test(email)) {
       return 'Please enter a valid email address.';
     }
-    if (phoneNumber && !PHONE_REGEX.test(phoneNumber)) {
-      return 'Please enter a valid contact number, or leave it blank.';
+    if (!PHONE_REGEX.test(phoneNumber)) {
+      return 'Please enter a valid contact number.';
     }
     return null;
   };
@@ -112,13 +112,13 @@ export default function CookieConsentBanner() {
         </h2>
 
         <p id="cookie-consent-description" className={styles.description}>
-          Welcome to Corp Crunch. Please provide your name and email to access
-          corpcrunch.io and corpcrunch.ai. We use cookies to improve content and
-          analyze site traffic.
+          Welcome to Corp Crunch. Please provide your name, email, and contact
+          number to access corpcrunch.io and corpcrunch.ai. We use cookies to
+          improve content and analyze site traffic.
         </p>
 
         <p className={styles.notice}>
-          Name and email are required before you can browse this site.
+          Name, email, and contact number are required before you can browse this site.
         </p>
 
         {!isReady ? (
@@ -155,7 +155,7 @@ export default function CookieConsentBanner() {
             </label>
 
             <label className={styles.field}>
-              <span>Contact number (optional)</span>
+              <span>Contact number *</span>
               <input
                 type="tel"
                 name="phoneNumber"
@@ -163,6 +163,7 @@ export default function CookieConsentBanner() {
                 onChange={handleChange}
                 placeholder="+1 555 000 0000"
                 autoComplete="tel"
+                required
                 disabled={isSubmitting}
               />
             </label>
@@ -175,8 +176,8 @@ export default function CookieConsentBanner() {
 
             {declinedMessage && (
               <p className={styles.declinedAlert} role="alert">
-                Access is blocked until you enter your name and email, then click
-                &quot;Accept&quot; to continue.
+                Access is blocked until you enter your name, email, and contact
+                number, then click &quot;Accept&quot; to continue.
               </p>
             )}
 
