@@ -54,9 +54,11 @@ function AppContent({ Component, pageProps }) {
   const router = useRouter();
   const { hasConsented, isReady } = useCookieConsent();
   const isAdminRoute = router.pathname.startsWith('/admin');
-  // Block the public site until consent is ready and the visitor has accepted
-  // with name + email. Do not briefly unlock content while consent is loading.
-  const canAccessSite = isAdminRoute || (isReady && hasConsented);
+  const isGateRoute = router.pathname === '/gate';
+  // Middleware already blocks pages without the consent cookie. Keep a client
+  // backup gate for mid-session cookie revocation; allow /gate and /admin.
+  const canAccessSite =
+    isAdminRoute || isGateRoute || (isReady && hasConsented);
 
   useEffect(() => {
     if (hasConsented || isAdminRoute) {
@@ -164,7 +166,7 @@ function AppContent({ Component, pageProps }) {
       >
         <Component {...pageProps} />
       </div>
-      {!isAdminRoute && <CookieConsentBanner />}
+      {!isAdminRoute && !isGateRoute && <CookieConsentBanner />}
     </>
   );
 }

@@ -1,20 +1,22 @@
 import { NextResponse } from 'next/server';
 import { isIntelligentSubdomainHostname } from './lib/intelligentSubdomain';
+import {
+  hasValidConsentCookie,
+  isConsentExemptPath,
+  isLikelySearchBot,
+  buildGateRedirectUrl,
+} from './lib/consentGate';
 
 /**
- * Subdomain-based routing middleware.
- *
- * Allows `intelligent.corpcrunch.io` and `intelligent.corpcrunch.ai`
- * to serve the /intelligent Next.js page without changing the URL bar.
- *
- * All other traffic passes through normally.
+ * Subdomain routing + hard cookie-consent gate.
+ * Public pages/APIs are not served without cc_cookie_consent=accepted_v2.
  */
 export function middleware(request) {
   const url = request.nextUrl.clone();
   const hostname = request.headers.get('host') || '';
-
-  // Strip port in development (e.g. "intelligent.localhost:3000" → "intelligent.localhost")
   const hostWithoutPort = hostname.split(':')[0];
+  const pathname = url.pathname || '/';
+  const userAgent = request.headers.get('user-agent') || '';
 
   // Canonicalize apex → www so admin localStorage stays on one origin
   if (
@@ -28,21 +30,45 @@ export function middleware(request) {
 
   const isIntelligentSubdomain = isIntelligentSubdomainHostname(hostWithoutPort);
 
+  // Consent gate (skip for bots, exempt paths, and valid accepted_v2 cookie)
+  const consentOk = hasValidConsentCookie(request);
+  const exempt = isConsentExemptPath(pathname);
+  const isBot = isLikelySearchBot(userAgent);
+
+  if (!consentOk && !exempt && !isBot) {
+    // Block non-exempt APIs with 403 (do not redirect JSON clients to HTML)
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Cookie consent and contact details are required.',
+          requiresContact: true,
+        },
+        { status: 403 }
+      );
+    }
+
+    // Client-side data fetches for pages
+    if (pathname.startsWith('/_next/data/')) {
+      const gate = buildGateRedirectUrl(request);
+      return NextResponse.redirect(gate, 307);
+    }
+
+    return NextResponse.redirect(buildGateRedirectUrl(request), 307);
+  }
+
   if (isIntelligentSubdomain) {
-    // Normalize /intelligent → / in the address bar (sub-routes like /intelligent/CylinderSpacer stay as-is)
     if (url.pathname === '/intelligent' || url.pathname === '/intelligent/') {
       const next = new URL('/', request.url);
       next.search = url.search;
       return NextResponse.redirect(next, 308);
     }
 
-    // Rewrite root "/" → "/intelligent" internally (URL bar stays clean)
     if (url.pathname === '/') {
       url.pathname = '/intelligent';
       return NextResponse.rewrite(url);
     }
 
-    // Allow static assets, API routes, and _next internals to pass through untouched
     if (
       url.pathname.startsWith('/_next') ||
       url.pathname.startsWith('/api') ||
@@ -52,18 +78,13 @@ export function middleware(request) {
       return NextResponse.next();
     }
 
-    // For any other path on the intelligent subdomain, also serve the intelligent page
     url.pathname = '/intelligent';
     return NextResponse.rewrite(url);
   }
 
-  // All other traffic passes through normally
   return NextResponse.next();
 }
 
 export const config = {
-  // Run middleware on all routes except static files
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };

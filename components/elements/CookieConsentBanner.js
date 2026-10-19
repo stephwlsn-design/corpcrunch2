@@ -88,7 +88,10 @@ export default function CookieConsentBanner() {
       const status = await acceptCookies(contact);
       if (!status) {
         setFormError('Unable to save your details. Please try again.');
+        return;
       }
+      // Hard reload so middleware and APIs see the new HttpOnly consent cookie
+      window.location.reload();
     } finally {
       setIsSubmitting(false);
     }
