@@ -116,7 +116,7 @@ export default async function handler(req, res) {
         role: admin.role || 'admin',
       },
       JWT_SECRET,
-      { expiresIn: '2h' } // Session expires every 2 hours for security
+      { expiresIn: '12h' } // Align with client admin session window
     );
 
     console.log('[API /admin/login] ✅ Login successful for:', email);

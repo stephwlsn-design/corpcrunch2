@@ -20,7 +20,8 @@ import {
 function isValidVisitorId(value) {
   if (!value || typeof value !== 'string') return false;
   const trimmed = value.trim();
-  return trimmed.length > 0 && trimmed.length <= 128 && /^[a-zA-Z0-9_-]+$/.test(trimmed);
+  // Allow UUIDs and generated ids (letters, digits, _ - .)
+  return trimmed.length > 0 && trimmed.length <= 128 && /^[a-zA-Z0-9_.-]+$/.test(trimmed);
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -78,7 +79,6 @@ export default async function handler(req, res) {
     await connectDB();
 
     // Legacy migration may omit PII only for an already-known visitor record.
-    // This prevents clients from bypassing the contact gate with a flag alone.
     let isLegacyMigration = false;
     if (wantsLegacyMigration) {
       const existing = await SiteVisitor.findOne({ visitorId }).select('_id').lean();
@@ -97,12 +97,19 @@ export default async function handler(req, res) {
       }
     }
 
-    setVisitorCookies(res, { consent: 'accepted', visitorId, req });
-
     const geo = getGeoFromRequest(req);
     const { hostname, siteFamily } = getHostFromRequest(req);
-    // Store identity + geo only. Page views are recorded once by client tracking
-    // after consent is granted (avoids double/triple counting on accept).
+    const pageUrl =
+      typeof req.body?.url === 'string' && req.body.url.trim()
+        ? req.body.url.trim().slice(0, 2000)
+        : '/';
+    const pageTitle =
+      typeof req.body?.title === 'string' ? req.body.title.trim().slice(0, 500) : 'Cookie consent';
+    const pageReferrer =
+      typeof req.body?.referrer === 'string' ? req.body.referrer.trim().slice(0, 2000) : '';
+
+    // Persist identity BEFORE setting cookies so a DB failure does not grant access
+    // without storing name/email/phone.
     await upsertSiteVisitor({
       visitorId,
       name: contact.name || undefined,
@@ -118,17 +125,20 @@ export default async function handler(req, res) {
       siteFamily,
       consentStatus: 'accepted',
       source: 'pageview',
+      url: pageUrl,
+      title: pageTitle,
+      referrer: pageReferrer,
+    });
+
+    setVisitorCookies(res, { consent: 'accepted', visitorId, req });
+
+    return res.status(200).json({
+      success: true,
+      consent: 'accepted',
+      visitorId,
     });
   } catch (error) {
     console.error('[API /visitors/consent] Failed to store visitor contact:', error);
-    // If cookies were not set yet, fail closed so the client can retry with contact.
-    if (!res.getHeader('Set-Cookie')) {
-      return res.status(500).json({ success: false, message: 'Failed to save consent' });
-    }
+    return res.status(500).json({ success: false, message: 'Failed to save consent' });
   }
-
-  return res.status(200).json({
-    success: true,
-    consent: 'accepted',
-  });
 }

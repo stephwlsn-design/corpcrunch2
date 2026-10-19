@@ -5,7 +5,11 @@ import axiosInstance from "@/util/axiosInstance";
 import { notifyError, notifySuccess } from "@/util/toast";
 import Spinner from "@/components/elements/Spinner";
 import ToastContainer from "@/components/ToastContainer/ToastContainer";
-import { isAdminSessionValid } from "@/lib/adminSession";
+import {
+  isAdminSessionValid,
+  setAdminSession,
+  redirectToCanonicalAdminHost,
+} from "@/lib/adminSession";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -15,8 +19,10 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Check if already logged in with valid session (2hr + same day)
-    if (typeof window !== "undefined" && isAdminSessionValid()) {
+    if (typeof window === "undefined") return;
+    // Keep admin on www.* so localStorage survives apex redirects
+    if (redirectToCanonicalAdminHost()) return;
+    if (isAdminSessionValid()) {
       router.push("/admin/dashboard");
     }
   }, [router]);
@@ -39,12 +45,7 @@ export default function AdminLogin() {
       });
 
       if (response.success && response.token) {
-        const expiresAt = Date.now() + 2 * 60 * 60 * 1000; // 2 hours
-        const loginDate = new Date().toISOString().split("T")[0];
-        localStorage.setItem("adminToken", response.token);
-        localStorage.setItem("token", response.token); // Also set regular token
-        localStorage.setItem("adminTokenExpiry", expiresAt.toString());
-        localStorage.setItem("adminLoginDate", loginDate);
+        setAdminSession(response.token);
         notifySuccess("Logged in successfully");
         router.push("/admin/dashboard");
       } else {

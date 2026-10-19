@@ -27,11 +27,17 @@ axiosInstance.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    // Only handle client-side redirects and localStorage on client side
     if (typeof window !== "undefined") {
+      const requestUrl = error?.response?.config?.url || error?.config?.url || "";
+      const isAdminLoginRequest =
+        typeof requestUrl === "string" && requestUrl.includes("/admin/login");
+      const onAdminLoginPage = window.location.pathname.startsWith("/admin/login");
+
+      // Never clear session for a failed login attempt itself
       if (
         error?.response?.status === 401 &&
-        error.response.config.url !== "/authentication?userType=BLOG_USER"
+        !isAdminLoginRequest &&
+        requestUrl !== "/authentication?userType=BLOG_USER"
       ) {
         try {
           if (window.location.pathname.startsWith("/admin")) {
@@ -43,20 +49,12 @@ axiosInstance.interceptors.response.use(
           // Ignore localStorage errors
         }
 
-        if (window.location.pathname.startsWith("/admin")) {
+        if (window.location.pathname.startsWith("/admin") && !onAdminLoginPage) {
           window.location.href = "/admin/login";
-        } else if (!window.location.href.includes("make-article-request")) {
-          // For non-admin routes let the error propagate
         }
       }
-
-      // if (error?.response?.status === 402) {
-      //   window.location.href = "/subscribe";
-      //   return;
-      // }
     }
 
-    // Always throw error to allow proper error handling in getStaticProps
     throw error;
   }
 );

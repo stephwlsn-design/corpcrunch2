@@ -16,6 +16,16 @@ export function middleware(request) {
   // Strip port in development (e.g. "intelligent.localhost:3000" → "intelligent.localhost")
   const hostWithoutPort = hostname.split(':')[0];
 
+  // Canonicalize apex → www so admin localStorage stays on one origin
+  if (
+    hostWithoutPort === 'corpcrunch.io' ||
+    hostWithoutPort === 'corpcrunch.ai'
+  ) {
+    const next = request.nextUrl.clone();
+    next.hostname = `www.${hostWithoutPort}`;
+    return NextResponse.redirect(next, 308);
+  }
+
   const isIntelligentSubdomain = isIntelligentSubdomainHostname(hostWithoutPort);
 
   if (isIntelligentSubdomain) {

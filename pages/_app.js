@@ -17,7 +17,11 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { isAdminSessionValid, clearAdminSession } from "@/lib/adminSession";
+import {
+  isAdminSessionValid,
+  clearAdminSession,
+  redirectToCanonicalAdminHost,
+} from "@/lib/adminSession";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { LocationProvider } from "@/contexts/LocationContext";
@@ -62,7 +66,9 @@ function AppContent({ Component, pageProps }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const pathname = router.pathname;
-    if (!pathname.startsWith("/admin") || pathname === "/admin/login") return;
+    if (!pathname.startsWith("/admin")) return;
+    if (redirectToCanonicalAdminHost()) return;
+    if (pathname === "/admin/login") return;
 
     if (!isAdminSessionValid()) {
       clearAdminSession();
@@ -71,10 +77,26 @@ function AppContent({ Component, pageProps }) {
   }, [router.pathname]);
 
   useEffect(() => {
+    const shouldSkipConsentPageView = () => {
+      if (typeof window === "undefined") return false;
+      try {
+        if (sessionStorage.getItem("cc_skip_next_pageview") === "1") {
+          sessionStorage.removeItem("cc_skip_next_pageview");
+          return true;
+        }
+      } catch {
+        // ignore
+      }
+      return false;
+    };
+
     const trackPageViewEvent = (url) => {
       if (typeof window !== "undefined" && !url.startsWith("/admin")) {
         const token = localStorage.getItem("token");
-        if (token) {
+        // Only use a real end-user token — adminToken is also stored as `token`
+        // and must not trigger blog user pageview tracking.
+        const isAdminPath = window.location.pathname.startsWith("/admin");
+        if (token && !isAdminPath && !localStorage.getItem("adminToken")) {
           fetch("/api/track/pageview", {
             method: "POST",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
@@ -95,7 +117,7 @@ function AppContent({ Component, pageProps }) {
       if (typeof window.gtag === "function" && hasConsented) {
         window.gtag("config", "G-8MJ7BXCFYK", { page_path: url });
       }
-      if (hasConsented) {
+      if (hasConsented && !shouldSkipConsentPageView()) {
         trackPageView();
       }
       trackPageViewEvent(url);
@@ -104,7 +126,7 @@ function AppContent({ Component, pageProps }) {
     if (!router.asPath.startsWith("/admin") && !hasConsented) {
       trackOttoPageView({ url: router.asPath });
     }
-    if (hasConsented) {
+    if (hasConsented && !shouldSkipConsentPageView()) {
       trackPageView();
     }
     trackPageViewEvent(router.asPath);

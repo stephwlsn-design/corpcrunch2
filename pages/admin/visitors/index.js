@@ -32,6 +32,7 @@ export default function AdminVisitorsPage() {
   const [hostname, setHostname] = useState('');
   const [source, setSource] = useState('');
   const [country, setCountry] = useState('');
+  const [hasContact, setHasContact] = useState('1');
   const [sortBy, setSortBy] = useState('lastSeenAt');
   const [sortOrder, setSortOrder] = useState('desc');
   const [pagination, setPagination] = useState({ page: 1, totalPages: 1, total: 0 });
@@ -62,6 +63,7 @@ export default function AdminVisitorsPage() {
         if (hostname) params.append('hostname', hostname);
         if (source) params.append('source', source);
         if (country) params.append('country', country);
+        if (hasContact !== '') params.append('hasContact', hasContact);
 
         const response = await axiosInstance.get(`/admin/visitors?${params.toString()}`);
         if (response?.success) {
@@ -86,7 +88,7 @@ export default function AdminVisitorsPage() {
         setLoading(false);
       }
     },
-    [debouncedSearch, siteFamily, hostname, source, country, sortBy, sortOrder]
+    [debouncedSearch, siteFamily, hostname, source, country, hasContact, sortBy, sortOrder]
   );
 
   useEffect(() => {
@@ -132,6 +134,7 @@ export default function AdminVisitorsPage() {
     setHostname('');
     setSource('');
     setCountry('');
+    setHasContact('1');
     setSortBy('lastSeenAt');
     setSortOrder('desc');
   };
@@ -141,7 +144,8 @@ export default function AdminVisitorsPage() {
     Boolean(siteFamily) ||
     Boolean(hostname) ||
     Boolean(source) ||
-    Boolean(country);
+    Boolean(country) ||
+    hasContact !== '1';
 
   return (
     <>
@@ -252,6 +256,20 @@ export default function AdminVisitorsPage() {
                     {c.value} ({c.count})
                   </option>
                 ))}
+              </select>
+            </div>
+            <div className="col-md-2">
+              <label className="form-label" style={{ fontSize: 12, color: '#666', marginBottom: 4 }}>
+                Contact details
+              </label>
+              <select
+                className="form-select"
+                value={hasContact}
+                onChange={(e) => setHasContact(e.target.value)}
+              >
+                <option value="1">With name / email / phone</option>
+                <option value="">All visitors</option>
+                <option value="0">Missing contact</option>
               </select>
             </div>
           </div>

@@ -90,6 +90,13 @@ export function CookieConsentProvider({ children }) {
     });
     if (!status) return null;
 
+    // Consent API already recorded this page view with contact details.
+    try {
+      sessionStorage.setItem('cc_skip_next_pageview', '1');
+    } catch {
+      // ignore
+    }
+
     setCachedConsentStatus(status);
     setConsent(status);
     enableGoogleAnalytics();

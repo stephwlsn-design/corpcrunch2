@@ -55,6 +55,7 @@ export default async function handler(req, res) {
       hostname = '',
       source = '',
       country = '',
+      hasContact = '',
     } = req.query;
 
     const pageNum = Math.max(1, parseInt(page, 10) || 1);
@@ -105,6 +106,31 @@ export default async function handler(req, res) {
     if (countryFilter) {
       andClauses.push({
         country: { $regex: `^${escapeRegex(countryFilter)}$`, $options: 'i' },
+      });
+    }
+
+    const contactMode = String(hasContact || '').trim().toLowerCase();
+    if (contactMode === '1' || contactMode === 'true' || contactMode === 'yes') {
+      andClauses.push({
+        $or: [
+          { name: { $exists: true, $nin: [null, ''] } },
+          { email: { $exists: true, $nin: [null, ''] } },
+          { phoneNumber: { $exists: true, $nin: [null, ''] } },
+        ],
+      });
+    } else if (contactMode === '0' || contactMode === 'false' || contactMode === 'no') {
+      andClauses.push({
+        $and: [
+          { $or: [{ name: { $exists: false } }, { name: null }, { name: '' }] },
+          { $or: [{ email: { $exists: false } }, { email: null }, { email: '' }] },
+          {
+            $or: [
+              { phoneNumber: { $exists: false } },
+              { phoneNumber: null },
+              { phoneNumber: '' },
+            ],
+          },
+        ],
       });
     }
 
@@ -178,6 +204,7 @@ export default async function handler(req, res) {
         hostname: host || '',
         source: src || '',
         country: countryFilter || '',
+        hasContact: contactMode || '',
         search: search?.trim() || '',
       },
       facets: {
