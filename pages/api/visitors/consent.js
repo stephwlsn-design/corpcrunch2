@@ -7,6 +7,7 @@ import {
   buildVisitorCookie,
   appendSetCookie,
   VISITOR_ID_KEY,
+  COOKIE_CONSENT_KEY,
 } from '@/lib/visitorCookies';
 import {
   getVisitorIdFromCookies,
@@ -20,7 +21,6 @@ import {
 function isValidVisitorId(value) {
   if (!value || typeof value !== 'string') return false;
   const trimmed = value.trim();
-  // Allow UUIDs and generated ids (letters, digits, _ - .)
   return trimmed.length > 0 && trimmed.length <= 128 && /^[a-zA-Z0-9_.-]+$/.test(trimmed);
 }
 
@@ -37,13 +37,68 @@ function sanitizeContact(body = {}) {
   return { name, email, phoneNumber };
 }
 
+function visitorHasCompleteContact(visitor) {
+  if (!visitor) return false;
+  const name = typeof visitor.name === 'string' ? visitor.name.trim() : '';
+  const email = typeof visitor.email === 'string' ? visitor.email.trim().toLowerCase() : '';
+  const phoneNumber =
+    typeof visitor.phoneNumber === 'string' ? visitor.phoneNumber.trim() : '';
+  return name.length >= 2 && EMAIL_REGEX.test(email) && PHONE_REGEX.test(phoneNumber);
+}
+
+/** Clear accepted consent but keep visitor id so the same record can be updated. */
+function revokeIncompleteConsent(res, req, visitorId) {
+  appendSetCookie(res, buildVisitorCookie(COOKIE_CONSENT_KEY, '', { maxAge: 0, req }));
+  if (visitorId) {
+    appendSetCookie(res, buildVisitorCookie(VISITOR_ID_KEY, visitorId, { req }));
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method === 'GET') {
-    const consent = parseConsentFromRequest(req);
+    const cookieConsent = parseConsentFromRequest(req);
+    const visitorId =
+      getVisitorIdFromCookies(req) || getOttoVisitorIdFromCookies(req) || null;
+
+    // Returning visitors with an "accepted" cookie must still have name/email/phone
+    // on file. Otherwise revoke access and force the contact gate.
+    if (cookieConsent === 'accepted') {
+      try {
+        await connectDB();
+        let hasContact = false;
+        if (visitorId) {
+          const visitor = await SiteVisitor.findOne({ visitorId })
+            .select('name email phoneNumber')
+            .lean();
+          hasContact = visitorHasCompleteContact(visitor);
+        }
+
+        if (!hasContact) {
+          revokeIncompleteConsent(res, req, visitorId);
+          return res.status(200).json({
+            success: true,
+            consent: null,
+            requiresContact: true,
+            hasVisitorId: Boolean(visitorId),
+          });
+        }
+      } catch (error) {
+        console.error('[API /visitors/consent] Contact check failed:', error);
+        revokeIncompleteConsent(res, req, visitorId);
+        return res.status(200).json({
+          success: true,
+          consent: null,
+          requiresContact: true,
+          hasVisitorId: Boolean(visitorId),
+        });
+      }
+    }
+
     return res.status(200).json({
       success: true,
-      consent,
-      hasVisitorId: Boolean(getVisitorIdFromCookies(req)),
+      consent: cookieConsent,
+      requiresContact: false,
+      hasVisitorId: Boolean(visitorId),
     });
   }
 
@@ -63,39 +118,25 @@ export default async function handler(req, res) {
   }
 
   const contact = sanitizeContact(req.body);
-  const wantsLegacyMigration = req.body?.legacyMigration === true;
+
+  if (contact.name.length < 2) {
+    return res.status(400).json({ success: false, message: 'Name is required' });
+  }
+  if (!EMAIL_REGEX.test(contact.email)) {
+    return res.status(400).json({ success: false, message: 'Valid email is required' });
+  }
+  if (!PHONE_REGEX.test(contact.phoneNumber)) {
+    return res.status(400).json({ success: false, message: 'Valid phone number is required' });
+  }
 
   const visitorId =
     getVisitorIdFromCookies(req) ||
     getOttoVisitorIdFromCookies(req) ||
     (isValidVisitorId(req.body?.visitorId) ? req.body.visitorId.trim() : null) ||
-    (!wantsLegacyMigration ? generateVisitorId() : null);
-
-  if (!visitorId) {
-    return res.status(400).json({ success: false, message: 'Visitor id is required' });
-  }
+    generateVisitorId();
 
   try {
     await connectDB();
-
-    // Legacy migration may omit PII only for an already-known visitor record.
-    let isLegacyMigration = false;
-    if (wantsLegacyMigration) {
-      const existing = await SiteVisitor.findOne({ visitorId }).select('_id').lean();
-      isLegacyMigration = Boolean(existing);
-    }
-
-    if (!isLegacyMigration) {
-      if (contact.name.length < 2) {
-        return res.status(400).json({ success: false, message: 'Name is required' });
-      }
-      if (!EMAIL_REGEX.test(contact.email)) {
-        return res.status(400).json({ success: false, message: 'Valid email is required' });
-      }
-      if (!PHONE_REGEX.test(contact.phoneNumber)) {
-        return res.status(400).json({ success: false, message: 'Valid phone number is required' });
-      }
-    }
 
     const geo = getGeoFromRequest(req);
     const { hostname, siteFamily } = getHostFromRequest(req);
@@ -108,13 +149,11 @@ export default async function handler(req, res) {
     const pageReferrer =
       typeof req.body?.referrer === 'string' ? req.body.referrer.trim().slice(0, 2000) : '';
 
-    // Persist identity BEFORE setting cookies so a DB failure does not grant access
-    // without storing name/email/phone.
     await upsertSiteVisitor({
       visitorId,
-      name: contact.name || undefined,
-      email: contact.email || undefined,
-      phoneNumber: contact.phoneNumber || undefined,
+      name: contact.name,
+      email: contact.email,
+      phoneNumber: contact.phoneNumber,
       location: geo.location,
       city: geo.city,
       country: geo.country,

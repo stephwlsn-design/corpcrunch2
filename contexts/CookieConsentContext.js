@@ -21,16 +21,20 @@ const CookieConsentContext = createContext({
 
 async function migrateLegacyClientCookies() {
   const legacyConsent = getCookieValue(COOKIE_CONSENT_KEY);
-  if (legacyConsent !== 'accepted' && legacyConsent !== 'declined') {
+
+  // Old "accepted" client cookies are not enough — every visitor must submit
+  // name, email, and phone through the gate. Clear and force the form.
+  if (legacyConsent === 'accepted') {
+    clearClientCookie(COOKIE_CONSENT_KEY);
+    clearClientCookie(VISITOR_ID_KEY);
     return null;
   }
 
-  const action = legacyConsent === 'accepted' ? 'accept' : 'decline';
-  const legacyVisitorId = legacyConsent === 'accepted' ? getCookieValue(VISITOR_ID_KEY) : null;
-  const migrated = await persistConsentToServer(action, {
-    visitorId: legacyVisitorId,
-    legacyMigration: action === 'accept',
-  });
+  if (legacyConsent !== 'declined') {
+    return null;
+  }
+
+  const migrated = await persistConsentToServer('decline');
   if (!migrated) {
     return null;
   }

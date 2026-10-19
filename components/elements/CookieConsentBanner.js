@@ -112,7 +112,8 @@ export default function CookieConsentBanner() {
         </p>
 
         <p className={styles.notice}>
-          Name, email, and contact number are required before you can browse this site.
+          Name, email, and contact number are required before you can browse this
+          site — including if you have visited before.
         </p>
 
         {!isReady ? (
