@@ -136,14 +136,31 @@ function AppContent({ Component, pageProps }) {
     return () => router.events.off("routeChangeComplete", handleRouteChange);
   }, [router.events, router.asPath, hasConsented]);
 
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    if (isAdminRoute || canAccessSite) {
+      document.documentElement.classList.remove('cc-gate-pending');
+      document.getElementById('cc-boot-gate')?.remove();
+    } else {
+      document.documentElement.classList.add('cc-gate-pending');
+    }
+  }, [isAdminRoute, canAccessSite]);
+
   return (
     <>
       <div
         style={
           canAccessSite
             ? undefined
-            : { pointerEvents: 'none', userSelect: 'none', opacity: 0.25 }
+            : {
+                pointerEvents: 'none',
+                userSelect: 'none',
+                visibility: 'hidden',
+                maxHeight: '100vh',
+                overflow: 'hidden',
+              }
         }
+        aria-hidden={!canAccessSite}
       >
         <Component {...pageProps} />
       </div>

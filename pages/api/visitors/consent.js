@@ -3,6 +3,7 @@ import SiteVisitor from '@/models/SiteVisitor';
 import { generateVisitorId } from '@/lib/cookieConsent';
 import {
   parseConsentFromRequest,
+  getRawConsentCookie,
   setVisitorCookies,
   buildVisitorCookie,
   appendSetCookie,
@@ -56,12 +57,23 @@ function revokeIncompleteConsent(res, req, visitorId) {
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
+    const rawConsent = getRawConsentCookie(req);
     const cookieConsent = parseConsentFromRequest(req);
     const visitorId =
       getVisitorIdFromCookies(req) || getOttoVisitorIdFromCookies(req) || null;
 
-    // Returning visitors with an "accepted" cookie must still have name/email/phone
-    // on file. Otherwise revoke access and force the contact gate.
+    // Legacy `accepted` cookies (pre contact-gate) never unlock the site.
+    if (rawConsent === 'accepted') {
+      revokeIncompleteConsent(res, req, visitorId);
+      return res.status(200).json({
+        success: true,
+        consent: null,
+        requiresContact: true,
+        hasVisitorId: Boolean(visitorId),
+      });
+    }
+
+    // Current-version accepted cookies still require name/email/phone on file.
     if (cookieConsent === 'accepted') {
       try {
         await connectDB();
@@ -97,7 +109,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       consent: cookieConsent,
-      requiresContact: false,
+      requiresContact: cookieConsent !== 'accepted',
       hasVisitorId: Boolean(visitorId),
     });
   }

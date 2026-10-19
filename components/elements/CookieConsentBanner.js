@@ -16,8 +16,14 @@ export default function CookieConsentBanner() {
     phoneNumber: '',
   });
 
-  // Show as soon as the public site needs a decision (including while loading)
   const isOpen = !hasConsented;
+
+  useEffect(() => {
+    // Replace the pre-hydration boot gate with the interactive React form
+    if (typeof document !== 'undefined') {
+      document.getElementById('cc-boot-gate')?.remove();
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof document === 'undefined') return undefined;
@@ -61,7 +67,7 @@ export default function CookieConsentBanner() {
 
   const handleAccept = async (event) => {
     event.preventDefault();
-    if (!isReady) return;
+    if (!isReady || isSubmitting) return;
 
     const validationError = validateForm();
     if (validationError) {
@@ -87,6 +93,8 @@ export default function CookieConsentBanner() {
       setIsSubmitting(false);
     }
   };
+
+  const formDisabled = !isReady || isSubmitting;
 
   return (
     <div className={styles.overlay} role="presentation">
@@ -116,70 +124,72 @@ export default function CookieConsentBanner() {
           site — including if you have visited before.
         </p>
 
-        {!isReady ? (
-          <p className={styles.description}>Loading…</p>
-        ) : (
-          <form className={styles.form} onSubmit={handleAccept} noValidate>
-            <label className={styles.field}>
-              <span>Full name *</span>
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Your full name"
-                autoComplete="name"
-                required
-                disabled={isSubmitting}
-                autoFocus
-              />
-            </label>
+        <form className={styles.form} onSubmit={handleAccept} noValidate>
+          <label className={styles.field}>
+            <span>Full name *</span>
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Your full name"
+              autoComplete="name"
+              required
+              disabled={formDisabled}
+              autoFocus
+            />
+          </label>
 
-            <label className={styles.field}>
-              <span>Email *</span>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="you@company.com"
-                autoComplete="email"
-                required
-                disabled={isSubmitting}
-              />
-            </label>
+          <label className={styles.field}>
+            <span>Email *</span>
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="you@company.com"
+              autoComplete="email"
+              required
+              disabled={formDisabled}
+            />
+          </label>
 
-            <label className={styles.field}>
-              <span>Contact number *</span>
-              <input
-                type="tel"
-                name="phoneNumber"
-                value={form.phoneNumber}
-                onChange={handleChange}
-                placeholder="+1 555 000 0000"
-                autoComplete="tel"
-                required
-                disabled={isSubmitting}
-              />
-            </label>
+          <label className={styles.field}>
+            <span>Contact number *</span>
+            <input
+              type="tel"
+              name="phoneNumber"
+              value={form.phoneNumber}
+              onChange={handleChange}
+              placeholder="+1 555 000 0000"
+              autoComplete="tel"
+              required
+              disabled={formDisabled}
+            />
+          </label>
 
-            {formError && (
-              <p className={styles.formError} role="alert">
-                {formError}
-              </p>
-            )}
+          {!isReady && (
+            <p className={styles.description} style={{ marginBottom: 12 }}>
+              Preparing secure form…
+            </p>
+          )}
 
-            <div className={styles.actions}>
-              <button
-                type="submit"
-                className={styles.acceptBtn}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Saving…' : 'Accept & continue'}
-              </button>
-            </div>
-          </form>
-        )}
+          {formError && (
+            <p className={styles.formError} role="alert">
+              {formError}
+            </p>
+          )}
+
+          <div className={styles.actions}>
+            <button
+              type="submit"
+              className={styles.acceptBtn}
+              disabled={formDisabled}
+            >
+              {isSubmitting ? 'Saving…' : 'Accept & continue'}
+            </button>
+          </div>
+        </form>
 
         <Link
           href="/privacy-policy"

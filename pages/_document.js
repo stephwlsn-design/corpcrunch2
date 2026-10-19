@@ -73,10 +73,68 @@ export default function Document() {
         />
       </Head>
       <body suppressHydrationWarning>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              html.cc-gate-pending #__next > div:first-child {
+                visibility: hidden !important;
+                pointer-events: none !important;
+                max-height: 100vh !important;
+                overflow: hidden !important;
+              }
+              #cc-boot-gate {
+                position: fixed;
+                inset: 0;
+                z-index: 99990;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 24px;
+                background: rgba(15, 23, 42, 0.72);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                color: #0f172a;
+                font-family: Inter, Urbanist, system-ui, sans-serif;
+              }
+              #cc-boot-gate .cc-boot-card {
+                width: 100%;
+                max-width: 520px;
+                background: #fff;
+                border-radius: 16px;
+                padding: 32px 28px;
+                text-align: center;
+                box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+              }
+              #cc-boot-gate h1 {
+                margin: 0 0 12px;
+                font-size: 24px;
+                font-weight: 700;
+              }
+              #cc-boot-gate p {
+                margin: 0;
+                font-size: 15px;
+                line-height: 1.6;
+                color: #475569;
+              }
+            `,
+          }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
+                try {
+                  var path = (location.pathname || '');
+                  if (path.indexOf('/admin') !== 0) {
+                    document.documentElement.classList.add('cc-gate-pending');
+                    var gate = document.createElement('div');
+                    gate.id = 'cc-boot-gate';
+                    gate.setAttribute('role', 'dialog');
+                    gate.setAttribute('aria-modal', 'true');
+                    gate.innerHTML = '<div class="cc-boot-card"><h1>Enter your details to continue</h1><p>Name, email, and contact number are required before you can browse this site — including if you have visited before.</p></div>';
+                    document.body.appendChild(gate);
+                  }
+                } catch (e) {}
                 try {
                   var theme = localStorage.getItem('togglETHeme');
                   if (theme) {
