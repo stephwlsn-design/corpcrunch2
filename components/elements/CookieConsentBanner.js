@@ -17,7 +17,8 @@ export default function CookieConsentBanner() {
     phoneNumber: '',
   });
 
-  const isOpen = isReady && !hasConsented;
+  // Show as soon as the public site needs a decision (including while loading)
+  const isOpen = !hasConsented;
 
   useEffect(() => {
     if (typeof document === 'undefined') return undefined;
@@ -53,14 +54,16 @@ export default function CookieConsentBanner() {
     if (!EMAIL_REGEX.test(email)) {
       return 'Please enter a valid email address.';
     }
-    if (!PHONE_REGEX.test(phoneNumber)) {
-      return 'Please enter a valid contact number.';
+    if (phoneNumber && !PHONE_REGEX.test(phoneNumber)) {
+      return 'Please enter a valid contact number, or leave it blank.';
     }
     return null;
   };
 
   const handleAccept = async (event) => {
     event.preventDefault();
+    if (!isReady) return;
+
     const validationError = validateForm();
     if (validationError) {
       setFormError(validationError);
@@ -80,10 +83,7 @@ export default function CookieConsentBanner() {
       const status = await acceptCookies(contact);
       if (!status) {
         setFormError('Unable to save your details. Please try again.');
-        return;
       }
-      // Identity is stored by /api/visitors/consent; page view is recorded once
-      // by App tracking when hasConsented becomes true.
     } finally {
       setIsSubmitting(false);
     }
@@ -108,92 +108,97 @@ export default function CookieConsentBanner() {
         </div>
 
         <h2 id="cookie-consent-title" className={styles.title}>
-          Cookies required to continue
+          Enter your details to continue
         </h2>
 
         <p id="cookie-consent-description" className={styles.description}>
-          Corp Crunch uses cookies to collect visitor data to improve our content, analyze site
-          traffic, and personalize your experience on corpcrunch.io and corpcrunch.ai.
+          Welcome to Corp Crunch. Please provide your name and email to access
+          corpcrunch.io and corpcrunch.ai. We use cookies to improve content and
+          analyze site traffic.
         </p>
 
         <p className={styles.notice}>
-          Enter your details and accept cookies to access this website.
+          Name and email are required before you can browse this site.
         </p>
 
-        <form className={styles.form} onSubmit={handleAccept} noValidate>
-          <label className={styles.field}>
-            <span>Full name *</span>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Your full name"
-              autoComplete="name"
-              required
-              disabled={isSubmitting}
-            />
-          </label>
+        {!isReady ? (
+          <p className={styles.description}>Loading…</p>
+        ) : (
+          <form className={styles.form} onSubmit={handleAccept} noValidate>
+            <label className={styles.field}>
+              <span>Full name *</span>
+              <input
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Your full name"
+                autoComplete="name"
+                required
+                disabled={isSubmitting}
+                autoFocus
+              />
+            </label>
 
-          <label className={styles.field}>
-            <span>Email *</span>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="you@company.com"
-              autoComplete="email"
-              required
-              disabled={isSubmitting}
-            />
-          </label>
+            <label className={styles.field}>
+              <span>Email *</span>
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="you@company.com"
+                autoComplete="email"
+                required
+                disabled={isSubmitting}
+              />
+            </label>
 
-          <label className={styles.field}>
-            <span>Contact number *</span>
-            <input
-              type="tel"
-              name="phoneNumber"
-              value={form.phoneNumber}
-              onChange={handleChange}
-              placeholder="+1 555 000 0000"
-              autoComplete="tel"
-              required
-              disabled={isSubmitting}
-            />
-          </label>
+            <label className={styles.field}>
+              <span>Contact number (optional)</span>
+              <input
+                type="tel"
+                name="phoneNumber"
+                value={form.phoneNumber}
+                onChange={handleChange}
+                placeholder="+1 555 000 0000"
+                autoComplete="tel"
+                disabled={isSubmitting}
+              />
+            </label>
 
-          {formError && (
-            <p className={styles.formError} role="alert">
-              {formError}
-            </p>
-          )}
+            {formError && (
+              <p className={styles.formError} role="alert">
+                {formError}
+              </p>
+            )}
 
-          {declinedMessage && (
-            <p className={styles.declinedAlert} role="alert">
-              Access is blocked until you accept cookies. Please complete the form and click
-              &quot;Accept&quot; to continue.
-            </p>
-          )}
+            {declinedMessage && (
+              <p className={styles.declinedAlert} role="alert">
+                Access is blocked until you enter your name and email, then click
+                &quot;Accept&quot; to continue.
+              </p>
+            )}
 
-          <div className={styles.actions}>
-            <button
-              type="submit"
-              className={styles.acceptBtn}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Saving…' : 'Accept'}
-            </button>
-            <button
-              type="button"
-              className={styles.declineBtn}
-              onClick={handleDecline}
-              disabled={isSubmitting}
-            >
-              Decline
-            </button>
-          </div>
-        </form>
+            <div className={styles.actions}>
+              <button
+                type="submit"
+                className={styles.acceptBtn}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Saving…' : 'Accept & continue'}
+              </button>
+              <button
+                type="button"
+                className={styles.declineBtn}
+                onClick={handleDecline}
+                disabled={isSubmitting}
+              >
+                Decline
+              </button>
+            </div>
+          </form>
+        )}
 
         <Link
           href="/privacy-policy"

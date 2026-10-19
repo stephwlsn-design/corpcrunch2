@@ -54,8 +54,9 @@ function AppContent({ Component, pageProps }) {
   const router = useRouter();
   const { hasConsented, isReady } = useCookieConsent();
   const isAdminRoute = router.pathname.startsWith('/admin');
-  const showConsentGate = isReady && !hasConsented && !isAdminRoute;
-  const canAccessSite = isAdminRoute || !showConsentGate;
+  // Block the public site until consent is ready and the visitor has accepted
+  // with name + email. Do not briefly unlock content while consent is loading.
+  const canAccessSite = isAdminRoute || (isReady && hasConsented);
 
   useEffect(() => {
     if (hasConsented || isAdminRoute) {

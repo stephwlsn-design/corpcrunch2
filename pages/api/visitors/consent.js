@@ -92,7 +92,8 @@ export default async function handler(req, res) {
       if (!EMAIL_REGEX.test(contact.email)) {
         return res.status(400).json({ success: false, message: 'Valid email is required' });
       }
-      if (!PHONE_REGEX.test(contact.phoneNumber)) {
+      // Phone is optional; validate only when provided
+      if (contact.phoneNumber && !PHONE_REGEX.test(contact.phoneNumber)) {
         return res.status(400).json({ success: false, message: 'Valid phone number is required' });
       }
     }
