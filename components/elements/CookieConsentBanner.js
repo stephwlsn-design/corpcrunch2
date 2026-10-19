@@ -7,8 +7,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_REGEX = /^[\d\s\-+()]{7,20}$/;
 
 export default function CookieConsentBanner() {
-  const { hasConsented, isReady, acceptCookies, declineCookies } = useCookieConsent();
-  const [declinedMessage, setDeclinedMessage] = useState(false);
+  const { hasConsented, isReady, acceptCookies } = useCookieConsent();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
   const [form, setForm] = useState({
@@ -87,11 +86,6 @@ export default function CookieConsentBanner() {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleDecline = () => {
-    setDeclinedMessage(true);
-    declineCookies();
   };
 
   return (
@@ -174,13 +168,6 @@ export default function CookieConsentBanner() {
               </p>
             )}
 
-            {declinedMessage && (
-              <p className={styles.declinedAlert} role="alert">
-                Access is blocked until you enter your name, email, and contact
-                number, then click &quot;Accept&quot; to continue.
-              </p>
-            )}
-
             <div className={styles.actions}>
               <button
                 type="submit"
@@ -188,14 +175,6 @@ export default function CookieConsentBanner() {
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Saving…' : 'Accept & continue'}
-              </button>
-              <button
-                type="button"
-                className={styles.declineBtn}
-                onClick={handleDecline}
-                disabled={isSubmitting}
-              >
-                Decline
               </button>
             </div>
           </form>
