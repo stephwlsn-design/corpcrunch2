@@ -17,13 +17,13 @@
       "source": "/:path*",
       "has": [{ "type": "host", "value": "corpcrunch.io" }],
       "destination": "https://www.corpcrunch.io/:path*",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "corpcrunch.ai" }],
       "destination": "https://www.corpcrunch.ai/:path*",
-      "permanent": true
+      "statusCode": 301
     }
   ],
   "rewrites": [
