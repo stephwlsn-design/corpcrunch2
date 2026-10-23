@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCookieConsent } from '@/contexts/CookieConsentContext';
+import { CONSENT_GATE_ENABLED } from '@/lib/cookieConsent';
 import styles from '@/components/elements/CookieConsentBanner.module.css';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -40,9 +41,16 @@ export default function ConsentGatePage() {
     }
   }, []);
 
+  // Gate disabled — send visitors into the site
+  useEffect(() => {
+    if (!CONSENT_GATE_ENABLED) {
+      window.location.replace(nextPath);
+    }
+  }, [nextPath]);
+
   // Already consented — continue to destination
   useEffect(() => {
-    if (isReady && hasConsented) {
+    if (CONSENT_GATE_ENABLED && isReady && hasConsented) {
       window.location.replace(nextPath);
     }
   }, [isReady, hasConsented, nextPath]);

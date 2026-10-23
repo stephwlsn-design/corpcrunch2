@@ -3,13 +3,14 @@ import { isIntelligentSubdomainHostname } from './lib/intelligentSubdomain';
 import {
   hasValidConsentCookie,
   isConsentExemptPath,
+  isConsentGateEnabled,
   isLikelySearchBot,
   buildGateRedirectUrl,
 } from './lib/consentGate';
 
 /**
- * Subdomain routing + hard cookie-consent gate.
- * Public pages/APIs are not served without cc_cookie_consent=accepted_v2.
+ * Subdomain routing + optional cookie-consent gate.
+ * When CONSENT_GATE_ENABLED, public pages/APIs require cc_cookie_consent=accepted_v2.
  */
 export function middleware(request) {
   const url = request.nextUrl.clone();
@@ -30,12 +31,12 @@ export function middleware(request) {
 
   const isIntelligentSubdomain = isIntelligentSubdomainHostname(hostWithoutPort);
 
-  // Consent gate (skip for bots, exempt paths, and valid accepted_v2 cookie)
+  // Consent gate (disabled via CONSENT_GATE_ENABLED; skip bots / exempt / valid cookie)
   const consentOk = hasValidConsentCookie(request);
   const exempt = isConsentExemptPath(pathname);
   const isBot = isLikelySearchBot(userAgent);
 
-  if (!consentOk && !exempt && !isBot) {
+  if (isConsentGateEnabled() && !consentOk && !exempt && !isBot) {
     // Block non-exempt APIs with 403 (do not redirect JSON clients to HTML)
     if (pathname.startsWith('/api/')) {
       return NextResponse.json(

@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document';
+import { CONSENT_GATE_ENABLED } from '@/lib/cookieConsent';
 
 export default function Document() {
   return (
@@ -124,8 +125,9 @@ export default function Document() {
             __html: `
               (function() {
                 try {
+                  var consentGateEnabled = ${CONSENT_GATE_ENABLED ? 'true' : 'false'};
                   var path = (location.pathname || '');
-                  if (path.indexOf('/admin') !== 0) {
+                  if (consentGateEnabled && path.indexOf('/admin') !== 0) {
                     document.documentElement.classList.add('cc-gate-pending');
                     var gate = document.createElement('div');
                     gate.id = 'cc-boot-gate';

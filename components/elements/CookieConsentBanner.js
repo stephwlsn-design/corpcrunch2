@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useCookieConsent } from '@/contexts/CookieConsentContext';
+import { CONSENT_GATE_ENABLED } from '@/lib/cookieConsent';
 import styles from './CookieConsentBanner.module.css';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -16,7 +17,7 @@ export default function CookieConsentBanner() {
     phoneNumber: '',
   });
 
-  const isOpen = !hasConsented;
+  const isOpen = CONSENT_GATE_ENABLED && !hasConsented;
 
   useEffect(() => {
     // Replace the pre-hydration boot gate with the interactive React form
@@ -40,7 +41,7 @@ export default function CookieConsentBanner() {
     return undefined;
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!CONSENT_GATE_ENABLED || !isOpen) return null;
 
   const handleChange = (event) => {
     const { name, value } = event.target;

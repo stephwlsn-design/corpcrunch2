@@ -33,7 +33,7 @@ import CookieConsentBanner from "@/components/elements/CookieConsentBanner";
 import { resolveSiteBaseUrl } from "@/lib/siteUrl";
 import { trackPageView } from "@/lib/clientVisitorTracking";
 import { trackOttoPageView } from "@/lib/ottoVisitorTracking";
-import { enableGoogleAnalytics } from "@/lib/cookieConsent";
+import { CONSENT_GATE_ENABLED, enableGoogleAnalytics } from "@/lib/cookieConsent";
 
 // Create QueryClient with proper configuration
 const queryClient = new QueryClient({
@@ -55,13 +55,15 @@ function AppContent({ Component, pageProps }) {
   const { hasConsented, isReady } = useCookieConsent();
   const isAdminRoute = router.pathname.startsWith('/admin');
   const isGateRoute = router.pathname === '/gate';
-  // Middleware already blocks pages without the consent cookie. Keep a client
-  // backup gate for mid-session cookie revocation; allow /gate and /admin.
+  // When the gate is on, middleware + this client backup enforce consent.
   const canAccessSite =
-    isAdminRoute || isGateRoute || (isReady && hasConsented);
+    !CONSENT_GATE_ENABLED ||
+    isAdminRoute ||
+    isGateRoute ||
+    (isReady && hasConsented);
 
   useEffect(() => {
-    if (hasConsented || isAdminRoute) {
+    if (!CONSENT_GATE_ENABLED || hasConsented || isAdminRoute) {
       enableGoogleAnalytics();
     }
   }, [hasConsented, isAdminRoute]);
@@ -166,7 +168,9 @@ function AppContent({ Component, pageProps }) {
       >
         <Component {...pageProps} />
       </div>
-      {!isAdminRoute && !isGateRoute && <CookieConsentBanner />}
+      {CONSENT_GATE_ENABLED && !isAdminRoute && !isGateRoute && (
+        <CookieConsentBanner />
+      )}
     </>
   );
 }
