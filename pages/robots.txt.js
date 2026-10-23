@@ -1,4 +1,4 @@
-import { resolveSiteBaseUrl, SITE_BASE_URLS } from '@/lib/siteUrl';
+import { resolveSiteBaseUrl } from '@/lib/siteUrl';
 import { getRobotsDisallowedPaths } from '@/lib/sitemapConfig';
 
 function generateRobotsTxt(baseUrl) {
@@ -7,10 +7,6 @@ function generateRobotsTxt(baseUrl) {
   const disallowed = getRobotsDisallowedPaths();
 
   const disallowLines = disallowed.map((path) => `Disallow: ${path}`).join('\n');
-  const alternateSitemaps = SITE_BASE_URLS
-    .filter((url) => url.replace(/\/$/, '') !== normalizedBase)
-    .map((url) => `Sitemap: ${url.replace(/\/$/, '')}/sitemap.xml`)
-    .join('\n');
 
   return `User-agent: *
 Allow: /
@@ -21,7 +17,7 @@ Allow: /
 ${disallowLines}
 
 Sitemap: ${sitemapUrl}
-${alternateSitemaps ? `${alternateSitemaps}\n` : ''}`;
+`;
 }
 
 export async function getServerSideProps({ req, res }) {
