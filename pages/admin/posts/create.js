@@ -617,7 +617,7 @@ export default function AdminCreatePost() {
     <>
       <Head>
         <title>Admin | Create Post - Corp Crunch</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow" />
       </Head>
 
       <AdminLayout

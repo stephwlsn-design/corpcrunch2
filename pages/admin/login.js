@@ -64,7 +64,7 @@ export default function AdminLogin() {
     <>
       <Head>
         <title>Admin Login - Corp Crunch</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow" />
       </Head>
       
       {/* Admin-only layout - no header, footer, navbar */}

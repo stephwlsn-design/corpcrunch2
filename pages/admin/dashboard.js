@@ -177,7 +177,7 @@ export default function AdminDashboard() {
     <>
       <Head>
         <title>Admin Dashboard - Corp Crunch</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow" />
       </Head>
 
       <AdminLayout

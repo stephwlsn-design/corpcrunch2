@@ -151,7 +151,7 @@ export default function AdminVisitorsPage() {
     <>
       <Head>
         <title>Site Visitors - Admin</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow" />
       </Head>
 
       <AdminLayout

@@ -112,7 +112,7 @@ export default function AdminUsersList() {
     <>
       <Head>
         <title>User Management - Admin | Corp Crunch</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow" />
       </Head>
 
       <AdminLayout

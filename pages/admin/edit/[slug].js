@@ -384,7 +384,7 @@ export default function AdminEditPost() {
     <>
       <Head>
         <title>Admin | Edit Post - Corp Crunch</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow" />
       </Head>
 
       <AdminLayout

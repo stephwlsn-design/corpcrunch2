@@ -160,7 +160,7 @@ export default function AdminUserDetail() {
       <>
         <Head>
           <title>User Detail - Admin | Corp Crunch</title>
-          <meta name="robots" content="noindex, nofollow" />
+          <meta name="robots" content="index, follow" />
         </Head>
         <div
           style={{
@@ -185,7 +185,7 @@ export default function AdminUserDetail() {
     <>
       <Head>
         <title>Edit User - Admin | Corp Crunch</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow" />
       </Head>
 
       <AdminLayout

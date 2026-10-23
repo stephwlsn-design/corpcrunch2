@@ -24,7 +24,7 @@ export default function AdminIndex() {
     <>
       <Head>
         <title>Admin - Corp Crunch</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow" />
       </Head>
       <div
         style={{

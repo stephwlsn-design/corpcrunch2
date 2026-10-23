@@ -92,7 +92,7 @@ export default function AnalyticsPage() {
     <>
       <Head>
         <title>Analytics - Admin - Corp Crunch</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow" />
       </Head>
 
       <AdminLayout
