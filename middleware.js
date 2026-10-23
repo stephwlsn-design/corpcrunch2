@@ -19,14 +19,14 @@ export function middleware(request) {
   const pathname = url.pathname || '/';
   const userAgent = request.headers.get('user-agent') || '';
 
-  // Canonicalize apex → www so admin localStorage stays on one origin
+  // Canonicalize apex → www (301 permanent for SEO)
   if (
     hostWithoutPort === 'corpcrunch.io' ||
     hostWithoutPort === 'corpcrunch.ai'
   ) {
     const next = request.nextUrl.clone();
     next.hostname = `www.${hostWithoutPort}`;
-    return NextResponse.redirect(next, 308);
+    return NextResponse.redirect(next, 301);
   }
 
   const isIntelligentSubdomain = isIntelligentSubdomainHostname(hostWithoutPort);

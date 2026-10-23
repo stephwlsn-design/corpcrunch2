@@ -108,7 +108,7 @@ export default function ConsentGatePage() {
     <>
       <Head>
         <title>Enter your details | Corp Crunch</title>
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="noindex, nofollow" />
       </Head>
 
       <div className={styles.overlay} style={{ position: 'fixed' }}>
@@ -215,4 +215,21 @@ export default function ConsentGatePage() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps({ query }) {
+  // While the consent gate is off, send crawlers/users to the real site tree
+  if (!CONSENT_GATE_ENABLED) {
+    const next = safeNextPath(
+      typeof query.next === 'string' ? query.next : '/'
+    );
+    return {
+      redirect: {
+        destination: next,
+        statusCode: 301,
+      },
+    };
+  }
+
+  return { props: {} };
 }
