@@ -100,7 +100,7 @@ export default function ConsentGatePage() {
     <>
       <Head>
         <title>Enter your details | Corp Crunch</title>
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow" />
       </Head>
 
       <div className={styles.overlay} style={{ position: 'fixed' }}>
