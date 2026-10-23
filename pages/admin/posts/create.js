@@ -495,9 +495,9 @@ export default function AdminCreatePost() {
             .filter(url => url && isValidUrl(url))
         }),
         ...(inlineImageAltText && { inlineImageAltText: inlineImageAltText.trim() }),
-        // Advanced SEO Fields - Always include boolean values
-        allowIndexing: allowIndexing !== undefined ? allowIndexing : true,
-        allowFollowing: allowFollowing !== undefined ? allowFollowing : true,
+        // All public articles must be crawlable/indexable
+        allowIndexing: true,
+        allowFollowing: true,
         ...(schemaMarkupType && { schemaMarkupType }),
         ...(ogTitle && { ogTitle: ogTitle.trim() }),
         ...(ogDescription && { ogDescription: ogDescription.trim() }),
@@ -1658,8 +1658,9 @@ export default function AdminCreatePost() {
                               <div className="d-flex align-items-center">
                                 <input
                                   type="checkbox"
-                                  checked={allowIndexing}
-                                  onChange={(e) => setAllowIndexing(e.target.checked)}
+                                  checked
+                                  disabled
+                                  readOnly
                                   style={{ marginRight: "8px", width: "18px", height: "18px" }}
                                 />
                                 <span>Allow search engines to index this page</span>
@@ -1672,7 +1673,7 @@ export default function AdminCreatePost() {
                                   display: "block",
                                 }}
                               >
-                                {allowIndexing ? "Page will be indexed" : "Page will be no-index"}
+                                Required — all articles stay indexable
                               </small>
                             </div>
                           </div>
@@ -1682,8 +1683,9 @@ export default function AdminCreatePost() {
                               <div className="d-flex align-items-center">
                                 <input
                                   type="checkbox"
-                                  checked={allowFollowing}
-                                  onChange={(e) => setAllowFollowing(e.target.checked)}
+                                  checked
+                                  disabled
+                                  readOnly
                                   style={{ marginRight: "8px", width: "18px", height: "18px" }}
                                 />
                                 <span>Allow search engines to follow links</span>
@@ -1696,7 +1698,7 @@ export default function AdminCreatePost() {
                                   display: "block",
                                 }}
                               >
-                                {allowFollowing ? "Links will be followed" : "Links will be no-follow"}
+                                Required — all article links stay followable
                               </small>
                             </div>
                           </div>

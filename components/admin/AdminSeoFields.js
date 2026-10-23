@@ -237,13 +237,15 @@ export default function AdminSeoFields({
                   type="checkbox"
                   className="form-check-input"
                   id="allowIndexing"
-                  checked={allowIndexing}
-                  onChange={(e) => setAllowIndexing(e.target.checked)}
+                  checked
+                  disabled
+                  readOnly
                 />
                 <label className="form-check-label" htmlFor="allowIndexing">
                   Let Google index this page
                 </label>
               </div>
+              <small className="text-muted">Required — all articles stay indexable.</small>
             </div>
             <div className="col-md-6">
               <label className="form-label" style={{ fontWeight: "500" }}>Allow Following Links</label>
@@ -252,13 +254,15 @@ export default function AdminSeoFields({
                   type="checkbox"
                   className="form-check-input"
                   id="allowFollowing"
-                  checked={allowFollowing}
-                  onChange={(e) => setAllowFollowing(e.target.checked)}
+                  checked
+                  disabled
+                  readOnly
                 />
                 <label className="form-check-label" htmlFor="allowFollowing">
                   Let Google follow links on this page
                 </label>
               </div>
+              <small className="text-muted">Required — all article links stay followable.</small>
             </div>
           </div>
 

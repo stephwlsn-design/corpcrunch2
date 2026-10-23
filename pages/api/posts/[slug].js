@@ -276,8 +276,9 @@ export default async function handler(req, res) {
         updateData.attachments = attachmentUrls.filter(url => urlRegex.test(url.trim()));
       }
       if (postData.inlineImageAltText !== undefined) updateData.inlineImageAltText = postData.inlineImageAltText?.trim() || null;
-      if (postData.allowIndexing !== undefined) updateData.allowIndexing = postData.allowIndexing;
-      if (postData.allowFollowing !== undefined) updateData.allowFollowing = postData.allowFollowing;
+      // Public articles must stay crawlable/indexable
+      updateData.allowIndexing = true;
+      updateData.allowFollowing = true;
       if (postData.schemaMarkupType !== undefined) updateData.schemaMarkupType = postData.schemaMarkupType;
       if (postData.ogTitle !== undefined) updateData.ogTitle = postData.ogTitle?.trim() || null;
       if (postData.ogDescription !== undefined) updateData.ogDescription = postData.ogDescription?.trim() || null;

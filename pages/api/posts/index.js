@@ -719,8 +719,9 @@ export default async function handler(req, res) {
         visibility: postData.visibility || 'public',
         contentType: postData.contentType || 'article',
         language: postData.language || 'en',
-        allowIndexing: postData.allowIndexing !== undefined ? postData.allowIndexing : true,
-        allowFollowing: postData.allowFollowing !== undefined ? postData.allowFollowing : true,
+        // Public articles must stay crawlable/indexable
+        allowIndexing: true,
+        allowFollowing: true,
         schemaMarkupType: postData.schemaMarkupType || 'Article',
         metaTitle: finalMetaTitle,
         metaDescription: finalMetaDescription,
