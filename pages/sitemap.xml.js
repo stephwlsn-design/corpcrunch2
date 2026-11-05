@@ -1,5 +1,5 @@
 import { PRIMARY_SITE_URL } from '@/lib/siteConfig';
-import { resolveSiteBaseUrl } from '@/lib/siteUrl';
+import { isDeindexedSiteBaseUrl, resolveSiteBaseUrl } from '@/lib/siteUrl';
 import { getFullSitemapData } from '@/lib/sitemapService';
 
 function formatLastmod(date) {
@@ -39,7 +39,10 @@ export async function getServerSideProps({ req, res }) {
   const baseUrl = resolveSiteBaseUrl(req?.headers?.host || '');
 
   try {
-    const { entries } = await getFullSitemapData();
+    // .io is de-indexed — serve an empty sitemap so it is not discovered here
+    const { entries } = isDeindexedSiteBaseUrl(baseUrl)
+      ? { entries: [] }
+      : await getFullSitemapData();
     const sitemap = generateSiteMap(entries, baseUrl);
 
     res.setHeader('Content-Type', 'text/xml');

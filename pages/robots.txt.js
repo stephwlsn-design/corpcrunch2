@@ -1,4 +1,4 @@
-import { resolveSiteBaseUrl } from '@/lib/siteUrl';
+import { isDeindexedSiteBaseUrl, resolveSiteBaseUrl } from '@/lib/siteUrl';
 import {
   getRobotsAllowedPaths,
   getRobotsDisallowedPaths,
@@ -6,6 +6,18 @@ import {
 
 function generateRobotsTxt(baseUrl) {
   const normalizedBase = baseUrl.replace(/\/$/, '');
+
+  // .io is de-indexed: allow crawl so noindex headers/meta can be read, but
+  // do not advertise a sitemap from this host.
+  if (isDeindexedSiteBaseUrl(normalizedBase)) {
+    return `User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+`;
+  }
+
   const sitemapUrl = `${normalizedBase}/sitemap.xml`;
   const allowed = getRobotsAllowedPaths();
   const disallowed = getRobotsDisallowedPaths();

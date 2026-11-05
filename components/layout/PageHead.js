@@ -6,7 +6,7 @@ import {
   DEFAULT_OG_IMAGE,
   DEFAULT_DESCRIPTION,
 } from '@/lib/siteConfig';
-import { buildCrossDomainAlternates } from '@/lib/siteUrl';
+import { buildCrossDomainAlternates, INDEXABLE_SITE_BASE_URL } from '@/lib/siteUrl';
 
 const PageHead = ({
   title = `${SITE_NAME} — Making Media and Advertising Smarter`,
@@ -53,7 +53,9 @@ const PageHead = ({
   const crossDomainUrls =
     alternateUrls.length > 0 ? alternateUrls : buildCrossDomainAlternates(url);
   const xDefaultUrl =
-    crossDomainUrls.find((entry) => entry.includes('corpcrunch.io')) || url;
+    crossDomainUrls.find((entry) => entry.includes('corpcrunch.ai')) ||
+    crossDomainUrls[0] ||
+    `${INDEXABLE_SITE_BASE_URL}/`;
 
   return (
     <Head>
