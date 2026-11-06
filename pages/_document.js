@@ -1,10 +1,27 @@
-import { Html, Head, Main, NextScript } from 'next/document';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { CONSENT_GATE_ENABLED } from '@/lib/cookieConsent';
+import { isAiSiteHostname } from '@/lib/siteUrl';
 
-export default function Document() {
+export default function MyDocument({ host }) {
+  const loadAiGtm = isAiSiteHostname(host);
+
   return (
     <Html suppressHydrationWarning>
       <Head>
+        {loadAiGtm && (
+          <>
+            <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-P76V8CWW" />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+`,
+              }}
+            />
+          </>
+        )}
         {/* DNS Prefetch for external resources */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
@@ -259,3 +276,9 @@ export default function Document() {
     </Html>
   );
 }
+
+MyDocument.getInitialProps = async (ctx) => {
+  const initialProps = await Document.getInitialProps(ctx);
+  const host = ctx.req?.headers?.host || '';
+  return { ...initialProps, host };
+};
