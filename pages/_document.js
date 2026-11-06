@@ -34,14 +34,16 @@ gtag('js', new Date());
         <script async src="https://ottoplatform-410578063330.us-central1.run.app/pixel.js?id=OTTO-PX-8C2138ED"></script>
         <script async src="https://ottoplatform-410578063330.us-central1.run.app/pixel.js?id=OTTO-PX-FE92E881"></script>
 
-        {/* Google Analytics (gtag.js) */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-8MJ7BXCFYK"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+        {!loadAiGtm && (
+          <>
+            {/* Google Analytics (gtag.js) — .io only; .ai uses GTM */}
+            <script
+              async
+              src="https://www.googletagmanager.com/gtag/js?id=G-8MJ7BXCFYK"
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
@@ -54,8 +56,10 @@ gtag('js', new Date());
               });
               gtag('config', 'G-8MJ7BXCFYK', { anonymize_ip: true });
             `,
-          }}
-        />
+              }}
+            />
+          </>
+        )}
 
         {/* Preconnect to font services for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

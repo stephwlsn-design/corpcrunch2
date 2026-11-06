@@ -30,7 +30,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { SiteUrlProvider } from "@/contexts/SiteUrlContext";
 import { CookieConsentProvider, useCookieConsent } from "@/contexts/CookieConsentContext";
 import CookieConsentBanner from "@/components/elements/CookieConsentBanner";
-import { resolveSiteBaseUrl } from "@/lib/siteUrl";
+import { isAiSiteHostname, resolveSiteBaseUrl } from "@/lib/siteUrl";
 import { trackPageView } from "@/lib/clientVisitorTracking";
 import { trackOttoPageView } from "@/lib/ottoVisitorTracking";
 import { CONSENT_GATE_ENABLED, enableGoogleAnalytics } from "@/lib/cookieConsent";
@@ -119,7 +119,11 @@ function AppContent({ Component, pageProps }) {
       if (!url.startsWith("/admin") && !hasConsented) {
         trackOttoPageView({ url });
       }
-      if (typeof window.gtag === "function" && hasConsented) {
+      if (
+        typeof window.gtag === "function" &&
+        hasConsented &&
+        !isAiSiteHostname(window.location.hostname)
+      ) {
         window.gtag("config", "G-8MJ7BXCFYK", { page_path: url });
       }
       if (hasConsented && !shouldSkipConsentPageView()) {
