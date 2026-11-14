@@ -28,11 +28,12 @@ gtag('js', new Date());
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://ottoplatform-410578063330.us-central1.run.app" />
 
-        {process.env.NODE_ENV === 'development' && (
-          <script async src="http://localhost:8000/pixel.js?id=OTTO-PX-26CDE319"></script>
-        )}
-        <script async src="https://ottoplatform-410578063330.us-central1.run.app/pixel.js?id=OTTO-PX-8C2138ED"></script>
-        <script async src="https://ottoplatform-410578063330.us-central1.run.app/pixel.js?id=OTTO-PX-FE92E881"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Urbanist:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
 
         {!loadAiGtm && (
           <>
@@ -61,20 +62,6 @@ gtag('js', new Date());
           </>
         )}
 
-        {/* Preconnect to font services for faster loading */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-
-        {/* Fonts with font-display: swap for better performance */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
-
         {/* Critical CSS - served from public/assets/css/ at runtime */}
         {/* Note: 'Unable to locate stylesheet' in dev logs is harmless Next.js noise - CSS IS loaded correctly */}
         <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
@@ -82,17 +69,6 @@ gtag('js', new Date());
         <link rel="stylesheet" href="/assets/css/modern-theme.css" />
         <link rel="stylesheet" href="/assets/css/modern-overrides.css" />
 
-        {/* Preload other CSS for faster loading */}
-        <link
-          rel="preload"
-          href="/assets/css/flaticon.css"
-          as="style"
-        />
-        <link
-          rel="preload"
-          href="/assets/css/fontawesome-all.min.css"
-          as="style"
-        />
       </Head>
       <body suppressHydrationWarning>
         <style

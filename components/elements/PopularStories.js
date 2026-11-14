@@ -6,6 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { formatDate } from "@/util";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { isUnoptimizableImage } from "@/util/imageUtils";
 import styles from "./PopularStories.module.css";
 
 export default function PopularStories({ posts = [], isLoading = false }) {
@@ -121,11 +122,11 @@ export default function PopularStories({ posts = [], isLoading = false }) {
                             fill
                             className={styles.mediaImage}
                             style={{ objectFit: 'cover' }}
-                            unoptimized={cleanBannerUrl?.startsWith('http://') || cleanBannerUrl?.startsWith('https://')}
-                            priority={index < 3}
-                            quality={85}
+                            unoptimized={isUnoptimizableImage(cleanBannerUrl)}
+                            priority={index < 2}
+                            quality={70}
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            loading={index < 3 ? "eager" : "lazy"}
+                            loading={index < 2 ? "eager" : "lazy"}
                           />
                           {isVideo && videoId && (
                             <button

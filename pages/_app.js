@@ -189,22 +189,18 @@ function MyApp({ Component, pageProps, siteBaseUrl }) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = href;
+        link.media = 'print';
+        link.onload = () => {
+          link.media = 'all';
+        };
         document.head.appendChild(link);
       };
 
-      // Load non-critical CSS
       loadCSS('/assets/css/flaticon.css');
       loadCSS('/assets/css/fontawesome-all.min.css');
-      loadCSS('/assets/css/animate.min.css');
-      loadCSS('/assets/css/imageRevealHover.css');
-      loadCSS('/assets/css/magnific-popup.css');
       loadCSS('/assets/css/category-padding-override.css');
       loadCSS('/assets/css/header-additions.css');
-      loadCSS('/assets/css/form.css');
-      loadCSS('/assets/css/slick.css');
       loadCSS('/assets/css/spacing.css');
-      loadCSS('/assets/css/swiper-bundle.css');
-      loadCSS('/assets/css/rtl.css');
     }
   }, []);
 
@@ -271,6 +267,28 @@ function MyApp({ Component, pageProps, siteBaseUrl }) {
         window.removeEventListener('error', handleError);
       };
     }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    const loadOtto = () => {
+      const ids = ["OTTO-PX-8C2138ED", "OTTO-PX-FE92E881"];
+      ids.forEach((id) => {
+        if (document.querySelector(`script[data-otto="${id}"]`)) return;
+        const script = document.createElement("script");
+        script.async = true;
+        script.dataset.otto = id;
+        script.src = `https://ottoplatform-410578063330.us-central1.run.app/pixel.js?id=${id}`;
+        document.body.appendChild(script);
+      });
+    };
+    const idle = window.requestIdleCallback
+      ? window.requestIdleCallback(loadOtto, { timeout: 4000 })
+      : window.setTimeout(loadOtto, 2500);
+    return () => {
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
+    };
   }, []);
 
   return (

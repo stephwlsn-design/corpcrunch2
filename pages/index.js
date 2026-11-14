@@ -1,37 +1,31 @@
 import Layout from "@/components/layout/Layout";
-import FeaturedPosts from "@/components/elements/FeaturedPosts";
-import PopularStories from "@/components/elements/PopularStories";
-import Newsletter from "@/components/elements/Newsletter";
-import RecentVideoPosts from "@/components/elements/RecentVideoPosts";
-import ExploreOurWorks from "@/components/elements/ExploreOurWorks";
-import EditorChoice from "@/components/elements/EditorChoice";
 import ModernHero from "@/components/elements/ModernHero";
-import WhyUsSection from "@/components/elements/WhyUsSection";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
-import useGlobalState from "@/hooks/useGlobalState";
-import usePosts from "@/hooks/usePosts";
 import { usePostsTranslation } from "@/hooks/usePostTranslation";
-import { formatDate } from "@/util";
-import axiosInstance from "@/util/axiosInstance";
 import { notifySuccess } from "@/util/toast";
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState, useMemo } from "react";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import {
-  FacebookIcon,
-  FacebookShareButton,
-  LinkedinIcon,
-  LinkedinShareButton,
-  TwitterIcon,
-  TwitterShareButton,
-} from "react-share";
 import { getPosts } from "@/lib/postService";
 import { getCategories } from "@/lib/categoryService";
 import { buildHomeSeo } from "@/lib/seoHelpers";
 import { useSiteBaseUrl } from "@/contexts/SiteUrlContext";
+
+const WhyUsSection = dynamic(() => import("@/components/elements/WhyUsSection"), {
+  ssr: true,
+});
+const EditorChoice = dynamic(() => import("@/components/elements/EditorChoice"), {
+  ssr: true,
+});
+const PopularStories = dynamic(() => import("@/components/elements/PopularStories"), {
+  ssr: true,
+});
+const ExploreOurWorks = dynamic(() => import("@/components/elements/ExploreOurWorks"), {
+  ssr: true,
+});
+const RecentVideoPosts = dynamic(() => import("@/components/elements/RecentVideoPosts"), {
+  ssr: true,
+});
 
 export const getServerSideProps = async ({ req }) => {
   try {
@@ -88,14 +82,7 @@ export const getServerSideProps = async ({ req }) => {
 
 export default function Home({ posts, categories = [] }) {
   const siteBaseUrl = useSiteBaseUrl();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  const isLoading = false;
 
   let t;
   try {

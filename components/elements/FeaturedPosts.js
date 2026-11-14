@@ -5,6 +5,7 @@ import { formatDate } from "@/util";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { isUnoptimizableImage } from "@/util/imageUtils";
 
 export default function FeaturedPosts({ posts = [], isLoading = false }) {
   const { t } = useLanguage();
@@ -81,10 +82,10 @@ export default function FeaturedPosts({ posts = [], isLoading = false }) {
                       height={120}
                       className="featured-post-modern__image"
                       priority={i < 2}
-                      quality={80}
+                      quality={70}
                       loading={i < 2 ? "eager" : "lazy"}
                       sizes="120px"
-                      unoptimized={item.bannerImageUrl?.startsWith('http://') || item.bannerImageUrl?.startsWith('https://')}
+                      unoptimized={isUnoptimizableImage(item.bannerImageUrl)}
                     />
                   )}
                   <span className="featured-post-modern__number">

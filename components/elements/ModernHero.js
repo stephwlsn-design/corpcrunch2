@@ -1,191 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from './ModernHero.module.css';
 import { useAuth } from '@/contexts/AuthContext';
-
-// Realistic Windows 11 "Bloom" Style Wave Animation
-function WindowsBloom({ className }) {
-  const canvasRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const timeRef = useRef(0);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    
-    // Wave sheet configuration for Windows 11 look
-    const sheets = [
-      { color: 'rgba(59, 130, 246, 0.6)', speed: 0.005, amplitude: 100, frequency: 0.002, offset: 0 },
-      { color: 'rgba(37, 99, 235, 0.5)', speed: 0.007, amplitude: 120, frequency: 0.0015, offset: Math.PI / 3 },
-      { color: 'rgba(96, 165, 250, 0.45)', speed: 0.004, amplitude: 80, frequency: 0.0025, offset: Math.PI / 1.5 },
-      { color: 'rgba(29, 78, 216, 0.4)', speed: 0.006, amplitude: 140, frequency: 0.001, offset: Math.PI },
-      { color: 'rgba(147, 197, 253, 0.35)', speed: 0.003, amplitude: 110, frequency: 0.002, offset: Math.PI * 1.5 }
-    ];
-
-    const animate = () => {
-      timeRef.current += 1;
-      
-      // Background base
-      ctx.fillStyle = '#020617';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      const width = canvas.width;
-      const height = canvas.height;
-
-      // Draw each "sheet"
-      sheets.forEach((sheet, index) => {
-        ctx.save();
-        ctx.beginPath();
-        
-        // Use multiple curves to create a "sheet" effect
-        const t = timeRef.current * sheet.speed;
-        
-        ctx.moveTo(-100, height + 100);
-        
-        for (let x = -100; x <= width + 100; x += 5) {
-          const y = height * 0.45 + 
-            Math.sin(x * sheet.frequency + t + sheet.offset) * sheet.amplitude +
-            Math.cos(x * sheet.frequency * 0.4 + t * 0.5) * (sheet.amplitude * 0.5) +
-            Math.sin(x * 0.005 + t * 0.3) * 20; // Extra detail wave
-          
-          ctx.lineTo(x, y);
-        }
-        
-        ctx.lineTo(width + 100, height + 100);
-        ctx.closePath();
-
-        // Create complex gradient for the sheet
-        const grad = ctx.createLinearGradient(0, height * 0.2, width * 0.3, height);
-        grad.addColorStop(0, sheet.color);
-        grad.addColorStop(0.5, sheet.color.replace('0.', '0.15'));
-        grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        
-        ctx.fillStyle = grad;
-        ctx.fill();
-        
-        // Add a highlight edge to the sheet (thinner and more translucent)
-        ctx.strokeStyle = sheet.color.replace('0.', '0.8');
-        ctx.lineWidth = 1.8;
-        ctx.stroke();
-        
-        ctx.restore();
-      });
-
-      // Add central glow matching Windows 11 style
-      const glow = ctx.createRadialGradient(width * 0.5, height * 0.5, 0, width * 0.5, height * 0.5, width * 0.9);
-      glow.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
-      glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = glow;
-      ctx.fillRect(0, 0, width, height);
-
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
-
-    const resizeCanvas = () => {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-    };
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className={className}
-    />
-  );
-}
-
-// Animated Counter Component
-function AnimatedCounter({ end, suffix = '', duration = 2000 }) {
-  const [count, setCount] = useState(0);
-  const countRef = useRef(null);
-  const [hasAnimated, setHasAnimated] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          const startTime = Date.now();
-          const startValue = 0;
-          // Extract numeric value, handling +Mil format
-          let endValue = typeof end === 'string' 
-            ? parseFloat(end.replace(/[^0-9.]/g, '')) 
-            : end;
-          // If it's 5+Mil, use 5 as the end value
-          if (typeof end === 'string' && (end.includes('+Mil') || end === '5+Mil')) {
-            endValue = 5;
-          }
-
-          const animate = () => {
-            const now = Date.now();
-            const progress = Math.min((now - startTime) / duration, 1);
-            const easeOutQuad = progress * (2 - progress);
-            const currentCount = easeOutQuad * (endValue - startValue) + startValue;
-            
-            setCount(currentCount);
-
-            if (progress < 1) {
-              requestAnimationFrame(animate);
-            } else {
-              setCount(endValue);
-            }
-          };
-
-          animate();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (countRef.current) {
-      observer.observe(countRef.current);
-    }
-
-    return () => {
-      if (countRef.current) {
-        observer.unobserve(countRef.current);
-      }
-    };
-  }, [end, duration, hasAnimated]);
-
-  // Check for +Mil first (before checking for Min to avoid conflicts)
-  let displayValue;
-  if (typeof end === 'string') {
-    if (end.includes('+Mil')) {
-      displayValue = `${Math.floor(count)}+Mil`;
-    } else if (end.includes('Mil') && !end.includes('Min')) {
-      displayValue = `${Math.floor(count)}Mil`;
-    } else if (end.includes('+') && !end.includes('Mil')) {
-      displayValue = `${Math.floor(count)}+`;
-    } else if (end.includes('Min') && !end.includes('Mil')) {
-      displayValue = `${Math.floor(count)}Min`;
-    } else {
-      displayValue = Math.floor(count);
-    }
-  } else {
-    displayValue = Math.floor(count);
-  }
-
-  return <span ref={countRef}>{displayValue}{suffix}</span>;
-}
 
 export default function ModernHero({ videoUrl, stats }) {
   const { requireAuth } = useAuth();
@@ -391,6 +209,15 @@ export default function ModernHero({ videoUrl, stats }) {
       <div className={styles.heroLeft}>
         {/* Top Left - GIF Background Section */}
         <div className={styles.purpleSection}>
+          <img
+            src="/assets/video/cc-hero-banner-anim.webp"
+            alt=""
+            width={1260}
+            height={360}
+            decoding="async"
+            fetchpriority="high"
+            className={styles.heroBannerMedia}
+          />
           <div className={styles.purpleOverlay} />
           
           {/* Stats row */}
@@ -490,11 +317,16 @@ export default function ModernHero({ videoUrl, stats }) {
                 }
               }}
             >
-            {mockEvents.map((event, index) => (
+            {mockEvents.map((event, index) => {
+              const isActive = index === activeEventIndex;
+              const isAdjacent =
+                index === (activeEventIndex + 1) % mockEvents.length;
+              if (!isActive && !isAdjacent) return null;
+              return (
               <div
                 key={event.id}
                 className={`${styles.eventSlide} ${
-                  index === activeEventIndex ? styles.eventSlideActive : ''
+                  isActive ? styles.eventSlideActive : ''
                 }`}
               >
                 <div className={styles.eventImageWrapper}>
@@ -514,9 +346,9 @@ export default function ModernHero({ videoUrl, stats }) {
                       alt={event.title}
                       fill
                       className={styles.eventMedia}
-                      priority={index === activeEventIndex}
-                      quality={100}
-                      loading={index === activeEventIndex ? "eager" : "lazy"}
+                      priority={isActive}
+                      quality={70}
+                      loading={isActive ? "eager" : "lazy"}
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   )}
@@ -531,7 +363,8 @@ export default function ModernHero({ videoUrl, stats }) {
                   <p className={styles.eventDescription}>{event.description}</p>
                 </div>
               </div>
-            ))}
+            );
+            })}
             
             {/* Event Navigation Dots */}
             <div className={styles.eventDots}>

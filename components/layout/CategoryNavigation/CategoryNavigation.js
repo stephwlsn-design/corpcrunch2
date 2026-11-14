@@ -178,7 +178,7 @@ const CategoryNavigation = ({ categories: serverCategories = null }) => {
   };
 
   return (
-    <nav className={styles.categoryNav}>
+    <nav className={styles.categoryNav} aria-label="Article categories">
       <div className={styles.categoryNavContainer}>
         <div className={styles.categoryNavContent}>
           {isLoadingCategory ? (
@@ -209,22 +209,12 @@ const CategoryNavigation = ({ categories: serverCategories = null }) => {
                   </li>
                 ))}
               </ul>
-              {/* Duplicate list for seamless scrolling */}
               <ul className={styles.categoryList} aria-hidden="true">
                 {allCategories.map((category, index) => (
                   <li key={`dup-${category.href || index}`} className={styles.categoryItem}>
-                    <Link
-                      href={category.href}
-                      onClick={(e) => {
-                        if (!requireAuth(category.href)) {
-                          e.preventDefault();
-                        }
-                      }}
-                      scroll={true}
-                      className={`${styles.categoryLink} ${isActive(category.href) ? styles.active : ''}`}
-                    >
+                    <span className={`${styles.categoryLink} ${isActive(category.href) ? styles.active : ''}`}>
                       {category.name}
-                    </Link>
+                    </span>
                   </li>
                 ))}
               </ul>

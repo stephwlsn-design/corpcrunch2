@@ -1,35 +1,46 @@
 /**
- * SafeImage Component - Handles images from any external domain
- * Uses unoptimized mode for external images to bypass Next.js domain restrictions
- * This allows loading images from ANY external domain
+ * SafeImage — routes images through Next.js so they convert to WebP/AVIF,
+ * lazy-load below the fold, and keep reserved width/height for CLS.
  */
 import Image from 'next/image';
+import { defaultImageQuality, isOptimizableImage } from '@/util/imageUtils';
 
-export default function SafeImage({ src, alt, ...props }) {
-  // Check if src is an external URL
-  const isExternal = src && (src.startsWith('http://') || src.startsWith('https://'));
-  const isLocal = src && src.startsWith('/');
+export default function SafeImage({
+  src,
+  alt = '',
+  priority = false,
+  quality,
+  loading,
+  unoptimized,
+  sizes,
+  fill,
+  width,
+  height,
+  ...props
+}) {
+  if (!src) return null;
 
-  // For external images, use unoptimized to bypass domain restrictions
-  // This allows loading from ANY domain
-  if (isExternal) {
-    return (
-      <Image
-        src={src}
-        alt={alt}
-        {...props}
-        unoptimized={true} // Bypass Next.js optimization and domain check
-      />
-    );
-  }
+  const optimize = isOptimizableImage(src);
+  const resolvedUnoptimized = unoptimized ?? !optimize;
+  const resolvedQuality = quality ?? defaultImageQuality();
+  const resolvedLoading = priority ? 'eager' : loading ?? 'lazy';
+  const resolvedSizes =
+    sizes ||
+    (fill ? '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw' : undefined);
 
-  // For local images, use optimized Next.js Image component
   return (
     <Image
       src={src}
       alt={alt}
+      fill={fill}
+      width={fill ? undefined : width}
+      height={fill ? undefined : height}
+      sizes={resolvedSizes}
+      quality={resolvedQuality}
+      priority={priority}
+      loading={resolvedLoading}
+      unoptimized={resolvedUnoptimized}
       {...props}
     />
   );
 }
-

@@ -96,6 +96,86 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: '**.pexels.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.gstatic.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.ytimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.cloudinary.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.cloudfront.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i0.wp.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.wp.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'pbs.twimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.twimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.fbcdn.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.licdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.google.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.corpcrunch.ai',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.corpcrunch.ai',
+      },
+      {
+        protocol: 'https',
+        hostname: 'corpcrunch.ai',
+      },
+      {
+        protocol: 'https',
         hostname: '**.corpcrunch.io',
       },
       {
@@ -150,7 +230,7 @@ const nextConfig = {
     // Optimize images for production
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 31536000, // 1 year cache for optimized images
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     dangerouslyAllowSVG: true,
     // Remove contentSecurityPolicy - it was blocking external image proxying
@@ -219,6 +299,24 @@ const nextConfig = {
       {
         // Cache images
         source: '/_next/image',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/:path*.webp',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/:path*.avif',
         headers: [
           {
             key: 'Cache-Control',

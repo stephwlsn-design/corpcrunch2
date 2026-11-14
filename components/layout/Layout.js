@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
+import dynamic from "next/dynamic";
 import ToastContainer from "../ToastContainer/ToastContainer";
-import ChatBot from "../elements/ChatBot";
+
+const ChatBot = dynamic(() => import("../elements/ChatBot"), { ssr: false });
 import Breadcrumb from "./Breadcrumb";
 import Footer from "./Footer/Footer";
 import Header from "./Header/Header";

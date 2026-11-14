@@ -101,7 +101,7 @@ const Header1 = ({
                     className={`logo-image logo-dark ${isIntelligentPage ? "intelligent-header-logo" : ""}`}
                     style={isIntelligentPage ? { height: '140px', width: 'auto', maxHeight: 'none', maxWidth: 'none' } : {}}
                     priority
-                    unoptimized
+                    quality={70}
                   />
                   <Image
                     src={logoConfig.srcLight}
@@ -111,7 +111,7 @@ const Header1 = ({
                     className={`logo-image logo-light ${isIntelligentPage ? "intelligent-header-logo" : ""}`}
                     style={isIntelligentPage ? { height: '140px', width: 'auto', maxHeight: 'none', maxWidth: 'none' } : {}}
                     priority
-                    unoptimized
+                    quality={70}
                   />
                 </Link>
               </div>
@@ -148,9 +148,13 @@ const Header1 = ({
                           href={isLoggedIn ? "/profile" : "/signin"}
                           scroll={true}
                           className="header__cta-btn d-none d-md-inline-flex"
-                          aria-label={isLoggedIn ? "Go to profile" : t('header.signIn')}
+                          aria-label={isLoggedIn ? "Go to your account profile" : "Sign in to your Corp Crunch account"}
+                          title={isLoggedIn ? "Profile" : "Sign in"}
                         >
-                          <i className="fas fa-user-circle" style={{ fontSize: '20px' }}></i>
+                          <i className="fas fa-user-circle" style={{ fontSize: '20px' }} aria-hidden="true"></i>
+                          <span className="visually-hidden">
+                            {isLoggedIn ? "Go to your account profile" : "Sign in to your Corp Crunch account"}
+                          </span>
                         </Link>
                         {isLoggedIn && (
                           <button

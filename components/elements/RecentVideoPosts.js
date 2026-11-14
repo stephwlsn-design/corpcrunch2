@@ -7,6 +7,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { isUnoptimizableImage } from "@/util/imageUtils";
 import styles from "./RecentVideoPosts.module.css";
 
 export default function RecentVideoPosts({ posts = [], isLoading = false }) {
@@ -328,7 +329,10 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
                         fill
                         className={styles.videoImage}
                         style={{ objectFit: "cover" }}
-                        unoptimized
+                        quality={70}
+                        loading="lazy"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        unoptimized={isUnoptimizableImage(cleanBannerUrl)}
                       />
                       {videoId && (
                         <button
@@ -342,11 +346,15 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
                     </div>
                   ) : videoId ? (
                     <div className={styles.videoWrapper}>
-                      <img
-                        src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                      <Image
+                        src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
                         alt={sectionPost.title || "Video"}
+                        fill
                         className={styles.videoImage}
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        style={{ objectFit: "cover" }}
+                        quality={70}
+                        loading="lazy"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         onError={(e) => {
                           // Fallback to hqdefault if maxresdefault fails
                           e.currentTarget.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
