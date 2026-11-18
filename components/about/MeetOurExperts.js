@@ -72,7 +72,7 @@ export default function MeetOurExperts({ teamMembers }) {
             <div key={index} className={styles.teamCard}>
               <div className={styles.imageWrapper}>
                 <Image
-                  src={member.imageUrl || '/assets/img/placeholder-team.jpg'}
+                  src={member.imageUrl || '/assets/img/others/defaultAvatarProfile.jpg'}
                   alt={member.name}
                   fill
                   sizes="(max-width: 768px) 50vw, 280px"

@@ -69,7 +69,7 @@ export default function BlogPage() {
           title="Smart Digital Marketing that turns strategy into growth."
           highlightText="Digital Marketing"
           subtitle="We combine strategy, creativity, and performance marketing to help digital brands grow, compete, and scale with confidence."
-          mediaUrl="/assets/img/blog/blog01.jpg"
+          mediaUrl="/assets/img/articles/markets-1.webp"
           mediaType="image"
           journalistName="Miranda H. Halim"
           journalistTitle="Head Of Idea"

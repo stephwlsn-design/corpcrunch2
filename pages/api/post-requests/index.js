@@ -143,7 +143,7 @@ export default async function handler(req, res) {
         categoryId: sanitizedData.categoryID,
         submitterName: sanitizedData.submitterName,
         contentHtml,
-        bannerImageUrl: '/assets/img/default-banner.jpg',
+        bannerImageUrl: '/assets/img/articles/generic-1.webp',
       });
 
       const post = await Post.create(postData);

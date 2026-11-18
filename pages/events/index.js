@@ -76,7 +76,7 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
       description: "Building AI foundations across industries and governance.",
       gradient: "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
       circleColor: "#1e40af",
-      image: "/assets/img/blog/blog01.jpg",
+      image: "/assets/img/articles/corporate-2.webp",
       theme: "light",
       event: {
         title: "AIX NOW: Adoption, Readiness & Real-World Impact",

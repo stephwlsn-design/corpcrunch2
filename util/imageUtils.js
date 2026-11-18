@@ -2,7 +2,7 @@
  * Image helpers for Next.js Image optimization (WebP/AVIF) and dead-host fallbacks.
  */
 
-export const FALLBACK_IMAGE = '/assets/img/blog/blog01.jpg';
+export const FALLBACK_IMAGE = '/assets/img/articles/generic-1.webp';
 
 const DEAD_IMAGE_HOSTS = [];
 

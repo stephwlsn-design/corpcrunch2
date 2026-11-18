@@ -221,7 +221,7 @@ export default function BlogDetails() {
                             <img
                               src={
                                 item?.bannerImageUrl ??
-                                "/assets/img/blog/blog01.jpg"
+                                "/assets/img/articles/generic-1.webp"
                               }
                               alt="img"
                             />
