@@ -216,9 +216,7 @@ const nextConfig = {
       'prowess.corpcrunch.io',
       'drive.google.com',
     ],
-    loader: 'custom',
-    loaderFile: './util/webpLoader.js',
-    // Optimize images for production — always WebP via /api/webp
+    // Browsers that send Accept: image/webp get WebP from the built-in optimizer.
     formats: ['image/webp'],
     minimumCacheTTL: 31536000, // 1 year cache for optimized images
     deviceSizes: [480, 640, 750, 828, 1080, 1200],
@@ -290,15 +288,6 @@ const nextConfig = {
       {
         // Cache images
         source: '/_next/image',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/api/webp',
         headers: [
           {
             key: 'Cache-Control',

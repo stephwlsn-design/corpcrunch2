@@ -196,8 +196,6 @@ function MyApp({ Component, pageProps, siteBaseUrl }) {
         document.head.appendChild(link);
       };
 
-      loadCSS('/assets/css/flaticon.css');
-      loadCSS('/assets/css/fontawesome-all.min.css');
       loadCSS('/assets/css/category-padding-override.css');
       loadCSS('/assets/css/header-additions.css');
       loadCSS('/assets/css/spacing.css');

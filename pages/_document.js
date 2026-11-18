@@ -68,6 +68,8 @@ gtag('js', new Date());
         <link rel="stylesheet" href="/assets/css/main.css" />
         <link rel="stylesheet" href="/assets/css/modern-theme.css" />
         <link rel="stylesheet" href="/assets/css/modern-overrides.css" />
+        <link rel="stylesheet" href="/assets/css/flaticon.css" />
+        <link rel="stylesheet" href="/assets/css/fontawesome-all.min.css" />
 
       </Head>
       <body suppressHydrationWarning>

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { getBlogPostUrl, getCategoryUrl } from '@/util/urlHelpers'
 import { useAuth } from '@/contexts/AuthContext'
-import { webpProxyUrl } from '@/util/imageUtils'
+import { resolveImageSrc } from '@/util/imageUtils'
 
 function inflateCategoryCount(baseCount, categoryId) {
     const seed = String(categoryId || '')
@@ -274,7 +274,7 @@ export default function BlogSidebar({ author }) {
                         marginBottom: '40px'
                     }}>
                         <div className="sidePost__item" style={{
-                            backgroundImage: `url(${webpProxyUrl(featuredPost.bannerImageUrl, 800, 70)})`,
+                            backgroundImage: `url(${resolveImageSrc(featuredPost.bannerImageUrl)})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             width: '100%',
