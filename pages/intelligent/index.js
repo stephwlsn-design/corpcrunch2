@@ -790,7 +790,8 @@ export default function IntelligentPage() {
                               src={src}
                               alt=""
                               fill
-                              sizes="100vw"
+                              sizes="(max-width: 768px) 100vw, 1200px"
+                              quality={70}
                               className={styles.techProductsHeroBgImage}
                               priority={idx === 0}
                             />

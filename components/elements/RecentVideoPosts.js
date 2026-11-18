@@ -7,7 +7,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { isUnoptimizableImage } from "@/util/imageUtils";
+import { isUnoptimizableImage, resolveImageSrc } from "@/util/imageUtils";
 import styles from "./RecentVideoPosts.module.css";
 
 export default function RecentVideoPosts({ posts = [], isLoading = false }) {
@@ -296,7 +296,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
     // Check both videoUrl and video_url field names
     const videoUrlSource = sectionPost.videoUrl || sectionPost.video_url || '';
     const cleanVideoUrl = cleanUrl(videoUrlSource);
-    const cleanBannerUrl = cleanUrl(sectionPost.bannerImageUrl);
+    const cleanBannerUrl = resolveImageSrc(cleanUrl(sectionPost.bannerImageUrl));
 
     const videoId = getYouTubeVideoId(cleanVideoUrl);
     const isPlaying = playingVideoId === videoId;

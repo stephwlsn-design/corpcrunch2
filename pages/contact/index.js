@@ -145,8 +145,8 @@ export default function ContactPage() {
                       height={124}
                       className="logo-dark"
                       priority
-                      quality={100}
-                      unoptimized
+                      quality={70}
+                      sizes="380px"
                       style={{ width: 'auto', height: 'auto', maxWidth: '380px', maxHeight: '124px' }}
                     />
                     <Image
@@ -156,8 +156,8 @@ export default function ContactPage() {
                       height={124}
                       className="logo-light"
                       priority
-                      quality={100}
-                      unoptimized
+                      quality={70}
+                      sizes="380px"
                       style={{ width: 'auto', height: 'auto', maxWidth: '380px', maxHeight: '124px' }}
                     />
                   </Link>

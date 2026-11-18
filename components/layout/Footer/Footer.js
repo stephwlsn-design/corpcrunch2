@@ -65,7 +65,8 @@ export default function Footer1() {
                     width={250}
                     height={80}
                     className="footer__logo-image logo-dark"
-                    unoptimized
+                    sizes="250px"
+                    quality={70}
                   />
                   <Image
                     src="/assets/img/logo/Corp Crunch White Logo.png"
@@ -73,7 +74,8 @@ export default function Footer1() {
                     width={250}
                     height={80}
                     className="footer__logo-image logo-light"
-                    unoptimized
+                    sizes="250px"
+                    quality={70}
                   />
                 </Link>
               </div>

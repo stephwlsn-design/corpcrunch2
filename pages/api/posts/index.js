@@ -1,6 +1,7 @@
 import connectDB from '@/lib/mongoose';
 import Post from '@/models/Post';
 import mongoose from 'mongoose';
+import { resolveImageSrc, sanitizeImageFieldsInText } from '@/util/imageUtils';
 
 export default async function handler(req, res) {
   // Prevent multiple responses
@@ -411,6 +412,9 @@ export default async function handler(req, res) {
               ...plainPost,
               _id: plainPost._id?.toString(),
               categoryId: plainPost.categoryId?.toString(),
+              bannerImageUrl: resolveImageSrc(plainPost.bannerImageUrl),
+              ogImage: plainPost.ogImage ? resolveImageSrc(plainPost.ogImage) : plainPost.ogImage,
+              content: sanitizeImageFieldsInText(plainPost.content),
               createdAt: plainPost.createdAt ? (plainPost.createdAt instanceof Date ? plainPost.createdAt.toISOString() : plainPost.createdAt) : null,
               updatedAt: plainPost.updatedAt ? (plainPost.updatedAt instanceof Date ? plainPost.updatedAt.toISOString() : plainPost.updatedAt) : null,
             };

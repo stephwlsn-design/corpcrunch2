@@ -38,6 +38,7 @@ import axiosInstance from "@/util/axiosInstance";
 import Image from "next/image";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
 import { getPostBySlug } from "@/lib/postService";
+import { resolveImageSrc } from "@/util/imageUtils";
 
 // Animated Counter Component
 function AnimatedCounter({ end, duration = 2000, formatFn = (n) => n }) {
@@ -299,7 +300,10 @@ export default function BlogDetails({ postsDetails }) {
       <SocialShareRibbon />
       <ReadingProgressBar />
       {(() => {
-        const heroTitle = displayPost?.title || "Smart Digital Marketing that turns strategy into growth.";
+        const heroTitle =
+          postsDetails?.title ||
+          displayPost?.title ||
+          "Smart Digital Marketing that turns strategy into growth.";
         const heroSubtitle =
           displayPost?.excerpt ||
           displayPost?.metaDescription ||
@@ -313,7 +317,7 @@ export default function BlogDetails({ postsDetails }) {
         const isVideo = displayPost?.contentType === "video" && !!displayPost?.videoUrl;
         const heroMediaUrl = isVideo
           ? displayPost.videoUrl
-          : displayPost?.bannerImageUrl || "/assets/img/blog/blog01.jpg";
+          : resolveImageSrc(displayPost?.bannerImageUrl);
 
         return (
           <>

@@ -51,11 +51,11 @@ What you actually need? The why behind the what. The connections nobody else is 
               src={teamImage || '/assets/img/bg/CC website about image.png'}
               alt="About CorpCrunch"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className={styles.teamImage}
               style={{ objectFit: 'cover' }}
               priority
-              quality={100}
-              unoptimized
+              quality={70}
             />
           </div>
         </div>

@@ -146,6 +146,8 @@ export default function MagazineViewer({ pdfUrl, title, imageUrl }) {
                   <img 
                     src={imageUrl} 
                     alt={`${title} - Cover`}
+                    width="800"
+                    height="1132"
                     style={{
                       width: '100%',
                       height: '100%',

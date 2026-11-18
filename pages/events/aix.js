@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 import { buildEventsSubpageSeo } from "@/lib/seoHelpers";
+import { resolveImageSrc } from "@/util/imageUtils";
 
 const aixSeo = buildEventsSubpageSeo({
   title: "AIX Events",
@@ -63,10 +64,12 @@ export default function AIXPage({ posts }) {
                         >
                           {item.bannerImageUrl ? (
                             <Image
-                              src={item.bannerImageUrl}
+                              src={resolveImageSrc(item.bannerImageUrl)}
                               alt={item.title}
                               width={800}
                               height={500}
+                              sizes="(max-width: 768px) 100vw, 800px"
+                              quality={70}
                               style={{
                                 width: "100%",
                                 height: "auto",

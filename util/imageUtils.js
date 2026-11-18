@@ -1,8 +1,10 @@
 /**
- * Image helpers for Next.js Image optimization (WebP/AVIF) and lazy loading.
+ * Image helpers for Next.js Image optimization (WebP/AVIF) and dead-host fallbacks.
  */
 
-const BROKEN_DOMAINS = [
+export const FALLBACK_IMAGE = '/assets/img/blog/blog01.jpg';
+
+const DEAD_IMAGE_HOSTS = [
   'recroot-next.vercel.app',
   'recroot.ai',
   'www.recroot.ai',
@@ -17,7 +19,6 @@ const OPTIMIZABLE_HOST_SUFFIXES = [
   'gettyimages.com',
   'googleusercontent.com',
   'gstatic.com',
-  'google.com',
   'ytimg.com',
   'youtube.com',
   'bbci.co.uk',
@@ -42,6 +43,61 @@ function hostnameMatches(hostname, suffix) {
   return hostname === suffix || hostname.endsWith(`.${suffix}`);
 }
 
+function parseUrl(src) {
+  if (!src || typeof src !== 'string') return null;
+  try {
+    return new URL(src);
+  } catch {
+    return null;
+  }
+}
+
+export function isDeadImageHost(src) {
+  const parsed = parseUrl(src);
+  if (!parsed) return false;
+  const host = parsed.hostname.toLowerCase();
+  return (
+    DEAD_IMAGE_HOSTS.includes(host) ||
+    host.endsWith('.recroot.ai') ||
+    host.includes('recroot-next')
+  );
+}
+
+export function rewriteDriveImageUrl(src) {
+  const parsed = parseUrl(src);
+  if (!parsed) return src;
+  const host = parsed.hostname.toLowerCase();
+  if (host !== 'drive.google.com' && host !== 'www.drive.google.com') {
+    return src;
+  }
+
+  let id = parsed.searchParams.get('id');
+  if (!id) {
+    const match = parsed.pathname.match(/\/d\/([^/]+)/);
+    id = match?.[1];
+  }
+  if (!id) return src;
+
+  return `https://lh3.googleusercontent.com/d/${id}=w1200`;
+}
+
+export function resolveImageSrc(src, fallback = FALLBACK_IMAGE) {
+  if (!src || typeof src !== 'string') return fallback;
+  const trimmed = src.trim();
+  if (!trimmed) return fallback;
+  if (trimmed.startsWith('/') && !trimmed.startsWith('//')) return trimmed;
+  if (isDeadImageHost(trimmed)) return fallback;
+  return rewriteDriveImageUrl(trimmed) || fallback;
+}
+
+export function sanitizeImageFieldsInText(text, fallback = FALLBACK_IMAGE) {
+  if (!text || typeof text !== 'string') return text;
+  return text.replace(
+    /https?:\/\/(?:www\.)?(?:recroot-next\.vercel\.app|recroot\.ai)\/[^\s"'<>)]+/gi,
+    fallback
+  );
+}
+
 export function isUnoptimizableImage(src) {
   return !isOptimizableImage(src);
 }
@@ -55,22 +111,18 @@ export function isOptimizableImage(src) {
   try {
     const { hostname, protocol } = new URL(src);
     if (protocol !== 'https:') return false;
-    if (BROKEN_DOMAINS.includes(hostname)) return false;
+    if (isDeadImageHost(src)) return false;
+    if (hostname === 'drive.google.com' || hostname === 'www.drive.google.com') {
+      return false;
+    }
     return OPTIMIZABLE_HOST_SUFFIXES.some((suffix) => hostnameMatches(hostname, suffix));
   } catch {
     return false;
   }
 }
 
-export function safeImageSrc(src, fallback = '/assets/img/blog/default.jpg') {
-  if (!src) return fallback;
-  try {
-    const { hostname } = new URL(src);
-    if (BROKEN_DOMAINS.includes(hostname)) return fallback;
-    return src;
-  } catch {
-    return src;
-  }
+export function safeImageSrc(src, fallback = FALLBACK_IMAGE) {
+  return resolveImageSrc(src, fallback);
 }
 
 export function defaultImageQuality() {

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { getBlogPostUrl, getCategoryUrl } from '@/util/urlHelpers'
 import { useAuth } from '@/contexts/AuthContext'
+import { resolveImageSrc } from '@/util/imageUtils'
 
 function inflateCategoryCount(baseCount, categoryId) {
     const seed = String(categoryId || '')
@@ -114,6 +115,8 @@ export default function BlogSidebar({ author }) {
                                         alt={`${author.firstName} ${author.lastName}`}
                                         width={100}
                                         height={100}
+                                        sizes="100px"
+                                        quality={70}
                                         style={{ borderRadius: "50%", objectFit: "cover", background: 'white', padding: '2px' }}
                                     />
                                 ) : (
@@ -122,6 +125,8 @@ export default function BlogSidebar({ author }) {
                                         alt={author?.firstName && author?.lastName ? `${author.firstName} ${author.lastName}` : author?.firstName || author?.lastName || 'CorpCrunch Team'}
                                         width={100}
                                         height={100}
+                                        sizes="100px"
+                                        quality={70}
                                         style={{ borderRadius: "50%", objectFit: "cover", background: 'white', padding: '2px' }}
                                     />
                                 )}
@@ -269,7 +274,7 @@ export default function BlogSidebar({ author }) {
                         marginBottom: '40px'
                     }}>
                         <div className="sidePost__item" style={{
-                            backgroundImage: `url(${featuredPost.bannerImageUrl})`,
+                            backgroundImage: `url(${resolveImageSrc(featuredPost.bannerImageUrl)})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             width: '100%',

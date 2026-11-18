@@ -4,6 +4,7 @@ import Image from "next/image";
 import { formatNumber, formatViews } from "@/util";
 import { getBlogPostUrl, getCategoryUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
+import { resolveImageSrc } from "@/util/imageUtils";
 import styles from "./TrendingCategories.module.css";
 
 export default function TrendingCategories({ categories = [] }) {
@@ -82,9 +83,12 @@ export default function TrendingCategories({ categories = [] }) {
                               {news.bannerImageUrl && (
                                 <div className={styles.newsImage}>
                                   <Image
-                                    src={news.bannerImageUrl}
+                                    src={resolveImageSrc(news.bannerImageUrl)}
                                     alt={news.title}
                                     fill
+                                    sizes="180px"
+                                    quality={70}
+                                    loading="lazy"
                                     style={{ objectFit: "cover" }}
                                   />
                                 </div>

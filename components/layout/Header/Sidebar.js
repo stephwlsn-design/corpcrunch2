@@ -1,6 +1,7 @@
 import useCompanies from "@/hooks/useCompanies";
 import useCategory from "@/hooks/useCategory";
 import Link from "next/link";
+import Image from "next/image";
 import { useRef, useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import dynamic from "next/dynamic";
@@ -123,10 +124,10 @@ export default function Sidebar({ handleSidebarClose }) {
           <div className="d-flex align-items-center justify-content-between mb-4">
             <div className="logo" style={{ maxWidth: '150px' }}>
               <Link href="/" className="logo-dark">
-                <img src="/assets/img/logo/logo.png" alt="Logo" />
+                <Image src="/assets/img/logo/logo.png" alt="Logo" width={150} height={48} sizes="150px" quality={70} style={{ width: 'auto', height: 'auto', maxWidth: '150px' }} />
               </Link>
               <Link href="/" className="logo-light">
-                <img src="/assets/img/logo/w_logo.png" alt="Logo" />
+                <Image src="/assets/img/logo/w_logo.png" alt="Logo" width={150} height={48} sizes="150px" quality={70} style={{ width: 'auto', height: 'auto', maxWidth: '150px' }} />
               </Link>
             </div>
             <div onClick={handleSidebarClose} style={{ cursor: 'pointer', color: '#2551e7', fontSize: '24px' }}>
@@ -272,7 +273,7 @@ export default function Sidebar({ handleSidebarClose }) {
                           padding: '10px', borderRadius: '8px', border: '1px solid #eee',
                           display: 'flex', justifyContent: 'center', backgroundColor: '#fff'
                         }}>
-                          <img alt={name} src={logoUrl} style={{ height: '25px', width: 'auto', objectFit: 'contain' }} />
+                          <img alt={name} src={logoUrl} width="80" height="25" style={{ height: '25px', width: 'auto', objectFit: 'contain' }} />
                         </div>
                       </Link>
                     ))}

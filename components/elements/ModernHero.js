@@ -4,6 +4,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import styles from './ModernHero.module.css';
 import { useAuth } from '@/contexts/AuthContext';
+import { HOMEPAGE_H1 } from '@/lib/seoHelpers';
 
 export default function ModernHero({ videoUrl, stats }) {
   const { requireAuth } = useAuth();
@@ -219,6 +220,8 @@ export default function ModernHero({ videoUrl, stats }) {
             className={styles.heroBannerMedia}
           />
           <div className={styles.purpleOverlay} />
+
+          <h1 className={styles.siteH1}>{HOMEPAGE_H1}</h1>
           
           {/* Stats row */}
           <div className={styles.statsRow}>

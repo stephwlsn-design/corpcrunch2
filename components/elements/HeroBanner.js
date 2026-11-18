@@ -15,8 +15,8 @@ export default function HeroBanner() {
                 height={400}
                 className="hero-logo hero-logo-day"
                 priority
-                quality={85}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                quality={70}
+                sizes="(max-width: 768px) 90vw, 480px"
                 style={{
                   width: "100%",
                   height: "auto",
@@ -32,8 +32,8 @@ export default function HeroBanner() {
                 height={400}
                 className="hero-logo hero-logo-night"
                 priority
-                quality={85}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                quality={70}
+                sizes="(max-width: 768px) 90vw, 480px"
                 style={{
                   width: "100%",
                   height: "auto",

@@ -5,7 +5,7 @@ import { formatDate } from "@/util";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { isUnoptimizableImage } from "@/util/imageUtils";
+import { isUnoptimizableImage, resolveImageSrc } from "@/util/imageUtils";
 
 export default function FeaturedPosts({ posts = [], isLoading = false }) {
   const { t } = useLanguage();
@@ -76,7 +76,7 @@ export default function FeaturedPosts({ posts = [], isLoading = false }) {
                 <div className="featured-post-modern__thumb">
                   {item.bannerImageUrl && (
                     <Image
-                      src={item.bannerImageUrl}
+                      src={resolveImageSrc(item.bannerImageUrl)}
                       alt={item.title}
                       width={120}
                       height={120}
@@ -85,7 +85,7 @@ export default function FeaturedPosts({ posts = [], isLoading = false }) {
                       quality={70}
                       loading={i < 2 ? "eager" : "lazy"}
                       sizes="120px"
-                      unoptimized={isUnoptimizableImage(item.bannerImageUrl)}
+                      unoptimized={isUnoptimizableImage(resolveImageSrc(item.bannerImageUrl))}
                     />
                   )}
                   <span className="featured-post-modern__number">

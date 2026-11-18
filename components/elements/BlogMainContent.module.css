@@ -140,7 +140,11 @@
 
 .contentBody :global(img) {
   max-width: 100%;
+  width: 100%;
   height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: #f8fafc;
   border-radius: 16px;
   margin: 40px 0;
 }

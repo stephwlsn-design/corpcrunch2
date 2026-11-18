@@ -1,5 +1,6 @@
 import useCategory from "@/hooks/useCategory";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -71,10 +72,10 @@ const MobileMenu = ({ handleMobileMenuClose }) => {
           </div>
           <div className="nav-logo">
             <Link href="/" scroll={true} className="logo-dark">
-              <img src="/assets/img/logo/Corp Crunch Black Logo.png" alt="CorpCrunch Logo" style={{ maxWidth: '180px' }} />
+              <Image src="/assets/img/logo/Corp Crunch Black Logo.png" alt="CorpCrunch Logo" width={180} height={58} sizes="180px" quality={70} style={{ maxWidth: '180px', height: 'auto' }} />
             </Link>
             <Link href="/" scroll={true} className="logo-light">
-              <img src="/assets/img/logo/Corp Crunch White Logo.png" alt="CorpCrunch Logo" style={{ maxWidth: '180px' }} />
+              <Image src="/assets/img/logo/Corp Crunch White Logo.png" alt="CorpCrunch Logo" width={180} height={58} sizes="180px" quality={70} style={{ maxWidth: '180px', height: 'auto' }} />
             </Link>
           </div>
           <div className="tgmobile__menu-outer">

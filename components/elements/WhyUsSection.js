@@ -7,6 +7,7 @@ import styles from './WhyUsSection.module.css';
 import { useAuth } from '@/contexts/AuthContext';
 import { buildArticlePath } from '@/lib/seoHelpers';
 import { getBlogPostUrl } from '@/util/urlHelpers';
+import { resolveImageSrc } from '@/util/imageUtils';
 
 export default function WhyUsSection({ trendingPosts = [], isLoading = false }) {
   const [scrollIndex, setScrollIndex] = useState(0);
@@ -93,12 +94,12 @@ export default function WhyUsSection({ trendingPosts = [], isLoading = false }) 
                 {post1.bannerImageUrl && (
                   <div className={styles.newsImageWrapper}>
                     <Image
-                      src={post1.bannerImageUrl}
+                      src={resolveImageSrc(post1.bannerImageUrl)}
                       alt={post1.title || 'Trending News'}
                       fill
                       className={styles.newsImage}
                       style={{ objectFit: 'cover' }}
-                      quality={80}
+                      quality={70}
                       loading="lazy"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
@@ -142,12 +143,12 @@ export default function WhyUsSection({ trendingPosts = [], isLoading = false }) 
                 {post2.bannerImageUrl && (
                   <div className={styles.newsImageWrapper}>
                     <Image
-                      src={post2.bannerImageUrl}
+                      src={resolveImageSrc(post2.bannerImageUrl)}
                       alt={post2.title || 'Trending News'}
                       fill
                       className={styles.newsImage}
                       style={{ objectFit: 'cover' }}
-                      quality={80}
+                      quality={70}
                       loading="lazy"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
@@ -191,12 +192,12 @@ export default function WhyUsSection({ trendingPosts = [], isLoading = false }) 
                 {post3.bannerImageUrl && (
                   <div className={styles.newsImageWrapper}>
                     <Image
-                      src={post3.bannerImageUrl}
+                      src={resolveImageSrc(post3.bannerImageUrl)}
                       alt={post3.title || 'Trending News'}
                       fill
                       className={styles.newsImage}
                       style={{ objectFit: 'cover' }}
-                      quality={80}
+                      quality={70}
                       loading="lazy"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />

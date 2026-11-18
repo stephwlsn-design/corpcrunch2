@@ -32,14 +32,6 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.recroot-next.vercel.app',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.recroot.ai',
-      },
-      {
-        protocol: 'https',
         hostname: 'image.cnbcfm.com',
       },
       {
@@ -205,9 +197,6 @@ const nextConfig = {
     ],
     // Legacy domains support (deprecated but still works)
     domains: [
-      'recroot-next.vercel.app',
-      'recroot.ai',
-      'www.recroot.ai',
       'images.unsplash.com',
       'image.cnbcfm.com',
       'www.cnbc.com',
@@ -230,7 +219,7 @@ const nextConfig = {
     // Optimize images for production
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 31536000, // 1 year cache for optimized images
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    deviceSizes: [480, 640, 750, 828, 1080, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     dangerouslyAllowSVG: true,
     // Remove contentSecurityPolicy - it was blocking external image proxying

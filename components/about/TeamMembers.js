@@ -57,7 +57,9 @@ export default function TeamMembers() {
                     <Image 
                       src={member.image} 
                       alt={member.name} 
-                      fill 
+                      fill
+                      sizes="(max-width: 768px) 50vw, 280px"
+                      quality={70}
                       className={styles.memberImage} 
                     />
                     <div className={styles.imageOverlay}></div>

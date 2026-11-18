@@ -12,8 +12,9 @@ function MagazineCard({ imageUrl, pdfUrl, title }) {
             src={imageUrl}
             alt={title || 'Magazine'}
             fill
+            sizes="(max-width: 768px) 100vw, 280px"
+            quality={70}
             style={{ objectFit: 'cover' }}
-            unoptimized
           />
         )}
       </div>

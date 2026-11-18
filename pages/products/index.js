@@ -202,7 +202,8 @@ export default function ProductsPage() {
                           width={200}
                           height={60}
                           className={styles.productLogo}
-                          unoptimized
+                          sizes="200px"
+                          quality={70}
                         />
                       </div>
                     ) : (
@@ -255,7 +256,8 @@ export default function ProductsPage() {
                           className={`${styles.centeredImage} ${
                             product.visualStyle === 'wordmark' ? styles.wordmarkImage : ''
                           }`}
-                          unoptimized={product.image.endsWith('.gif') || product.image.endsWith('.png')}
+                          quality={70}
+                          unoptimized={product.image.endsWith('.gif')}
                         />
                       ) : (
                         <div className={styles.placeholder}>Visual Coming Soon</div>

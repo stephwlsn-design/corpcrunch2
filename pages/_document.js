@@ -103,7 +103,7 @@ gtag('js', new Date());
                 text-align: center;
                 box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
               }
-              #cc-boot-gate h1 {
+              #cc-boot-gate .cc-boot-heading {
                 margin: 0 0 12px;
                 font-size: 24px;
                 font-weight: 700;
@@ -130,7 +130,7 @@ gtag('js', new Date());
                     gate.id = 'cc-boot-gate';
                     gate.setAttribute('role', 'dialog');
                     gate.setAttribute('aria-modal', 'true');
-                    gate.innerHTML = '<div class="cc-boot-card"><h1>Enter your details to continue</h1><p>Name, email, and contact number are required before you can browse this site — including if you have visited before.</p></div>';
+                    gate.innerHTML = '<div class="cc-boot-card"><p class="cc-boot-heading">Enter your details to continue</p><p>Name, email, and contact number are required before you can browse this site — including if you have visited before.</p></div>';
                     document.body.appendChild(gate);
                   }
                 } catch (e) {}

@@ -362,6 +362,8 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                                 src={card.image}
                                 alt={card.title}
                                 fill
+                                sizes="320px"
+                                quality={70}
                                 className={styles.circularImage}
                                 style={{ objectFit: 'cover' }}
                               />
@@ -426,6 +428,8 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                         src={yearCards[selectedCard].event.image}
                         alt={yearCards[selectedCard].event.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        quality={70}
                         className={styles.detailImageReveal}
                       />
                     )}
@@ -434,6 +438,8 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                         src="/assets/img/bg/AIX event page.png"
                         alt="AIX event page"
                         fill
+                        sizes="(max-width: 768px) 100vw, 480px"
+                        quality={70}
                         className={styles.humanRoboImg}
                       />
                     </div>
@@ -526,6 +532,8 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                                 src={speaker.image}
                                 alt={speaker.name}
                                 fill
+                                sizes="(max-width: 768px) 45vw, 220px"
+                                quality={70}
                                 className={styles.speakerPhoto}
                                 style={{ objectFit: 'cover', objectPosition: 'top' }}
                               />
@@ -1094,6 +1102,8 @@ export default function EventsPage({ events, eventsPosts, categories = [] }) {
                               src={item.src}
                               alt="Previous Event"
                               fill
+                              sizes="(max-width: 768px) 80vw, 360px"
+                              quality={70}
                               className={styles.nodeImg}
                             />
                             <div className={styles.nodeOverlay}>

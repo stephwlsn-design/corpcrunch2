@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { formatDate } from "@/util";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { isUnoptimizableImage } from "@/util/imageUtils";
+import { isUnoptimizableImage, resolveImageSrc } from "@/util/imageUtils";
 import styles from "./PopularStories.module.css";
 
 export default function PopularStories({ posts = [], isLoading = false }) {
@@ -92,7 +92,7 @@ export default function PopularStories({ posts = [], isLoading = false }) {
             {[...displayPosts, ...displayPosts].map((post, index) => {
               const cardId = `${post._id || `card-${index % displayPosts.length}`}-${Math.floor(index / displayPosts.length)}`;
               const cleanVideoUrl = cleanUrl(post.videoUrl);
-              const cleanBannerUrl = cleanUrl(post.bannerImageUrl);
+              const cleanBannerUrl = resolveImageSrc(cleanUrl(post.bannerImageUrl));
               const videoId = getYouTubeVideoId(cleanVideoUrl);
               const isPlaying = playingVideoId === videoId;
               const isVideo = post.contentType === 'video' || !!cleanVideoUrl;

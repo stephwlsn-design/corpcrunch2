@@ -9,7 +9,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import styles from "./CategoryPage.module.css";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
-import { isUnoptimizableImage } from "@/util/imageUtils";
+import { isUnoptimizableImage, resolveImageSrc } from "@/util/imageUtils";
 import { buildArticlePath, buildCategorySeo } from "@/lib/seoHelpers";
 import { useSiteBaseUrl } from "@/contexts/SiteUrlContext";
 
@@ -57,11 +57,13 @@ export default function CategoryPage({ categoryDetails }) {
           {post.bannerImageUrl && variant !== "viewed" && (
             <div className={styles.cardImage}>
               <Image
-                src={post.bannerImageUrl}
+                src={resolveImageSrc(post.bannerImageUrl)}
                 alt={post.title || "Article"}
                 width={300}
                 height={200}
-                unoptimized={isUnoptimizableImage(post.bannerImageUrl)}
+                sizes="300px"
+                quality={70}
+                unoptimized={isUnoptimizableImage(resolveImageSrc(post.bannerImageUrl))}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -123,10 +125,11 @@ export default function CategoryPage({ categoryDetails }) {
                         <Link href={buildArticlePath(post)}>
                           {post.bannerImageUrl && (
                             <Image
-                              src={post.bannerImageUrl}
+                              src={resolveImageSrc(post.bannerImageUrl)}
                               alt={post.title || 'Category article'}
                               fill
                               sizes="(max-width: 768px) 100vw, 50vw"
+                              quality={70}
                               priority={index === 0}
                               className={styles.heroImage}
                             />
@@ -159,7 +162,7 @@ export default function CategoryPage({ categoryDetails }) {
               <div className={styles.introContent}>
                 <div className={styles.introBlock}>
                   <div className={styles.blockHeader}>
-                    <h3 className={styles.blockTitle}>{categoryName}</h3>
+                    <h1 className={styles.blockTitle}>{categoryName}</h1>
                     <div className={styles.blockIcon}>
                       <i className="fas fa-chevron-down"></i>
                     </div>
@@ -180,7 +183,7 @@ export default function CategoryPage({ categoryDetails }) {
 
                 <div className={styles.introBlock}>
                   <div className={styles.blockHeader}>
-                    <h3 className={styles.blockTitle}>Impact Metrics</h3>
+                    <h2 className={styles.blockTitle}>Impact Metrics</h2>
                     <div className={styles.blockIcon}>
                       <i className="fas fa-chevron-down"></i>
                     </div>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./BlogMainContent.module.css";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import SafeImage from "@/components/elements/SafeImage";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 
 export default function BlogMainContent({
@@ -34,7 +35,28 @@ export default function BlogMainContent({
 
         {/* Main Content */}
         <div className={styles.contentBody}>
-          <Markdown rehypePlugins={[rehypeRaw]}>{content}</Markdown>
+          <Markdown
+            rehypePlugins={[rehypeRaw]}
+            components={{
+              img: ({ src, alt, width, height }) => {
+                if (!src) return null;
+                const w = Number(width) > 0 ? Number(width) : 800;
+                const h = Number(height) > 0 ? Number(height) : 450;
+                return (
+                  <SafeImage
+                    src={src}
+                    alt={alt || ''}
+                    width={w}
+                    height={h}
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    quality={70}
+                  />
+                );
+              },
+            }}
+          >
+            {content}
+          </Markdown>
         </div>
 
         {/* Tags Section - Floating Design */}

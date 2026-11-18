@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './EditorChoice.module.css';
@@ -136,7 +137,7 @@ export default function EditorChoice({ isLoading = false }) {
                 <div className={styles.cardTag}>{card.tag}</div>
               </div>
               <div className={styles.cardIconWrapper}>
-                <img src={card.icon} alt={card.title} className={styles.cardIcon} />
+                <Image src={card.icon} alt={card.title} width={160} height={160} sizes="160px" quality={70} className={styles.cardIcon} />
               </div>
             </Link>
           ))}

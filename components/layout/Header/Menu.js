@@ -76,6 +76,8 @@ export default function Menu({
                   <img
                     src={`assets/img/logo/${white ? "w_logo" : "logo"}.png`}
                     alt="Logo"
+                    width="180"
+                    height="48"
                   />
                 </Link>
               </div>

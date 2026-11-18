@@ -130,7 +130,7 @@
   background-repeat: no-repeat;
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
-  padding: 2rem 3rem 4rem 3rem;
+  padding: 1.5rem 3rem 3.25rem 3rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -139,6 +139,20 @@
   overflow: hidden;
   height: 100%;
   max-height: 50vh;
+}
+
+.siteH1 {
+  position: relative;
+  z-index: 4;
+  margin: 0 0 1rem;
+  max-width: 16em;
+  color: #ffffff;
+  font-family: 'Urbanist', sans-serif;
+  font-size: clamp(1.35rem, 2.15vw, 2.05rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
 }
 
 :global(.dark-theme) .purpleSection {
@@ -844,6 +858,12 @@
     max-height: none;
   }
 
+  .siteH1 {
+    max-width: 100%;
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    margin-bottom: 1.25rem;
+  }
+
   .pinkGreenSection {
     min-height: 400px;
     max-height: none;
@@ -927,6 +947,11 @@
   .purpleSection {
     padding: 2rem 1.5rem;
     min-height: 350px;
+  }
+
+  .siteH1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.85rem;
   }
 
   .pinkGreenSection {

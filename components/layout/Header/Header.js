@@ -100,6 +100,7 @@ const Header1 = ({
                     height={logoConfig.height}
                     className={`logo-image logo-dark ${isIntelligentPage ? "intelligent-header-logo" : ""}`}
                     style={isIntelligentPage ? { height: '140px', width: 'auto', maxHeight: 'none', maxWidth: 'none' } : {}}
+                    sizes={`${logoConfig.width}px`}
                     priority
                     quality={70}
                   />
@@ -110,6 +111,7 @@ const Header1 = ({
                     height={logoConfig.height}
                     className={`logo-image logo-light ${isIntelligentPage ? "intelligent-header-logo" : ""}`}
                     style={isIntelligentPage ? { height: '140px', width: 'auto', maxHeight: 'none', maxWidth: 'none' } : {}}
+                    sizes={`${logoConfig.width}px`}
                     priority
                     quality={70}
                   />

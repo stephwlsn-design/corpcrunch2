@@ -150,9 +150,17 @@
   position: relative;
   width: 250px;
   height: 150px;
+  aspect-ratio: 5 / 3;
   border-radius: 12px;
   overflow: hidden;
   flex-shrink: 0;
+}
+
+.newsText img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
 
 .newsImage {

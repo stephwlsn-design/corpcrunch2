@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import React from "react";
 import LanguageSelector from "@/components/elements/LanguageSelector";
 
@@ -10,9 +11,13 @@ function HeaderTop() {
           <div className="col-lg-6 col-md-6 col-sm-12">
           <div className="header__top-logo logo text-lg-center d-flex justify-content-center align-items-center">
               <Link href="/" className="corp-crunch-logo">
-                <img
+                <Image
                   src="/assets/img/logo/Corp Crunch Black Logo.png"
                   alt="Corp Crunch - Your daily scoop of corporate intel."
+                  width={280}
+                  height={90}
+                  sizes="280px"
+                  quality={70}
                   className="corp-crunch-logo-img logo-dark"
                   style={{ 
                     maxWidth: "100%", 
@@ -21,9 +26,13 @@ function HeaderTop() {
                     objectFit: "contain"
                   }}
                 />
-                <img
+                <Image
                   src="/assets/img/logo/Corp Crunch White Logo.png"
                   alt="Corp Crunch - Your daily scoop of corporate intel."
+                  width={280}
+                  height={90}
+                  sizes="280px"
+                  quality={70}
                   className="corp-crunch-logo-img logo-light"
                   style={{ 
                     maxWidth: "100%", 

@@ -52,7 +52,7 @@ export default function MinimalIsotope() {
                                         <Link href={`/category/${item.categoryId || 1}`}>{item.category}</Link>
                                     </div>
                                     <Link href={getBlogPostUrl(item)}>
-                                        <img src={`/assets/img/${item.group}/${item.img}`} alt="img" />
+                                        <img src={`/assets/img/${item.group}/${item.img}`} alt="img" width="400" height="250" />
                                     </Link>
                                 </div>
                                 <div className="minimal__post-content">

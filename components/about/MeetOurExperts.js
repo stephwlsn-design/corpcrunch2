@@ -75,9 +75,10 @@ export default function MeetOurExperts({ teamMembers }) {
                   src={member.imageUrl || '/assets/img/placeholder-team.jpg'}
                   alt={member.name}
                   fill
+                  sizes="(max-width: 768px) 50vw, 280px"
+                  quality={70}
                   className={styles.teamImage}
                   style={{ objectFit: 'cover' }}
-                  unoptimized
                 />
               </div>
               <div className={styles.teamInfo}>
