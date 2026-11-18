@@ -19,8 +19,10 @@ const Layout = ({
   seo = {},
   categories = null, // Accept categories as prop to avoid duplicate fetches
   hideCategoryNavigation = false,
+  hideHeader = false,
   hideFooter = false,
   hideChatbot = false,
+  fullBleed = false,
 }) => {
   const handleMobileMenuOpen = () => {
     if (typeof window !== 'undefined') {
@@ -89,30 +91,36 @@ const Layout = ({
         alternateUrls={resolvedSeo.alternateUrls}
       />
 
-      <Header
-        handleMobileMenuOpen={handleMobileMenuOpen}
-        handleMobileMenuClose={handleMobileMenuClose}
-        scroll={scroll}
-        langToggle={langToggle}
-        handleLangToggle={handleLangToggle}
-        handleSidebarOpen={handleSidebarOpen}
-        handleSidebarClose={handleSidebarClose}
-      />
+      {!hideHeader && (
+        <Header
+          handleMobileMenuOpen={handleMobileMenuOpen}
+          handleMobileMenuClose={handleMobileMenuClose}
+          scroll={scroll}
+          langToggle={langToggle}
+          handleLangToggle={handleLangToggle}
+          handleSidebarOpen={handleSidebarOpen}
+          handleSidebarClose={handleSidebarClose}
+        />
+      )}
 
       {/* Category Navigation Bar - Below Header */}
       {!hideCategoryNavigation && <CategoryNavigation categories={categories} />}
 
-      <main className="main modern-layout">
-        <div className="container">
-          {breadcrumbCategory && (
-            <Breadcrumb
-              breadcrumbCategory={breadcrumbCategory}
-              breadcrumbPostTitle={breadcrumbPostTitle}
-            />
-          )}
+      <main className={fullBleed ? undefined : 'main modern-layout'}>
+        {fullBleed ? (
+          children
+        ) : (
+          <div className="container">
+            {breadcrumbCategory && (
+              <Breadcrumb
+                breadcrumbCategory={breadcrumbCategory}
+                breadcrumbPostTitle={breadcrumbPostTitle}
+              />
+            )}
 
-          {children}
-        </div>
+            {children}
+          </div>
+        )}
       </main>
 
       {!hideFooter && <Footer />}

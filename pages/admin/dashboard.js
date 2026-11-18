@@ -184,13 +184,22 @@ export default function AdminDashboard() {
         title="Manage Posts"
         subtitle="View, edit, and delete all posts, articles, videos, and stories"
         actions={
-          <button
-            className="btn btn-primary"
-            onClick={() => router.push("/admin/posts/create")}
-            style={{ fontSize: "14px", padding: "8px 16px" }}
-          >
-            Create New Post
-          </button>
+          <div className="d-flex gap-2 flex-wrap">
+            <button
+              className="btn btn-outline-primary"
+              onClick={() => router.push("/admin/proposals")}
+              style={{ fontSize: "14px", padding: "8px 16px" }}
+            >
+              Create proposal link
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={() => router.push("/admin/posts/create")}
+              style={{ fontSize: "14px", padding: "8px 16px" }}
+            >
+              Create New Post
+            </button>
+          </div>
         }
       >
         <div className="container-fluid px-0">

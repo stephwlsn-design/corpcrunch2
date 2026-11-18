@@ -1,6 +1,6 @@
 import styles from './NumbersThatMatter.module.css';
 
-export default function NumbersThatMatter({ stats, missionText }) {
+export default function NumbersThatMatter({ stats, missionText, centered = false }) {
   const defaultStats = [
     { label: 'Stories Published', value: '50K' },
     { label: 'Satisfied Clients', value: '2500+' },
@@ -14,7 +14,7 @@ export default function NumbersThatMatter({ stats, missionText }) {
   const displayMissionText = missionText || defaultMissionText;
 
   return (
-    <section className={styles.numbersSection}>
+    <section className={`${styles.numbersSection} ${centered ? styles.centered : ''}`}>
       {/* Main Content Grid */}
       <div className={styles.contentWrapper}>
         {/* Grid Layout: 2 rows x 3 columns */}

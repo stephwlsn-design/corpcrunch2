@@ -1,0 +1,616 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;800;900&display=swap');
+
+.page {
+  --ink: #111;
+  --muted: #111;
+  --blue: #2551e7;
+  --line: #2551e7;
+  --paper: #fff;
+  color: var(--ink);
+  overflow-x: clip;
+  background: #fff;
+}
+
+.ntm {
+  background: var(--paper);
+  margin-left: -20px;
+  margin-right: -20px;
+  width: auto;
+  overflow-x: clip;
+}
+
+.ntmInner {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 5rem 3rem;
+  box-sizing: border-box;
+}
+
+.heroGrid,
+.skillGrid {
+  display: grid;
+  border: 1px solid var(--blue);
+  min-height: 70vh;
+}
+
+.heroGrid {
+  grid-template-columns: 0.9fr 1.1fr;
+}
+
+.skillGrid {
+  grid-template-columns: 0.8fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.cell {
+  padding: 3.5rem 3rem;
+  border-right: 1px solid var(--blue);
+  border-bottom: 1px solid var(--blue);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: transparent;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.heroTitle {
+  border-bottom: none;
+  justify-content: flex-start;
+  padding-top: 4.5rem;
+}
+
+.heroForm {
+  border-right: none;
+  border-bottom: none;
+  align-items: center;
+  text-align: center;
+}
+
+.skillTitle {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  border-bottom: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 4.5rem;
+}
+
+.skillIntro {
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #111;
+  margin: 0;
+  max-width: 28ch;
+}
+
+.skillCell,
+.skillCellOn {
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  font: inherit;
+  width: 100%;
+  background: #2551e7 !important;
+  color: #fff !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.skillCell .iconWrap,
+.skillCell .statValue,
+.skillCell .statLabel,
+.skillCell .skillCopy,
+.skillCellOn .iconWrap,
+.skillCellOn .statValue,
+.skillCellOn .statLabel,
+.skillCellOn .skillCopy {
+  color: #fff !important;
+}
+
+.skillCell:nth-child(3),
+.skillCell:nth-child(5) {
+  border-right: none;
+}
+
+.skillCell:nth-child(4),
+.skillCell:nth-child(5) {
+  border-bottom: none;
+}
+
+
+.skillCell:hover,
+.skillCellOn:hover {
+  background: #e5e7eb !important;
+  color: #111 !important;
+}
+
+.skillCell:hover .iconWrap,
+.skillCell:hover .statValue,
+.skillCell:hover .statLabel,
+.skillCell:hover .skillCopy,
+.skillCellOn:hover .iconWrap,
+.skillCellOn:hover .statValue,
+.skillCellOn:hover .statLabel,
+.skillCellOn:hover .skillCopy {
+  color: #111 !important;
+}
+
+.kicker {
+  font-family: system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #2551e7;
+  margin: 0 0 1.5rem;
+}
+
+.title {
+  font-family: Urbanist, system-ui, sans-serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  color: #111;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.5rem;
+}
+
+.lead,
+.cellCopy,
+.cellHeading,
+.heroForm label {
+  font-family: system-ui, sans-serif;
+  color: #111;
+}
+
+.lead {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0 0 2rem;
+  max-width: 36ch;
+}
+
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.jump a {
+  text-decoration: none;
+  color: #111 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 1px solid #2551e7;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.jump a:hover {
+  background: #f3f4f6;
+  color: #111 !important;
+  border-color: #2551e7;
+}
+
+.cellHeading {
+  font-family: Urbanist, system-ui, sans-serif;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+}
+
+.cellCopy {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0 0 1.5rem;
+}
+
+.heroForm label {
+  display: block;
+  font-size: 0.875rem;
+  margin-bottom: 6px;
+  width: 100%;
+}
+
+.heroForm input {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #2551e7;
+  background: #fff;
+  border-radius: 999px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  font: 15px/1.4 system-ui, sans-serif;
+  color: #111;
+}
+
+.heroForm button {
+  width: 100%;
+  max-width: 280px;
+  border: 1px solid #2551e7;
+  border-radius: 999px;
+  padding: 13px 18px;
+  background: #2551e7;
+  color: #fff !important;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.heroForm button:hover {
+  background: #f3f4f6;
+  color: #111 !important;
+}
+
+.error {
+  color: #b42318;
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+
+.iconWrap {
+  width: 48px;
+  height: 48px;
+  color: #fff;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+}
+
+.iconWrap svg {
+  width: 48px;
+  height: 48px;
+}
+
+.skillCopy {
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #fff;
+  max-width: 32ch;
+  margin: 0 auto;
+  display: block;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  padding: 0;
+}
+
+.statValue {
+  font-family: Urbanist, system-ui, sans-serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900;
+  color: #2551e7;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.statLabel {
+  font-family: Urbanist, system-ui, sans-serif;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: 800;
+  color: #fff;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.skillCell .statValue {
+  color: #fff !important;
+}
+
+.page .skillCell:hover .skillCopy,
+.page .skillCellOn:hover .skillCopy {
+  background: none !important;
+  border: 0 !important;
+}
+
+.blockHead {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.label {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+  color: #2551e7;
+}
+
+.block h2 {
+  font-family: Urbanist, system-ui, sans-serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #111;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 0;
+  border: 1px solid #2551e7;
+  overflow: hidden;
+}
+
+.featured {
+  margin: 0;
+  min-height: 320px;
+  padding: 36px;
+  background: #2551e7;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  border-right: 1px solid #2551e7;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.mark {
+  font-size: 64px;
+  line-height: 0.6;
+  color: #fff;
+}
+
+.featured,
+.featured p,
+.featured footer,
+.featured strong,
+.featured span {
+  color: #fff !important;
+}
+
+.featured:hover {
+  background: #f3f4f6;
+}
+
+.featured:hover,
+.featured:hover p,
+.featured:hover footer,
+.featured:hover strong,
+.featured:hover span {
+  color: #111 !important;
+}
+
+.featured p {
+  font-size: clamp(20px, 2.2vw, 28px);
+  line-height: 1.35;
+  margin: 16px 0 28px;
+}
+
+.featured footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.thumbs {
+  display: grid;
+  background: #2551e7;
+}
+
+.thumb,
+.thumbOn {
+  text-align: center;
+  justify-items: center;
+  padding: 16px 18px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  background: #2551e7;
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+  color: #fff !important;
+}
+
+.thumb:last-child,
+.thumbOn:last-child {
+  border-bottom: 0;
+}
+
+.thumb strong,
+.thumbOn strong,
+.thumb span,
+.thumbOn span {
+  color: #fff !important;
+}
+
+.thumb strong,
+.thumbOn strong {
+  font-size: 14px;
+}
+
+.thumb span,
+.thumbOn span {
+  font-size: 12px;
+}
+
+.skillHover,
+.skillCell[data-hover='true'],
+.skillCellOn[data-hover='true'] {
+  background: #e5e7eb !important;
+  background-color: #e5e7eb !important;
+  color: #111 !important;
+}
+
+.skillHover *,
+.skillCell[data-hover='true'] *,
+.skillCellOn[data-hover='true'] * {
+  color: #111 !important;
+}
+
+.thumbHover,
+.thumb[data-hover='true'],
+.thumbOn[data-hover='true'] {
+  background: #e5e7eb !important;
+  background-color: #e5e7eb !important;
+  color: #111 !important;
+}
+
+.thumbHover strong,
+.thumbHover span,
+.thumb[data-hover='true'] strong,
+.thumb[data-hover='true'] span,
+.thumbOn[data-hover='true'] strong,
+.thumbOn[data-hover='true'] span {
+  color: #111 !important;
+}
+
+.thumb:hover,
+.thumbOn:hover {
+  background: #f3f4f6;
+}
+
+.thumb:hover,
+.thumb:hover strong,
+.thumb:hover span,
+.thumbOn:hover,
+.thumbOn:hover strong,
+.thumbOn:hover span {
+  color: #111 !important;
+}
+
+.breakout {
+  margin-left: -20px;
+  margin-right: -20px;
+  width: auto;
+  overflow-x: clip;
+  background: #fff;
+}
+
+.breakout :global(section) {
+  background-color: #fff;
+}
+
+@media (max-width: 767.98px) {
+  .ntm,
+  .breakout {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
+  .ntmInner {
+    padding: 2rem 1rem;
+  }
+
+  .heroGrid,
+  .skillGrid,
+  .stage {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .cell,
+  .heroTitle,
+  .skillTitle {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    padding: 2rem 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid #2551e7;
+  }
+
+  .heroForm,
+  .skillCell:last-child {
+    border-bottom: none;
+  }
+
+  .skillCell:nth-child(n) {
+    border-right: none;
+    border-bottom: 1px solid #2551e7;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .skillGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .skillTitle {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    border-bottom: 1px solid #2551e7;
+  }
+}
+
+:global(.dark-theme) .ntm,
+:global(.dark-theme) .thumb {
+  background: #181818;
+}
+
+:global(.dark-theme) .title,
+:global(.dark-theme) .lead,
+:global(.dark-theme) .cellCopy,
+:global(.dark-theme) .cellHeading,
+:global(.dark-theme) .statLabel,
+:global(.dark-theme) .skillCopy,
+:global(.dark-theme) .skillIntro,
+:global(.dark-theme) .block h2,
+:global(.dark-theme) .heroForm label,
+:global(.dark-theme) .thumb strong,
+:global(.dark-theme) .thumb span {
+  color: #fff !important;
+}
+
+:global(.dark-theme) .heroGrid,
+:global(.dark-theme) .skillGrid,
+:global(.dark-theme) .cell,
+:global(.dark-theme) .stage,
+:global(.dark-theme) .thumb,
+:global(.dark-theme) .heroForm input,
+:global(.dark-theme) .heroForm button,
+:global(.dark-theme) .jump a {
+  border-color: #4d6feb;
+}
+
+.page .jump a:hover,
+.page .heroForm button:hover,
+.page .skillCell:hover,
+.page .skillCellOn:hover,
+.page .featured:hover,
+.page .thumb:hover,
+.page .thumbOn:hover {
+  background: #e5e7eb !important;
+  background-color: #e5e7eb !important;
+  background-image: none !important;
+  color: #111 !important;
+}
+
+.page .jump a:hover,
+.page .heroForm button:hover,
+.page .skillCell:hover,
+.page .skillCell:hover *,
+.page .skillCellOn:hover,
+.page .skillCellOn:hover *,
+.page .featured:hover,
+.page .featured:hover *,
+.page .thumb:hover,
+.page .thumb:hover *,
+.page .thumbOn:hover,
+.page .thumbOn:hover * {
+  color: #111 !important;
+}
+
+.page .skillCell:hover .skillCopy,
+.page .skillCellOn:hover .skillCopy {
+  background: none !important;
+  border: 0 !important;
+}

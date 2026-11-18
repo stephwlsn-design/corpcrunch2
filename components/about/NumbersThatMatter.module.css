@@ -10,6 +10,22 @@
   background-color: #181818;
 }
 
+.centered .title,
+.centered .missionText,
+.centered .statLabel {
+  text-align: center;
+}
+
+.centered .gridCell[data-position="top-left"],
+.centered .gridCell[data-position="bottom-right"] {
+  align-items: center;
+  justify-content: center;
+}
+
+.centered .missionText {
+  max-width: 36ch;
+}
+
 /* Vertical Text - Left */
 .verticalTextLeft {
   position: absolute;

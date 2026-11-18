@@ -8,7 +8,13 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
 
+  transpilePackages: ['pdfjs-dist'],
+
   webpack(config, { isServer }) {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      canvas: false,
+    };
     // Add file-loader for video files
     config.module.rules.push({
       test: /\.(mp4|webm)$/,
