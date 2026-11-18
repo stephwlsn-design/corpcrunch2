@@ -3,25 +3,7 @@ import { setClientPreferenceCookie } from '@/lib/cookieConsent';
 
 const LanguageContext = createContext();
 
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  if (!context) {
-    // Instead of throwing, return a default context to prevent crashes
-    // This can happen during SSR or if the provider is not mounted yet
-    console.warn('useLanguage called outside LanguageProvider, using default values');
-    return {
-      language: 'en',
-      changeLanguage: () => {},
-      t: (key) => key,
-      translations: {}
-    };
-  }
-  return context;
-};
-
-export const LanguageProvider = ({ children }) => {
-  // Default English translations for SSR fallback
-  const defaultTranslations = {
+const DEFAULT_TRANSLATIONS = {
     header: {
       home: "Home",
       about: "About",
@@ -129,9 +111,44 @@ export const LanguageProvider = ({ children }) => {
     }
   };
 
-  // Initialize with default translations for SSR - English is primary
+function lookup(source, key) {
+  const keys = key.split('.');
+  let value = source;
+  for (const k of keys) {
+    if (value && typeof value === 'object' && k in value) {
+      value = value[k];
+    } else {
+      return undefined;
+    }
+  }
+  return typeof value === 'string' ? value : undefined;
+}
+
+function translate(source, key, defaultValue = '') {
+  return (
+    lookup(source, key) ||
+    lookup(DEFAULT_TRANSLATIONS, key) ||
+    defaultValue ||
+    key
+  );
+}
+
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    return {
+      language: 'en',
+      changeLanguage: () => {},
+      t: (key, defaultValue = '') => translate(DEFAULT_TRANSLATIONS, key, defaultValue),
+      translations: DEFAULT_TRANSLATIONS,
+    };
+  }
+  return context;
+};
+
+export const LanguageProvider = ({ children }) => {
   const [language, setLanguage] = useState('en');
-  const [translations, setTranslations] = useState(defaultTranslations);
+  const [translations, setTranslations] = useState(DEFAULT_TRANSLATIONS);
 
   const loadTranslations = async (lang) => {
     // Only load translations on client side
@@ -150,7 +167,7 @@ export const LanguageProvider = ({ children }) => {
           loadTranslations('en');
         } else {
           // If English also fails, use default translations
-          setTranslations(defaultTranslations);
+          setTranslations(DEFAULT_TRANSLATIONS);
         }
       }
     } catch (error) {
@@ -160,7 +177,7 @@ export const LanguageProvider = ({ children }) => {
         loadTranslations('en');
       } else {
         // Use default translations if fetch fails
-        setTranslations(defaultTranslations);
+        setTranslations(DEFAULT_TRANSLATIONS);
       }
     }
   };
@@ -214,22 +231,7 @@ export const LanguageProvider = ({ children }) => {
     loadTranslations(lang);
   };
 
-  const t = (key, defaultValue = '') => {
-    const keys = key.split('.');
-    // Use translations if available, otherwise fall back to default translations
-    const source = Object.keys(translations).length > 0 ? translations : defaultTranslations;
-    let value = source;
-    
-    for (const k of keys) {
-      if (value && typeof value === 'object' && k in value) {
-        value = value[k];
-      } else {
-        return defaultValue || key;
-      }
-    }
-    
-    return typeof value === 'string' ? value : defaultValue || key;
-  };
+  const t = (key, defaultValue = '') => translate(translations, key, defaultValue);
 
   return (
     <LanguageContext.Provider value={{ language, changeLanguage, t, translations }}>

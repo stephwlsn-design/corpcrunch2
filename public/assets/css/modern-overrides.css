@@ -31,8 +31,7 @@
   /* Reserve space for CMS/legacy <img> tags that omit width/height (CLS). */
   .contentBody img,
   article img,
-  .tg-page-content img,
-  .featured-post-modern__thumb img {
+  .tg-page-content img {
     max-width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;

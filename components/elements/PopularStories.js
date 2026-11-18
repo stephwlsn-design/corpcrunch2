@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import SafeImage from "@/components/elements/SafeImage";
 import { useEffect, useState, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -116,7 +116,7 @@ export default function PopularStories({ posts = [], isLoading = false }) {
                         </div>
                       ) : cleanBannerUrl ? (
                         <div className={styles.imageWrapper}>
-                          <Image
+                          <SafeImage
                             src={cleanBannerUrl}
                             alt={post.title || "Story"}
                             fill

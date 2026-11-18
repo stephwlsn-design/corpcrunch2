@@ -1,10 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import SafeImage from "@/components/elements/SafeImage";
 import { formatNumber, formatViews } from "@/util";
 import { getBlogPostUrl, getCategoryUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { resolveImageSrc } from "@/util/imageUtils";
 import styles from "./TrendingCategories.module.css";
 
 export default function TrendingCategories({ categories = [] }) {
@@ -80,19 +79,17 @@ export default function TrendingCategories({ categories = [] }) {
                             }}
                           >
                             <div className={styles.newsCard}>
-                              {news.bannerImageUrl && (
-                                <div className={styles.newsImage}>
-                                  <Image
-                                    src={resolveImageSrc(news.bannerImageUrl)}
-                                    alt={news.title}
-                                    fill
-                                    sizes="180px"
-                                    quality={70}
-                                    loading="lazy"
-                                    style={{ objectFit: "cover" }}
-                                  />
-                                </div>
-                              )}
+                              <div className={styles.newsImage}>
+                                <SafeImage
+                                  src={news.bannerImageUrl}
+                                  alt={news.title || ""}
+                                  fill
+                                  sizes="350px"
+                                  quality={70}
+                                  loading="lazy"
+                                  style={{ objectFit: "cover" }}
+                                />
+                              </div>
 
                               <div className={styles.newsContent}>
                                 <h6 className={styles.newsTitle}>{news.title}</h6>

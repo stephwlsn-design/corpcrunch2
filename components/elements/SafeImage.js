@@ -1,6 +1,7 @@
 /**
  * SafeImage — Next.js Image with reserved dimensions, dead-host fallbacks,
  * and a sizes cap so the optimizer never requests a 3840px original.
+ * Allowlisted hosts go through /_next/image (WebP). Others load as-is.
  */
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -8,6 +9,7 @@ import {
   defaultImageQuality,
   FALLBACK_IMAGE,
   isGifOrSvg,
+  isOptimizableImage,
   resolveImageSrc,
 } from '@/util/imageUtils';
 
@@ -40,7 +42,8 @@ export default function SafeImage({
 
   if (!currentSrc) return null;
 
-  const resolvedUnoptimized = unoptimized ?? isGifOrSvg(currentSrc);
+  const resolvedUnoptimized =
+    unoptimized ?? (isGifOrSvg(currentSrc) || !isOptimizableImage(currentSrc));
   const resolvedQuality = quality ?? defaultImageQuality();
   const resolvedLoading = priority ? 'eager' : loading ?? 'lazy';
   const resolvedWidth = fill ? undefined : width || DEFAULT_WIDTH;

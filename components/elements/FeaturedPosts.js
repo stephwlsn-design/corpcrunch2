@@ -1,11 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
+import SafeImage from "@/components/elements/SafeImage";
 import Skeleton from "react-loading-skeleton";
 import { formatDate } from "@/util";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { resolveImageSrc } from "@/util/imageUtils";
 
 export default function FeaturedPosts({ posts = [], isLoading = false }) {
   const { t } = useLanguage();
@@ -75,8 +74,8 @@ export default function FeaturedPosts({ posts = [], isLoading = false }) {
               >
                 <div className="featured-post-modern__thumb">
                   {item.bannerImageUrl && (
-                    <Image
-                      src={resolveImageSrc(item.bannerImageUrl)}
+                    <SafeImage
+                      src={item.bannerImageUrl}
                       alt={item.title}
                       width={120}
                       height={120}

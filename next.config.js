@@ -194,6 +194,22 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'intelligent.corpcrunch.ai',
       },
+      {
+        protocol: 'https',
+        hostname: 'recroot-next.vercel.app',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.recroot.ai',
+      },
+      {
+        protocol: 'https',
+        hostname: 'recroot.ai',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.recroot.ai',
+      },
     ],
     // Legacy domains support (deprecated but still works)
     domains: [
@@ -215,8 +231,12 @@ const nextConfig = {
       'www.corpcrunch.io',
       'prowess.corpcrunch.io',
       'drive.google.com',
+      'lh3.googleusercontent.com',
+      'recroot-next.vercel.app',
+      'www.recroot.ai',
+      'recroot.ai',
     ],
-    // Browsers that send Accept: image/webp get WebP from the built-in optimizer.
+    // Built-in optimizer (not /api/webp). Browsers that send Accept: image/webp get WebP.
     formats: ['image/webp'],
     minimumCacheTTL: 31536000, // 1 year cache for optimized images
     deviceSizes: [480, 640, 750, 828, 1080, 1200],

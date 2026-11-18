@@ -1,7 +1,7 @@
 import Layout from "@/components/layout/Layout";
 import Link from "next/link";
 import { formatDate, formatViews } from "@/util";
-import Image from "next/image";
+import SafeImage from "@/components/elements/SafeImage";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination } from "swiper";
 import "swiper/css";
@@ -9,7 +9,6 @@ import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import styles from "./CategoryPage.module.css";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
-import { resolveImageSrc } from "@/util/imageUtils";
 import { buildArticlePath, buildCategorySeo } from "@/lib/seoHelpers";
 import { useSiteBaseUrl } from "@/contexts/SiteUrlContext";
 
@@ -56,8 +55,8 @@ export default function CategoryPage({ categoryDetails }) {
           </div>
           {post.bannerImageUrl && variant !== "viewed" && (
             <div className={styles.cardImage}>
-              <Image
-                src={resolveImageSrc(post.bannerImageUrl)}
+              <SafeImage
+                src={post.bannerImageUrl}
                 alt={post.title || "Article"}
                 width={300}
                 height={200}
@@ -123,8 +122,8 @@ export default function CategoryPage({ categoryDetails }) {
                       <SwiperSlide key={post._id || index} className={styles.heroSlide}>
                         <Link href={buildArticlePath(post)}>
                           {post.bannerImageUrl && (
-                            <Image
-                              src={resolveImageSrc(post.bannerImageUrl)}
+                            <SafeImage
+                              src={post.bannerImageUrl}
                               alt={post.title || 'Category article'}
                               fill
                               sizes="(max-width: 768px) 100vw, 50vw"

@@ -4,11 +4,7 @@
 
 export const FALLBACK_IMAGE = '/assets/img/blog/blog01.jpg';
 
-const DEAD_IMAGE_HOSTS = [
-  'recroot-next.vercel.app',
-  'recroot.ai',
-  'www.recroot.ai',
-];
+const DEAD_IMAGE_HOSTS = [];
 
 const OPTIMIZABLE_HOST_SUFFIXES = [
   'corpcrunch.io',
@@ -53,14 +49,11 @@ function parseUrl(src) {
 }
 
 export function isDeadImageHost(src) {
+  if (!DEAD_IMAGE_HOSTS.length) return false;
   const parsed = parseUrl(src);
   if (!parsed) return false;
   const host = parsed.hostname.toLowerCase();
-  return (
-    DEAD_IMAGE_HOSTS.includes(host) ||
-    host.endsWith('.recroot.ai') ||
-    host.includes('recroot-next')
-  );
+  return DEAD_IMAGE_HOSTS.includes(host);
 }
 
 export function rewriteDriveImageUrl(src) {
@@ -92,10 +85,7 @@ export function resolveImageSrc(src, fallback = FALLBACK_IMAGE) {
 
 export function sanitizeImageFieldsInText(text, fallback = FALLBACK_IMAGE) {
   if (!text || typeof text !== 'string') return text;
-  return text.replace(
-    /https?:\/\/(?:www\.)?(?:recroot-next\.vercel\.app|recroot\.ai)\/[^\s"'<>)]+/gi,
-    fallback
-  );
+  return text;
 }
 
 export function isUnoptimizableImage(src) {
