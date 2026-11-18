@@ -7,7 +7,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { isUnoptimizableImage, resolveImageSrc } from "@/util/imageUtils";
+import { resolveImageSrc } from "@/util/imageUtils";
 import styles from "./RecentVideoPosts.module.css";
 
 export default function RecentVideoPosts({ posts = [], isLoading = false }) {
@@ -321,7 +321,7 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
                         className={styles.videoIframe}
                       />
                     </div>
-                  ) : (cleanBannerUrl && isSafeImageUrl(cleanBannerUrl)) ? (
+                  ) : (cleanBannerUrl && (cleanBannerUrl.startsWith('/') || isSafeImageUrl(cleanBannerUrl))) ? (
                     <div className={styles.videoWrapper}>
                       <Image
                         src={cleanBannerUrl}
@@ -332,7 +332,6 @@ export default function RecentVideoPosts({ posts = [], isLoading = false }) {
                         quality={70}
                         loading="lazy"
                         sizes="(max-width: 768px) 100vw, 50vw"
-                        unoptimized={isUnoptimizableImage(cleanBannerUrl)}
                       />
                       {videoId && (
                         <button

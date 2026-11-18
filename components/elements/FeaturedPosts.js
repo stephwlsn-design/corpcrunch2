@@ -5,7 +5,7 @@ import { formatDate } from "@/util";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getBlogPostUrl } from "@/util/urlHelpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { isUnoptimizableImage, resolveImageSrc } from "@/util/imageUtils";
+import { resolveImageSrc } from "@/util/imageUtils";
 
 export default function FeaturedPosts({ posts = [], isLoading = false }) {
   const { t } = useLanguage();
@@ -85,7 +85,6 @@ export default function FeaturedPosts({ posts = [], isLoading = false }) {
                       quality={70}
                       loading={i < 2 ? "eager" : "lazy"}
                       sizes="120px"
-                      unoptimized={isUnoptimizableImage(resolveImageSrc(item.bannerImageUrl))}
                     />
                   )}
                   <span className="featured-post-modern__number">

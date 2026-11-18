@@ -128,3 +128,17 @@ export function safeImageSrc(src, fallback = FALLBACK_IMAGE) {
 export function defaultImageQuality() {
   return 70;
 }
+
+export function isGifOrSvg(src) {
+  if (!src || typeof src !== 'string') return false;
+  return /\.gif(\?|#|$)/i.test(src) || /\.svg(\?|#|$)/i.test(src);
+}
+
+/** Always-webp URL used by CSS backgrounds and the custom Next image loader. */
+export function webpProxyUrl(src, width = 800, quality = 70) {
+  const resolved = resolveImageSrc(src);
+  if (!resolved || isGifOrSvg(resolved)) return resolved;
+  const w = Math.min(Math.max(Number(width) || 800, 16), 1200);
+  const q = Math.min(Math.max(Number(quality) || 70, 1), 90);
+  return `/api/webp?url=${encodeURIComponent(resolved)}&w=${w}&q=${q}`;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { webpProxyUrl } from '@/util/imageUtils';
 
 export default function SocialShareRibbon() {
   return (
@@ -124,7 +125,7 @@ export default function SocialShareRibbon() {
               title="Follow us on X (Twitter)"
             >
               <img
-                src="/assets/img/others/X logo.png"
+                src={webpProxyUrl('/assets/img/others/X logo.png', 50, 70)}
                 alt="X"
                 width="50"
                 height="50"

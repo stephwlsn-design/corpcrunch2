@@ -7,7 +7,7 @@ import Image from 'next/image';
 import {
   defaultImageQuality,
   FALLBACK_IMAGE,
-  isOptimizableImage,
+  isGifOrSvg,
   resolveImageSrc,
 } from '@/util/imageUtils';
 
@@ -40,8 +40,7 @@ export default function SafeImage({
 
   if (!currentSrc) return null;
 
-  const optimize = isOptimizableImage(currentSrc);
-  const resolvedUnoptimized = unoptimized ?? !optimize;
+  const resolvedUnoptimized = unoptimized ?? isGifOrSvg(currentSrc);
   const resolvedQuality = quality ?? defaultImageQuality();
   const resolvedLoading = priority ? 'eager' : loading ?? 'lazy';
   const resolvedWidth = fill ? undefined : width || DEFAULT_WIDTH;

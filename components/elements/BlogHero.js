@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import styles from './BlogHero.module.css';
-import { isUnoptimizableImage, resolveImageSrc } from '@/util/imageUtils';
+import { resolveImageSrc } from '@/util/imageUtils';
 
 export default function BlogHero({
   title = "Smart Digital Marketing that turns strategy into growth.",
@@ -122,7 +122,6 @@ export default function BlogHero({
                 quality={70}
                 className={styles.mediaImage}
                 priority
-                unoptimized={isUnoptimizableImage(resolveImageSrc(mediaUrl))}
               />
             )}
           </div>

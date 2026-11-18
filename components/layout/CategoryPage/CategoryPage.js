@@ -9,7 +9,7 @@ import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 import styles from "./CategoryPage.module.css";
 import SocialShareRibbon from "@/components/elements/SocialShareRibbon";
-import { isUnoptimizableImage, resolveImageSrc } from "@/util/imageUtils";
+import { resolveImageSrc } from "@/util/imageUtils";
 import { buildArticlePath, buildCategorySeo } from "@/lib/seoHelpers";
 import { useSiteBaseUrl } from "@/contexts/SiteUrlContext";
 
@@ -63,7 +63,6 @@ export default function CategoryPage({ categoryDetails }) {
                 height={200}
                 sizes="300px"
                 quality={70}
-                unoptimized={isUnoptimizableImage(resolveImageSrc(post.bannerImageUrl))}
                 style={{
                   width: "100%",
                   height: "100%",
