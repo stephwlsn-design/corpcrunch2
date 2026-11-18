@@ -1,0 +1,429 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+.page {
+  --ink: #111827;
+  --blue: #2551e7;
+  --lime: #c1ff72;
+  --line: #e5e7eb;
+  color: var(--ink);
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 24px 72px;
+  box-sizing: border-box;
+}
+
+.kicker {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 48px;
+  align-items: start;
+  padding: 32px 0 56px;
+}
+
+.heroText h1 {
+  margin: 0 0 18px;
+  font-size: clamp(34px, 4.4vw, 58px);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+
+.mark {
+  display: inline-block;
+  white-space: nowrap;
+  background: var(--lime);
+  padding: 0 10px;
+  border-radius: 10px;
+  color: var(--ink);
+}
+
+.lead {
+  margin: 0 0 20px;
+  max-width: 52ch;
+  font-size: 17px;
+  line-height: 1.65;
+  color: #374151;
+}
+
+.ticks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ticks li {
+  position: relative;
+  padding-left: 28px;
+}
+
+.ticks li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--lime);
+  border: 3px solid var(--blue);
+  box-sizing: border-box;
+}
+
+.card {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 28px;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.1);
+}
+
+.card form,
+.done {
+  display: grid;
+  gap: 16px;
+}
+
+.card h2,
+.done h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.drop {
+  display: block;
+  border: 2px dashed var(--blue);
+  border-radius: 18px;
+  padding: 22px 18px;
+  text-align: center;
+  cursor: pointer;
+  background: #f5f8ff;
+  color: var(--ink);
+}
+
+.drop:hover {
+  background: #eaf0ff;
+}
+
+.drop input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.drop input:focus-visible + span {
+  outline: 2px solid var(--ink);
+  outline-offset: 6px;
+}
+
+.drop strong {
+  display: block;
+  font-size: 15px;
+  word-break: break-word;
+  color: var(--ink);
+}
+
+.drop em {
+  display: block;
+  margin-top: 4px;
+  font-style: normal;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.labelText {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.labelText em {
+  font-style: normal;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--ink);
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 14px 22px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: inherit;
+  border: 2px solid var(--blue);
+}
+
+.primary {
+  background: var(--blue) !important;
+  color: #fff !important;
+}
+
+.primary:hover {
+  background: #1d4ed8 !important;
+  border-color: #1d4ed8;
+}
+
+.primary:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.secondary {
+  background: #fff !important;
+  color: var(--blue) !important;
+}
+
+.secondary:hover {
+  background: #f5f8ff !important;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.error {
+  margin: 0;
+  color: #991b1b;
+  background: #fef2f2;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.small {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.fine {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+.fine a {
+  color: var(--blue);
+  text-decoration: underline;
+}
+
+.linkBox {
+  background: #111827;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.linkBox code {
+  color: var(--lime);
+  font-size: 13px;
+  word-break: break-all;
+  background: none;
+}
+
+.section {
+  padding: 48px 0;
+  border-top: 1px solid var(--line);
+}
+
+.h2 {
+  margin: 0 0 28px;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.steps,
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.steps {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.step,
+.tile {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px;
+  background: #fff;
+}
+
+.step span {
+  display: inline-block;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.step h3,
+.tile h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.step p,
+.tile p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #4b5563;
+}
+
+.honest {
+  margin: 20px 0 0;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.faq {
+  display: grid;
+  gap: 10px;
+  max-width: 820px;
+}
+
+.faq details {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 20px;
+  background: #fff;
+}
+
+.faq summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.faq p {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #4b5563;
+}
+
+.cta {
+  margin-top: 24px;
+  border-radius: 28px;
+  background: var(--blue);
+  padding: 48px 32px;
+  text-align: center;
+  color: #fff;
+}
+
+.cta h2 {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.cta p {
+  margin: 0 auto 24px;
+  max-width: 52ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #fff;
+}
+
+.cta .row {
+  justify-content: center;
+}
+
+.cta .primary {
+  background: var(--lime) !important;
+  color: #111827 !important;
+  border-color: var(--lime);
+}
+
+.cta .secondary {
+  background: transparent !important;
+  color: #fff !important;
+  border-color: #fff;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .steps,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

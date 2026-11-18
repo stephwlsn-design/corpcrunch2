@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Manage Posts" },
   { href: "/admin/posts/create", label: "Create Post" },
   { href: "/admin/proposals", label: "Proposals" },
+  { href: "/admin/secure-share", label: "Secure Share" },
   { href: "/admin/visitors", label: "Site Visitors" },
   { href: "/admin/users", label: "User Management" },
   { href: "/admin/analytics", label: "Analytics" },
@@ -27,6 +28,7 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
     if (href === "/admin/visitors") return router.pathname.startsWith("/admin/visitors");
     if (href === "/admin/users") return router.pathname.startsWith("/admin/users");
     if (href === "/admin/proposals") return router.pathname.startsWith("/admin/proposals");
+    if (href === "/admin/secure-share") return router.pathname.startsWith("/admin/secure-share");
     if (href === "/admin/analytics") return router.pathname.startsWith("/admin/analytics");
     return false;
   };

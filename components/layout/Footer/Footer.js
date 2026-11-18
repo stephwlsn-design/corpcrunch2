@@ -45,6 +45,10 @@ export default function Footer1() {
                   {t('footer.requestArticle')}
                 </Link>
                 <span className="footer__separator">•</span>
+                <Link href="/secure-share" className="footer__link">
+                  Free secure file share
+                </Link>
+                <span className="footer__separator">•</span>
                 <Link href="/privacy-policy" className="footer__link">
                   {t('footer.privacyPolicy')}
                 </Link>
