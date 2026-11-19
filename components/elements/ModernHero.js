@@ -136,31 +136,61 @@ export default function ModernHero({ videoUrl, stats }) {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch latest stories from Google News API (via our backend proxy)
+  // Fetch latest stories from Google News (RSS proxy), with Corp Crunch posts as fallback
   useEffect(() => {
     let isMounted = true;
+
+    const mapSitePosts = (payload) => {
+      const list = [
+        ...(Array.isArray(payload?.frontPagePosts) ? payload.frontPagePosts : []),
+        ...(Array.isArray(payload?.trendingPosts) ? payload.trendingPosts : []),
+      ];
+      const seen = new Set();
+      return list
+        .filter((p) => p?.title && !seen.has(p.title) && seen.add(p.title))
+        .slice(0, 10)
+        .map((p) => ({
+          title: p.title,
+          url: p.canonicalUrl || (p.slug ? `/blog/${p.slug}` : ''),
+          source: 'Corp Crunch',
+          publishedAt: p.publishDate || p.createdAt || null,
+        }));
+    };
 
     const fetchNews = async () => {
       try {
         setNewsLoading(true);
         setNewsError(null);
 
-        const res = await fetch('/api/google-news');
-        if (!res.ok) {
+        let articles = [];
+        try {
+          const res = await fetch('/api/google-news');
+          if (res.ok) {
+            const data = await res.json();
+            articles = Array.isArray(data.articles) ? data.articles : [];
+          }
+        } catch (googleErr) {
+          console.warn('[ModernHero] Google News unavailable, trying site posts:', googleErr);
+        }
+
+        if (!articles.length) {
+          const postsRes = await fetch('/api/posts');
+          if (postsRes.ok) {
+            articles = mapSitePosts(await postsRes.json());
+          }
+        }
+
+        if (!isMounted) return;
+
+        if (!articles.length) {
           throw new Error('Failed to load news');
         }
 
-        const data = await res.json();
-        if (!isMounted) return;
-
-        const articles = Array.isArray(data.articles) ? data.articles : [];
         setNewsArticles(articles.slice(0, 10));
-
-        // Reset slider index when new data arrives
         setActiveNewsIndex(0);
       } catch (err) {
         if (!isMounted) return;
-        console.error('[ModernHero] Error fetching Google News:', err);
+        console.error('[ModernHero] Error fetching news ticker:', err);
         setNewsError('Unable to load latest stories right now.');
       } finally {
         if (isMounted) {
